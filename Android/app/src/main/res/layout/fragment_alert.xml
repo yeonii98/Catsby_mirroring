@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".alert">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="#ACDBE8"
+        android:orientation="horizontal" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="10"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:text="알림 설정"
+            android:textSize="30dp" />
+    </LinearLayout>
+
+    <Switch
+        android:id="@+id/alertSwitch1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:text="활동 알림"
+        android:textSize="25dp"/>
+
+    <Switch
+        android:id="@+id/alertSwitch2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:text="커뮤니티 알림"
+        android:textSize="25dp"/>
+
+</LinearLayout>

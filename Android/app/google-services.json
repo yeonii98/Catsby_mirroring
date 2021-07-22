@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "796042435986",
+    "project_id": "catsby-383f9",
+    "storage_bucket": "catsby-383f9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:796042435986:android:79495f76e1eea957b7354b",
+        "android_client_info": {
+          "package_name": "org.techtown.catsby"
+        }
+      },
+      "oauth_client": [
+        {
+
+          "client_id": "796042435986-fjvi1800ia03jvo8poe1gm8ioqga23tj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.techtown.catsby",
+            "certificate_hash": "8a2a197d4b2c605ed97c406d94fb7d9513d55ebe"
+          }
+        },
+        {
+          "client_id": "796042435986-olfu886gq6pau8ljllv9nd784scrvqnr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.techtown.catsby",
+            "certificate_hash": "426fafa4005c31705387cd254f111f7e1619d170"
+          }
+        },
+        {
+          "client_id": "796042435986-n9mv4ru4f9d1kvvhkhll5btd4qlea5pe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDo4fe-ifeasf9-OUrzILu0IgXghK9sqGw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "796042435986-n9mv4ru4f9d1kvvhkhll5btd4qlea5pe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
