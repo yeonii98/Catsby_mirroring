@@ -161,14 +161,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 });
     }
 
-    private void signInWithKakaoToken(String accessToken) {
-        firebaseAuth.signInWithCustomToken(accessToken)
+    private void signInWithKakaoToken(String customToken) {
+        firebaseAuth.signInWithCustomToken(customToken)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
                             Log.d("LoginActivity", "signInWithCustomToken:success");
+                            FirebaseUser user = firebaseAuth.getCurrentUser();
                             updateKakaoLoginUi();
                         } else {
                             Log.w("LoginActivity", "signInWithCustomToken:failure", task.getException());
