@@ -5,7 +5,7 @@ package com.hanium.catsby.Town.service;
 import com.hanium.catsby.Town.domain.TownCommunity;
 import com.hanium.catsby.Town.repository.TownCommentRepository;
 import com.hanium.catsby.Town.repository.TownCommunityRepository;
-import com.hanium.catsby.Town.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -22,8 +22,8 @@ public class TownCommunityService {
     @Autowired
     TownCommunityRepository townCommunityRepository;
 
-    @Autowired
-    UserRepository userRepository;
+//    @Autowired
+//    UserRepository userRepository;
 
     public String currentTime(){
         Date date = new Date(System.currentTimeMillis());
@@ -33,7 +33,7 @@ public class TownCommunityService {
 
     @Transactional
     public void writeTownCommunity(TownCommunity townCommunity) {//글 쓰기
-        townCommunity.setUser(userRepository.getById(2));
+        //townCommunity.setUser(userRepository.getById(2));
         townCommunity.setDate(currentTime());
         townCommunityRepository.save(townCommunity);
     }
