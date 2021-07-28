@@ -1,4 +1,7 @@
-package com.hanium.catsby.domain;
+package com.hanium.catsby.Town.domain;
+
+import com.hanium.catsby.Town.User.domain.User;
+import com.hanium.catsby.Town.domain.TownCommunity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,12 +27,7 @@ public class TownLike {
     private User user;
 
     @ManyToOne	(fetch = FetchType.LAZY)
-    @JoinColumn(name = "town_community_id")//town_community_id_Id라는 컬럼이 만들어짐
-
-    private com.hanium.catsby.domain.TownCommunity town_community;
-
     @JoinColumn(name = "townCommunity_id")//town_community_id_Id라는 컬럼이 만들어짐
-
     private TownCommunity townCommunity;
 
     private String created_time;

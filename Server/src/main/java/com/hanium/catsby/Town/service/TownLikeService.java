@@ -1,6 +1,10 @@
-package com.hanium.catsby.TownLike.service;
+package com.hanium.catsby.Town.service;
 
-import com.hanium.catsby.TownLike.repository.TownLikeRepository;
+import com.hanium.catsby.Town.domain.TownCommunity;
+import com.hanium.catsby.Town.domain.TownLike;
+import com.hanium.catsby.Town.repository.TownCommunityRepository;
+import com.hanium.catsby.Town.repository.TownLikeRepository;
+import com.hanium.catsby.Town.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +16,13 @@ import java.util.Date;
 public class TownLikeService {
 
     @Autowired
-    TownLikeRepository townRepository;
+    TownLikeRepository townLikeRepository;
+
+    @Autowired
+    TownCommunityRepository townCommunityRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     public String currentTime(){
         Date date = new Date(System.currentTimeMillis());
@@ -22,19 +32,18 @@ public class TownLikeService {
 
     @Transactional
     public void createTownLike(int id, TownLike requestTownLike){
-        com.hanium.catsby.domain.TownCommunity townCommunity = townRepository.findById(id)
+        TownCommunity townCommunity = townCommunityRepository.findById(id)
                 .orElseThrow(()->{
-                    return new IllegalArgumentException("댓글 쓰기 실패 : 게시글 id를 찾을 수 없습니다.");
+                    return new IllegalArgumentException("좋아요 실패 : 게시글 id를 찾을 수 없습니다.");
                 }); //영속화 완료
 
-        //        requestTownComment.setUser(user);
         requestTownLike.setTownCommunity(townCommunity);
-
+        requestTownLike.setUser(userRepository.getById(2));
         townLikeRepository.save(requestTownLike);
     }
 
     @Transactional
     public void deleteTownLike(int townLike_id){
-        townCommentRepository.deleteById(townLike_id);
+        townLikeRepository.deleteById(townLike_id);
     }
 }

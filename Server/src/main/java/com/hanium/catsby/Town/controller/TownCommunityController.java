@@ -1,8 +1,7 @@
-package com.hanium.catsby.TownCommunity.controller;
+package com.hanium.catsby.Town.controller;
 
-import com.hanium.catsby.TownCommunity.service.TownCommunityService;
-import com.hanium.catsby.domain.TownCommunity;
-import com.hanium.catsby.service.TownService;
+import com.hanium.catsby.Town.service.TownCommunityService;
+import com.hanium.catsby.Town.domain.TownCommunity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,33 +11,38 @@ import java.util.List;
 public class TownCommunityController {
 
     @Autowired
-    TownCommunityService townService;
+    TownCommunityService townCommunityService;
 
+    //글목록
     @GetMapping("/townCommunity")//커뮤니티 메인
     public List town() {
-        return townService.listTownCommunity();
+        return townCommunityService.listTownCommunity();
     }
 
-    @GetMapping("/townCommunity/{townCommunity_id}")
-    public com.hanium.catsby.domain.TownCommunity retrieveTown(@PathVariable int townCommunity_id) {
-        return townService.retrieveTownCommunity(townCommunity_id);
+    //글 조회
+    @GetMapping("/townCommunity/{id}")
+    public TownCommunity retrieveTown(@PathVariable int id) {
+        return townCommunityService.retrieveTownCommunity(id);
     }
 
+    //글 쓰기
     @PostMapping("townCommunity/write")
-    public String writeTown(@RequestBody com.hanium.catsby.domain.TownCommunity townCommunity){//현재 유저의 정보도 넣어야 함
-        townService.writeTownCommunity(townCommunity);
-        return "글 쓰기";
+    public String writeTown(@RequestBody TownCommunity townCommunity){//현재 유저의 정보도 넣어야 함
+        townCommunityService.writeTownCommunity(townCommunity);
+        return "글 쓰기 ";
     }
 
-    @DeleteMapping("townCommunity/{townCommunity_id}")
-    public String deleteTown(@PathVariable int townCommunity_id){
-        townService.deleteTownCommunity(townCommunity_id);
+    //글 삭제
+    @DeleteMapping("townCommunity/{id}")
+    public String deleteTown(@PathVariable int id){
+        townCommunityService.deleteTownCommunity(id);
         return "글 삭제하기";
     }
 
-    @PutMapping("townCommunity/{townCommunity_id}")
-    public String updateTown(@PathVariable int townCommunity_id, @RequestBody TownCommunity townCommunity){
-        townService.updateTownCommunity(townCommunity_id,townCommunity);
+    //글 수정
+    @PutMapping("townCommunity/{id}")
+    public String updateTown(@PathVariable int id, @RequestBody TownCommunity townCommunity){
+        townCommunityService.updateTownCommunity(id,townCommunity);
         return "글 수정하기";
     }
 }

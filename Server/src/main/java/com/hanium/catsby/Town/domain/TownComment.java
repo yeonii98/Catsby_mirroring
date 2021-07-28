@@ -1,13 +1,12 @@
-package com.hanium.catsby.domain;
+package com.hanium.catsby.Town.domain;
 
+import com.hanium.catsby.Town.User.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 
 @Data
 @NoArgsConstructor //빈생성자
@@ -26,19 +25,6 @@ public class TownComment {
     private User user;
 
     @ManyToOne	(fetch = FetchType.LAZY)
-
-    @JoinColumn(name = "town_community_id")//town_community_id라는 컬럼이 만들어짐
-
-    private com.hanium.catsby.domain.TownCommunity town_community;
-
-
-    @JoinColumn(name = "townCommunity_id")//town_community_id라는 컬럼이 만들어짐
-    private com.hanium.catsby.domain.TownCommunity townCommunity;
-
-    private TownCommunity town_community;
-
-    private TownCommunity townCommunity;
-
 
     @JoinColumn(name = "townCommunity_id")//town_community_id라는 컬럼이 만들어짐
     private TownCommunity townCommunity;
