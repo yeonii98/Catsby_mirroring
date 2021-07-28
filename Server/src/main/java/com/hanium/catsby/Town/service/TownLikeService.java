@@ -38,7 +38,7 @@ public class TownLikeService {
                 }); //영속화 완료
 
         requestTownLike.setTownCommunity(townCommunity);
-        requestTownLike.setUser(userRepository.getById(2));
+        //requestTownLike.setUser(userRepository.getById(2));
         townLikeRepository.save(requestTownLike);
     }
 

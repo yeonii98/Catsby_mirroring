@@ -38,7 +38,7 @@ public class TownCommentService {
                 }); //영속화 완료
 
 
-        requestTownComment.setUser(userRepository.getById(2));
+        //requestTownComment.setUser(userRepository.getById(2));
         requestTownComment.setTownCommunity(townCommunity);
         requestTownComment.setDate(currentTime());
         townCommentRepository.save(requestTownComment);
