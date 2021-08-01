@@ -1,8 +1,6 @@
 package com.hanium.catsby.BowlCommunity.domain;
 
 import com.hanium.catsby.Bowl.domain.Bowl;
-import com.hanium.catsby.BowlComment.domain.BowlComment;
-import com.hanium.catsby.BowlLike.domain.BowlLike;
 import com.hanium.catsby.User.domain.Users;
 import lombok.Getter;
 import lombok.Setter;

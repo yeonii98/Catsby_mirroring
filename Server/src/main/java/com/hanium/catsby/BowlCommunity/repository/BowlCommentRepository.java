@@ -1,6 +1,6 @@
-package com.hanium.catsby.BowlComment.repository;
+package com.hanium.catsby.BowlCommunity.repository;
 
-import com.hanium.catsby.BowlComment.domain.BowlComment;
+import com.hanium.catsby.BowlCommunity.domain.BowlComment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import javax.persistence.EntityManager;

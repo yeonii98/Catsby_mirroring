@@ -1,7 +1,7 @@
-package com.hanium.catsby.BowlLike.controller;
+package com.hanium.catsby.BowlCommunity.controller;
 
-import com.hanium.catsby.BowlLike.domain.BowlLike;
-import com.hanium.catsby.BowlComment.service.BowlLikeService;
+import com.hanium.catsby.BowlCommunity.domain.BowlLike;
+import com.hanium.catsby.BowlCommunity.service.BowlLikeService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

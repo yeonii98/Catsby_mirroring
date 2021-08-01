@@ -1,7 +1,7 @@
-package com.hanium.catsby.BowlLike.service;
+package com.hanium.catsby.BowlCommunity.service;
 
-import com.hanium.catsby.BowlComment.domain.BowlComment;
-import com.hanium.catsby.BowlComment.repository.BowlCommentRepository;
+import com.hanium.catsby.BowlCommunity.domain.BowlComment;
+import com.hanium.catsby.BowlCommunity.repository.BowlCommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
