@@ -1,4 +1,4 @@
-package com.hanium.catsby.BowlLike.domain;
+package com.hanium.catsby.BowlCommunity.domain;
 
 import com.hanium.catsby.BowlCommunity.domain.BowlCommunity;
 import com.hanium.catsby.User.domain.Users;

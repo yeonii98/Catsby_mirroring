@@ -1,7 +1,7 @@
-package com.hanium.catsby.BowlComment.controller;
+package com.hanium.catsby.BowlCommunity.controller;
 
-import com.hanium.catsby.BowlComment.domain.BowlComment;
-import com.hanium.catsby.BowlLike.service.BowlCommentService;
+import com.hanium.catsby.BowlCommunity.domain.BowlComment;
+import com.hanium.catsby.BowlCommunity.service.BowlCommentService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

@@ -1,12 +1,9 @@
 package com.hanium.catsby.User.domain;
 
-import com.hanium.catsby.BowlLike.domain.BowlLike;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter @Setter
