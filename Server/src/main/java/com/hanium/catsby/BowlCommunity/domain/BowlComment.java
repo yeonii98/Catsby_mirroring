@@ -10,11 +10,12 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
+@Table(name = "Bowl_Comment")
 public class BowlComment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "bowl_comment_id")
+    @Column(name = "bowlComment_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -22,10 +23,14 @@ public class BowlComment {
     private Users user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bowl_community_id")
+    @JoinColumn(name = "bowlCommunity_id")
     private BowlCommunity bowlCommunity;
 
-    private LocalDateTime commentDate;
+    @Column(name = "created_time")
+    private LocalDateTime createDate;
+
+    @Column(name = "updated_time")
+    private LocalDateTime updateDate;
 
     @Lob
     private String content;

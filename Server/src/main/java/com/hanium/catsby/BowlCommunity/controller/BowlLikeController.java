@@ -6,10 +6,12 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.Table;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Table(name = "Bowl_Like")
 public class BowlLikeController {
 
     private final BowlLikeService bowlLikeService;

@@ -25,10 +25,14 @@ public class Bowl {
     //찾아보기
     private String address;
 
-    private LocalDateTime enrollDate;
-
     @Lob
     private byte[] image;
+
+    @Column(name = "created_time")
+    private LocalDateTime createDate;
+
+    @Column(name = "updated_time")
+    private LocalDateTime updateDate;
 
     @JsonIgnore
     @OneToMany(mappedBy = "bowl", cascade = CascadeType.ALL)

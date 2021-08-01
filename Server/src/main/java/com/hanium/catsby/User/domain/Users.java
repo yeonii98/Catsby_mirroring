@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
@@ -16,6 +17,12 @@ public class Users {
     private String nickname;
     private String email;
     private String address;
+
+    @Column(name = "created_time")
+    private LocalDateTime createDate;
+
+    @Column(name = "updated_time")
+    private LocalDateTime updateDate;
 
     //@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     //private List<BowlLike> bowlLikes = new ArrayList<>();
