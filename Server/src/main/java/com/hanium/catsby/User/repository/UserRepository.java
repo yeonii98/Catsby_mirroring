@@ -1,6 +1,6 @@
 package com.hanium.catsby.User.repository;
 
-import com.hanium.catsby.User.domain.User;
+import com.hanium.catsby.User.domain.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -13,16 +13,16 @@ public class UserRepository {
 
     private final EntityManager em;
 
-    public void save(User user) {
+    public void save(Users user) {
         em.persist(user);
     }
 
-    public User findUser(Long id) {
-        return em.find(User.class, id);
+    public Users findUser(Long id) {
+        return em.find(Users.class, id);
     }
 
-    public List<User> findAllUser() {
-        return em.createQuery("select u from User u", User.class).getResultList();
+    public List<Users> findAllUser() {
+        return em.createQuery("select u from Users u", Users.class).getResultList();
     }
 
 }

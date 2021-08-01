@@ -1,6 +1,6 @@
 package com.hanium.catsby.User.controller;
 
-import com.hanium.catsby.User.domain.User;
+import com.hanium.catsby.User.domain.Users;
 import com.hanium.catsby.User.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,9 +16,9 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public CreateUserResponse savaUser(@RequestBody User user) {
+    public CreateUserResponse createUser(@RequestBody Users user) {
         Long id = userService.savaUser(user);
-        return new UserController.CreateUserResponse(id);
+        return new CreateUserResponse(id);
     }
 
     @Data
@@ -30,15 +30,14 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public List<User> users() {
+    public List<Users> users() {
         return userService.findUsers();
     }
-
 
     @PutMapping("/user/{id}")
     public UpdateUserResponse updateUserResponse(@PathVariable("id") Long id, @RequestBody UpdateUserRequest request) {
         userService.update(id, request.getNickname(), request.getAddress());
-        User findUser = userService.findUser(id);
+        Users findUser = userService.findUser(id);
         return new UpdateUserResponse(findUser.getId(), findUser.getNickname(), findUser.getAddress());
     }
 

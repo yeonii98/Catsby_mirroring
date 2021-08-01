@@ -2,7 +2,7 @@ package com.hanium.catsby.Town.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 //import com.hanium.catsby.Town.User.domain.User;
-import com.hanium.catsby.User.domain.User;
+import com.hanium.catsby.User.domain.Users;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,7 +27,7 @@ public class TownCommunity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")//use_id라는 컬럼이 만들어짐
-    private User user;
+    private Users user;
 
     //    @Lob//대용량 데이터
     private String image;

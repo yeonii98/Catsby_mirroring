@@ -3,7 +3,7 @@ package com.hanium.catsby.BowlCommunity.domain;
 import com.hanium.catsby.Bowl.domain.Bowl;
 import com.hanium.catsby.BowlComment.domain.BowlComment;
 import com.hanium.catsby.BowlLike.domain.BowlLike;
-import com.hanium.catsby.User.domain.User;
+import com.hanium.catsby.User.domain.Users;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,7 +23,7 @@ public class BowlCommunity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private Users user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bowl_id")

@@ -1,6 +1,6 @@
 package com.hanium.catsby.Town.domain;
 
-import com.hanium.catsby.User.domain.User;
+import com.hanium.catsby.User.domain.Users;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,7 +22,7 @@ public class TownComment {
 
     @ManyToOne	(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")//user_id라는 컬럼이 만들어짐
-    private User user;
+    private Users user;
 
     @ManyToOne	(fetch = FetchType.LAZY)
 
