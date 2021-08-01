@@ -1,6 +1,7 @@
 package com.hanium.catsby.BowlComment.domain;
 
 import com.hanium.catsby.BowlCommunity.domain.BowlCommunity;
+import com.hanium.catsby.User.domain.Users;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,9 +17,9 @@ public class BowlComment {
     @Column(name = "bowl_comment_id")
     private Long id;
 
-    //@ManyToOne(fetch = FetchType.LAZY)
-    //@JoinColumn(name = "user_id")
-    //private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private Users user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bowl_community_id")
