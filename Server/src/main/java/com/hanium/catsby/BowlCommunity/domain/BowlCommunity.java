@@ -1,5 +1,6 @@
 package com.hanium.catsby.BowlCommunity.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hanium.catsby.Bowl.domain.Bowl;
 import com.hanium.catsby.User.domain.Users;
 import lombok.Getter;
@@ -12,17 +13,20 @@ import java.util.List;
 
 @Entity
 @Getter @Setter
+@Table(name = "Bowl_Community")
 public class BowlCommunity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "bowl_community_id")
+    @Column(name = "bowlCommunity_id")
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private Users user;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bowl_id")
     private Bowl bowl;
@@ -33,7 +37,11 @@ public class BowlCommunity {
     @Lob
     private String content;
 
-    private LocalDateTime uploadDate;
+    //@Column(name = "created_time")
+    //private LocalDateTime createDate;
+
+    //@Column(name = "updated_time")
+    //private LocalDateTime updateDate;
 
     @OneToMany(mappedBy = "bowlCommunity", cascade = CascadeType.ALL)
     private List<BowlComment> bowlComments = new ArrayList<>();
@@ -43,14 +51,15 @@ public class BowlCommunity {
         bowl.getBowlCommunities().add(this);
     }
 
+    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "bowl_like_id")
+    @JoinColumn(name = "bowlLike_id")
     private BowlLike bowlLike;
 
-    public void setBowlLike(BowlLike bowlLike) {
-        this.bowlLike = bowlLike;
-        bowlLike.setBowlCommunity(this);
-    }
+    //public void setBowlLike(BowlLike bowlLike) {
+    //    this.bowlLike = bowlLike;
+    //    bowlLike.setBowlCommunity(this);
+    //}
 
 
 }
