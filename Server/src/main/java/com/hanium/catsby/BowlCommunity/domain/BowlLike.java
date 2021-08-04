@@ -22,9 +22,9 @@ public class BowlLike {
     @JoinColumn(name = "user_id")
     private Users user;
 
-    @JsonIgnore
-    @OneToOne(mappedBy = "bowlLike", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private BowlCommunity bowlCommunity;
+//    @JsonIgnore
+//    @OneToOne(mappedBy = "bowlLike", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private BowlCommunity bowlCommunity;
 
     @Column(name = "created_time")
     private LocalDateTime createDate;

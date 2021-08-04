@@ -27,7 +27,7 @@ public class TownLike {
     @JoinColumn(name = "user_id")//user_id라는 컬럼이 만들어짐
     private Users user;
 
-    @ManyToOne	(fetch = FetchType.LAZY)
+    @OneToOne	(fetch = FetchType.LAZY)
     @JoinColumn(name = "townCommunity_id")//town_community_id_Id라는 컬럼이 만들어짐
     private TownCommunity townCommunity;
 

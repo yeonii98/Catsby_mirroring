@@ -23,7 +23,8 @@ public class TownCommunity {
 
     @Id //PK지정
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int townCommunity_id;
+    @Column(name = "townCommunity_id")
+    private int id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")//use_id라는 컬럼이 만들어짐
@@ -42,13 +43,12 @@ public class TownCommunity {
     //하나의 게시글에 여러개의 댓글이 존재한다. 1:N 관계 -> OneToMany
     @OneToMany(mappedBy = "townCommunity", fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"townCommunity"}) //무한참조 방지
-    //@OrderBy("id desc")
+    @OrderBy("id desc")
     private List<TownComment> townComment;
 
-    //하나의 게시글에 여러개의 좋아요가 존재한다. 1:N 관계 -> OneToMany
-    @OneToMany(mappedBy = "townCommunity", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "townCommunity", fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"townCommunity"}) //무한참조 방지
-    private List<TownLike> townlike;
+    private TownLike townlike;
 
     private String created_time;
 
