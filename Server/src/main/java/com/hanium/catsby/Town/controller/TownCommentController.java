@@ -27,7 +27,7 @@ public class TownCommentController {
 
     //댓글 수정하기
     @PutMapping("townCommunity/{id}/comment/{townComment_id}")
-    public String updateTownComment(@PathVariable int townComment_id, @RequestBody TownComment townComment){
+    public String updateTownComment( @PathVariable int townComment_id, @RequestBody TownComment townComment){
         townCommentService.updateTownComment(townComment_id,townComment);
         return "댓글 수정하기";
     }

@@ -1,11 +1,14 @@
 package com.hanium.catsby.Town.service;
 
-
-
+import com.hanium.catsby.MyWriting.domain.MyPost;
+import com.hanium.catsby.MyWriting.repository.MyPostRepository;
 import com.hanium.catsby.Town.domain.TownCommunity;
 import com.hanium.catsby.Town.repository.TownCommentRepository;
 import com.hanium.catsby.Town.repository.TownCommunityRepository;
 
+import com.hanium.catsby.User.repository.UserRepository;
+import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,7 @@ import java.awt.print.Pageable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TownCommunityService {
@@ -22,8 +26,12 @@ public class TownCommunityService {
     @Autowired
     TownCommunityRepository townCommunityRepository;
 
-//    @Autowired
-//    UserRepository userRepository;
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    MyPostRepository myPostRepository;
+
 
     public String currentTime(){
         Date date = new Date(System.currentTimeMillis());
@@ -33,9 +41,14 @@ public class TownCommunityService {
 
     @Transactional
     public void writeTownCommunity(TownCommunity townCommunity) {//글 쓰기
-        //townCommunity.setUser(userRepository.getById(2));
+        townCommunity.setUser(userRepository.findUser((long) 2));
         townCommunity.setDate(currentTime());
         townCommunityRepository.save(townCommunity);
+
+        //myPost
+        MyPost myPost = new MyPost();
+        myPost.setTownCommunity(townCommunity);
+        myPostRepository.save(myPost);
     }
 
     @Transactional(readOnly = true)
@@ -53,6 +66,8 @@ public class TownCommunityService {
 
     @Transactional
     public void deleteTownCommunity(int id) {//글 삭제
+        //myPost
+        myPostRepository.deleteByTownCommunity_Id(id);
         townCommunityRepository.deleteById(id);
     }
 
@@ -65,5 +80,9 @@ public class TownCommunityService {
         townCommunity.setTitle(requestTownCommunity.getTitle());
         townCommunity.setContent(requestTownCommunity.getContent());
         //해당 함수로 종료시(Service가 종료될 때) 트랜잭션이 종료된다. 이때 더티체킹이 일어남 - 자동 업데이트됨. db쪽으로 flush
+
+        //myPost
+        MyPost myPost = myPostRepository.findByTownCommunity_Id(id);
+        myPost.setTownCommunity(townCommunity);
     }
 }

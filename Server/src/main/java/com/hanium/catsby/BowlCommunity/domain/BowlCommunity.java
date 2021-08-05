@@ -1,6 +1,7 @@
 package com.hanium.catsby.BowlCommunity.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hanium.catsby.Bowl.domain.Bowl;
 import com.hanium.catsby.User.domain.Users;
 import lombok.Getter;
@@ -42,7 +43,9 @@ public class BowlCommunity {
     private LocalDateTime updateDate;
 
     @OneToMany(mappedBy = "bowlCommunity", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"bowlCommunity"})
     private List<BowlComment> bowlComments = new ArrayList<>();
+
 
     @JsonIgnore
     @OneToOne(mappedBy = "bowlCommunity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

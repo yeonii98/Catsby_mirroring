@@ -18,14 +18,14 @@ public class TownComment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int townComment_id;
+    @Column(name = "townComment_id")
+    private int id;
 
     @ManyToOne	(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")//user_id라는 컬럼이 만들어짐
     private Users user;
 
     @ManyToOne	(fetch = FetchType.LAZY)
-
     @JoinColumn(name = "townCommunity_id")//town_community_id라는 컬럼이 만들어짐
     private TownCommunity townCommunity;
 

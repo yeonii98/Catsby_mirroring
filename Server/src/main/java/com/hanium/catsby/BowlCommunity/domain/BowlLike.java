@@ -22,6 +22,7 @@ public class BowlLike {
     @JoinColumn(name = "user_id")
     private Users user;
 
+
     @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "bowlCommunity_id")
