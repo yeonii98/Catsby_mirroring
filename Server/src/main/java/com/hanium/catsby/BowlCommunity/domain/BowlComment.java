@@ -35,9 +35,21 @@ public class BowlComment {
     @Lob
     private String content;
 
-    /*
     public void setBowlCommunity(BowlCommunity bowlCommunity) {
         this.bowlCommunity = bowlCommunity;
         bowlCommunity.getBowlComments().add(this);
-    }*/
+    }
+
+    public void setUser(Users user){
+        this.user = user;
+        user.getBowlComments().add(this);
+    }
+
+    public void setCreateDate(){
+        this.createDate = LocalDateTime.now();
+    }
+
+    public void setUpdateDate(){
+        this.updateDate = LocalDateTime.now();
+    }
 }

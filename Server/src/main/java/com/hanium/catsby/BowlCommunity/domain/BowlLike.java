@@ -23,13 +23,22 @@ public class BowlLike {
     private Users user;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "bowlLike", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "bowlCommunity_id")
     private BowlCommunity bowlCommunity;
 
     @Column(name = "created_time")
     private LocalDateTime createDate;
 
-    @Column(name = "updated_time")
-    private LocalDateTime updateDate;
+    public void setBowlCommunity(BowlCommunity bowlCommunity){
+        this.bowlCommunity = bowlCommunity;
+    }
 
+    public void setCreateDate(){
+        this.createDate = LocalDateTime.now();
+    }
+
+    public void setUser(Users user){
+        this.user = user;
+    }
 }
