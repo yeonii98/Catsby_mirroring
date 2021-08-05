@@ -14,10 +14,10 @@ public class BowlCommunityController {
 
     private final BowlCommunityService bowlCommunityService;
 
-    @PostMapping("/bowl-community/write")
-    public CreateBowlCommunityResponse savaBowlCommunity(@RequestBody BowlCommunity bowlCommunity) {
-        Long id = bowlCommunityService.savaCommunity(bowlCommunity);
-        return new CreateBowlCommunityResponse(id);
+    @PostMapping("/bowl-community/write/{userId}/{bowlId}")
+    public CreateBowlCommunityResponse savaBowlCommunity(@PathVariable("userId") Long userId, @PathVariable("bowlId") Long bowlId, @RequestBody BowlCommunity bowlCommunity) {
+        Long communityId = bowlCommunityService.savaCommunity(bowlCommunity, userId, bowlId);
+        return new CreateBowlCommunityResponse(communityId);
     }
 
     @Data
@@ -34,17 +34,16 @@ public class BowlCommunityController {
         return bowlCommunityService.findCommunities();
     }
 
-
-    @PutMapping("/bowl-community/{id}")
-    public UpdateBowlCommunityResponse updateBowlCommunity(@PathVariable("id") Long id, @RequestBody UpdateBowlCommunityRequest request){
-        bowlCommunityService.update(id, request.getImage(), request.getContent());
-        BowlCommunity findBowlCommunity = bowlCommunityService.findCommunity(id);
+    @PutMapping("/bowl-community/{communityId}")
+    public UpdateBowlCommunityResponse updateBowlCommunity(@PathVariable("communityId") Long communityId, @RequestBody UpdateBowlCommunityRequest request){
+        bowlCommunityService.update(communityId, request.getImage(), request.getContent());
+        BowlCommunity findBowlCommunity = bowlCommunityService.findCommunity(communityId);
         return new UpdateBowlCommunityResponse(findBowlCommunity.getId(), findBowlCommunity.getImage(), findBowlCommunity.getContent());
     }
 
 
-    @DeleteMapping("/bowl-community/{id}")
-    public void DeleteBowlCommunity(@PathVariable("id") Long id){
+    @DeleteMapping("/bowl-community/{communityId}")
+    public void DeleteBowlCommunity(@PathVariable("communityId") Long id){
         bowlCommunityService.delete(id);
     }
 
@@ -62,8 +61,4 @@ public class BowlCommunityController {
         private byte[] image;
         private String content;
     }
-
-
-
-
 }

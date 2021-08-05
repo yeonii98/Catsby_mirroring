@@ -15,9 +15,9 @@ public class BowlCommentController {
 
     private final BowlCommentService bowlCommentService;
 
-    @PostMapping("/bowl-comment/write")
-    public CreateBowlCommentResponse saveBowlComment(@RequestBody BowlComment bowlComment){
-        Long id = bowlCommentService.savaComment(bowlComment);
+    @PostMapping("/bowl-comment/{userId}/{communityId}")
+    public CreateBowlCommentResponse saveBowlComment(@PathVariable("userId") Long userId, @PathVariable("communityId") Long communityId, @RequestBody BowlComment bowlComment){
+        Long id = bowlCommentService.savaComment(bowlComment, userId, communityId);
         return new CreateBowlCommentResponse(id);
     }
 
