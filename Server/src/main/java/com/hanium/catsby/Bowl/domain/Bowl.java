@@ -1,6 +1,5 @@
-package com.hanium.catsby.Bowl.domain;
+package com.hanium.catsby.bowl.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.hanium.catsby.BowlCommunity.domain.BowlCommunity;
 import lombok.Getter;
 import lombok.Setter;
 

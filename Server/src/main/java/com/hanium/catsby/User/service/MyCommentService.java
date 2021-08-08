@@ -1,8 +1,6 @@
-package com.hanium.catsby.MyWriting.service;
+package com.hanium.catsby.user.service;
 
-import com.hanium.catsby.MyWriting.domain.MyComment;
-import com.hanium.catsby.MyWriting.repository.MyCommentRepository;
-import com.hanium.catsby.MyWriting.repository.MyPostRepository;
+import com.hanium.catsby.user.repository.MyCommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

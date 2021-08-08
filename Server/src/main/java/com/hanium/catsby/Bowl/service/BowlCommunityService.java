@@ -1,13 +1,13 @@
-package com.hanium.catsby.BowlCommunity.service;
+package com.hanium.catsby.bowl.service;
 
-import com.hanium.catsby.Bowl.domain.Bowl;
-import com.hanium.catsby.Bowl.repository.BowlRepository;
-import com.hanium.catsby.BowlCommunity.domain.BowlCommunity;
-import com.hanium.catsby.BowlCommunity.repository.BowlCommunityRepository;
-import com.hanium.catsby.User.domain.Users;
-import com.hanium.catsby.User.repository.UserRepository;
-import com.hanium.catsby.MyWriting.domain.MyPost;
-import com.hanium.catsby.MyWriting.repository.MyPostRepository;
+import com.hanium.catsby.bowl.domain.Bowl;
+import com.hanium.catsby.bowl.repository.BowlRepository;
+import com.hanium.catsby.bowl.domain.BowlCommunity;
+import com.hanium.catsby.bowl.repository.BowlCommunityRepository;
+import com.hanium.catsby.user.domain.Users;
+import com.hanium.catsby.user.repository.UserRepository;
+import com.hanium.catsby.user.domain.MyPost;
+import com.hanium.catsby.user.repository.MyPostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,9 +1,6 @@
-package com.hanium.catsby.MyWriting.repository;
+package com.hanium.catsby.user.repository;
 
-import com.hanium.catsby.BowlCommunity.domain.BowlCommunity;
-import com.hanium.catsby.MyWriting.domain.MyPost;
-import com.hanium.catsby.Town.domain.TownCommunity;
-import com.hanium.catsby.User.domain.Users;
+import com.hanium.catsby.user.domain.MyPost;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

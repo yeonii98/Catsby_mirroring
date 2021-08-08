@@ -1,6 +1,6 @@
-package com.hanium.catsby.Bowl.repository;
+package com.hanium.catsby.bowl.repository;
 
-import com.hanium.catsby.Bowl.domain.Bowl;
+import com.hanium.catsby.bowl.domain.Bowl;
 import com.hanium.catsby.notification.domain.NotificationDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

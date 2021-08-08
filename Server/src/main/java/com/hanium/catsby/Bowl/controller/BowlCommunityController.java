@@ -1,7 +1,7 @@
-package com.hanium.catsby.BowlCommunity.controller;
+package com.hanium.catsby.bowl.controller;
 
-import com.hanium.catsby.BowlCommunity.domain.BowlCommunity;
-import com.hanium.catsby.BowlCommunity.service.BowlCommunityService;
+import com.hanium.catsby.bowl.domain.BowlCommunity;
+import com.hanium.catsby.bowl.service.BowlCommunityService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

@@ -1,16 +1,14 @@
-package com.hanium.catsby.Town.domain;
+package com.hanium.catsby.town.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 //import com.hanium.catsby.Town.User.domain.User;
-import com.hanium.catsby.User.domain.Users;
+import com.hanium.catsby.user.domain.Users;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Data

@@ -1,8 +1,7 @@
-package com.hanium.catsby.Town.controller;
+package com.hanium.catsby.town.controller;
 
-import com.hanium.catsby.Town.domain.TownCommunity;
-import com.hanium.catsby.Town.service.TownCommentService;
-import com.hanium.catsby.Town.domain.TownComment;
+import com.hanium.catsby.town.service.TownCommentService;
+import com.hanium.catsby.town.domain.TownComment;
 import com.hanium.catsby.notification.domain.NotificationType;
 import com.hanium.catsby.notification.service.NotificationService;
 import com.hanium.catsby.notification.util.NotificationUtil;

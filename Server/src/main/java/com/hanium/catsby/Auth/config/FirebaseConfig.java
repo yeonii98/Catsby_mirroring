@@ -1,4 +1,4 @@
-package com.hanium.catsby.config;
+package com.hanium.catsby.auth.config;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;

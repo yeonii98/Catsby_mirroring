@@ -1,6 +1,5 @@
-package com.hanium.catsby.Cat.model;
+package com.hanium.catsby.cat.model;
 
-import java.awt.*;
 import java.sql.Blob;
 import java.text.SimpleDateFormat;
 

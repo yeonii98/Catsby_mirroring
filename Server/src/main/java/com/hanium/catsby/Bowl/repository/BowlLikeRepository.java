@@ -1,6 +1,6 @@
-package com.hanium.catsby.BowlCommunity.repository;
+package com.hanium.catsby.bowl.repository;
 
-import com.hanium.catsby.BowlCommunity.domain.BowlLike;
+import com.hanium.catsby.bowl.domain.BowlLike;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

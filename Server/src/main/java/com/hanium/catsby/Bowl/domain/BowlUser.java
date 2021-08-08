@@ -1,10 +1,9 @@
-package com.hanium.catsby.Bowl.domain;
+package com.hanium.catsby.bowl.domain;
 
-import com.hanium.catsby.User.domain.Users;
+import com.hanium.catsby.user.domain.Users;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Getter

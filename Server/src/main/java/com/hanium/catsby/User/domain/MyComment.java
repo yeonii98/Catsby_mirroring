@@ -1,11 +1,7 @@
-package com.hanium.catsby.MyWriting.domain;
+package com.hanium.catsby.user.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.hanium.catsby.BowlCommunity.domain.BowlComment;
-import com.hanium.catsby.BowlCommunity.domain.BowlCommunity;
-import com.hanium.catsby.Town.domain.TownComment;
-import com.hanium.catsby.Town.domain.TownCommunity;
-import com.hanium.catsby.User.domain.Users;
+import com.hanium.catsby.bowl.domain.BowlComment;
+import com.hanium.catsby.town.domain.TownComment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
