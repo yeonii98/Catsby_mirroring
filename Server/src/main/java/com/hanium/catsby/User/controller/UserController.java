@@ -5,6 +5,7 @@ import com.hanium.catsby.User.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -54,5 +55,16 @@ public class UserController {
         private Long id;
         private String nickname;
         private String address;
+    }
+
+    @PatchMapping("/user/token/{id}")
+    public ResponseEntity<?> updateFCMToken(@PathVariable("id") Long id, @RequestBody UpdateFcmTokenRequest request) {
+        userService.updateFcmToken(id, request.getFcmToken());
+        return ResponseEntity.ok().build();
+    }
+
+    @Data
+    private static class UpdateFcmTokenRequest {
+        private String fcmToken;
     }
 }

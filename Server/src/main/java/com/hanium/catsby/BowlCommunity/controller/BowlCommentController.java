@@ -2,6 +2,9 @@ package com.hanium.catsby.BowlCommunity.controller;
 
 import com.hanium.catsby.BowlCommunity.domain.BowlComment;
 import com.hanium.catsby.BowlCommunity.service.BowlCommentService;
+import com.hanium.catsby.notification.domain.NotificationType;
+import com.hanium.catsby.notification.service.NotificationService;
+import com.hanium.catsby.notification.util.NotificationUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -14,10 +17,16 @@ import java.util.List;
 public class BowlCommentController {
 
     private final BowlCommentService bowlCommentService;
+    private final NotificationService notificationService;
 
     @PostMapping("/bowl-comment/{userId}/{communityId}")
     public CreateBowlCommentResponse saveBowlComment(@PathVariable("userId") Long userId, @PathVariable("communityId") Long communityId, @RequestBody BowlComment bowlComment){
         Long id = bowlCommentService.savaComment(bowlComment, userId, communityId);
+
+        String content = bowlComment.getBowlCommunity().getContent();
+        String message = userId + NotificationUtil.makeNotification(content, NotificationType.COMMENT);
+        notificationService.saveNotification(bowlComment.getBowlCommunity().getUser(), message);
+
         return new CreateBowlCommentResponse(id);
     }
 

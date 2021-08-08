@@ -1,7 +1,7 @@
-package com.hanium.catsby.Auth.controller;
+package com.hanium.catsby.auth.controller;
 
 import com.google.firebase.auth.FirebaseAuthException;
-import com.hanium.catsby.Auth.service.AuthService;
+import com.hanium.catsby.auth.service.AuthService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

@@ -38,5 +38,11 @@ public class UserService {
         user.setNickname(nickname);
         user.setAddress(address);
     }
+
+    @Transactional
+    public void updateFcmToken(Long id, String token) {
+        Users user = userRepository.findUser(id);
+        user.setFcmToken(token);
+    }
 }
 

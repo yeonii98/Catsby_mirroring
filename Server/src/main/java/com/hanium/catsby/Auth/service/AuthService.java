@@ -1,4 +1,4 @@
-package com.hanium.catsby.Auth.service;
+package com.hanium.catsby.auth.service;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;

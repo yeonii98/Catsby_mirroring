@@ -24,6 +24,9 @@ public class Users {
     private String email;
     private String address;
 
+    @Column(name = "fcm_token")
+    private String fcmToken;
+
     @Column(name = "created_time")
     private LocalDateTime createDate;
 

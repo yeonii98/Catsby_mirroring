@@ -38,4 +38,8 @@ public class Bowl {
     @OneToMany(mappedBy = "bowl", cascade = CascadeType.ALL)
     private List<BowlCommunity> bowlCommunities = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "bowl", cascade = CascadeType.ALL)
+    private List<BowlUser> bowlUsers = new ArrayList<>();
+
 }
