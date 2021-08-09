@@ -1,7 +1,7 @@
 package com.hanium.catsby.bowl.repository;
 
 import com.hanium.catsby.bowl.domain.Bowl;
-import com.hanium.catsby.notification.domain.NotificationDto;
+import com.hanium.catsby.notification.domain.TokenDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -32,13 +32,13 @@ public class BowlRepository {
         em.remove(bowl);
     }
 
-    public List<NotificationDto> findUsersByBowlId(Long bowlId) {
+    public List<TokenDto> findUsersByBowlId(Long bowlId) {
         return em.createQuery(
                         "select new com.hanium.catsby.notification.domain.NotificationDto(u.id, u.fcmToken)" +
                                 " from Bowl b" +
                                 " join b.bowlUsers bu" +
                                 " join bu.user u" +
-                                " where bu.bowl.id = :bowlId", NotificationDto.class)
+                                " where bu.bowl.id = :bowlId", TokenDto.class)
                 .setParameter("bowlId", bowlId)
                 .getResultList();
     }

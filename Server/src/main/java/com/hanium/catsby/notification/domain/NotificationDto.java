@@ -1,11 +1,22 @@
 package com.hanium.catsby.notification.domain;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
-@AllArgsConstructor
 public class NotificationDto {
-    Long userId;
-    String token;
+
+    private Long id;
+    private String message;
+
+    @JsonFormat(pattern="yyyy.MM.dd", timezone = "Asia/Seoul")
+    private LocalDateTime date;
+
+    public NotificationDto(Notification notification) {
+        this.id = notification.getId();
+        this.message = notification.getMessage();
+        this.date = notification.getCreateDate();
+    }
 }

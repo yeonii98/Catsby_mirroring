@@ -1,13 +1,17 @@
 package com.hanium.catsby.notification.controller;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
+import com.hanium.catsby.notification.domain.Notification;
+import com.hanium.catsby.notification.domain.NotificationDto;
 import com.hanium.catsby.notification.service.NotificationService;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,4 +30,14 @@ public class NotificationController {
         }
     }
 
+    @GetMapping("/{userId}")
+    public ResponseEntity<NotificationResponse> notifications(@PathVariable Long userId, @RequestParam("page") int page) {
+        return ResponseEntity.ok(new NotificationResponse(notificationService.getNotificationList(userId, page)));
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class NotificationResponse {
+        List<NotificationDto> notificationList;
+    }
 }
