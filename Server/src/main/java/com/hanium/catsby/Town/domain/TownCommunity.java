@@ -1,16 +1,14 @@
 package com.hanium.catsby.Town.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-//import com.hanium.catsby.Town.User.domain.User;
 import com.hanium.catsby.User.domain.Users;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.List;
 
 @Data
@@ -41,17 +39,17 @@ public class TownCommunity {
     private String date;
 
     //하나의 게시글에 여러개의 댓글이 존재한다. 1:N 관계 -> OneToMany
-    @OneToMany(mappedBy = "townCommunity", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "townCommunity", fetch = FetchType.EAGER)//연관관계의 주인이 아니다.
     @JsonIgnoreProperties({"townCommunity"}) //무한참조 방지
-    @OrderBy("id desc")
+    //@OrderBy("id desc")
     private List<TownComment> townComment;
 
-    @OneToOne(mappedBy = "townCommunity", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "townCommunity", fetch = FetchType.EAGER)
     @JsonIgnoreProperties({"townCommunity"}) //무한참조 방지
     private TownLike townlike;
 
-    private String created_time;
+    //private String created_time;
 
-    private String updated_time;
+   // private String updated_time;
 
 }
