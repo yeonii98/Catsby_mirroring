@@ -1,6 +1,6 @@
-package com.hanium.catsby.user.repository;
+package com.hanium.catsby.User.repository;
 
-import com.hanium.catsby.user.domain.MyPost;
+import com.hanium.catsby.User.domain.MyPost;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

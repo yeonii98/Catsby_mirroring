@@ -1,4 +1,4 @@
-package com.hanium.catsby.town.domain;
+package com.hanium.catsby.Town.domain;
 
 import com.hanium.catsby.user.domain.Users;
 import lombok.AllArgsConstructor;
