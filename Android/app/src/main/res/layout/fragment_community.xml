@@ -2,98 +2,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/activity_board"
+    android:id="@+id/fragmentcommunity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="1dp"
-        android:layout_marginRight="8dp"/>
 
     <SearchView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/search_view"/>
 
-    <LinearLayout
+    <ScrollView
+        android:background="#DFDBDB"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="1dp"
-        android:layout_marginRight="8dp">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
 
-        <Button
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/btn2"
-            android:text="#츄르추천"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:textSize="18dp"
-            android:background="#8BC34A"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"/>
+            android:layout_height="match_parent"/>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/btn3"
-            android:text="#동물병원"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:textSize="18dp"
-            android:background="#8BC34A"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"/>
+    </ScrollView>
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:id="@+id/btn4"
-            android:text="#고양이사료"
-            android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:textSize="16dp"
-            android:background="#8BC34A"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"/>
-
-    </LinearLayout>
-
-    <FrameLayout
+    <Button
+        android:id="@+id/btnAdd"
+        android:text="글쓰기"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:id="@+id/notice">
-
-            <ListView
-                android:id="@+id/noticeListView"
-                android:layout_width="match_parent"
-                android:layout_height="413dp"
-                android:layout_margin="10dp"
-                android:divider="#ffffff"
-                android:dividerHeight="20dp"
-                android:paddingTop="5dp">
-
-            </ListView>
-
-        </LinearLayout>
-
-    </FrameLayout>
-
-    <SearchView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>
