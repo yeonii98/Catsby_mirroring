@@ -1,6 +1,5 @@
-package com.hanium.catsby.Bowl.domain;
+package com.hanium.catsby.bowl.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.hanium.catsby.BowlCommunity.domain.BowlCommunity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,5 +36,9 @@ public class Bowl {
     @JsonIgnore
     @OneToMany(mappedBy = "bowl", cascade = CascadeType.ALL)
     private List<BowlCommunity> bowlCommunities = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "bowl", cascade = CascadeType.ALL)
+    private List<BowlUser> bowlUsers = new ArrayList<>();
 
 }

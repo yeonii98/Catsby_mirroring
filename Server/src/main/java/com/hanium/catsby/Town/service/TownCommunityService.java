@@ -1,24 +1,18 @@
-package com.hanium.catsby.Town.service;
+package com.hanium.catsby.town.service;
 
-import com.hanium.catsby.MyWriting.domain.MyPost;
-import com.hanium.catsby.MyWriting.repository.MyPostRepository;
-import com.hanium.catsby.Town.domain.TownCommunity;
-import com.hanium.catsby.Town.repository.TownCommentRepository;
-import com.hanium.catsby.Town.repository.TownCommunityRepository;
+import com.hanium.catsby.user.domain.MyPost;
+import com.hanium.catsby.user.repository.MyPostRepository;
+import com.hanium.catsby.town.domain.TownCommunity;
+import com.hanium.catsby.town.repository.TownCommunityRepository;
 
-import com.hanium.catsby.User.repository.UserRepository;
-import lombok.extern.java.Log;
-import lombok.extern.log4j.Log4j;
+import com.hanium.catsby.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.print.Pageable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TownCommunityService {

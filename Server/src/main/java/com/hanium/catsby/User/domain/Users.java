@@ -1,9 +1,9 @@
-package com.hanium.catsby.User.domain;
+package com.hanium.catsby.user.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.hanium.catsby.BowlCommunity.domain.BowlComment;
-import com.hanium.catsby.BowlCommunity.domain.BowlCommunity;
-import com.hanium.catsby.BowlCommunity.domain.BowlLike;
+import com.hanium.catsby.bowl.domain.BowlComment;
+import com.hanium.catsby.bowl.domain.BowlCommunity;
+import com.hanium.catsby.bowl.domain.BowlLike;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +23,9 @@ public class Users {
     private String nickname;
     private String email;
     private String address;
+
+    @Column(name = "fcm_token")
+    private String fcmToken;
 
     @Column(name = "created_time")
     private LocalDateTime createDate;

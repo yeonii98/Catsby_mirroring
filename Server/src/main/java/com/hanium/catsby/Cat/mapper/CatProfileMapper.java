@@ -1,6 +1,6 @@
-package com.hanium.catsby.Cat.mapper;
+package com.hanium.catsby.cat.mapper;
 
-import com.hanium.catsby.Cat.model.CatProfile;
+import com.hanium.catsby.cat.model.CatProfile;
 import org.apache.ibatis.annotations.*;
 
 import java.sql.Blob;
