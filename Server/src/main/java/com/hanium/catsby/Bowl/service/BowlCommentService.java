@@ -4,10 +4,11 @@ import com.hanium.catsby.bowl.domain.BowlComment;
 import com.hanium.catsby.bowl.domain.BowlCommunity;
 import com.hanium.catsby.bowl.repository.BowlCommentRepository;
 import com.hanium.catsby.bowl.repository.BowlCommunityRepository;
-import com.hanium.catsby.user.domain.Users;
-import com.hanium.catsby.user.repository.UserRepository;
 import com.hanium.catsby.user.domain.MyComment;
+import com.hanium.catsby.user.domain.Users;
 import com.hanium.catsby.user.repository.MyCommentRepository;
+import com.hanium.catsby.user.repository.UserRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

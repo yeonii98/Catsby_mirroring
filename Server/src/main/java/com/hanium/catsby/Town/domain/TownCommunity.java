@@ -1,8 +1,8 @@
-package com.hanium.catsby.Town.domain;
+package com.hanium.catsby.town.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hanium.catsby.user.domain.Users;
+import com.hanium.catsby.town.domain.TownLike;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.hanium.catsby.User.domain.Users;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
