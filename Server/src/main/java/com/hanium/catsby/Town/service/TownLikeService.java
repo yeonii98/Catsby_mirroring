@@ -1,9 +1,9 @@
-package com.hanium.catsby.Town.service;
+package com.hanium.catsby.town.service;
 
-import com.hanium.catsby.Town.domain.TownCommunity;
-import com.hanium.catsby.Town.domain.TownLike;
-import com.hanium.catsby.Town.repository.TownCommunityRepository;
-import com.hanium.catsby.Town.repository.TownLikeRepository;
+import com.hanium.catsby.town.domain.TownCommunity;
+import com.hanium.catsby.town.domain.TownLike;
+import com.hanium.catsby.town.repository.TownCommunityRepository;
+import com.hanium.catsby.town.repository.TownLikeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

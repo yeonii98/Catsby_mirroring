@@ -1,4 +1,4 @@
-package com.hanium.catsby.User.service;
+package com.hanium.catsby.user.service;
 
 import com.hanium.catsby.user.repository.MyPostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
