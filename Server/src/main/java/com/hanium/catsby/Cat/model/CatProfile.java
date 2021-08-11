@@ -1,10 +1,19 @@
-package com.hanium.catsby.cat.model;
+package com.hanium.catsby.CatModel;
 
+import lombok.Builder;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import java.awt.*;
 import java.sql.Blob;
 import java.text.SimpleDateFormat;
 
 public class CatProfile {
+    //@Id
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer cat_id;
+
     private String name;
     private String health;
     private String address;
@@ -15,9 +24,10 @@ public class CatProfile {
     private SimpleDateFormat created_time;
     private SimpleDateFormat updated_time;
 
-    public CatProfile(Integer cat_id, String name, String health, String address,
-                      Boolean gender, Blob image, String content, Boolean spayed,
-                      SimpleDateFormat created_time, SimpleDateFormat updated_time) {
+    //0811
+    @Builder
+    public CatProfile(String name, String health, String address,
+                      Boolean gender, Blob image, String content, Boolean spayed) {
         this.cat_id = cat_id;
         this.name = name;
         this.health = health;
