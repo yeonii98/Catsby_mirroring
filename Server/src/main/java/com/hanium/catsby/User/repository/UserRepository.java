@@ -1,6 +1,6 @@
-package com.hanium.catsby.user.repository;
+package com.hanium.catsby.User.repository;
 
-import com.hanium.catsby.user.domain.Users;
+import com.hanium.catsby.User.domain.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

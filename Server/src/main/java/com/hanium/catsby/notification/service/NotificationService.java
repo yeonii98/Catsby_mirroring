@@ -1,11 +1,11 @@
 package com.hanium.catsby.notification.service;
 
 import com.google.firebase.messaging.*;
-import com.hanium.catsby.bowl.domain.Bowl;
-import com.hanium.catsby.bowl.repository.BowlRepository;
+import com.hanium.catsby.Bowl.domain.Bowl;
+import com.hanium.catsby.Bowl.repository.BowlRepository;
 import com.hanium.catsby.notification.domain.NotificationDto;
-import com.hanium.catsby.user.domain.Users;
-import com.hanium.catsby.user.repository.UserRepository;
+import com.hanium.catsby.User.domain.Users;
+import com.hanium.catsby.User.repository.UserRepository;
 import com.hanium.catsby.notification.domain.Notification;
 import com.hanium.catsby.notification.domain.TokenDto;
 import com.hanium.catsby.notification.domain.NotificationType;
