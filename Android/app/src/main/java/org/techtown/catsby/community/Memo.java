@@ -5,6 +5,10 @@ public class Memo {
     String subtext; //날짜
     int isdone; //완료여부
 
+    public Memo(){
+
+    }
+
     public Memo(String maintext, String subtext, int isdone) {
         this.maintext = maintext;
         this.subtext = subtext;
