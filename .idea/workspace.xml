@@ -1,10 +1,233 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AndroidGradleBuildConfiguration">
+    <option name="SYNC_PROJECT_BEFORE_BUILD" value="true" />
+  </component>
   <component name="AutoImportSettings">
-    <option name="autoReloadType" value="SELECTIVE" />
+    <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a3060b9b-3f17-4d2b-bfc0-675b6803a57f" name="Default Changelist" comment="" />
+    <list default="true" id="a3060b9b-3f17-4d2b-bfc0-675b6803a57f" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/21_hi018.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/API설계/API 기능 분류.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/API설계/Catsby API.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/google-services.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/proguard-rules.pro" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/androidTest/java/org/techtown/catsby/ExampleInstrumentedTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/AndroidManifest.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/FragmentCreateQr.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/LoginActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/MainActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/QRcode/LoadingActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/QRcode/qrcodeActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/QRcode/scannerActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/SplashActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/cattown/CatTownDetailActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/cattown/FragmentCatTown.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/cattown/ImageSliderAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/cattown/adapter/FragmentCatTownAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/cattown/addCat/AddCatActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/cattown/model/Cat.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/community/AddActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/community/FragmentCommunity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/community/Memo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/home/BowlActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/home/BowlViewPagerAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/home/FragmentBowlInfo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/home/FragmentBowlMap.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/home/FragmentHome.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/home/adapter/BowlAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/home/adapter/FeedAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/home/model/Bowl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/home/model/Feed.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/notification/FMCService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/notification/NotificationActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/notification/NotificationAdapter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/notification/NotificationItemData.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/retrofit/dto/Bowl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/retrofit/dto/BowlComment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/retrofit/dto/BowlCommunity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/retrofit/dto/MyComment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/retrofit/dto/MyPost.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/retrofit/dto/TownComment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/retrofit/dto/TownCommunity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/retrofit/dto/User.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/retrofit/service/MyWritingService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/retrofit/service/TownCommunityService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/setting/Comment.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/setting/CommentAdapter.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/setting/FragmentSetting.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/setting/Writing.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/setting/WritingListAdapter.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/setting/account.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/setting/alert.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/setting/setLocation.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/setting/writingList.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/java/org/techtown/catsby/writemain.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/drawable-v24/ic_baseline_chat_bubble_24.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/drawable-v24/ic_baseline_favorite_24.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/drawable-v24/ic_baseline_favorite_border_24.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/drawable-v24/ic_baseline_star_border_24.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/drawable-v24/kakao_login_medium_narrow.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/drawable-v24/pic_001.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/drawable-v24/pic_002.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/drawable-v24/pic_003.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/drawable-v24/pic_004.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/drawable-v24/pic_005.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/drawable/add.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/drawable/bg_indicator_active.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/drawable/bg_indicator_inactive.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/drawable/ic_baseline_create_24.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/drawable/ic_baseline_photo_album_24.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/drawable/ic_baseline_search_24.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/drawable/ic_baseline_textsms_24.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/drawable/ic_edit.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/drawable/ic_launcher_background.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/activity_add.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/activity_addcat.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/activity_bowl.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/activity_cattown_detail.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/activity_cattown_detail_slider.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/activity_loading.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/activity_login.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/activity_main.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/activity_notification.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/activity_qrcode.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/activity_scanner.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/activity_splash.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/activity_writemain.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/activitynotification_list.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/comment.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/fragment_account.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/fragment_alert.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/fragment_bowlinfo.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/fragment_bowlmap.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/fragment_cattown.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/fragment_community.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/fragment_create_qr.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/fragment_home.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/fragment_set_location.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/fragment_setting.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/fragment_writing_list.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/fragmentcattown_list.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/fragmenthome_bowllist.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/fragmenthome_feedlist.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/list_item.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/toolbar.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/layout/writinglist.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/menu/actionbar_our_cat_town.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/menu/actionbar_write.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/menu/navigationview.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/menu/toolbar_menu.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/mipmap-hdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/mipmap-hdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/mipmap-mdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/mipmap-mdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/mipmap-xhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/mipmap-xxhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/values-night/themes.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/values/colors.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/values/strings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/main/res/values/themes.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/app/src/test/java/org/techtown/catsby/ExampleUnitTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/gradle.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/gradle/wrapper/gradle-wrapper.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/gradlew" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/gradlew.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/Android/settings.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/DB/데이터베이스설계.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/설문조사/설문조사문항작성.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/페이퍼프로토타입/로그인.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/페이퍼프로토타입/설정.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/페이퍼프로토타입/알림.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/페이퍼프로토타입/우리 동네 고양이.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/페이퍼프로토타입/커뮤니티.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/페이퍼프로토타입/홈.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/회의록/2021-03-17-회의정리.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/회의록/2021-04-04-화면구성정리.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/회의록/2021-04-04-회의정리.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/회의록/2021-05_23-회의정리.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Document/회의록/2021-07-12-서비스흐름.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/gradlew" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/gradlew.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/settings.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Auth/config/FirebaseConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Auth/controller/AuthController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Auth/service/AuthService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Bowl/controller/BowlCommentController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Bowl/controller/BowlCommunityController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Bowl/controller/BowlController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Bowl/controller/BowlLikeController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Bowl/domain/Bowl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Bowl/domain/BowlComment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Bowl/domain/BowlCommunity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Bowl/domain/BowlLike.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Bowl/domain/BowlUser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Bowl/repository/BowlCommentRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Bowl/repository/BowlCommunityRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Bowl/repository/BowlLikeRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Bowl/repository/BowlRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Bowl/service/BowlCommentService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Bowl/service/BowlCommunityService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Bowl/service/BowlLikeService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Bowl/service/BowlService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Cat/controller/CatProfileController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Cat/mapper/CatProfileMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Cat/model/CatProfile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Town/controller/TownCommentController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Town/controller/TownCommunityController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Town/controller/TownLikeController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Town/domain/TownComment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Town/domain/TownCommunity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Town/domain/TownLike.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Town/repository/TownCommentRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Town/repository/TownCommunityRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Town/repository/TownLikeRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Town/service/TownCommentService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Town/service/TownCommunityService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Town/service/TownLikeService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/User/controller/MyCommentController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/User/controller/MyPostController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/User/controller/UserController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/User/domain/MyComment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/User/domain/MyPost.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/User/domain/Users.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/User/repository/MyCommentRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/User/repository/MyPostRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/User/repository/UserRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/User/service/MyCommentService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/User/service/MyPostService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/User/service/UserService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/notification/controller/NotificationController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/notification/domain/Notification.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/notification/domain/NotificationDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/notification/domain/NotificationType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/notification/domain/TokenDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/notification/repository/NotificationRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/notification/service/NotificationService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/notification/util/NotificationUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/test/java/CatsbyApplication.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Server/src/test/java/com/hanium/catsby/CatsbyApplicationTests.java" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,17 +236,53 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="ProjectId" id="1wWjULk2ezqzRYSV1ZmUgFAzN04" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="gradle.compiler" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\ASUS\AndroidStudioProjects\Catsby\21_hi018\Server\src\main\java\com\hanium\catsby\notification" />
+      <recent name="C:\Users\ASUS\AndroidStudioProjects\Catsby\21_hi018\Document" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a3060b9b-3f17-4d2b-bfc0-675b6803a57f" name="Default Changelist" comment="" />
+      <created>1628581253158</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1628581253158</updated>
+    </task>
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="oldMeFiltersMigrated" value="true" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="588" y="250" key="FileChooserDialogImpl" timestamp="1628622998991">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="588" y="250" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1628622998991" />
   </component>
 </project>

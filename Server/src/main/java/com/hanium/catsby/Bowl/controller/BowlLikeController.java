@@ -1,7 +1,7 @@
-package com.hanium.catsby.bowl.controller;
+package com.hanium.catsby.Bowl.controller;
 
-import com.hanium.catsby.bowl.domain.BowlLike;
-import com.hanium.catsby.bowl.service.BowlLikeService;
+import com.hanium.catsby.Bowl.domain.BowlLike;
+import com.hanium.catsby.Bowl.service.BowlLikeService;
 import com.hanium.catsby.notification.domain.NotificationType;
 import com.hanium.catsby.notification.service.NotificationService;
 import com.hanium.catsby.notification.util.NotificationUtil;

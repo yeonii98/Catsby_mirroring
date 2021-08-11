@@ -5,7 +5,7 @@ import com.hanium.catsby.User.repository.MyPostRepository;
 import com.hanium.catsby.Town.domain.TownCommunity;
 import com.hanium.catsby.Town.repository.TownCommunityRepository;
 
-import com.hanium.catsby.user.repository.UserRepository;
+import com.hanium.catsby.User.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

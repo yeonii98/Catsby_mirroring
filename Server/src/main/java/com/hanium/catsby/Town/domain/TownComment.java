@@ -1,6 +1,6 @@
 package com.hanium.catsby.Town.domain;
 
-import com.hanium.catsby.user.domain.Users;
+import com.hanium.catsby.User.domain.Users;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

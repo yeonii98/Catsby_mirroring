@@ -1,7 +1,7 @@
-package com.hanium.catsby.bowl.service;
+package com.hanium.catsby.Bowl.service;
 
-import com.hanium.catsby.bowl.domain.Bowl;
-import com.hanium.catsby.bowl.repository.BowlRepository;
+import com.hanium.catsby.Bowl.domain.Bowl;
+import com.hanium.catsby.Bowl.repository.BowlRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

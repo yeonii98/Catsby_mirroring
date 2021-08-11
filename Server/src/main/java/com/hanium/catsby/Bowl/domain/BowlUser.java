@@ -1,6 +1,7 @@
-package com.hanium.catsby.bowl.domain;
+package com.hanium.catsby.Bowl.domain;
 
-import com.hanium.catsby.user.domain.Users;
+import com.hanium.catsby.Bowl.domain.Bowl;
+import com.hanium.catsby.User.domain.Users;
 import lombok.Getter;
 
 import javax.persistence.*;

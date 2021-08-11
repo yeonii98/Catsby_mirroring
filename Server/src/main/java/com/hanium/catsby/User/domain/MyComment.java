@@ -1,6 +1,6 @@
 package com.hanium.catsby.User.domain;
 
-import com.hanium.catsby.bowl.domain.BowlComment;
+import com.hanium.catsby.Bowl.domain.BowlComment;
 import com.hanium.catsby.Town.domain.TownComment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
