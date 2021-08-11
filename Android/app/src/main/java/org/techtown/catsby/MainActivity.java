@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         //permission
         AutoPermissions.Companion.loadAllPermissions(this, 101);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

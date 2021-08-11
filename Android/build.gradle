@@ -28,6 +28,9 @@ allprojects {
 
         // 카카오 SDK 레포지토리 설정
         maven { url 'https://devrepo.kakao.com/nexus/content/groups/public/' }
+
+        //좋아요 버튼
+        maven { url "https://jitpack.io" }
     }
 }
 

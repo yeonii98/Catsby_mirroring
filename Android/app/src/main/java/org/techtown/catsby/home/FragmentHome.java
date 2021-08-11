@@ -27,6 +27,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.like.LikeButton;
+
 public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterClickListener {
 
     ArrayList<Bowl> bowlList = new ArrayList<>();
@@ -78,6 +80,8 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
         recyclerView.setAdapter(feedAdapter);
 
         return view;
+
+        //LikeButton likeButton = view.findViewById(R.id.likeButton);
     }
 
     @Override
@@ -88,6 +92,7 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.actionbar_write, menu);
+        inflater.inflate(R.menu.actionbar_addbowl, menu);
     }
 
     @Override
@@ -96,8 +101,13 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
             case R.id.action_write:
                 Intent intent = new Intent(getActivity(), AddActivity.class);
                 startActivity(intent);
+
+          /*  case R.id.addbowl:
+                Intent intent = new Intent(getActivity(), AddActivity.class);
+                startActivity(intent); */ //밥그릇 추가 레이아웃 만들기!
+
             default:
-                return super.onOptionsItemSelected(item) ;
+                return super.onOptionsItemSelected(item);
         }
     }
 
