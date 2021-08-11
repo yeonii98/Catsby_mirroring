@@ -1,12 +1,18 @@
 package org.techtown.catsby.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import org.techtown.catsby.R;
+import org.techtown.catsby.cattown.addCat.AddCatActivity;
+import org.techtown.catsby.community.AddActivity;
 import org.techtown.catsby.home.adapter.BowlAdapter;
 import org.techtown.catsby.home.adapter.FeedAdapter;
 import org.techtown.catsby.home.model.Bowl;
@@ -40,6 +46,8 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        setHasOptionsMenu(true);
+
         super.onCreate(savedInstanceState);
 
         for (int i = 0; i< bowlImg.length; i++) {
@@ -76,4 +84,21 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
     public void onItemClicked(int position) {
         Toast.makeText(getActivity(), "Item : "+position, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.actionbar_write, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_write:
+                Intent intent = new Intent(getActivity(), AddActivity.class);
+                startActivity(intent);
+            default:
+                return super.onOptionsItemSelected(item) ;
+        }
+    }
+
 }

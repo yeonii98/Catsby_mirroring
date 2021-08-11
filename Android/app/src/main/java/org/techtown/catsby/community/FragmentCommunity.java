@@ -5,6 +5,9 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -25,6 +28,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.techtown.catsby.R;
+import org.techtown.catsby.cattown.addCat.AddCatActivity;
+import org.techtown.catsby.writemain;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -123,6 +128,7 @@ public class FragmentCommunity extends Fragment {
         public int getItemCount() {
             return listdata.size();
         }
+
 
         @Override
         public void onBindViewHolder(@NonNull ItemViewHolder itemViewHolder, int i) {

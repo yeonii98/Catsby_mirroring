@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        getMenuInflater().inflate(R.menu.actionbar_write, menu);
         return true;
     }
 
@@ -59,13 +58,7 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
                 Intent notificateionIntent = new Intent(this, NotificationActivity.class);
                 startActivity(notificateionIntent);
                 break;
-
-            case R.id.action_write:
-                Intent writemainIntent = new Intent(this, writemain.class);
-                startActivity(writemainIntent);
-                break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -103,12 +96,10 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
 
     @Override
     public void onDenied(int i, String[] strings) {
-
     }
 
     @Override
     public void onGranted(int i, String[] strings) {
-
     }
 
 }
