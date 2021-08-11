@@ -1,6 +1,6 @@
-package com.hanium.catsby.Town.repository;
+package com.hanium.catsby.town.repository;
 
-import com.hanium.catsby.Town.domain.TownComment;
+import com.hanium.catsby.town.domain.TownComment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TownCommentRepository extends JpaRepository<TownComment, Integer> {

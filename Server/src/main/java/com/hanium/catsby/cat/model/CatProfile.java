@@ -1,4 +1,4 @@
-package com.hanium.catsby.CatModel;
+package com.hanium.catsby.cat.model;
 
 import lombok.Builder;
 
