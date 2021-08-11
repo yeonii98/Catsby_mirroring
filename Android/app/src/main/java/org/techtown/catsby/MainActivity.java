@@ -10,10 +10,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import org.techtown.catsby.cattown.addCat.AddCatActivity;
+
 import org.techtown.catsby.community.FragmentCommunity;
 import org.techtown.catsby.cattown.FragmentCatTown;
 import org.techtown.catsby.home.FragmentHome;
@@ -49,7 +48,8 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        return true ;
+        getMenuInflater().inflate(R.menu.actionbar_write, menu);
+        return true;
     }
 
     @Override
@@ -58,9 +58,15 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
             case R.id.action_notice:
                 Intent notificateionIntent = new Intent(this, NotificationActivity.class);
                 startActivity(notificateionIntent);
-            default:
-                return super.onOptionsItemSelected(item);
+                break;
+
+            case R.id.action_write:
+                Intent writemainIntent = new Intent(this, writemain.class);
+                startActivity(writemainIntent);
+                break;
         }
+
+        return super.onOptionsItemSelected(item);
     }
 
     class ItemSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener{
