@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import org.techtown.catsby.Bowladd;
 import org.techtown.catsby.R;
 import org.techtown.catsby.cattown.addCat.AddCatActivity;
 import org.techtown.catsby.community.AddActivity;
@@ -101,14 +102,15 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
             case R.id.action_write:
                 Intent intent = new Intent(getActivity(), AddActivity.class);
                 startActivity(intent);
+                break;
 
-          /*  case R.id.addbowl:
-                Intent intent = new Intent(getActivity(), AddActivity.class);
-                startActivity(intent); */ //밥그릇 추가 레이아웃 만들기!
+            case R.id.addbowl:
+                Intent intent2 = new Intent(getActivity(), Bowladd.class);
+                startActivity(intent2);
+                break;
 
-            default:
-                return super.onOptionsItemSelected(item);
         }
+        return super.onOptionsItemSelected(item);
     }
 
 }

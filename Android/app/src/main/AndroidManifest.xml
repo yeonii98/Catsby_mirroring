@@ -13,11 +13,12 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="org.techtown.catsby.permission.MAPS_RECEIVE" />
     <uses-permission android:name="com.example.my38_locationmap.permission.MAPS_RECEIVE" />
     <uses-permission android:name="READ_GSERVICES" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28"/>
 
     <uses-feature android:name="android.hardware.camera" />
 
@@ -32,7 +33,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".community.AddActivity"></activity>
+        <activity android:name=".Bowladd"></activity>
+        <activity android:name=".community.AddActivity" />
         <activity android:name=".writemain" />
         <activity android:name=".SplashActivity">
             <intent-filter>
