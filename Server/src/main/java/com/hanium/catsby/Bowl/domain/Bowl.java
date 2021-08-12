@@ -22,7 +22,7 @@ public class Bowl {
     private String info;
     private String name;
 
-    //찾아보기
+    //주소 형식 찾아보기
     private String address;
 
     @Lob
@@ -34,8 +34,10 @@ public class Bowl {
     @Column(name = "updated_time")
     private LocalDateTime updateDate;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "bowl", cascade = CascadeType.ALL)
     private List<BowlCommunity> bowlCommunities = new ArrayList<>();
 
+    public void setCreateDate() {
+        this.createDate = LocalDateTime.now();
+    }
 }

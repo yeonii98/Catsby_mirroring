@@ -17,7 +17,8 @@ public class BowlLikeController {
     private final BowlLikeService bowlLikeService;
 
     @PostMapping("/bowl-like/{userId}/{communityId}")
-    public CreateBowlLikeResponse saveBowlLike(@PathVariable("userId") Long userId, @PathVariable("communityId") Long communityId, @RequestBody BowlLike bowlLike){
+    public CreateBowlLikeResponse saveBowlLike(@PathVariable("userId") Long userId, @PathVariable("communityId") Long communityId, @RequestBody CreateBowlLikeRequest request){
+        BowlLike bowlLike = new BowlLike();
         Long id = bowlLikeService.saveBowlLike(bowlLike, userId, communityId);
         return new CreateBowlLikeResponse(id);
     }
@@ -29,6 +30,10 @@ public class BowlLikeController {
         public CreateBowlLikeResponse(Long id){
             this.id = id;
         }
+    }
+
+    @Data
+    static class CreateBowlLikeRequest{
     }
 
     @GetMapping("/bowl-likes")
