@@ -123,6 +123,7 @@ public class AddCatActivity extends AppCompatActivity{
         }
     }
 
+    
     public void saveBitmapToJpeg(Bitmap bitmap) {   // 선택한 이미지 내부 저장소에 저장
         File tempFile = new File(getCacheDir(), imgName);    // 파일 경로와 이름
         try {
