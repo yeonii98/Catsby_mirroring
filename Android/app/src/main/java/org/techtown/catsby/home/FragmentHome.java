@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import org.techtown.catsby.Bowladd;
 import org.techtown.catsby.R;
+import org.techtown.catsby.Writemain;
 import org.techtown.catsby.cattown.addCat.AddCatActivity;
 import org.techtown.catsby.community.AddActivity;
 import org.techtown.catsby.home.adapter.BowlAdapter;
@@ -100,7 +101,7 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_write:
-                Intent intent = new Intent(getActivity(), AddActivity.class);
+                Intent intent = new Intent(getActivity(), Writemain.class);
                 startActivity(intent);
                 break;
 
