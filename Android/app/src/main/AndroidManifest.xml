@@ -31,7 +31,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".community.AddActivity"></activity>
+        <activity android:name=".writemain" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,12 +49,10 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCRJVQUNcW1NU0pkH30EhQFWQ0ZkO3An4I"
-            />
+            android:value="AIzaSyCRJVQUNcW1NU0pkH30EhQFWQ0ZkO3An4I" />
 
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".community.PostActivity" />
         <activity android:name=".home.BowlActivity" />
         <activity android:name=".QRcode.qrcodeActivity" />
         <activity android:name=".QRcode.LoadingActivity" />
@@ -60,13 +61,12 @@
         <activity android:name=".cattown.CatTownDetailActivity" />
         <activity
             android:name=".cattown.addCat.AddCatActivity"
-            android:parentActivityName=".MainActivity" />
-
-        <!--페이스북 로그인 관련 -->
+            android:parentActivityName=".MainActivity" /> <!-- 페이스북 로그인 관련 -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"
-            tools:replace="android:value"/>
+            tools:replace="android:value" />
+
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"

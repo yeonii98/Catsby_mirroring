@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AndroidLayouts">
+    <shared>
+      <config />
+    </shared>
+  </component>
+  <component name="AndroidLogFilters">
+    <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
+  </component>
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="NONE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a43e7c10-9646-44e1-bd13-21e68ff94232" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../API설계/API 기능 분류.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../API설계/Catsby API.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DB/데이터베이스설계.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../설문조사/설문조사문항작성.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../페이퍼프로토타입/로그인.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../페이퍼프로토타입/설정.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../페이퍼프로토타입/알림.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../페이퍼프로토타입/우리 동네 고양이.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../페이퍼프로토타입/커뮤니티.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../페이퍼프로토타입/홈.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../회의록/2021-03-17-회의정리.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../회의록/2021-04-04-화면구성정리.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../회의록/2021-04-04-회의정리.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../회의록/2021-05_23-회의정리.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../회의록/2021-07-12-서비스흐름.docx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/gradlew" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/gradlew.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/settings.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Auth/config/FirebaseConfig.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Auth/controller/AuthController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Auth/service/AuthService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Bowl/controller/BowlCommentController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Bowl/controller/BowlCommunityController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Bowl/controller/BowlController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Bowl/controller/BowlLikeController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Bowl/domain/Bowl.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Bowl/domain/BowlComment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Bowl/domain/BowlCommunity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Bowl/domain/BowlLike.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Bowl/domain/BowlUser.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Bowl/repository/BowlCommentRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Bowl/repository/BowlCommunityRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Bowl/repository/BowlLikeRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Bowl/repository/BowlRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Bowl/service/BowlCommentService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Bowl/service/BowlCommunityService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Bowl/service/BowlLikeService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Bowl/service/BowlService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Cat/controller/CatProfileController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Cat/mapper/CatProfileMapper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Cat/model/CatProfile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Town/controller/TownCommentController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Town/controller/TownCommunityController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Town/controller/TownLikeController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Town/domain/TownComment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Town/domain/TownCommunity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Town/domain/TownLike.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Town/repository/TownCommentRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Town/repository/TownCommunityRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Town/repository/TownLikeRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Town/service/TownCommentService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Town/service/TownCommunityService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/Town/service/TownLikeService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/User/controller/MyCommentController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/User/controller/MyPostController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/User/controller/UserController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/User/domain/MyComment.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/User/domain/MyPost.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/User/domain/Users.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/User/repository/MyCommentRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/User/repository/MyPostRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/User/repository/UserRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/User/service/MyCommentService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/User/service/MyPostService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/User/service/UserService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/notification/controller/NotificationController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/notification/domain/Notification.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/notification/domain/NotificationDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/notification/domain/NotificationType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/notification/domain/TokenDto.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/notification/repository/NotificationRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/notification/service/NotificationService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/main/java/com/hanium/catsby/notification/util/NotificationUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Server/src/test/java/com/hanium/catsby/CatsbyApplicationTests.java" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[VirtualDevicePath@C:\Users\ASUS\.android\avd\Pixel_2_API_R.avd]" />
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Catsby" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Catsby" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="Catsby" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+                <item name="Dependencies" type="6de06a37:ExternalSystemViewDefaultContributor$MyDependenciesNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="layoutResourceFile" />
+        <option value="resourceFile" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$/../.." value="cyj" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectId" id="1wWpYWwYmlxbnw9lExoCS3bVBbg" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Android" />
+  </component>
+  <component name="RecentsManager">
+    <key name="android.template.-1977405205">
+      <recent name="org.techtown.catsby" />
+      <recent name="org.techtown.catsby.setting" />
+      <recent name="org.techtown.catsby.community" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
+      <option name="TEST_OBJECT" value="class" />
+      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="app" type="AndroidRunConfigurationType" factoryName="Android App" activateToolWindowBeforeRun="false">
+      <module name="Catsby.app" />
+      <option name="DEPLOY" value="true" />
+      <option name="DEPLOY_APK_FROM_BUNDLE" value="false" />
+      <option name="DEPLOY_AS_INSTANT" value="false" />
+      <option name="ARTIFACT_NAME" value="" />
+      <option name="PM_INSTALL_OPTIONS" value="" />
+      <option name="ALL_USERS" value="false" />
+      <option name="ALWAYS_INSTALL_WITH_PM" value="false" />
+      <option name="DYNAMIC_FEATURES_DISABLED_LIST" value="" />
+      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
+      <option name="MODE" value="default_activity" />
+      <option name="CLEAR_LOGCAT" value="false" />
+      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
+      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
+      <option name="FORCE_STOP_RUNNING_APP" value="true" />
+      <option name="TARGET_SELECTION_MODE" value="DEVICE_AND_SNAPSHOT_COMBO_BOX" />
+      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
+      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
+      <option name="DEBUGGER_TYPE" value="Auto" />
+      <Auto>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Auto>
+      <Hybrid>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Hybrid>
+      <Java />
+      <Native>
+        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
+        <option name="SHOW_STATIC_VARS" value="true" />
+        <option name="WORKING_DIR" value="" />
+        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
+        <option name="SHOW_OPTIMIZED_WARNING" value="true" />
+      </Native>
+      <Profilers>
+        <option name="ADVANCED_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_ENABLED" value="false" />
+        <option name="STARTUP_CPU_PROFILING_CONFIGURATION_NAME" value="Sample Java Methods" />
+        <option name="STARTUP_NATIVE_MEMORY_PROFILING_ENABLED" value="false" />
+        <option name="NATIVE_MEMORY_SAMPLE_RATE_BYTES" value="2048" />
+      </Profilers>
+      <option name="DEEP_LINK" value="" />
+      <option name="ACTIVITY_CLASS" value="" />
+      <option name="SEARCH_ACTIVITY_IN_GLOBAL_SCOPE" value="false" />
+      <option name="SKIP_ACTIVITY_VALIDATION" value="false" />
+      <method v="2">
+        <option name="Android.Gradle.BeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a43e7c10-9646-44e1-bd13-21e68ff94232" name="Default Changelist" comment="" />
+      <created>1628584247343</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1628584247343</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="371" y="250" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1628586091619">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="371" y="250" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1628586091619" />
+    <state x="221" y="258" key="AndroidCreateResourceFileDialog" timestamp="1628586895331">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="221" y="258" key="AndroidCreateResourceFileDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1628586895331" />
+    <state x="507" y="272" key="FileChooserDialogImpl" timestamp="1628609838716">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="507" y="272" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1628609838716" />
+    <state width="1128" height="200" key="GridCell.Tab.0.bottom" timestamp="1628609690508">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1128" height="200" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1628609690508" />
+    <state width="1128" height="200" key="GridCell.Tab.0.center" timestamp="1628609690507">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1128" height="200" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1628609690507" />
+    <state width="1128" height="200" key="GridCell.Tab.0.left" timestamp="1628609690507">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1128" height="200" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1628609690507" />
+    <state width="1128" height="200" key="GridCell.Tab.0.right" timestamp="1628609690507">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1128" height="200" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1628609690507" />
+  </component>
+</project>
