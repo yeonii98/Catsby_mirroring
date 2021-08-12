@@ -21,7 +21,12 @@ public class BowlLikeController {
     private final NotificationService notificationService;
 
     @PostMapping("/bowl-like/{userId}/{communityId}")
+<<<<<<< HEAD:Server/src/main/java/com/hanium/catsby/BowlCommunity/controller/BowlLikeController.java
+    public CreateBowlLikeResponse saveBowlLike(@PathVariable("userId") Long userId, @PathVariable("communityId") Long communityId, @RequestBody CreateBowlLikeRequest request){
+        BowlLike bowlLike = new BowlLike();
+=======
     public CreateBowlLikeResponse saveBowlLike(@PathVariable("userId") Long userId, @PathVariable("communityId") Long communityId, @RequestBody BowlLike bowlLike) {
+>>>>>>> 6b613cfe5b4d0d04ff5306cc18ff66a7f14abebf:Server/src/main/java/com/hanium/catsby/bowl/controller/BowlLikeController.java
         Long id = bowlLikeService.saveBowlLike(bowlLike, userId, communityId);
 
         String content = bowlLike.getBowlCommunity().getContent();
@@ -38,6 +43,10 @@ public class BowlLikeController {
         public CreateBowlLikeResponse(Long id) {
             this.id = id;
         }
+    }
+
+    @Data
+    static class CreateBowlLikeRequest{
     }
 
     @GetMapping("/bowl-likes")

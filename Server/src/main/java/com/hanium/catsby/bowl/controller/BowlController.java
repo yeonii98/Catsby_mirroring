@@ -7,7 +7,9 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,18 +18,16 @@ public class BowlController {
     private final BowlService bowlService;
 
     @PostMapping("/bowl/enroll")
-    public CreateBowlResponse savaBowl(@RequestBody Bowl bowl){
+    public CreateBowlResponse savaBowl(@RequestBody CreateBowlRequest request){
+
+        Bowl bowl = new Bowl();
+        bowl.setInfo(request.getInfo());
+        bowl.setName(request.getName());
+        bowl.setAddress(request.getAddress());
+        bowl.setImage(request.getImage());
+
         Long id = bowlService.enroll(bowl);
         return new CreateBowlResponse(id);
-    }
-
-    @Data
-    static class CreateBowlResponse{
-        private Long id;
-
-        public CreateBowlResponse(Long id) {
-            this.id = id;
-        }
     }
 
     @PutMapping("/bowl/{id}")
@@ -43,11 +43,47 @@ public class BowlController {
     }
 
     @GetMapping("/bowls")
-    public List<Bowl> bowls() {
-        return bowlService.findAllBowls();
+    public BowlResult bowls() {
+        List<Bowl> findBowls = bowlService.findAllBowls();
+        List<BowlDto> collect = findBowls.stream()
+                .map(b -> new BowlDto(b.getInfo(), b.getName(), b.getAddress(), b.getImage(), b.getCreateDate()))
+                .collect(Collectors.toList());
+        return new BowlResult(collect);
     }
 
-    // 이미지 -> ? / 등록날짜는 수정 x
+    @Data
+    @AllArgsConstructor
+    static class BowlResult<T> {
+        private T data;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class BowlDto{
+        private String info;
+        private String name;
+        private String address;
+        private byte[] image;
+        private LocalDateTime createDate;
+    }
+
+    @Data
+    static class CreateBowlRequest{
+        private String info;
+        private String name;
+        private String address;
+        private byte[] image;
+    }
+
+    @Data
+    static class CreateBowlResponse{
+        private Long id;
+
+        public CreateBowlResponse(Long id) {
+            this.id = id;
+        }
+    }
+
     @Data
     static class UpdateBowlRequest{
         private Long id;
@@ -66,6 +102,5 @@ public class BowlController {
         private String address;
         private byte[] image;
     }
-
 
 }

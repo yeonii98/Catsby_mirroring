@@ -21,7 +21,7 @@ public class Bowl {
     private String info;
     private String name;
 
-    //찾아보기
+    //주소 형식 찾아보기
     private String address;
 
     @Lob
@@ -33,12 +33,17 @@ public class Bowl {
     @Column(name = "updated_time")
     private LocalDateTime updateDate;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "bowl", cascade = CascadeType.ALL)
     private List<BowlCommunity> bowlCommunities = new ArrayList<>();
 
+<<<<<<< HEAD:Server/src/main/java/com/hanium/catsby/Bowl/domain/Bowl.java
+    public void setCreateDate() {
+        this.createDate = LocalDateTime.now();
+    }
+=======
     @JsonIgnore
     @OneToMany(mappedBy = "bowl", cascade = CascadeType.ALL)
     private List<BowlUser> bowlUsers = new ArrayList<>();
 
+>>>>>>> 6b613cfe5b4d0d04ff5306cc18ff66a7f14abebf:Server/src/main/java/com/hanium/catsby/bowl/domain/Bowl.java
 }

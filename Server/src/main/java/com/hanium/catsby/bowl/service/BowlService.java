@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -16,6 +17,7 @@ public class BowlService {
 
     @Transactional
     public Long enroll(Bowl bowl){
+        bowl.setCreateDate();
         bowlRepository.save(bowl);
         return bowl.getId();
     }
@@ -35,6 +37,7 @@ public class BowlService {
         Bowl bowl = bowlRepository.findBowl(id);
         bowl.setName(name);
         bowl.setInfo(info);
+        bowl.setUpdateDate(LocalDateTime.now());
         bowl.setAddress(address);
         bowl.setImage(image);
     }
