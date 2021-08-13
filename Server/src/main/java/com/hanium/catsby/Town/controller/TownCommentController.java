@@ -4,7 +4,7 @@ import com.hanium.catsby.town.service.TownCommentService;
 import com.hanium.catsby.town.domain.TownComment;
 import com.hanium.catsby.notification.domain.NotificationType;
 import com.hanium.catsby.notification.service.NotificationService;
-import com.hanium.catsby.notification.util.NotificationUtil;
+import com.hanium.catsby.util.NotificationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

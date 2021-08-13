@@ -34,7 +34,6 @@ public class BowlCommunityService {
 
         bowlCommunity.setUser(users);
         bowlCommunity.setBowl(bowl);
-        bowlCommunity.setCreateDate();
 
         bowlCommunityRepository.save(bowlCommunity);
 
@@ -68,7 +67,7 @@ public class BowlCommunityService {
         BowlCommunity bowlCommunity = bowlCommunityRepository.findBowlCommunity(id);
         bowlCommunity.setImage(image);
         bowlCommunity.setContent(content);
-        bowlCommunity.setUpdateDate();
+
         //myPost
         MyPost myPost = myPostRepository.findByBowlCommunity_Id(id);
         myPost.setBowlCommunity(bowlCommunity);

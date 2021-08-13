@@ -1,8 +1,8 @@
-package com.hanium.catsby.Town.domain;
+package com.hanium.catsby.town.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hanium.catsby.util.BaseTimeEntity;
+import com.hanium.catsby.user.domain.Users;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.hanium.catsby.User.domain.Users;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +17,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "Town_Community")
-public class TownCommunity {
+public class TownCommunity extends BaseTimeEntity {
 
     @Id //PK지정
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,9 +47,4 @@ public class TownCommunity {
     @OneToOne(mappedBy = "townCommunity", fetch = FetchType.EAGER)
     @JsonIgnoreProperties({"townCommunity"}) //무한참조 방지
     private TownLike townlike;
-
-    //private String created_time;
-
-   // private String updated_time;
-
 }

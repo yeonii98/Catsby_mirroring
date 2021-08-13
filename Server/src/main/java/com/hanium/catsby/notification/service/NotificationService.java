@@ -10,7 +10,7 @@ import com.hanium.catsby.notification.domain.Notification;
 import com.hanium.catsby.notification.domain.TokenDto;
 import com.hanium.catsby.notification.domain.NotificationType;
 import com.hanium.catsby.notification.repository.NotificationRepository;
-import com.hanium.catsby.notification.util.NotificationUtil;
+import com.hanium.catsby.util.NotificationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -91,10 +90,12 @@ public class NotificationService {
         notificationRepository.save(notification);
     }
 
-    public List<NotificationDto> getNotificationList(Long userId, int page) {
+    public List<NotificationDto> getNotificationList(String uid, int page) {
+
+        Users user = userRepository.findUserByUid(uid);
 
         Page<Notification> notifications = notificationRepository
-                .findByUserId(userId, PageRequest.of(page, 20, Sort.Direction.ASC, "createDate"));
+                .findByUserId(user.getId(), PageRequest.of(page, 20, Sort.Direction.DESC, "createdDate"));
 
         List<NotificationDto> notificationDto = notifications.stream()
                 .map(NotificationDto::new)

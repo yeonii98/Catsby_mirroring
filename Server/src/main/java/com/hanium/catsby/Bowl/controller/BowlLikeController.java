@@ -4,7 +4,7 @@ import com.hanium.catsby.bowl.domain.BowlLike;
 import com.hanium.catsby.bowl.service.BowlLikeService;
 import com.hanium.catsby.notification.domain.NotificationType;
 import com.hanium.catsby.notification.service.NotificationService;
-import com.hanium.catsby.notification.util.NotificationUtil;
+import com.hanium.catsby.util.NotificationUtil;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
