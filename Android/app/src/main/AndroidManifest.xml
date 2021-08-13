@@ -51,7 +51,7 @@
             />
 
         <activity android:name=".MainActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".login.LoginActivity" />
         <activity android:name=".community.PostActivity" />
         <activity android:name=".home.BowlActivity" />
         <activity android:name=".QRcode.qrcodeActivity" />

@@ -1,4 +1,4 @@
-package org.techtown.catsby;
+package org.techtown.catsby.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,32 +34,45 @@ import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.User;
 
 import org.jetbrains.annotations.NotNull;
+import org.techtown.catsby.MainActivity;
+import org.techtown.catsby.R;
+import org.techtown.catsby.login.data.model.LoginRequest;
+import org.techtown.catsby.login.data.model.LoginResponse;
+import org.techtown.catsby.login.data.service.LoginService;
+import org.techtown.catsby.retrofit.RetrofitClient;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function2;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
 
-    private SignInButton btn_google;
-    private GoogleApiClient googleApiClient;
     private static final int REQ_SIGN_GOOGLE = 100;
 
+    private GoogleApiClient googleApiClient;
+    private FirebaseAuth firebaseAuth;  // 파이어베이스 인증 객체 생성
     private CallbackManager callbackManager;
-    // 파이어베이스 인증 객체 생성
-    private FirebaseAuth firebaseAuth;
 
+    private SignInButton btn_google;
     private LoginButton buttonFacebook;
-    private boolean loginSuccess;
-
     private ImageView buttonKakao;
+
+    private LoginService loginService;
+
+    private boolean loginSuccess;
+    private String customToken;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        loginService = RetrofitClient.getLoginService();
 
         KakaoSdk.init(this, getString(R.string.kakao_native_app_key));
 
@@ -190,13 +203,24 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         return new Function2<OAuthToken, Throwable, Unit>() {
             @Override
             public Unit invoke(OAuthToken oAuthToken, Throwable throwable) {
-//                if (oAuthToken != null) {
-//                    // firebase 연동 로그인은 서버에서 custom token 생성 후 구현 예정
-//                    signInWithKakaoToken(customToken);
-//                }
+                if (oAuthToken != null) {
+                    LoginRequest request = new LoginRequest(oAuthToken.getAccessToken());
+                    loginService.getCustomToken(request).enqueue(new Callback<LoginResponse>() {
+                        @Override
+                        public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                            customToken = response.body().getCustomToken();
+                            signInWithKakaoToken(customToken);
+                        }
+
+                        @Override
+                        public void onFailure(Call<LoginResponse> call, Throwable t) {
+                            Log.d("LoginActivity", "error custom token from API");
+                        }
+                    });
+
+                }
 
                 if (throwable != null) {
-                    // 로그인 실패시
                     Log.e("LoginActivity", throwable.getMessage());
                     Toast.makeText(getApplication(), "로그인 실패", Toast.LENGTH_LONG).show();
                 }

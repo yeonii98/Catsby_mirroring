@@ -9,32 +9,54 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.techtown.catsby.R;
+import org.techtown.catsby.notification.data.model.Notification;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.ViewHolder> {
+ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.ViewHolder> {
 
-    private ArrayList<NotificationItemData> itemData;
-    public NotificationAdapter(ArrayList<NotificationItemData> itemData) {
+    private List<Notification> itemData;
+    private MyRecyclerViewClickListener mListener;
+
+    public NotificationAdapter(List<Notification> itemData) {
         this.itemData = itemData;
     }
 
-    public interface MyRecyclerViewClickListener{
+    public interface MyRecyclerViewClickListener {
         void onItemClicked(int position);
+
         void onTitleClicked(int position);
+
         void onContentClicked(int position);
+
         void onItemLongClicked(int position);
+
         void onImageViewClicked(int position);
     }
 
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView title;
+        TextView content;
+        ImageView image;
 
-    private MyRecyclerViewClickListener mListener;
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            title = itemView.findViewById(R.id.title);
+            content = itemView.findViewById(R.id.content);
+            image = itemView.findViewById(R.id.image);
+
+            //이미지뷰 원형으로 표시
+            image.setBackground(new ShapeDrawable(new OvalShape()));
+            image.setClipToOutline(true);
+        }
+    }
 
     public void setOnClickListener(MyRecyclerViewClickListener listener) {
         this.mListener = listener;
+        notifyDataSetChanged();
     }
 
 
@@ -42,16 +64,16 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.activitynotification_list, parent, false);
+                .inflate(R.layout.activity_notification_list, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        NotificationItemData item = itemData.get(position);
-        holder.title.setText(item.getTitle());
-        holder.content.setText(item.getContent());
-        holder.image.setImageResource(item.getImage());
+        Notification item = itemData.get(position);
+        holder.title.setText(item.getMessage());
+        holder.content.setText(item.getDate());
+//        holder.image.setImageResource(item.getImage());
 
         if (mListener != null) {
             final int pos = position;
@@ -94,21 +116,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         return itemData.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView title;
-        TextView content;
-        ImageView image;
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            title = itemView.findViewById(R.id.title);
-            content = itemView.findViewById(R.id.content);
-            image = itemView.findViewById(R.id.image);
-
-            //이미지뷰 원형으로 표시
-            image.setBackground(new ShapeDrawable(new OvalShape()));
-            image.setClipToOutline(true);
-        }
+    public void updateNotifications(List<Notification> notifications) {
+        itemData = notifications;
+        notifyDataSetChanged();
     }
-
 
 }
