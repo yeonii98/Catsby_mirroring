@@ -125,13 +125,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="15dp"
-            android:text="QR 생성 테스트"
-            android:id="@+id/qrcreate" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
             android:text="QR 스캔 테스트"
             android:id="@+id/qrscantest" />
     </LinearLayout>

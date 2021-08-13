@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.techtown.catsby.QRcode.qrcodeCreateActivity;
 import org.techtown.catsby.community.FragmentCommunity;
 import org.techtown.catsby.cattown.FragmentCatTown;
 import org.techtown.catsby.home.FragmentHome;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         getMenuInflater().inflate(R.menu.actionbar_write, menu);
+        getMenuInflater().inflate(R.menu.toolbar_createqr, menu);
         return true;
     }
 
@@ -64,10 +66,23 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
                 Intent writemainIntent = new Intent(this, writemain.class);
                 startActivity(writemainIntent);
                 break;
+
+            case R.id.action_createQr:
+                //activity to fragment
+                //FragmentManager fragmentManager = getSupportFragmentManager();
+                //FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                //fragmentTransaction.replace(R.layout.fragment_create_qr);
+                //fragmentTransaction.commit();
+
+                Intent createQrIntent = new Intent(this, qrcodeCreateActivity.class);
+                startActivity(createQrIntent);
+                break;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
     class ItemSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener{
         @SuppressLint("NonConstantResourceId")

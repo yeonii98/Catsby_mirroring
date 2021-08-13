@@ -34,6 +34,7 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name=".community.AddActivity"></activity>
         <activity android:name=".writemain" />
+        <activity android:name=".QRcode.qrcodeCreateActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

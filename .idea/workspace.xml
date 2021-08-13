@@ -7,13 +7,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a3060b9b-3f17-4d2b-bfc0-675b6803a57f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Cat/controller/CatProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Cat/controller/CatProfileController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Cat/mapper/CatProfileMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Cat/mapper/CatProfileMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Cat/model/CatProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/Server/src/main/java/com/hanium/catsby/Cat/model/CatProfile.java" afterDir="false" />
-    </list>
+    <list default="true" id="a3060b9b-3f17-4d2b-bfc0-675b6803a57f" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -45,7 +39,7 @@
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Android" />
     <property name="settings.editor.selected.configurable" value="gradle.compiler" />
   </component>
   <component name="RecentsManager">
@@ -76,5 +70,11 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="421" y="95" key="FileChooserDialogImpl" timestamp="1628675349599">
+      <screen x="0" y="0" width="1280" height="680" />
+    </state>
+    <state x="421" y="95" key="FileChooserDialogImpl/0.0.1280.680@0.0.1280.680" timestamp="1628675349599" />
   </component>
 </project>
