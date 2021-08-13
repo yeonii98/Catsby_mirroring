@@ -2,6 +2,7 @@ package com.hanium.catsby.user.controller;
 
 import com.hanium.catsby.user.domain.Users;
 import com.hanium.catsby.user.service.UserService;
+import com.hanium.catsby.util.BaseResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -58,9 +59,9 @@ public class UserController {
     }
 
     @PatchMapping("/user/token/{id}")
-    public ResponseEntity<?> updateFCMToken(@PathVariable("id") Long id, @RequestBody UpdateFcmTokenRequest request) {
+    public ResponseEntity<BaseResponse> updateFCMToken(@PathVariable("id") Long id, @RequestBody UpdateFcmTokenRequest request) {
         userService.updateFcmToken(id, request.getFcmToken());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(new BaseResponse("success"));
     }
 
     @Data

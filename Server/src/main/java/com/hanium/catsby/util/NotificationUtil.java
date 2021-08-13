@@ -1,4 +1,4 @@
-package com.hanium.catsby.notification.util;
+package com.hanium.catsby.util;
 
 import com.hanium.catsby.notification.domain.NotificationType;
 

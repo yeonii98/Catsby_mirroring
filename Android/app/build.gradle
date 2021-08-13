@@ -110,6 +110,7 @@ dependencies {
     // 카카오 로그인
     implementation "com.kakao.sdk:v2-user:2.5.2"
 
+
     //lombok
     compileOnly 'org.projectlombok:lombok:1.18.8'
     annotationProcessor 'org.projectlombok:lombok:1.18.8'
@@ -117,9 +118,11 @@ dependencies {
     //retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
 
     // Gson
     implementation 'com.google.code.gson:gson:2.8.5'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

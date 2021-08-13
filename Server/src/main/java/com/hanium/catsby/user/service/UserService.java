@@ -16,7 +16,6 @@ public class UserService {
 
     @Transactional
     public Long savaUser(Users user) {
-        user.setCreateDate();
         userRepository.save(user);
         return user.getId();
     }
@@ -34,7 +33,6 @@ public class UserService {
     @Transactional
     public void update(Long id, String nickname, String address) {
         Users user = userRepository.findUser(id);
-        user.setUpdateDate();
         user.setNickname(nickname);
         user.setAddress(address);
     }

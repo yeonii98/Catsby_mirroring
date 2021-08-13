@@ -7,11 +7,17 @@ import com.hanium.catsby.BowlCommunity.service.BowlCommentService;
 import com.hanium.catsby.User.domain.Users;
 =======
 import com.hanium.catsby.bowl.domain.BowlComment;
+import com.hanium.catsby.bowl.domain.BowlCommunity;
 import com.hanium.catsby.bowl.service.BowlCommentService;
 import com.hanium.catsby.notification.domain.NotificationType;
 import com.hanium.catsby.notification.service.NotificationService;
+<<<<<<< HEAD:Server/src/main/java/com/hanium/catsby/bowl/controller/BowlCommentController.java
 import com.hanium.catsby.notification.util.NotificationUtil;
 >>>>>>> 6b613cfe5b4d0d04ff5306cc18ff66a7f14abebf:Server/src/main/java/com/hanium/catsby/bowl/controller/BowlCommentController.java
+=======
+import com.hanium.catsby.user.domain.Users;
+import com.hanium.catsby.util.NotificationUtil;
+>>>>>>> origin/yejin:Server/src/main/java/com/hanium/catsby/Bowl/controller/BowlCommentController.java
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -36,13 +42,10 @@ public class BowlCommentController {
         bowlComment.setContent(request.getContent());
         Long id = bowlCommentService.savaComment(bowlComment, userId, communityId);
 
-<<<<<<< HEAD:Server/src/main/java/com/hanium/catsby/BowlCommunity/controller/BowlCommentController.java
-=======
         String content = bowlComment.getBowlCommunity().getContent();
         String message = userId + NotificationUtil.makeNotification(content, NotificationType.COMMENT);
         notificationService.saveNotification(bowlComment.getBowlCommunity().getUser(), message);
 
->>>>>>> 6b613cfe5b4d0d04ff5306cc18ff66a7f14abebf:Server/src/main/java/com/hanium/catsby/bowl/controller/BowlCommentController.java
         return new CreateBowlCommentResponse(id);
     }
 
@@ -63,7 +66,7 @@ public class BowlCommentController {
     @GetMapping("/bowl-comments")
     public BowlCommentResult bowlComments() {
         List<BowlComment> findcomments = bowlCommentService.findComments();
-        List<BowlCommentDto> collect = findcomments.stream().map(c -> new BowlCommentDto(c.getContent(), c.getCreateDate(), c.getUser(), c.getBowlCommunity()))
+        List<BowlCommentDto> collect = findcomments.stream().map(c -> new BowlCommentDto(c.getContent(), c.getCreatedDate(), c.getUser(), c.getBowlCommunity()))
                 .collect(Collectors.toList());
         return new BowlCommentResult(collect);
     }

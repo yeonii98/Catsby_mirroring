@@ -1,5 +1,6 @@
 package com.hanium.catsby.town.domain;
 
+import com.hanium.catsby.util.BaseTimeEntity;
 import com.hanium.catsby.user.domain.Users;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +15,7 @@ import javax.persistence.*;
 @Builder
 @Entity
 @Table(name = "Town_Comment")
-public class TownComment {
+public class TownComment extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,9 +34,5 @@ public class TownComment {
 
     //    @CreationTimestamp//insert시 시간 자동 저장
     private String date;
-
-    private String created_time;
-
-    private String updated_time;
 
 }
