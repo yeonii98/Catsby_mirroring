@@ -1,7 +1,7 @@
-package com.hanium.catsby.User.controller;
+package com.hanium.catsby.user.controller;
 
-import com.hanium.catsby.User.domain.Users;
-import com.hanium.catsby.User.service.UserService;
+import com.hanium.catsby.user.domain.Users;
+import com.hanium.catsby.user.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

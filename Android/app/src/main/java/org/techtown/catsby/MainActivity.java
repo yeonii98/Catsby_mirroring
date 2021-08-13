@@ -13,7 +13,6 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import org.techtown.catsby.QRcode.qrcodeCreateActivity;
 import org.techtown.catsby.community.FragmentCommunity;
 import org.techtown.catsby.cattown.FragmentCatTown;
 import org.techtown.catsby.home.FragmentHome;
@@ -81,8 +80,6 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
 
         return super.onOptionsItemSelected(item);
     }
-
-
 
     class ItemSelectedListener implements BottomNavigationView.OnNavigationItemSelectedListener{
         @SuppressLint("NonConstantResourceId")

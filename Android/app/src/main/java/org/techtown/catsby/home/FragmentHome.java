@@ -1,12 +1,20 @@
 package org.techtown.catsby.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import org.techtown.catsby.Bowladd;
 import org.techtown.catsby.R;
+import org.techtown.catsby.Writemain;
+import org.techtown.catsby.cattown.addCat.AddCatActivity;
+import org.techtown.catsby.community.AddActivity;
 import org.techtown.catsby.home.adapter.BowlAdapter;
 import org.techtown.catsby.home.adapter.FeedAdapter;
 import org.techtown.catsby.home.model.Bowl;
@@ -20,6 +28,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.like.LikeButton;
 
 public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterClickListener {
 
@@ -40,6 +50,8 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        setHasOptionsMenu(true);
+
         super.onCreate(savedInstanceState);
 
         for (int i = 0; i< bowlImg.length; i++) {
@@ -70,10 +82,36 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
         recyclerView.setAdapter(feedAdapter);
 
         return view;
+
+        //LikeButton likeButton = view.findViewById(R.id.likeButton);
     }
 
     @Override
     public void onItemClicked(int position) {
         Toast.makeText(getActivity(), "Item : "+position, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.actionbar_write, menu);
+        inflater.inflate(R.menu.actionbar_addbowl, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_write:
+                Intent intent = new Intent(getActivity(), Writemain.class);
+                startActivity(intent);
+                break;
+
+            case R.id.addbowl:
+                Intent intent2 = new Intent(getActivity(), Bowladd.class);
+                startActivity(intent2);
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

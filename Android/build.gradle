@@ -8,6 +8,7 @@ buildscript {
         //페이스북 로그인
         mavenCentral()
     }
+
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.1'
         classpath 'com.google.gms:google-services:4.3.2'
@@ -16,6 +17,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         //페이스북 로그인
         classpath 'com.google.gms:google-services:4.3.8'
+
     }
 }
 
@@ -28,6 +30,9 @@ allprojects {
 
         // 카카오 SDK 레포지토리 설정
         maven { url 'https://devrepo.kakao.com/nexus/content/groups/public/' }
+
+        //좋아요 버튼
+        maven { url "https://jitpack.io" }
     }
 }
 

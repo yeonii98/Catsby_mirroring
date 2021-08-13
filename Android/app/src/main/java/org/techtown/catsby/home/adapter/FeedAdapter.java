@@ -55,6 +55,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         holder.userName.setText(item.getUserName());
         holder.feedImg.setImageResource(item.getImg());
         holder.content.setText(item.getContent());
+
+
     }
 
     @Override

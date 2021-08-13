@@ -2,44 +2,40 @@ package org.techtown.catsby.community;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.techtown.catsby.R;
+import org.techtown.catsby.retrofit.dto.TownCommunity;
+import org.techtown.catsby.retrofit.service.TownCommunityService;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FragmentCommunity extends Fragment {
     private View view;
     private Button btnAdd;
     private String result;
     private RecyclerView recyclerView;
-    private RecyclerAdapter recyclerAdapter;
+    public RecyclerAdapter recyclerAdapter;
 
     List<Memo> memoList;
 
@@ -60,6 +56,40 @@ public class FragmentCommunity extends Fragment {
 
         recyclerAdapter = new RecyclerAdapter(memoList);
         recyclerView.setAdapter(recyclerAdapter);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        TownCommunityService service1 = retrofit.create(TownCommunityService.class);
+
+        Call<List<TownCommunity>> call = service1.getTownList();
+
+        call.enqueue(new Callback<List<TownCommunity>>() {
+            @Override
+            public void onResponse(Call<List<TownCommunity>> call, Response<List<TownCommunity>> response) {
+                if(response.isSuccessful()){
+                    //정상적으로 통신이 성공된 경우
+                    List<TownCommunity> result = response.body();
+                    for(int i = 0; i < result.size(); i++){
+                        Memo memo = new Memo(result.get(i).getTitle(),result.get(i).getDate(),0);
+                        recyclerAdapter.addItem(memo);
+                    }
+                    recyclerAdapter.notifyDataSetChanged();
+
+                } else {
+                    System.out.println("실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<TownCommunity>> call, Throwable t) {
+                System.out.println("통신 실패!");
+            }
+        });
+
+
 
         //새로운 메모 작성
         btnAdd = view.findViewById(R.id.btnAdd);
@@ -124,6 +154,7 @@ public class FragmentCommunity extends Fragment {
             return listdata.size();
         }
 
+
         @Override
         public void onBindViewHolder(@NonNull ItemViewHolder itemViewHolder, int i) {
             Memo memo = listdata.get(i);
@@ -136,6 +167,7 @@ public class FragmentCommunity extends Fragment {
             } else {
                 itemViewHolder.img.setBackgroundColor(Color.GREEN);
             }
+
         }
 
         void addItem(Memo memo) {
