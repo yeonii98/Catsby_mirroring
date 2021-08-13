@@ -45,7 +45,7 @@ public class BowlCommunityController {
     @GetMapping("/bowl-communities")
     public BowlCommunityResult bowlCommunities() {
         List<BowlCommunity> findcommunities = bowlCommunityService.findCommunities();
-        List<BowlCommunityDto> collect = findcommunities.stream().map(f -> new BowlCommunityDto(f.getImage(), f.getContent(), f.getCreateDate()))
+        List<BowlCommunityDto> collect = findcommunities.stream().map(f -> new BowlCommunityDto(f.getImage(), f.getContent(), f.getCreatedDate()))
                 .collect(Collectors.toList());
         return new BowlCommunityResult(collect);
 

@@ -1,6 +1,6 @@
-package com.hanium.catsby.CatMapper;
+package com.hanium.catsby.cat.mapper;
 
-import com.hanium.catsby.CatModel.CatProfile;
+import com.hanium.catsby.cat.model.CatProfile;
 import org.apache.ibatis.annotations.*;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
