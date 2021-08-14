@@ -22,7 +22,6 @@ public class Users extends BaseTimeEntity {
 
     private String uid;
     private String nickname;
-    private String email;
     private String address;
 
     @Column(name = "fcm_token")

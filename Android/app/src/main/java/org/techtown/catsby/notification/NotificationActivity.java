@@ -52,19 +52,15 @@ public class NotificationActivity extends AppCompatActivity {
         if (user != null) {
             loadNotifications(user.getUid());
         }
-        loadNotifications("hi");
     }
 
     private void loadNotifications(String uid) {
-        notificationService.getNotifications("U7MWcLKORXa91IRbU0q6nl4l4ix1", 0).enqueue(new Callback<NotificationList>() {
+        notificationService.getNotifications(uid, 0).enqueue(new Callback<NotificationList>() {
             @Override
             public void onResponse(Call<NotificationList> call, Response<NotificationList> response) {
                 if(response.isSuccessful()) {
                     adapter.updateNotifications(response.body().getNotificationList());
                     Log.d("NotificationActivity", "Get Notification List from API");
-                }else {
-                    int statusCode  = response.code();
-                    // handle request errors depending on status code
                 }
             }
 

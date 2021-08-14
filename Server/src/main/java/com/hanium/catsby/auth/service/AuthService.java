@@ -63,11 +63,12 @@ public class AuthService {
     }
 
     // firebase 인증 사용자 생성
-    private String createUser(String email) {
-        CreateRequest request = new CreateRequest()
-                .setEmail(email);
+    private String createUser(String email)  {
         try {
-            return FirebaseAuth.getInstance().createUser(request).getUid();
+            if (FirebaseAuth.getInstance().getUserByEmail(email) == null) {
+                CreateRequest request = new CreateRequest().setEmail(email);
+                return FirebaseAuth.getInstance().createUser(request).getUid();
+            }
         } catch (FirebaseAuthException e) {
             e.printStackTrace();
         }

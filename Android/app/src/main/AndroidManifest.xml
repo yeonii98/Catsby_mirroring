@@ -31,12 +31,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".Bowladd"></activity>
-        <activity android:name=".community.AddActivity" />
-
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
+
+        <activity android:name=".Bowladd"/>
+        <activity android:name=".community.AddActivity" />
         <activity android:name=".Writemain" />
         <activity android:name=".QRcode.qrcodeCreateActivity" />
         <activity android:name=".SplashActivity">

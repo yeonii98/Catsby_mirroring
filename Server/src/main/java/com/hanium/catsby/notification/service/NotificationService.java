@@ -38,18 +38,18 @@ public class NotificationService {
     private final BowlRepository bowlRepository;
     private final NotificationRepository notificationRepository;
 
-    public void sendMessages(Long bowlId, Long userId) throws FirebaseMessagingException {
+    public void sendMessages(Long bowlId, String uid) throws FirebaseMessagingException {
 
         Bowl bowl = bowlRepository.findBowl(bowlId);
         String topic = bowl.getName();
 
-        Users user = userRepository.findUser(userId);
+        Users user = userRepository.findUserByUid(uid);
         String userToken = user.getFcmToken();
 
         List<TokenDto> users = bowlRepository.findUsersByBowlId(bowlId);
         List<String> registrationTokens = new ArrayList<>();
 
-        String saveMessage = userId + NotificationUtil.makeNotification(bowl.getName(), NotificationType.BOWL_USER);
+        String saveMessage = user.getNickname() + NotificationUtil.makeNotification(bowl.getName(), NotificationType.BOWL_USER);
 
         for (TokenDto tokenDto : users) {
             String token = tokenDto.getToken();

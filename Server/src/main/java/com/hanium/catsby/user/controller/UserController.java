@@ -18,17 +18,16 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public CreateUserResponse createUser(@RequestBody Users user) {
-        Long id = userService.savaUser(user);
-        return new CreateUserResponse(id);
+    public BaseResponse createUser(@RequestBody CreateUserRequest request) {
+        userService.savaUser(request.getUid(), request.getEmail(), request.getFcmToken());
+        return new BaseResponse("success");
     }
 
     @Data
-    static class CreateUserResponse{
-        private Long id;
-        public CreateUserResponse(Long id) {
-            this.id = id;
-        }
+    static class CreateUserRequest{
+        private String uid;
+        private String email;
+        private String fcmToken;
     }
 
     @GetMapping("/users")
@@ -58,9 +57,9 @@ public class UserController {
         private String address;
     }
 
-    @PatchMapping("/user/token/{id}")
-    public ResponseEntity<BaseResponse> updateFCMToken(@PathVariable("id") Long id, @RequestBody UpdateFcmTokenRequest request) {
-        userService.updateFcmToken(id, request.getFcmToken());
+    @PatchMapping("/user/token/{uid}")
+    public ResponseEntity<BaseResponse> updateFCMToken(@PathVariable("uid") String uid, @RequestBody UpdateFcmTokenRequest request) {
+        userService.updateFcmToken(uid, request.getFcmToken());
         return ResponseEntity.ok(new BaseResponse("success"));
     }
 

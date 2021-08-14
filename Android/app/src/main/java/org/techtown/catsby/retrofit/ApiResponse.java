@@ -1,6 +1,6 @@
-package org.techtown.catsby.notification.data.model;
+package org.techtown.catsby.retrofit;
 
-public class NotificationResponse {
+public class ApiResponse {
 
     private String response;
 

@@ -28,6 +28,7 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.kakao.sdk.auth.model.OAuthToken;
 import com.kakao.sdk.common.KakaoSdk;
 import com.kakao.sdk.user.UserApiClient;
@@ -38,7 +39,9 @@ import org.techtown.catsby.MainActivity;
 import org.techtown.catsby.R;
 import org.techtown.catsby.login.data.model.LoginRequest;
 import org.techtown.catsby.login.data.model.LoginResponse;
+import org.techtown.catsby.login.data.model.UserRegister;
 import org.techtown.catsby.login.data.service.LoginService;
+import org.techtown.catsby.retrofit.ApiResponse;
 import org.techtown.catsby.retrofit.RetrofitClient;
 
 import androidx.annotation.NonNull;
@@ -64,8 +67,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private LoginService loginService;
 
-    private boolean loginSuccess;
     private String customToken;
+    private String token;
 
 
     @Override
@@ -73,8 +76,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         loginService = RetrofitClient.getLoginService();
-
-        KakaoSdk.init(this, getString(R.string.kakao_native_app_key));
 
         GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -135,7 +136,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 }
             }
         });
-        updateKakaoLoginUi();
     }
 
     @Override
@@ -152,58 +152,13 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         }
     }
 
-    // 페이스북, 구글 로그인 이벤트
-    // 사용자가 정상적으로 로그인한 후 페이스북 로그인 버튼의 onSuccess 콜백 메소드에서 로그인한 사용자의
-    // 액세스 토큰을 가져와서 Firebase 사용자 인증 정보로 교환하고,
-    // Firebase 사용자 인증 정보를 사용해 Firebase에 인증.
-    private void signInWithCredential(AuthCredential credential) {
-
-        firebaseAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
-                        if (task.isSuccessful()){
-                            Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(intent);
-                        }
-                        else{
-                            Toast.makeText(LoginActivity.this, "로그인 실패",Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-
-    private void signInWithKakaoToken(String customToken) {
-        firebaseAuth.signInWithCustomToken(customToken)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Log.d("LoginActivity", "signInWithCustomToken:success");
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
-                            updateKakaoLoginUi();
-                        } else {
-                            Log.w("LoginActivity", "signInWithCustomToken:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
-                });
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull @NotNull ConnectionResult connectionResult) {
-
-    }
-
     @NotNull
     private Function2<OAuthToken, Throwable, Unit> kakaoCallback() {
         return new Function2<OAuthToken, Throwable, Unit>() {
             @Override
             public Unit invoke(OAuthToken oAuthToken, Throwable throwable) {
                 if (oAuthToken != null) {
+
                     LoginRequest request = new LoginRequest(oAuthToken.getAccessToken());
                     loginService.getCustomToken(request).enqueue(new Callback<LoginResponse>() {
                         @Override
@@ -224,10 +179,56 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     Log.e("LoginActivity", throwable.getMessage());
                     Toast.makeText(getApplication(), "로그인 실패", Toast.LENGTH_LONG).show();
                 }
-                updateKakaoLoginUi();
+
                 return null;
             }
         };
+    }
+
+    // 페이스북, 구글 로그인 이벤트
+    // 사용자가 정상적으로 로그인한 후 페이스북 로그인 버튼의 onSuccess 콜백 메소드에서 로그인한 사용자의
+    // 액세스 토큰을 가져와서 Firebase 사용자 인증 정보로 교환하고,
+    // Firebase 사용자 인증 정보를 사용해 Firebase에 인증.
+    private void signInWithCredential(AuthCredential credential) {
+
+        firebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
+                            getFCMToken();
+                            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                            startActivity(intent);
+                        }
+                        else{
+                            Toast.makeText(LoginActivity.this, "로그인 실패",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void signInWithKakaoToken(String customToken) {
+        firebaseAuth.signInWithCustomToken(customToken)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("LoginActivity", "signInWithCustomToken:success");
+                            getFCMToken();
+                            updateKakaoLoginUi();
+                        } else {
+                            Log.w("LoginActivity", "signInWithCustomToken:failure", task.getException());
+                            Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull @NotNull ConnectionResult connectionResult) {
+
     }
 
     private void updateKakaoLoginUi() {
@@ -239,6 +240,41 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     startActivity(intent);
                 }
                 return null;
+            }
+        });
+    }
+
+    public void getFCMToken() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("FMCService", "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+                        // Get new FCM registration token
+                        token = task.getResult();
+                        saveUser(token);
+                        Log.d("token", token);
+
+                    }
+                });
+    }
+
+    private void saveUser(String token) {
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        UserRegister user = new UserRegister(uid, email, token);
+        loginService.saveUser(user).enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                Log.d("LoginActivity", "save user success");
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                Log.d("LoginActivity", t.getMessage());
             }
         });
     }
