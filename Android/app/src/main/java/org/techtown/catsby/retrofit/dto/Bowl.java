@@ -9,6 +9,11 @@ public class Bowl {
     private String created_time;
     private String updated_time;
 
+    public Bowl(String name, String address) {
+        this.name = name;
+        this.address = address;
+    }
+
     public int getBowl_id() {
         return id;
     }

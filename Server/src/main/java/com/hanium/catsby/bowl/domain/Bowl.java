@@ -34,16 +34,15 @@ public class Bowl {
     private LocalDateTime updateDate;
 
     @OneToMany(mappedBy = "bowl", cascade = CascadeType.ALL)
-    private List<BowlCommunity> bowlCommunities = new ArrayList<>();
+    private List<com.hanium.catsby.bowl.domain.BowlCommunity> bowlCommunities = new ArrayList<>();
 
-<<<<<<< HEAD:Server/src/main/java/com/hanium/catsby/Bowl/domain/Bowl.java
+
     public void setCreateDate() {
         this.createDate = LocalDateTime.now();
     }
-=======
     @JsonIgnore
     @OneToMany(mappedBy = "bowl", cascade = CascadeType.ALL)
-    private List<BowlUser> bowlUsers = new ArrayList<>();
+    private List<com.hanium.catsby.bowl.domain.BowlUser> bowlUsers = new ArrayList<>();
 
->>>>>>> 6b613cfe5b4d0d04ff5306cc18ff66a7f14abebf:Server/src/main/java/com/hanium/catsby/bowl/domain/Bowl.java
+
 }

@@ -1,8 +1,8 @@
 package com.hanium.catsby.bowl.service;
 
+import com.hanium.catsby.bowl.domain.BowlCommunity;
 import com.hanium.catsby.bowl.domain.Bowl;
 import com.hanium.catsby.bowl.repository.BowlRepository;
-import com.hanium.catsby.bowl.domain.BowlCommunity;
 import com.hanium.catsby.bowl.repository.BowlCommunityRepository;
 import com.hanium.catsby.user.domain.Users;
 import com.hanium.catsby.user.repository.UserRepository;

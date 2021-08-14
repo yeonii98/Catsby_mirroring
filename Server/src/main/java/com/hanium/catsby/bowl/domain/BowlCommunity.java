@@ -23,7 +23,7 @@ public class BowlCommunity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private Users user;
+    private com.hanium.catsby.user.domain.Users user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bowl_id")
@@ -46,9 +46,10 @@ public class BowlCommunity {
     private List<BowlComment> bowlComments = new ArrayList<>();
 
 
+    /*
     @JsonIgnore
     @OneToOne(mappedBy = "bowlCommunity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private BowlLike bowlLike;
+    private BowlLike bowlLike;*/
 
     public void setUser(Users user){
         this.user = user;

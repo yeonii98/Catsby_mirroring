@@ -5,7 +5,6 @@ import com.hanium.catsby.bowl.service.BowlCommunityService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.jni.Local;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -43,13 +42,17 @@ public class BowlCommunityController {
     }
 
     @GetMapping("/bowl-communities")
+    public List<BowlCommunity> bowlCommunities() {
+        return bowlCommunityService.findCommunities();
+    }
+    /*
     public BowlCommunityResult bowlCommunities() {
         List<BowlCommunity> findcommunities = bowlCommunityService.findCommunities();
         List<BowlCommunityDto> collect = findcommunities.stream().map(f -> new BowlCommunityDto(f.getImage(), f.getContent(), f.getCreateDate()))
                 .collect(Collectors.toList());
         return new BowlCommunityResult(collect);
 
-    }
+    }*/
 
     @Data
     @AllArgsConstructor

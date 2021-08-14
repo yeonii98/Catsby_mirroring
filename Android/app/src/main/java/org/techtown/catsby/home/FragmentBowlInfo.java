@@ -30,10 +30,9 @@ public class FragmentBowlInfo extends Fragment {
         view = inflater.inflate(R.layout.fragment_bowlinfo,container,false);
         imageView = (ImageView)view.findViewById(R.id.imageView);
         imageView.setImageResource(R.drawable.ic_launcher_background);
-
-        Bundle bundle = getArguments();
-
+        Bundle bundle = this.getArguments();
         name = (TextView)view.findViewById(R.id.name);
+
         if(bundle != null){
             name.setText(bundle.getString("name"));
         }else{
@@ -46,6 +45,7 @@ public class FragmentBowlInfo extends Fragment {
 
         location = (TextView)view.findViewById(R.id.location);
         location.setText("남산타워");
+
         return view;
     }
 }
