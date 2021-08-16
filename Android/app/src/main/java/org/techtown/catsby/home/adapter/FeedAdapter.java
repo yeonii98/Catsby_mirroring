@@ -27,14 +27,14 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         private ImageView bowlImg;
         private TextView userName;
         private ImageView feedImg;
-        private TextView content;
+        //private TextView content;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             bowlImg = itemView.findViewById(R.id.feed_bowlImg);
             userName = itemView.findViewById(R.id.feed_username);
             feedImg = itemView.findViewById(R.id.feed_img);
-            content = itemView.findViewById(R.id.feed_content);
+            //content = itemView.findViewById(R.id.feed_content);
 
         }
     }
@@ -43,7 +43,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     @Override
     public FeedAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragmenthome_feedlist, parent, false);
+                .inflate(R.layout.fragment_home_feedlist, parent, false);
         return new ViewHolder(view);
     }
 
@@ -54,9 +54,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         holder.bowlImg.setImageResource(item.getBowlImg());
         holder.userName.setText(item.getUserName());
         holder.feedImg.setImageResource(item.getImg());
-        holder.content.setText(item.getContent());
-
-
+        //holder.content.setText(item.getContent());
     }
 
     @Override

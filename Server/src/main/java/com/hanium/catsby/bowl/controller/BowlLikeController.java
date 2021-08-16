@@ -4,7 +4,7 @@ import com.hanium.catsby.bowl.domain.BowlLike;
 import com.hanium.catsby.bowl.service.BowlLikeService;
 import com.hanium.catsby.notification.domain.NotificationType;
 import com.hanium.catsby.notification.service.NotificationService;
-import com.hanium.catsby.notification.util.NotificationUtil;
+import com.hanium.catsby.util.NotificationUtil;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +21,8 @@ public class BowlLikeController {
     private final NotificationService notificationService;
 
     @PostMapping("/bowl-like/{userId}/{communityId}")
-<<<<<<< HEAD:Server/src/main/java/com/hanium/catsby/BowlCommunity/controller/BowlLikeController.java
     public CreateBowlLikeResponse saveBowlLike(@PathVariable("userId") Long userId, @PathVariable("communityId") Long communityId, @RequestBody CreateBowlLikeRequest request){
         BowlLike bowlLike = new BowlLike();
-=======
-    public CreateBowlLikeResponse saveBowlLike(@PathVariable("userId") Long userId, @PathVariable("communityId") Long communityId, @RequestBody BowlLike bowlLike) {
->>>>>>> 6b613cfe5b4d0d04ff5306cc18ff66a7f14abebf:Server/src/main/java/com/hanium/catsby/bowl/controller/BowlLikeController.java
         Long id = bowlLikeService.saveBowlLike(bowlLike, userId, communityId);
 
         String content = bowlLike.getBowlCommunity().getContent();

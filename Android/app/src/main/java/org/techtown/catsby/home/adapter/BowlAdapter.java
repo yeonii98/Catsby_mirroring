@@ -49,7 +49,7 @@ public class BowlAdapter extends RecyclerView.Adapter<BowlAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragmenthome_bowllist, parent, false);
+                .inflate(R.layout.fragment_home_bowllist, parent, false);
         return new ViewHolder(view);
     }
 

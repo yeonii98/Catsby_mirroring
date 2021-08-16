@@ -1,15 +1,15 @@
 package com.hanium.catsby.notification.domain;
 
+import com.hanium.catsby.util.BaseTimeEntity;
 import com.hanium.catsby.user.domain.Users;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
-public class Notification {
+public class Notification extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +21,4 @@ public class Notification {
     private Users user;
 
     private String message;
-
-    @Column(name = "created_time")
-    private LocalDateTime createDate;
-
-    @Column(name = "updated_time")
-    private LocalDateTime updateDate;
 }

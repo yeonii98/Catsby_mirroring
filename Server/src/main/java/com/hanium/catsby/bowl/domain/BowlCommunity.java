@@ -2,19 +2,19 @@ package com.hanium.catsby.bowl.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.hanium.catsby.util.BaseTimeEntity;
 import com.hanium.catsby.user.domain.Users;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter @Setter
 @Table(name = "Bowl_Community")
-public class BowlCommunity {
+public class BowlCommunity extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,16 +35,9 @@ public class BowlCommunity {
     @Lob
     private String content;
 
-    @Column(name = "created_time")
-    private LocalDateTime createDate;
-
-    @Column(name = "updated_time")
-    private LocalDateTime updateDate;
-
     @OneToMany(mappedBy = "bowlCommunity", cascade = CascadeType.ALL)
     @JsonIgnoreProperties({"bowlCommunity"})
     private List<BowlComment> bowlComments = new ArrayList<>();
-
 
     @JsonIgnore
     @OneToOne(mappedBy = "bowlCommunity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -58,13 +51,5 @@ public class BowlCommunity {
     public void setBowl(Bowl bowl){
         this.bowl = bowl;
         bowl.getBowlCommunities().add(this);
-    }
-
-    public void setCreateDate(){
-        this.createDate = LocalDateTime.now();
-    }
-
-    public void setUpdateDate(){
-        this.updateDate = LocalDateTime.now();
     }
 }

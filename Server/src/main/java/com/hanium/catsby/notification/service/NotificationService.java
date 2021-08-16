@@ -10,7 +10,7 @@ import com.hanium.catsby.notification.domain.Notification;
 import com.hanium.catsby.notification.domain.TokenDto;
 import com.hanium.catsby.notification.domain.NotificationType;
 import com.hanium.catsby.notification.repository.NotificationRepository;
-import com.hanium.catsby.notification.util.NotificationUtil;
+import com.hanium.catsby.util.NotificationUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -38,18 +38,18 @@ public class NotificationService {
     private final BowlRepository bowlRepository;
     private final NotificationRepository notificationRepository;
 
-    public void sendMessages(Long bowlId, Long userId) throws FirebaseMessagingException {
+    public void sendMessages(Long bowlId, String uid) throws FirebaseMessagingException {
 
         Bowl bowl = bowlRepository.findBowl(bowlId);
         String topic = bowl.getName();
 
-        Users user = userRepository.findUser(userId);
+        Users user = userRepository.findUserByUid(uid);
         String userToken = user.getFcmToken();
 
         List<TokenDto> users = bowlRepository.findUsersByBowlId(bowlId);
         List<String> registrationTokens = new ArrayList<>();
 
-        String saveMessage = userId + NotificationUtil.makeNotification(bowl.getName(), NotificationType.BOWL_USER);
+        String saveMessage = user.getNickname() + NotificationUtil.makeNotification(bowl.getName(), NotificationType.BOWL_USER);
 
         for (TokenDto tokenDto : users) {
             String token = tokenDto.getToken();
@@ -90,10 +90,12 @@ public class NotificationService {
         notificationRepository.save(notification);
     }
 
-    public List<NotificationDto> getNotificationList(Long userId, int page) {
+    public List<NotificationDto> getNotificationList(String uid, int page) {
+
+        Users user = userRepository.findUserByUid(uid);
 
         Page<Notification> notifications = notificationRepository
-                .findByUserId(userId, PageRequest.of(page, 20, Sort.Direction.ASC, "createDate"));
+                .findByUserId(user.getId(), PageRequest.of(page, 20, Sort.Direction.DESC, "createdDate"));
 
         List<NotificationDto> notificationDto = notifications.stream()
                 .map(NotificationDto::new)

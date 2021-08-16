@@ -15,10 +15,12 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Long savaUser(Users user) {
-        user.setCreateDate();
+    public void savaUser(String uid, String email, String fcmToken) {
+        Users user = new Users();
+        user.setUid(uid);
+        user.setNickname(email.split("@")[0]);
+        user.setFcmToken(fcmToken);
         userRepository.save(user);
-        return user.getId();
     }
 
     @Transactional(readOnly = true)
@@ -34,15 +36,16 @@ public class UserService {
     @Transactional
     public void update(Long id, String nickname, String address) {
         Users user = userRepository.findUser(id);
-        user.setUpdateDate();
         user.setNickname(nickname);
         user.setAddress(address);
     }
 
     @Transactional
-    public void updateFcmToken(Long id, String token) {
-        Users user = userRepository.findUser(id);
+    public void updateFcmToken(String uid, String token) {
+        Users user = userRepository.findUserByUid(uid);
         user.setFcmToken(token);
     }
+
+
 }
 
