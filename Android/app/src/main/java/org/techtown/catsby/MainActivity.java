@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.techtown.catsby.QRcode.qrcodeCreateActivity;
 import org.techtown.catsby.community.FragmentCommunity;
 import org.techtown.catsby.cattown.FragmentCatTown;
 import org.techtown.catsby.home.FragmentHome;
@@ -59,11 +60,6 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
             case R.id.action_notice:
                 Intent notificateionIntent = new Intent(this, NotificationActivity.class);
                 startActivity(notificateionIntent);
-                break;
-
-            case R.id.action_write:
-                Intent writemainIntent = new Intent(this, writemain.class);
-                startActivity(writemainIntent);
                 break;
 
             case R.id.action_createQr:

@@ -17,6 +17,9 @@ public class CatProfile {
     private SimpleDateFormat updated_time;
 
 
+    public int getCatId(){
+        return cat_id;
+    }
 
 
 }
