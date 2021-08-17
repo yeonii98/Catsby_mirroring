@@ -1,5 +1,8 @@
 package org.techtown.catsby.retrofit.service;
 
+import com.google.gson.annotations.SerializedName;
+
+import org.techtown.catsby.retrofit.dto.BowlDto;
 import org.techtown.catsby.retrofit.dto.MyComment;
 import org.techtown.catsby.retrofit.dto.MyPost;
 import org.techtown.catsby.retrofit.dto.TownCommunity;

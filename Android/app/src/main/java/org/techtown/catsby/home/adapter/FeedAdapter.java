@@ -43,7 +43,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     @Override
     public FeedAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragmenthome_feedlist, parent, false);
+                .inflate(R.layout.fragment_home_feedlist, parent, false);
         return new ViewHolder(view);
     }
 
@@ -55,6 +55,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         holder.userName.setText(item.getUserName());
         holder.feedImg.setImageResource(item.getImg());
         holder.content.setText(item.getContent());
+
+
     }
 
     @Override

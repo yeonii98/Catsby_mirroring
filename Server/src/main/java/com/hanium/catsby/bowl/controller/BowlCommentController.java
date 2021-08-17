@@ -6,11 +6,18 @@ import com.hanium.catsby.bowl.service.BowlCommentService;
 import com.hanium.catsby.bowl.domain.BowlCommunity;
 import com.hanium.catsby.user.domain.Users;
 
+
 import com.hanium.catsby.bowl.domain.BowlComment;
+import com.hanium.catsby.bowl.domain.BowlCommunity;
 import com.hanium.catsby.bowl.service.BowlCommentService;
 import com.hanium.catsby.notification.domain.NotificationType;
 import com.hanium.catsby.notification.service.NotificationService;
-import com.hanium.catsby.notification.util.NotificationUtil;
+
+//import com.hanium.catsby.notification.util.NotificationUtil;
+
+
+import com.hanium.catsby.user.domain.Users;
+import com.hanium.catsby.util.NotificationUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -59,7 +66,7 @@ public class BowlCommentController {
     @GetMapping("/bowl-comments")
     public BowlCommentResult bowlComments() {
         List<BowlComment> findcomments = bowlCommentService.findComments();
-        List<BowlCommentDto> collect = findcomments.stream().map(c -> new BowlCommentDto(c.getContent(), c.getCreateDate(), c.getUser(), c.getBowlCommunity()))
+        List<BowlCommentDto> collect = findcomments.stream().map(c -> new BowlCommentDto(c.getContent(), c.getCreatedDate(), c.getUser(), c.getBowlCommunity()))
                 .collect(Collectors.toList());
         return new BowlCommentResult(collect);
     }

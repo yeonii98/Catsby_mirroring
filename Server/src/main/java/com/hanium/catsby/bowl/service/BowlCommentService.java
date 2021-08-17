@@ -34,7 +34,6 @@ public class BowlCommentService {
         BowlCommunity bowlCommunity = bowlCommunityRepository.findBowlCommunity(communityId);
         bowlComment.setUser(users);
         bowlComment.setBowlCommunity(bowlCommunity);
-        bowlComment.setCreateDate();
         bowlCommentRepository.save(bowlComment);
 
         //myComment
@@ -53,7 +52,6 @@ public class BowlCommentService {
     @Transactional
     public void update(Long id, String content) {
         BowlComment bowlComment = bowlCommentRepository.findBowlComment(id);
-        bowlComment.setUpdateDate();
         bowlComment.setContent(content);
 
         //myComment

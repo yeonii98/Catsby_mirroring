@@ -9,9 +9,12 @@
     <string name="kakao_native_app_key">ecd9b3518a847a378f835dc6d5b39238</string>
 
 
-
     <string name="qr_code">qr_code</string>
     <string name="enter_your_info">밥그릇 이름을 입력해주세요</string>
     <string name="generate_qr_code">큐알코드 만들기</string>
+
+    <!-- Ted Permission 카메라&갤러리 -->
+    <string name="permission_1">[설정] > [권한] 에서 권한을 허용할 수 있습니다.</string>
+    <string name="permission_2">사진 및 파일을 저장하기 위하여 접근 권한이 필요합니다.</string>
 
 </resources>

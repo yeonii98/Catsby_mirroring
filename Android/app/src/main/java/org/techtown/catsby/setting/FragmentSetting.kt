@@ -19,7 +19,6 @@ import androidx.fragment.app.setFragmentResultListener
 import com.example.catsbe.account
 import com.example.catsbe.alert
 import kotlinx.android.synthetic.main.fragment_setting.*
-import org.techtown.catsby.FragmentCreateQr
 import org.techtown.catsby.QRcode.LoadingActivity
 import org.techtown.catsby.R
 
@@ -101,9 +100,6 @@ class FragmentSetting : Fragment() {
             //setFrag(2)
             replaceFragment(com.example.catsbe.writingList())
             //inflater.inflate(R.layout.fragment_writing_list, container, false)
-        }
-        qrcreate.setOnClickListener{
-            replaceFragment(FragmentCreateQr())
         }
 
         qrscantest.setOnClickListener(View.OnClickListener {

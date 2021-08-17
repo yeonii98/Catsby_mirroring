@@ -1,7 +1,10 @@
 package com.hanium.catsby.bowl.service;
 
 import com.hanium.catsby.bowl.domain.Bowl;
+import com.hanium.catsby.bowl.domain.BowlUser;
 import com.hanium.catsby.bowl.repository.BowlRepository;
+import com.hanium.catsby.user.domain.Users;
+import com.hanium.catsby.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,10 +17,10 @@ import java.util.List;
 public class BowlService {
 
     private final BowlRepository bowlRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public Long enroll(Bowl bowl){
-        bowl.setCreateDate();
         bowlRepository.save(bowl);
         return bowl.getId();
     }
@@ -25,6 +28,12 @@ public class BowlService {
     @Transactional(readOnly = true)
     public List<Bowl> findAllBowls(){
         return bowlRepository.findAllBowl();
+    }
+
+    @Transactional(readOnly = true)
+    public List<Bowl> findUserBowls(String userId){
+        Users user = userRepository.findUserByUid(userId);
+        return bowlRepository.findBowlByUsers(user.getId());
     }
 
     @Transactional(readOnly = true)
@@ -37,7 +46,6 @@ public class BowlService {
         Bowl bowl = bowlRepository.findBowl(id);
         bowl.setName(name);
         bowl.setInfo(info);
-        bowl.setUpdateDate(LocalDateTime.now());
         bowl.setAddress(address);
         bowl.setImage(image);
     }

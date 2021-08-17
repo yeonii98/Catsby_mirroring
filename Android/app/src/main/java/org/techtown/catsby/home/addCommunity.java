@@ -2,6 +2,7 @@ package org.techtown.catsby.home;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.EditText;
 
@@ -12,7 +13,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.techtown.catsby.R;
-import org.techtown.catsby.retrofit.dto.Bowl;
+import org.techtown.catsby.retrofit.dto.BowlDto;
 import org.techtown.catsby.retrofit.dto.TownCommunity;
 import org.techtown.catsby.retrofit.service.BowlService;
 import org.techtown.catsby.retrofit.service.TownCommunityService;
@@ -37,7 +38,6 @@ public class addCommunity extends AppCompatActivity {
         bowlname = findViewById(R.id.idEdt);
         bowladdress = findViewById(R.id.addEdt);
 
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         findViewById(R.id.btnDone).setOnClickListener(new View.OnClickListener() {
@@ -55,11 +55,9 @@ public class addCommunity extends AppCompatActivity {
                             .addConverterFactory(GsonConverterFactory.create(gson))
                             .build();
 
-
-
                     BowlService service = retrofit.create(BowlService.class);
-                    Bowl bowl = new Bowl(name, address);
-                    Call<Void> call = service.postBowl(bowl);
+                    BowlDto bowlDto = new BowlDto(name, address);
+                    Call<Void> call = service.postBowl(bowlDto);
 
                     // 여기부터 ~
                     Date date = new Date();
@@ -68,7 +66,8 @@ public class addCommunity extends AppCompatActivity {
                     String substr = sdf.format(date);
 
                     Intent intent = new Intent();
-                    intent.putExtra("main", title);
+                    //?
+                    intent.putExtra("main", (Parcelable) bowlname);
                     intent.putExtra("sub", substr);
                     setResult(0, intent);
 

@@ -27,15 +27,14 @@ public class BowlCommunityService {
     MyPostRepository myPostRepository;
 
     @Transactional
-    public Long savaCommunity(BowlCommunity bowlCommunity, Long userId, Long bowlId) {
-
-        Users users = userRepository.findUser(userId);
-        Bowl bowl = bowlRepository.findBowl(bowlId);
+    public Long savaCommunity(BowlCommunity bowlCommunity, String userId) {
+        Users user = userRepository.findUserByUid(userId);
+        System.out.println("user = " + user.getId());
+        Users users = userRepository.findUser(user.getId());
+        //Bowl bowl = bowlRepository.findBowl(bowlId);
 
         bowlCommunity.setUser(users);
-        bowlCommunity.setBowl(bowl);
-        bowlCommunity.setCreateDate();
-
+        //bowlCommunity.setBowl(bowl);
         bowlCommunityRepository.save(bowlCommunity);
 
         //myPost
@@ -49,6 +48,20 @@ public class BowlCommunityService {
     public List<BowlCommunity> findCommunities() {
         return bowlCommunityRepository.findAllBowlCommunity();
     }
+
+
+    @Transactional(readOnly = true)
+    public List<BowlCommunity> findCommunitiesByUser(String userId) {
+        Users user = userRepository.findUserByUid(userId);
+        return bowlCommunityRepository.findBowlCommunityByBowl(user.getId());
+    }
+
+
+    @Transactional(readOnly = true)
+    public Long findLikesByCommunity(Long communityId) {
+        return bowlCommunityRepository.findBowlLikesByCommunity(communityId);
+    }
+
 
     @Transactional(readOnly = true)
     public BowlCommunity findCommunity(Long bowlId) {
@@ -68,7 +81,7 @@ public class BowlCommunityService {
         BowlCommunity bowlCommunity = bowlCommunityRepository.findBowlCommunity(id);
         bowlCommunity.setImage(image);
         bowlCommunity.setContent(content);
-        bowlCommunity.setUpdateDate();
+
         //myPost
         MyPost myPost = myPostRepository.findByBowlCommunity_Id(id);
         myPost.setBowlCommunity(bowlCommunity);

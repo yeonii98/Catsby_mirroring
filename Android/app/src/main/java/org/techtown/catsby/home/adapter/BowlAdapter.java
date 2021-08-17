@@ -10,6 +10,8 @@ import android.widget.TextView;
 import org.techtown.catsby.R;
 import org.techtown.catsby.home.BowlActivity;
 import org.techtown.catsby.home.model.Bowl;
+import org.techtown.catsby.retrofit.dto.BowlDto;
+
 
 import java.util.ArrayList;
 
@@ -49,7 +51,7 @@ public class BowlAdapter extends RecyclerView.Adapter<BowlAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragmenthome_bowllist, parent, false);
+                .inflate(R.layout.fragment_home_bowllist, parent, false);
         return new ViewHolder(view);
     }
 
@@ -57,18 +59,25 @@ public class BowlAdapter extends RecyclerView.Adapter<BowlAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull BowlAdapter.ViewHolder holder, int position) {
 
         Bowl item = itemData.get(position);
-        holder.image.setImageResource(item.getImage());
+        //holder.image.setImageResource(item.getImage());
         holder.text.setText(item.getName());
 
         if (bListener != null) {
             final int pos = position;
             holder.itemView.setOnClickListener(new View.OnClickListener(){
-
                 @Override
                 public void onClick(View v) {
                     TextView name = v.findViewById(R.id.bowl_name);
                     Intent intent = new Intent(v.getContext(), BowlActivity.class);
+
+                    for(int i =0; i < itemData.size(); i++){
+                        System.out.println("???????????????????????"+itemData.get(i).getName());
+                    }
+
+                    System.out.println("name.getText()!!!!!!!!!!!!!!!!!!!! = " + name.getText());
+
                     intent.putExtra("name", name.getText());
+
                     v.getContext().startActivity(intent);
                 }
             });

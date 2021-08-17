@@ -27,7 +27,6 @@ public class BowlLikeService {
         Users users = userRepository.findUser(userId);
         bowlLike.setUser(users);
         bowlLike.setBowlCommunity(bowlCommunity);
-        bowlLike.setCreateDate();
         bowlLikeRepository.save(bowlLike);
         return bowlLike.getId();
     }
@@ -36,6 +35,7 @@ public class BowlLikeService {
     public List<BowlLike> findLikes() {
         return bowlLikeRepository.findAllBowlLike();
     }
+
 
     @Transactional
     public void delete(Long id) {

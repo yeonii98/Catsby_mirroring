@@ -1,16 +1,16 @@
 package com.hanium.catsby.bowl.domain;
 
+import com.hanium.catsby.util.BaseTimeEntity;
 import com.hanium.catsby.user.domain.Users;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter @Setter
 @Table(name = "Bowl_Comment")
-public class BowlComment {
+public class BowlComment extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,12 +25,6 @@ public class BowlComment {
     @JoinColumn(name = "bowlCommunity_id")
     private BowlCommunity bowlCommunity;
 
-    @Column(name = "created_time")
-    private LocalDateTime createDate;
-
-    @Column(name = "updated_time")
-    private LocalDateTime updateDate;
-
     @Lob
     private String content;
 
@@ -44,11 +38,4 @@ public class BowlComment {
         user.getBowlComments().add(this);
     }
 
-    public void setCreateDate(){
-        this.createDate = LocalDateTime.now();
-    }
-
-    public void setUpdateDate(){
-        this.updateDate = LocalDateTime.now();
-    }
 }

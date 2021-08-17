@@ -25,7 +25,7 @@ public class BowlActivity extends AppCompatActivity {
 
         FragmentBowlInfo fragmentBowlInfo = new FragmentBowlInfo();
         Bundle bundle = new Bundle(1);
-        bundle.putString("name",name);
+        bundle.putString("name", name);
         fragmentBowlInfo.setArguments(bundle);
 
         //뷰페이저 세팅

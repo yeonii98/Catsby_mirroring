@@ -1,21 +1,30 @@
 package org.techtown.catsby.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import org.techtown.catsby.Bowladd;
 import org.techtown.catsby.R;
+import org.techtown.catsby.Writemain;
 import org.techtown.catsby.home.adapter.BowlAdapter;
 import org.techtown.catsby.home.adapter.FeedAdapter;
+import org.techtown.catsby.home.model.Bowl;
 import org.techtown.catsby.home.model.Feed;
-import org.techtown.catsby.retrofit.dto.Bowl;
+import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.BowlCommunity;
+import org.techtown.catsby.retrofit.dto.BowlList;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
 import org.techtown.catsby.retrofit.service.BowlService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -25,132 +34,182 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
+//import com.like.LikeButton;
 public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterClickListener {
 
-    ArrayList<Bowl> bowlList = new ArrayList<>();
+    ArrayList<Bowl> bowlList= new ArrayList<>();
     ArrayList<Feed> feedList = new ArrayList<>();
 
     int[] bowlImg = {R.drawable.ic_baseline_favorite_24, R.drawable.ic_baseline_star_border_24, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
     String[] userName = {"익명1", "익명2"};
     int[] feedImg = {R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
-    //String[] feedContent = {"글내용1", "글내용2"};
+    String[] feedContent = {"글내용1", "글내용2"};
 
+    //final BowlAdapter bowlAdapter;
     final BowlAdapter bowlAdapter = new BowlAdapter(bowlList);
     final FeedAdapter feedAdapter = new FeedAdapter(feedList);
-    ArrayList<String> bowlArray = new ArrayList<>();
+    ArrayList<String> bowlNameArray = new ArrayList<>();
+    ArrayList<byte[]> bowlImageArray = new ArrayList<>();
+
     ArrayList<String> bowlCommunityArray = new ArrayList<>();
+    BowlService bowlService = RetrofitClient.getBowlService();
+    BowlCommunityService bowlCommunityService = RetrofitClient.getBowlCommunityService();
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    //BowlCommunityService bowlCommunityService;
+    View view;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        view = inflater.inflate(R.layout.fragment_home, container, false);
+        setHasOptionsMenu(true);
+
         super.onCreate(savedInstanceState);
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://15.164.36.183:8080/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
 
-        BowlService bowlService = retrofit.create(BowlService.class);
-        Call<List<org.techtown.catsby.retrofit.dto.Bowl>> call = bowlService.getBowls();
+        System.out.println("user = " + user);
+        System.out.println("user = " + user.getUid());
 
-        call.enqueue(new Callback<List<Bowl>>() {
-            @Override
-            public void onResponse(Call<List<Bowl>> call, Response<List<Bowl>> response) {
-                if(response.isSuccessful()){
+        if (user != null) {
 
-                    List<Bowl> result = response.body();
+            loadBowls(user.getUid());
+            loadCommunity(user.getUid());
+        }
 
-                    for(int i = 0; i < result.size(); i++){
-                        bowlArray.add(result.get(i).getName());
+        bowlAdapter.setOnClickListener(this);
+        return view;
+        //LikeButton likeButton = view.findViewById(R.id.likeButton);
+    }
 
-                        FragmentBowlInfo fragmentBowlInfo = new FragmentBowlInfo();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("name",result.get(i).getName());
-                        fragmentBowlInfo.setArguments(bundle);
-
-                    }
-
-                    for (int i = 0; i< bowlImg.length; i++) {
-                        Bowl bowl = new Bowl(bowlImg[i], bowlArray.get(i));
-                        bowlList.add(bowl);
-                    }
-
-                    RecyclerView bowlRecyclerView = (RecyclerView)view.findViewById(R.id.horizontal_recyclerview);
-
-                    RecyclerView.LayoutManager bowlLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-                    bowlRecyclerView.setLayoutManager(bowlLayoutManager);
-                    bowlRecyclerView.setAdapter(bowlAdapter);
-
-                } else {
-                    System.out.println("실패");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Bowl>> call, Throwable t) {
-
-            }
-
-
-        });
-
-        BowlCommunityService bowlCommunityService = retrofit.create(BowlCommunityService.class);
-        Call<List<BowlCommunity>> callBowlCommunity = bowlCommunityService.getCommunities();
-
-        callBowlCommunity.enqueue(new Callback<List<BowlCommunity>>() {
+    private void loadCommunity(String uid) {
+        bowlCommunityService.getCommunities(uid).enqueue(new Callback<List<BowlCommunity>>() {
             @Override
             public void onResponse(Call<List<BowlCommunity>> call, Response<List<BowlCommunity>> response) {
-                if(response.isSuccessful()){
-
+                if(response.isSuccessful()) {
                     List<BowlCommunity> BowlCommunityResult = response.body();
+
                     for(int i = 0; i < BowlCommunityResult.size(); i++){
+                        //Long likeCnt = loadLike((long) BowlCommunityResult.get(i).getId());
+                        //System.out.println("likeCnt = " + likeCnt);
                         bowlCommunityArray.add(BowlCommunityResult.get(i).getContent());
                     }
 
-                    for (int i = 0; i< feedImg.length; i++) {
-                        //Bowl bowl = new Bowl(bowlImg[i], bowlArray.get(i));
+                    for (int i = 0; i< BowlCommunityResult.size(); i++) {
                         Feed feed = new Feed(bowlImg[0], userName[0], feedImg[0], bowlCommunityArray.get(i));
                         feedList.add(feed);
-
                     }
-
-                    /*
-                    RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerview);
-
-                    recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), 1));
-
-                    RecyclerView.LayoutManager feedLayoutManager = new LinearLayoutManager(getActivity());
-                    recyclerView.setLayoutManager(feedLayoutManager);
-                    recyclerView.setAdapter(feedAdapter);*/
-
-
-
-                } else {
-                    System.out.println("실패");
                 }
+
+
+
+
+                RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerview);
+                recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), 1));
+                RecyclerView.LayoutManager feedLayoutManager = new LinearLayoutManager(getActivity());
+                recyclerView.setLayoutManager(feedLayoutManager);
+                recyclerView.setAdapter(feedAdapter);
+
             }
 
             @Override
             public void onFailure(Call<List<BowlCommunity>> call, Throwable t) {
+                System.out.println("t.getMessage() loadCommunity = " + t.getMessage());
+            }
+        });
+    }
 
+    private Long loadLike(Long communityId) {
+        final Long[] likeCnt = new Long[1];
+        bowlCommunityService.getLikes(communityId).enqueue(new Callback<Long>(){
+            @Override
+            public void onResponse(Call<Long> call, Response<Long> response) {
+                if(response.isSuccessful()) {
+                    likeCnt[0] = response.body();
+                }
+            }
+            @Override
+            public void onFailure(Call<Long> call, Throwable t) {
+                System.out.println("t.getMessage() loadlike = " + t.getMessage());
+            }
+        });
+        return likeCnt[0];
+    }
+
+
+    private void loadBowls(String uid) {
+        bowlService.getBowls(uid).enqueue(new Callback<BowlList>() {
+            @Override
+            public void onResponse(Call<BowlList> call, Response<BowlList> response) {
+                if(response.isSuccessful()) {
+                    BowlList result = response.body();
+
+                    for(int i =0; i < result.size(); i++){
+                        bowlNameArray.add(result.getBowls().get(i).getName());
+                        //Bowl Bowl = new Bowl(result.getBowls().get(i).getImage(), result.getBowls().get(i).getName());
+                        Bowl Bowl = new Bowl(bowlImg[i] , result.getBowls().get(i).getName());
+                        System.out.println("result = " + result.getBowls().get(i).getName());
+                    }
+
+                    /*
+                    for (int i = 0; i< bowlNameArray.size(); i++) {
+                        Bowl bowl = new Bowl(bowlImageArray.get(i), bowlNameArray.get(i));
+                        bowlList.add(bowl);
+                    }*/
+
+                    for (int i = 0; i< result.size(); i++) {
+                        Bowl bowl = new Bowl(bowlImg[i], bowlNameArray.get(i));
+                        bowlList.add(bowl);
+                    }
+
+                    RecyclerView bowlRecyclerView = (RecyclerView)view.findViewById(R.id.horizontal_recyclerview);
+                    RecyclerView.LayoutManager bowlLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                    bowlRecyclerView.setLayoutManager(bowlLayoutManager);
+                    bowlRecyclerView.setAdapter(bowlAdapter);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<BowlList> call, Throwable t) {
+                System.out.println("t.getMessage() loadBowls= " + t.getMessage());
             }
         });
 
-
-
-        bowlAdapter.setOnClickListener(this);
-        return view;
     }
 
     @Override
     public void onItemClicked(int position) {
         Toast.makeText(getActivity(), "Item : "+position, Toast.LENGTH_SHORT).show();
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.actionbar_write, menu);
+        inflater.inflate(R.menu.actionbar_addbowl, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_write:
+                Intent intent = new Intent(getActivity(), Writemain.class);
+                startActivity(intent);
+                break;
+
+            case R.id.addbowl:
+                Intent intent2 = new Intent(getActivity(), Bowladd.class);
+                startActivity(intent2);
+                break;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

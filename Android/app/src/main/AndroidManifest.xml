@@ -33,8 +33,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".community.AddActivity"></activity>
-        <activity android:name=".writemain" />
+
+        <activity android:name=".Bowladd"/>
+        <activity android:name=".community.AddActivity" />
+        <activity android:name=".Writemain" />
+        <activity android:name=".QRcode.qrcodeCreateActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -52,7 +55,8 @@
             android:value="AIzaSyCRJVQUNcW1NU0pkH30EhQFWQ0ZkO3An4I" />
 
         <activity android:name=".MainActivity" />
-        <activity android:name=".LoginActivity" />
+
+        <activity android:name=".login.LoginActivity" />
         <activity android:name=".home.BowlActivity" />
         <activity android:name=".QRcode.qrcodeActivity" />
         <activity android:name=".QRcode.LoadingActivity" />

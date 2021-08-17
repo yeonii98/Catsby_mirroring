@@ -53,6 +53,12 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    //ted permission (카메라&갤러리)
+    implementation "gun0912.ted:tedpermission:2.1.0"
+
+    //좋아요 버튼
+    implementation 'com.github.jd-alexander:LikeButton:0.2.3'
+
     //qr코드
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.budiyev.android:code-scanner:2.1.0'
@@ -104,6 +110,7 @@ dependencies {
     // 카카오 로그인
     implementation "com.kakao.sdk:v2-user:2.5.2"
 
+
     //lombok
     compileOnly 'org.projectlombok:lombok:1.18.8'
     annotationProcessor 'org.projectlombok:lombok:1.18.8'
@@ -111,9 +118,11 @@ dependencies {
     //retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.5.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
 
     // Gson
     implementation 'com.google.code.gson:gson:2.8.5'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -2,25 +2,18 @@ package org.techtown.catsby.community;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,11 +21,6 @@ import org.techtown.catsby.R;
 import org.techtown.catsby.retrofit.dto.TownCommunity;
 import org.techtown.catsby.retrofit.service.TownCommunityService;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -165,6 +153,7 @@ public class FragmentCommunity extends Fragment {
         public int getItemCount() {
             return listdata.size();
         }
+
 
         @Override
         public void onBindViewHolder(@NonNull ItemViewHolder itemViewHolder, int i) {
