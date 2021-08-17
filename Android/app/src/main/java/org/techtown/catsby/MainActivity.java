@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        getMenuInflater().inflate(R.menu.actionbar_write, menu);
         getMenuInflater().inflate(R.menu.toolbar_createqr, menu);
         return true;
     }
@@ -60,11 +59,6 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
             case R.id.action_notice:
                 Intent notificateionIntent = new Intent(this, NotificationActivity.class);
                 startActivity(notificateionIntent);
-                break;
-
-            case R.id.action_write:
-                Intent writemainIntent = new Intent(this, Writemain.class);
-                startActivity(writemainIntent);
                 break;
 
             case R.id.action_createQr:
