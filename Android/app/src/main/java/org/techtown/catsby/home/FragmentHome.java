@@ -59,25 +59,34 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
     ArrayList<String> bowlCommunityContext = new ArrayList<>();
     ArrayList<Integer> bowlCommunityId = new ArrayList<>();
     ArrayList<String> bowlCommunityUser= new ArrayList<>();
+    ArrayList<Long> bowlCommunityLike= new ArrayList<>();
+
+    ArrayList<Long> tempCommunityId = new ArrayList<>();
+    ArrayList<Long> tempLike = new ArrayList<>();
 
     BowlService bowlService = RetrofitClient.getBowlService();
     BowlCommunityService bowlCommunityService = RetrofitClient.getBowlCommunityService();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     //BowlCommunityService bowlCommunityService;
     View view;
-
+    long likecount;
+    
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
         setHasOptionsMenu(true);
-
         super.onCreate(savedInstanceState);
-
         if (user != null) {
-
+            System.out.println("@@ 1 @@");
+            int a = loadCommunity(user.getUid());
+            System.out.println("a = " + a);
+            while ( a != 1){
+                System.out.println(" wait ");
+            }
+            System.out.println("@@ 2 @@");
             loadBowls(user.getUid());
-            loadCommunity(user.getUid());
+            System.out.println("@@ 3 @@");
         }
 
         bowlAdapter.setOnClickListener(this);
@@ -85,37 +94,44 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
         //LikeButton likeButton = view.findViewById(R.id.likeButton);
     }
 
-    private void loadCommunity(String uid) {
+    private int loadCommunity(String uid) {
         bowlCommunityService.getCommunities(uid).enqueue(new Callback<List<BowlCommunity>>() {
             @Override
             public void onResponse(Call<List<BowlCommunity>> call, Response<List<BowlCommunity>> response) {
                 if(response.isSuccessful()) {
                     List<BowlCommunity> BowlCommunityResult = response.body();
-                    System.out.println("BowlCommunityResult = " + BowlCommunityResult.getClass());
 
                     for (int i = 0; i < BowlCommunityResult.size(); i++){
                         System.out.println(BowlCommunityResult.get(i).getUser());
                     }
 
-                    System.out.println("BowlCommunityResult = " + BowlCommunityResult.get(0).getUser());
-
                     for(int i = 0; i < BowlCommunityResult.size(); i++){
+                        tempCommunityId.add((long) BowlCommunityResult.get(i).getId());
+                    }
 
-                        /*
-                        * 좋아요 누른 사람 수 get
-                        * Long likeCnt = loadLike((long) BowlCommunityResult.get(i).getId());
-                        * */
-
+                    for(int i =0; i < BowlCommunityResult.size(); i++){
                         bowlCommunityContext.add(BowlCommunityResult.get(i).getContent());
                         bowlCommunityId.add(BowlCommunityResult.get(i).getId());
                         bowlCommunityUser.add(BowlCommunityResult.get(i).getUser().getNickname());
-
                     }
+                    System.out.println("bowlCommunityContext.size() = " + bowlCommunityContext.size());
+                    System.out.println("bowlCommunityContext.size() = " + bowlCommunityId.size());
+                    System.out.println("bowlCommunityContext.size() = " + bowlCommunityUser.size());
+                }
 
-                    for (int i = 0; i< BowlCommunityResult.size(); i++) {
-                        Feed feed = new Feed(bowlCommunityId.get(i) ,bowlImg[0], bowlCommunityUser.get(i), feedImg[0], bowlCommunityContext.get(i));
-                        feedList.add(feed);
-                    }
+                System.out.println("@@ 4 @@");
+                for (int i=0; i < tempCommunityId.size(); i++){
+                    loadLike(tempCommunityId.get(i));
+                }
+
+                System.out.println("bowlCommunityId = " + bowlCommunityId.size());
+                /* 임시 */
+                bowlCommunityLike.add((long) 1);
+                bowlCommunityLike.add((long) 0);
+
+                for (int i = 0; i< bowlCommunityId.size(); i++) {
+                    Feed feed = new Feed(bowlCommunityId.get(i) ,bowlImg[0], bowlCommunityUser.get(i), feedImg[0], bowlCommunityContext.get(i), bowlCommunityLike.get(i));
+                    feedList.add(feed);
                 }
 
                 RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerview);
@@ -124,6 +140,7 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
                 recyclerView.setLayoutManager(feedLayoutManager);
                 recyclerView.setAdapter(feedAdapter);
 
+
             }
 
             @Override
@@ -131,23 +148,25 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
                 System.out.println("t.getMessage() loadCommunity = " + t.getMessage());
             }
         });
+        return 1;
     }
 
-    private Long loadLike(Long communityId) {
-        final Long[] likeCnt = new Long[1];
+
+    private void loadLike(Long communityId) {
         bowlCommunityService.getLikes(communityId).enqueue(new Callback<Long>(){
             @Override
             public void onResponse(Call<Long> call, Response<Long> response) {
                 if(response.isSuccessful()) {
-                    likeCnt[0] = response.body();
+                    System.out.println("@@ 5 @@");
+                    tempLike.add(response.body());
                 }
             }
+
             @Override
             public void onFailure(Call<Long> call, Throwable t) {
                 System.out.println("t.getMessage() loadlike = " + t.getMessage());
             }
         });
-        return likeCnt[0];
     }
 
 
@@ -157,13 +176,13 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
             public void onResponse(Call<BowlList> call, Response<BowlList> response) {
                 if(response.isSuccessful()) {
                     BowlList result = response.body();
+                    System.out.println("@@ 6 @@");
 
                     for(int i =0; i < result.size(); i++){
                         bowlNameArray.add(result.getBowls().get(i).getName());
                         //Bowl Bowl = new Bowl(result.getBowls().get(i).getImage(), result.getBowls().get(i).getName());
                         Bowl bowl = new Bowl(bowlImg[i] , result.getBowls().get(i).getName(), result.getBowls().get(i).getInfo(), result.getBowls().get(i).getAddress(), result.getBowls().get(i).getUpdated_time());
                         bowlList.add(bowl);
-                        System.out.println("result = " + result.getBowls().get(i).getName());
                     }
 
                     /*

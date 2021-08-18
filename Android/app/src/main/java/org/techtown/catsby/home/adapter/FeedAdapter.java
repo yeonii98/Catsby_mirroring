@@ -46,14 +46,16 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         private ImageView bowlImg;
         private TextView userName;
         private ImageView feedImg;
-        //private TextView content;
+        private TextView content;
+        private TextView like;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             bowlImg = itemView.findViewById(R.id.feed_bowlImg);
             userName = itemView.findViewById(R.id.feed_username);
             feedImg = itemView.findViewById(R.id.feed_img);
-            //content = itemView.findViewById(R.id.feed_content);
+            content = itemView.findViewById(R.id.feed_content);
+            like = itemView.findViewById(R.id.like_people);
         }
     }
 
@@ -72,6 +74,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         holder.bowlImg.setImageResource(item.getBowlImg());
         holder.userName.setText(item.getNickName());
         holder.feedImg.setImageResource(item.getImg());
+        holder.content.setText(item.getContent());
+        holder.like.setText((int) item.getLike() + "명이 이 글을 좋아합니다.");
+
 
         Button postButton = (Button)view.findViewById(R.id.post_save_button);
         EditText editText = (EditText)view.findViewById(R.id.post_title_edit);
