@@ -47,7 +47,7 @@ public class TownCommunityService {
 
     @Transactional(readOnly = true)
     public List listTownCommunity(){//글 목록
-        return townCommunityRepository.findAllByOrderByIdDesc();
+        return townCommunityRepository.findAll();
     }
 
     @Transactional(readOnly = true)

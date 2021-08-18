@@ -19,9 +19,9 @@ public class TownCommentController {
     public String writeTownComment(@PathVariable int id, @RequestBody TownComment townComment){//현재 유저의 정보도 넣어야 함
         townCommentService.writeTownComment(id, townComment);
 
-        String content = townComment.getTownCommunity().getTitle();
-        String message = id + NotificationUtil.makeNotification(content, NotificationType.COMMENT);
-        notificationService.saveNotification(townComment.getTownCommunity().getUser(), message);
+//        String content = townComment.getTownCommunity().getTitle();
+//        String message = id + NotificationUtil.makeNotification(content, NotificationType.COMMENT);
+//        notificationService.saveNotification(townComment.getTownCommunity().getUser(), message);
 
         return "댓글 쓰기";
     }

@@ -39,12 +39,12 @@ public class TownCommunity extends BaseTimeEntity {
     private String date;
 
     //하나의 게시글에 여러개의 댓글이 존재한다. 1:N 관계 -> OneToMany
-    @OneToMany(mappedBy = "townCommunity", fetch = FetchType.EAGER)//연관관계의 주인이 아니다.
+    @OneToMany(mappedBy = "townCommunity", fetch = FetchType.LAZY)//연관관계의 주인이 아니다.
     @JsonIgnoreProperties({"townCommunity"}) //무한참조 방지
     //@OrderBy("id desc")
     private List<TownComment> townComment;
 
-    @OneToOne(mappedBy = "townCommunity", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "townCommunity", fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"townCommunity"}) //무한참조 방지
-    private TownLike townlike;
+    private List<TownLike> townLike;
 }

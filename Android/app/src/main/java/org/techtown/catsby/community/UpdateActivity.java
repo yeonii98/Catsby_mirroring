@@ -1,12 +1,12 @@
 package org.techtown.catsby.community;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import org.techtown.catsby.R;
 import org.techtown.catsby.retrofit.RetrofitClient;
@@ -17,7 +17,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddActivity extends AppCompatActivity {
+public class UpdateActivity extends AppCompatActivity {
 
     private TownCommunityService townCommunityService;
     EditText edtTitle,edtContent;
@@ -35,6 +35,16 @@ public class AddActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        Intent intent = getIntent();
+        String title = intent.getStringExtra("title");
+        String content = intent.getStringExtra("content");
+        int id = intent.getIntExtra("id",0);
+        int position = intent.getIntExtra("position",0);
+
+
+        edtTitle.setText(title);
+        edtContent.setText(content);
+
         findViewById(R.id.btnDone).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -44,7 +54,7 @@ public class AddActivity extends AppCompatActivity {
                 if(title.length() > 0 && content.length() > 0) {
                     TownCommunity townCommunity = new TownCommunity(title,content);
                     townCommunityService = RetrofitClient.getTownCommunityService();
-                    townCommunityService.postTown(townCommunity).enqueue(new Callback<Void>() {
+                    townCommunityService.putTown(id, townCommunity).enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
                             if(response.isSuccessful()){
@@ -66,9 +76,10 @@ public class AddActivity extends AppCompatActivity {
 //
 //                    String substr = sdf.format(date);
 
-                    Intent intent = new Intent(AddActivity.this,FragmentCommunity.class);
+                    Intent intent = new Intent(UpdateActivity.this, FragmentCommunity.class);
                     intent.putExtra("title", title);
                     intent.putExtra("content", content);
+                    intent.putExtra("position",position);
                     setResult(0, intent);
 
 

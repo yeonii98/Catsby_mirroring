@@ -1,4 +1,8 @@
-package org.techtown.catsby.retrofit.dto;
+package org.techtown.catsby.community.data.model;
+
+import org.techtown.catsby.retrofit.dto.User;
+
+import java.util.List;
 
 public class TownCommunity {
 
@@ -13,6 +17,16 @@ public class TownCommunity {
     private String title;
 
     private String date;
+
+    private List<TownLike> townLike;
+
+    public List<TownLike> getTownLike() {
+        return townLike;
+    }
+
+    public void setTownLike(List<TownLike> townLike) {
+        this.townLike = townLike;
+    }
 
     public TownCommunity(){}
 
