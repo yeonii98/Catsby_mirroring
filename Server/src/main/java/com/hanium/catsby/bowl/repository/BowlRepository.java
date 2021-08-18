@@ -27,6 +27,14 @@ public class BowlRepository {
         return em.find(Bowl.class, id);
     }
 
+    public List<Bowl> findBowlByUsers(Long userId){
+        return em.createQuery("select b from BowlUser bu" +
+                " join bu.bowl b" +
+                " where bu.user.id = :userId" , Bowl.class)
+                .setParameter("userId", userId)
+                .getResultList();
+    }
+
     public void deleteById(Long id){
         Bowl bowl = findBowl(id);
         em.remove(bowl);
@@ -42,4 +50,5 @@ public class BowlRepository {
                 .setParameter("bowlId", bowlId)
                 .getResultList();
     }
+
 }

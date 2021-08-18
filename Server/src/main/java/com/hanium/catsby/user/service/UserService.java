@@ -40,6 +40,12 @@ public class UserService {
         user.setAddress(address);
     }
 
+    @Transactional(readOnly = true)
+    public Long findUserByUid(String uid){
+        Users user = userRepository.findUserByUid(uid);
+        return user.getId();
+    }
+
     @Transactional
     public void updateFcmToken(String uid, String token) {
         Users user = userRepository.findUserByUid(uid);

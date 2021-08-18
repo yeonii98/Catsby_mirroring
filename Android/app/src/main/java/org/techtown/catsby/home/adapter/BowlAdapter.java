@@ -10,8 +10,11 @@ import android.widget.TextView;
 import org.techtown.catsby.R;
 import org.techtown.catsby.home.BowlActivity;
 import org.techtown.catsby.home.model.Bowl;
+import org.techtown.catsby.retrofit.dto.BowlDto;
+
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class BowlAdapter extends RecyclerView.Adapter<BowlAdapter.ViewHolder> {
 
     private ArrayList<Bowl> itemData;
+    int idx;
 
     public BowlAdapter(ArrayList<Bowl> itemData){
         this.itemData = itemData;
@@ -55,20 +59,35 @@ public class BowlAdapter extends RecyclerView.Adapter<BowlAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull BowlAdapter.ViewHolder holder, int position) {
-
         Bowl item = itemData.get(position);
-        holder.image.setImageResource(item.getImage());
+        //holder.image.setImageResource(item.getImage());
+        System.out.println("item.getName() ??!!!!!!!!!!!!!@@@@@@@@@@@@@@@= " + item.getName());
+
+        //HashMap<Integer, ArrayList<String>> itemInformation= new HashMap<Integer, ArrayList<String>>();
+
         holder.text.setText(item.getName());
+
 
         if (bListener != null) {
             final int pos = position;
             holder.itemView.setOnClickListener(new View.OnClickListener(){
-
                 @Override
                 public void onClick(View v) {
                     TextView name = v.findViewById(R.id.bowl_name);
                     Intent intent = new Intent(v.getContext(), BowlActivity.class);
-                    intent.putExtra("name", name.getText());
+
+                    for (int i =0; i< itemData.size(); i++){
+                        if (itemData.get(i).getName() == name.getText()){
+                            idx = i;
+                        }
+                    }
+
+                    Bowl item = itemData.get(idx);
+                    intent.putExtra("name", item.getName());
+                    intent.putExtra("address", item.getAddress());
+                    intent.putExtra("info", item.getInfo());
+                    intent.putExtra("time", item.getLocalDateTime());
+
                     v.getContext().startActivity(intent);
                 }
             });

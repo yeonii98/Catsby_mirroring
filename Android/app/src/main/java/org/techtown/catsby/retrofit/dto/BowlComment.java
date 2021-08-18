@@ -8,6 +8,12 @@ public class BowlComment {
     private String createDate;
     private String updateDate;
 
+    public BowlComment(User user, BowlCommunity bowlCommunity, String content) {
+        this.user = user;
+        this.bowlCommunity = bowlCommunity;
+        this.content = content;
+    }
+
     public int getId() {
         return id;
     }
@@ -31,4 +37,5 @@ public class BowlComment {
     public String getUpdateDate() {
         return updateDate;
     }
+
 }

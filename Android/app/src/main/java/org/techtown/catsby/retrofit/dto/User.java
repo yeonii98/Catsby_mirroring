@@ -8,7 +8,11 @@ public class User {
     private String address;
     private String createDate;
     private String updateDate;
+    private String uid;
 
+    public String getUid() {
+        return uid;
+    }
 
     public int getId() {
         return id;

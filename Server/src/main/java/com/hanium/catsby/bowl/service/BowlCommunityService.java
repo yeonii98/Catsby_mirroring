@@ -1,8 +1,8 @@
 package com.hanium.catsby.bowl.service;
 
+import com.hanium.catsby.bowl.domain.BowlCommunity;
 import com.hanium.catsby.bowl.domain.Bowl;
 import com.hanium.catsby.bowl.repository.BowlRepository;
-import com.hanium.catsby.bowl.domain.BowlCommunity;
 import com.hanium.catsby.bowl.repository.BowlCommunityRepository;
 import com.hanium.catsby.user.domain.Users;
 import com.hanium.catsby.user.repository.UserRepository;
@@ -27,14 +27,14 @@ public class BowlCommunityService {
     MyPostRepository myPostRepository;
 
     @Transactional
-    public Long savaCommunity(BowlCommunity bowlCommunity, Long userId, Long bowlId) {
-
-        Users users = userRepository.findUser(userId);
-        Bowl bowl = bowlRepository.findBowl(bowlId);
+    public Long savaCommunity(BowlCommunity bowlCommunity, String userId) {
+        Users user = userRepository.findUserByUid(userId);
+        System.out.println("user = " + user.getId());
+        Users users = userRepository.findUser(user.getId());
+        //Bowl bowl = bowlRepository.findBowl(bowlId);
 
         bowlCommunity.setUser(users);
-        bowlCommunity.setBowl(bowl);
-
+        //bowlCommunity.setBowl(bowl);
         bowlCommunityRepository.save(bowlCommunity);
 
         //myPost
@@ -48,6 +48,20 @@ public class BowlCommunityService {
     public List<BowlCommunity> findCommunities() {
         return bowlCommunityRepository.findAllBowlCommunity();
     }
+
+
+    @Transactional(readOnly = true)
+    public List<BowlCommunity> findCommunitiesByUser(String userId) {
+        Users user = userRepository.findUserByUid(userId);
+        return bowlCommunityRepository.findBowlCommunityByBowl(user.getId());
+    }
+
+
+    @Transactional(readOnly = true)
+    public Long findLikesByCommunity(Long communityId) {
+        return bowlCommunityRepository.findBowlLikesByCommunity(communityId);
+    }
+
 
     @Transactional(readOnly = true)
     public BowlCommunity findCommunity(Long bowlId) {

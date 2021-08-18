@@ -24,6 +24,7 @@
             android:id="@+id/feed_username"
             android:text="User name"/>
     </LinearLayout>
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="250dp"

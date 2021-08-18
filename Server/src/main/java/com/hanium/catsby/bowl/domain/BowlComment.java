@@ -21,6 +21,9 @@ public class BowlComment extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private Users user;
 
+    //private String uid;
+    //private int bowlCommunityId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bowlCommunity_id")
     private BowlCommunity bowlCommunity;

@@ -51,6 +51,16 @@ public class BowlController {
         return new BowlResult(collect);
     }
 
+
+    @GetMapping("/bowls/{uid}")
+    public BowlResult userBowlList(@PathVariable("uid") String uid) {
+        List<Bowl> findBowls = bowlService.findUserBowls(uid);
+        List<BowlDto> collect = findBowls.stream()
+                .map(b -> new BowlDto(b.getInfo(), b.getName(), b.getAddress(), b.getImage(), b.getCreatedDate()))
+                .collect(Collectors.toList());
+        return new BowlResult(collect);
+    }
+
     @Data
     @AllArgsConstructor
     static class BowlResult<T> {

@@ -27,7 +27,7 @@ public class Users extends BaseTimeEntity {
     @Column(name = "fcm_token")
     private String fcmToken;
 
-
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<BowlLike> bowlLikes = new ArrayList<>();
 
@@ -35,6 +35,7 @@ public class Users extends BaseTimeEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<BowlCommunity> bowlCommunities = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<BowlComment> bowlComments = new ArrayList<>();
 }

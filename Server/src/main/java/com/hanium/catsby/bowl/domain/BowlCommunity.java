@@ -23,11 +23,7 @@ public class BowlCommunity extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private Users user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bowl_id")
-    private Bowl bowl;
+    private com.hanium.catsby.user.domain.Users user;
 
     @Lob
     private byte[] image;
@@ -35,21 +31,24 @@ public class BowlCommunity extends BaseTimeEntity {
     @Lob
     private String content;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "bowlCommunity", cascade = CascadeType.ALL)
     @JsonIgnoreProperties({"bowlCommunity"})
     private List<BowlComment> bowlComments = new ArrayList<>();
 
+    /*
     @JsonIgnore
     @OneToOne(mappedBy = "bowlCommunity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private BowlLike bowlLike;
+    private BowlLike bowlLike;*/
 
     public void setUser(Users user){
         this.user = user;
         user.getBowlCommunities().add(this);
     }
 
-    public void setBowl(Bowl bowl){
-        this.bowl = bowl;
-        bowl.getBowlCommunities().add(this);
-    }
+    /*
+    @JsonIgnore
+    @OneToMany(mappedBy = "bowlCommunity", cascade = CascadeType.ALL)
+    private List<CommunityAndBowl> communityAndBowls = new ArrayList<>();*/
+
 }
