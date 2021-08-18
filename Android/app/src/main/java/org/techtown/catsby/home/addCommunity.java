@@ -14,9 +14,7 @@ import com.google.gson.GsonBuilder;
 
 import org.techtown.catsby.R;
 import org.techtown.catsby.retrofit.dto.BowlDto;
-import org.techtown.catsby.retrofit.dto.TownCommunity;
 import org.techtown.catsby.retrofit.service.BowlService;
-import org.techtown.catsby.retrofit.service.TownCommunityService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
