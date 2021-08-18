@@ -48,9 +48,7 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
     ArrayList<Feed> feedList = new ArrayList<>();
 
     int[] bowlImg = {R.drawable.ic_baseline_favorite_24, R.drawable.ic_baseline_star_border_24, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
-    String[] userName = {"익명1", "익명2"};
     int[] feedImg = {R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
-    String[] feedContent = {"글내용1", "글내용2"};
 
     //final BowlAdapter bowlAdapter;
     final BowlAdapter bowlAdapter = new BowlAdapter(bowlList);
@@ -58,7 +56,10 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
     ArrayList<String> bowlNameArray = new ArrayList<>();
     ArrayList<byte[]> bowlImageArray = new ArrayList<>();
 
-    ArrayList<String> bowlCommunityArray = new ArrayList<>();
+    ArrayList<String> bowlCommunityContext = new ArrayList<>();
+    ArrayList<Integer> bowlCommunityId = new ArrayList<>();
+    ArrayList<String> bowlCommunityUser= new ArrayList<>();
+
     BowlService bowlService = RetrofitClient.getBowlService();
     BowlCommunityService bowlCommunityService = RetrofitClient.getBowlCommunityService();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -72,10 +73,6 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
         setHasOptionsMenu(true);
 
         super.onCreate(savedInstanceState);
-
-
-        System.out.println("user = " + user);
-        System.out.println("user = " + user.getUid());
 
         if (user != null) {
 
@@ -94,21 +91,32 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
             public void onResponse(Call<List<BowlCommunity>> call, Response<List<BowlCommunity>> response) {
                 if(response.isSuccessful()) {
                     List<BowlCommunity> BowlCommunityResult = response.body();
+                    System.out.println("BowlCommunityResult = " + BowlCommunityResult.getClass());
+
+                    for (int i = 0; i < BowlCommunityResult.size(); i++){
+                        System.out.println(BowlCommunityResult.get(i).getUser());
+                    }
+
+                    System.out.println("BowlCommunityResult = " + BowlCommunityResult.get(0).getUser());
 
                     for(int i = 0; i < BowlCommunityResult.size(); i++){
-                        //Long likeCnt = loadLike((long) BowlCommunityResult.get(i).getId());
-                        //System.out.println("likeCnt = " + likeCnt);
-                        bowlCommunityArray.add(BowlCommunityResult.get(i).getContent());
+
+                        /*
+                        * 좋아요 누른 사람 수 get
+                        * Long likeCnt = loadLike((long) BowlCommunityResult.get(i).getId());
+                        * */
+
+                        bowlCommunityContext.add(BowlCommunityResult.get(i).getContent());
+                        bowlCommunityId.add(BowlCommunityResult.get(i).getId());
+                        bowlCommunityUser.add(BowlCommunityResult.get(i).getUser().getNickname());
+
                     }
 
                     for (int i = 0; i< BowlCommunityResult.size(); i++) {
-                        Feed feed = new Feed(bowlImg[0], userName[0], feedImg[0], bowlCommunityArray.get(i));
+                        Feed feed = new Feed(bowlCommunityId.get(i) ,bowlImg[0], bowlCommunityUser.get(i), feedImg[0], bowlCommunityContext.get(i));
                         feedList.add(feed);
                     }
                 }
-
-
-
 
                 RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerview);
                 recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), 1));
@@ -153,7 +161,8 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
                     for(int i =0; i < result.size(); i++){
                         bowlNameArray.add(result.getBowls().get(i).getName());
                         //Bowl Bowl = new Bowl(result.getBowls().get(i).getImage(), result.getBowls().get(i).getName());
-                        Bowl Bowl = new Bowl(bowlImg[i] , result.getBowls().get(i).getName());
+                        Bowl bowl = new Bowl(bowlImg[i] , result.getBowls().get(i).getName(), result.getBowls().get(i).getInfo(), result.getBowls().get(i).getAddress(), result.getBowls().get(i).getUpdated_time());
+                        bowlList.add(bowl);
                         System.out.println("result = " + result.getBowls().get(i).getName());
                     }
 
@@ -164,8 +173,8 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
                     }*/
 
                     for (int i = 0; i< result.size(); i++) {
-                        Bowl bowl = new Bowl(bowlImg[i], bowlNameArray.get(i));
-                        bowlList.add(bowl);
+                        //Bowl bowl = new Bowl(bowlImg[i], bowlNameArray.get(i));
+                        //bowlList.add(bowl);
                     }
 
                     RecyclerView bowlRecyclerView = (RecyclerView)view.findViewById(R.id.horizontal_recyclerview);

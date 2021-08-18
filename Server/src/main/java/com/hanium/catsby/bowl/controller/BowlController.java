@@ -59,7 +59,6 @@ public class BowlController {
                 .map(b -> new BowlDto(b.getInfo(), b.getName(), b.getAddress(), b.getImage(), b.getCreatedDate()))
                 .collect(Collectors.toList());
         return new BowlResult(collect);
-        //return findBowls;
     }
 
     @Data

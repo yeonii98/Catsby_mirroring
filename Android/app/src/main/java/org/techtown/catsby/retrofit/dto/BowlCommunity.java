@@ -17,7 +17,6 @@ public class BowlCommunity {
         return user;
     }
 
-
 //    public byte[] getImage() {
 //        return image;
 //    }

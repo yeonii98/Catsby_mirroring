@@ -1,22 +1,14 @@
 package com.hanium.catsby.bowl.controller;
 
-import com.hanium.catsby.bowl.domain.BowlComment;
-import com.hanium.catsby.bowl.domain.BowlCommunity;
 import com.hanium.catsby.bowl.service.BowlCommentService;
 import com.hanium.catsby.bowl.domain.BowlCommunity;
 import com.hanium.catsby.user.domain.Users;
 
 
 import com.hanium.catsby.bowl.domain.BowlComment;
-import com.hanium.catsby.bowl.domain.BowlCommunity;
-import com.hanium.catsby.bowl.service.BowlCommentService;
 import com.hanium.catsby.notification.domain.NotificationType;
 import com.hanium.catsby.notification.service.NotificationService;
-
-//import com.hanium.catsby.notification.util.NotificationUtil;
-
-
-import com.hanium.catsby.user.domain.Users;
+import com.hanium.catsby.user.service.UserService;
 import com.hanium.catsby.util.NotificationUtil;
 
 import lombok.AllArgsConstructor;
@@ -34,10 +26,11 @@ public class BowlCommentController {
 
     private final BowlCommentService bowlCommentService;
     private final NotificationService notificationService;
+    private final UserService userService;
 
-    @PostMapping("/bowl-comment/{userId}/{communityId}")
-    public CreateBowlCommentResponse saveBowlComment(@PathVariable("userId") Long userId, @PathVariable("communityId") Long communityId, @RequestBody CreateBowlCommentRequest request){
-
+    @PostMapping("/bowl-comment/{uid}/{communityId}")
+    public CreateBowlCommentResponse saveBowlComment(@PathVariable("uid") String uid, @PathVariable("communityId") Long communityId, @RequestBody CreateBowlCommentRequest request){
+        Long userId = userService.findUserByUid(uid);
         BowlComment bowlComment = new BowlComment();
         bowlComment.setContent(request.getContent());
         Long id = bowlCommentService.savaComment(bowlComment, userId, communityId);
@@ -71,6 +64,16 @@ public class BowlCommentController {
         return new BowlCommentResult(collect);
     }
 
+    @GetMapping("/bowl-comments/{communityId}")
+    public BowlCommentResult bowlComment(@PathVariable("communityId") Long communityId) {
+        List<BowlComment> findcomment = bowlCommentService.findCommentByCommunityId(communityId);
+        List<BowlCommentDto> collect = findcomment.stream().map(c -> new BowlCommentDto(c.getContent(), c.getCreatedDate(), c.getUser(), c.getBowlCommunity()))
+                .collect(Collectors.toList());
+        return new BowlCommentResult(collect);
+
+        //return findBowls;
+    }
+
     @Data
     @AllArgsConstructor
     static class BowlCommentResult<T> {
@@ -84,7 +87,6 @@ public class BowlCommentController {
         private LocalDateTime createDate;
         private Users user;
         private BowlCommunity bowlCommunity;
-
     }
 
     @PutMapping("/bowl-comment/{id}")

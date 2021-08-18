@@ -1,5 +1,6 @@
 package org.techtown.catsby.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,7 +42,13 @@ public class FragmentBowlInfo extends Fragment {
         imageView = (ImageView) view.findViewById(R.id.imageView);
         imageView.setImageResource(R.drawable.ic_launcher_background);
 
+        //Intent intent = getIntent();
+
         Bundle bundle = this.getArguments();
+
+        System.out.println("bundle왜!!!!!!!!!!!!!:::::::::::::::::::::: = " + bundle);
+        System.out.println("bundle = 번들$$#@!!!!!!!!!!!!!!!!!!!!!!!!!!!! " + bundle.getString("name"));
+
         name = (TextView)view.findViewById(R.id.name);
 
         if (bundle != null) {

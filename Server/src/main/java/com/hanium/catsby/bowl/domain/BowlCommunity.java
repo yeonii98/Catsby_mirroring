@@ -21,7 +21,6 @@ public class BowlCommunity extends BaseTimeEntity {
     @Column(name = "bowlCommunity_id")
     private Long id;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private com.hanium.catsby.user.domain.Users user;
