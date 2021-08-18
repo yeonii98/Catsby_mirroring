@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -7,34 +9,136 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="#ffffff"
-        android:padding="10dp">
+        android:layout_height="50dp"
+        android:gravity="center_vertical">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_margin="7.5dp"
+            android:src="@mipmap/ic_launcher_round"
+            app:civ_border_color="#939597"
+            app:civ_border_width="2dp"
+            android:id="@+id/user_img"/>
+        <TextView
+            android:id="@+id/user_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="User nickname" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/town_update"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@android:color/holo_orange_light"
+            android:text="수정" />
+        <Button
+            android:id="@+id/town_delete"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@android:color/holo_orange_light"
+            android:text="삭제" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical">
 
         <TextView
-            android:id="@+id/item_maintext"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:textSize="14sp"/>
+            android:id="@+id/town_title"
+            android:textSize="18dp"
+            android:layout_marginLeft="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title~~~~~~~~"
+            android:background="@color/browser_actions_divider_color"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical">
 
+        <TextView
+            android:id="@+id/town_content"
+            android:textSize="20dp"
+            android:layout_marginLeft="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Content~~~~~~~~" />
+    </LinearLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:scaleType="fitXY"
+        android:id="@+id/town_img"
+        android:layout_marginBottom="10dp"/>
+
+    <LinearLayout
+        android:paddingRight="10dp"
+        android:gravity="right"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/town_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2021-08-16" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
         <ImageView
-            android:id="@+id/item_image"
-            android:background="@color/teal_200"
-            android:layout_width="30dp"
-            android:layout_height="30dp"/>
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="7.5dp"
+            android:src="@drawable/ic_baseline_favorite_border_24"
+            android:id="@+id/town_likeBtn"/>
+        <TextView
+            android:id="@+id/likeCnt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"/>
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_baseline_chat_bubble_24"
+            android:id="@+id/town_comment"/>
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/item_subtext"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_marginBottom="15dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="text"
-        android:layout_gravity="end"
-        android:background="#F1F1F1"
-        android:padding="10dp"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
 
+        <EditText
+            android:id="@+id/town_comment_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:hint="댓글 달기..."
+            android:paddingLeft="5dp"
+            android:textColor="@android:color/black"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
+        <Button
+            android:id="@+id/town_commentBtn"
+            android:layout_width="67dp"
+            android:layout_height="29dp"
+            android:background="#9F9F9F"
+            android:text="게시" />
+
+    </LinearLayout>
 </LinearLayout>

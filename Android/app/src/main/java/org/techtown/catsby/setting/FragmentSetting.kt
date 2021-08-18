@@ -98,7 +98,7 @@ class FragmentSetting : Fragment() {
         }
         writingList.setOnClickListener {
             //setFrag(2)
-            replaceFragment(com.example.catsbe.writingList())
+            replaceFragment(com.example.catsby.writingList())
             //inflater.inflate(R.layout.fragment_writing_list, container, false)
         }
 

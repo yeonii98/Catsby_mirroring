@@ -1,4 +1,6 @@
-package org.techtown.catsby.retrofit.dto;
+package org.techtown.catsby.community.data.model;
+
+import org.techtown.catsby.retrofit.dto.User;
 
 public class TownComment {
     private int id;
@@ -7,6 +9,9 @@ public class TownComment {
     private String content;
     private String date;
 
+    public TownComment(String content){
+        this.content = content;
+    }
 
     public int getId() {
         return id;

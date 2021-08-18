@@ -3,10 +3,17 @@ package org.techtown.catsby.retrofit;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.techtown.catsby.community.data.service.TownLikeService;
 import org.techtown.catsby.login.data.service.LoginService;
 import org.techtown.catsby.notification.data.service.NotificationService;
+
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
 import org.techtown.catsby.retrofit.service.BowlService;
+
+import org.techtown.catsby.setting.data.service.MyWritingService;
+import org.techtown.catsby.community.data.service.TownCommentService;
+import org.techtown.catsby.community.data.service.TownCommunityService;
+
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -49,4 +56,19 @@ public class RetrofitClient {
         return getInstacne().create(BowlCommunityService.class);
     }
 
+    public static TownCommunityService getTownCommunityService(){
+        return getInstacne().create(TownCommunityService.class);
+    }
+
+    public static MyWritingService getMyWritingService(){
+        return getInstacne().create(MyWritingService.class);
+    }
+
+    public static TownCommentService getTownCommentService(){
+        return getInstacne().create(TownCommentService.class);
+    }
+
+    public static TownLikeService getTownLikeService(){
+        return getInstacne().create(TownLikeService.class);
+    }
 }
