@@ -9,7 +9,7 @@ import retrofit2.http.Body;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
-public interface BowlService {
+public interface QRBowlService {
 
     @POST("/bowl")
     Call<BowlResponse> saveBowl(@Body Bowl bowl);

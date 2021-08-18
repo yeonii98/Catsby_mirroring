@@ -5,10 +5,11 @@ import com.google.gson.GsonBuilder;
 
 
 import org.techtown.catsby.community.data.service.TownLikeService;
-import org.techtown.catsby.QRcode.data.service.BowlService;
+import org.techtown.catsby.QRcode.data.service.QRBowlService;
 import org.techtown.catsby.login.data.service.LoginService;
 import org.techtown.catsby.notification.data.service.NotificationService;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
+import org.techtown.catsby.retrofit.service.BowlService;
 import org.techtown.catsby.setting.data.service.MyWritingService;
 import org.techtown.catsby.community.data.service.TownCommentService;
 import org.techtown.catsby.community.data.service.TownCommunityService;
@@ -70,6 +71,10 @@ public class RetrofitClient {
 
     public static TownLikeService getTownLikeService(){
         return getInstacne().create(TownLikeService.class);
+    }
+    
+    public static QRBowlService getQrBowlService() {
+        return getInstacne().create(QRBowlService.class);
     }
 
 }

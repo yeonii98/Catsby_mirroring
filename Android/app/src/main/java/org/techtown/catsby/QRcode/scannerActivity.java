@@ -15,7 +15,7 @@ import com.google.zxing.Result;
 
 import org.techtown.catsby.QRcode.data.model.BowlResponse;
 import org.techtown.catsby.QRcode.data.model.BowlUserRequest;
-import org.techtown.catsby.QRcode.data.service.BowlService;
+import org.techtown.catsby.QRcode.data.service.QRBowlService;
 import org.techtown.catsby.R;
 import org.techtown.catsby.retrofit.RetrofitClient;
 
@@ -29,14 +29,14 @@ public class scannerActivity extends AppCompatActivity {
     CodeScanner codeScanner;
     CodeScannerView codeScannerView;
 
-    private BowlService bowlService;
+    private QRBowlService QRBowlService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanner);
 
-        bowlService = RetrofitClient.getBowlService();
+        QRBowlService = RetrofitClient.getQrBowlService();
 
         txt = (TextView) findViewById(R.id.textView);
         codeScannerView = (CodeScannerView) findViewById(R.id.scannerView);
@@ -68,7 +68,7 @@ public class scannerActivity extends AppCompatActivity {
     }
 
     private void saveBowlUser(String bowlInfo) {
-        bowlService.saveBowlUser(FirebaseAuth.getInstance().getUid(), new BowlUserRequest(bowlInfo)).enqueue(new Callback<BowlResponse>() {
+        QRBowlService.saveBowlUser(FirebaseAuth.getInstance().getUid(), new BowlUserRequest(bowlInfo)).enqueue(new Callback<BowlResponse>() {
             @Override
             public void onResponse(Call<BowlResponse> call, Response<BowlResponse> response) {
                 if (response.isSuccessful()) {

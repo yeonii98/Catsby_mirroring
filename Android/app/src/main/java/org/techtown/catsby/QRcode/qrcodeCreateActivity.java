@@ -23,7 +23,7 @@ import com.google.zxing.WriterException;
 
 import org.techtown.catsby.QRcode.data.model.Bowl;
 import org.techtown.catsby.QRcode.data.model.BowlResponse;
-import org.techtown.catsby.QRcode.data.service.BowlService;
+import org.techtown.catsby.QRcode.data.service.QRBowlService;
 import org.techtown.catsby.R;
 import org.techtown.catsby.retrofit.RetrofitClient;
 
@@ -45,7 +45,7 @@ public class qrcodeCreateActivity extends AppCompatActivity {
     QRGEncoder qrgEncoder;
     String qrinfo, bowlInfo, bowlName, bowlAddress;
 
-    private BowlService bowlService;
+    private QRBowlService QRBowlService;
 
     @Override
     protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -56,7 +56,7 @@ public class qrcodeCreateActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        bowlService = RetrofitClient.getBowlService();
+        QRBowlService = RetrofitClient.getQrBowlService();
 
         // initializing all variables.
         qrCodeIV = (ImageView)findViewById(R.id.idIVQrcode);
@@ -133,7 +133,7 @@ public class qrcodeCreateActivity extends AppCompatActivity {
 
     private void saveBowl(String info, String name, String address) {
         Bowl bowl = new Bowl(info, name, address);
-        bowlService.saveBowl(bowl).enqueue(new Callback<BowlResponse>() {
+        QRBowlService.saveBowl(bowl).enqueue(new Callback<BowlResponse>() {
             @Override
             public void onResponse(Call<BowlResponse> call, Response<BowlResponse> response) {
                 if (response.isSuccessful()) {
