@@ -1,6 +1,7 @@
 package com.hanium.catsby.user.controller;
 
 import com.hanium.catsby.user.domain.Users;
+import com.hanium.catsby.user.repository.UserRepository;
 import com.hanium.catsby.user.service.UserService;
 import com.hanium.catsby.util.BaseResponse;
 import lombok.AllArgsConstructor;
@@ -16,11 +17,16 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
     @PostMapping("/register")
     public BaseResponse createUser(@RequestBody CreateUserRequest request) {
-        userService.savaUser(request.getUid(), request.getEmail(), request.getFcmToken());
-        return new BaseResponse("success");
+        if (userRepository.findUserByUid(request.getUid()) != null) {
+            return new BaseResponse("Already User Is Saved");
+        } else {
+            userService.savaUser(request.getUid(), request.getEmail(), request.getFcmToken());
+            return new BaseResponse("success");
+        }
     }
 
     @Data

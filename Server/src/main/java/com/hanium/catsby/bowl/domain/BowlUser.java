@@ -2,6 +2,7 @@ package com.hanium.catsby.bowl.domain;
 
 import com.hanium.catsby.util.BaseTimeEntity;
 import com.hanium.catsby.user.domain.Users;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -25,4 +26,8 @@ class BowlUser extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private Users user;
 
+    public BowlUser(Bowl bowl, Users user) {
+        this.bowl = bowl;
+        this.user = user;
+    }
 }

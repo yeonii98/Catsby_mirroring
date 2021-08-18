@@ -21,10 +21,17 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.zxing.WriterException;
 
+import org.techtown.catsby.QRcode.data.model.Bowl;
+import org.techtown.catsby.QRcode.data.model.BowlResponse;
+import org.techtown.catsby.QRcode.data.service.BowlService;
 import org.techtown.catsby.R;
+import org.techtown.catsby.retrofit.RetrofitClient;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class qrcodeCreateActivity extends AppCompatActivity {
 
@@ -36,7 +43,9 @@ public class qrcodeCreateActivity extends AppCompatActivity {
     private Button generateQrBtn;
     Bitmap bitmap;
     QRGEncoder qrgEncoder;
-    String qrinfo;
+    String qrinfo, bowlInfo, bowlName, bowlAddress;
+
+    private BowlService bowlService;
 
     @Override
     protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -46,6 +55,8 @@ public class qrcodeCreateActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        bowlService = RetrofitClient.getBowlService();
 
         // initializing all variables.
         qrCodeIV = (ImageView)findViewById(R.id.idIVQrcode);
@@ -86,15 +97,18 @@ public class qrcodeCreateActivity extends AppCompatActivity {
 
                     // setting this dimensions inside our qr code
                     // encoder to generate our qr code.
-                    qrinfo = dataEdt2.getText().toString().concat(dataEdt.getText().toString());
-                    qrinfo = dataEdt2.getText().toString().concat("위치의 ".concat(dataEdt.getText().toString()));
-                    qrgEncoder = new QRGEncoder(qrinfo, null, QRGContents.Type.TEXT, dimen);
+                    bowlName = dataEdt.getText().toString();
+                    bowlAddress = dataEdt2.getText().toString();
+                    bowlInfo = bowlName.concat(bowlAddress);
+                    qrinfo = bowlAddress.concat("위치의 ".concat(bowlName));
+                    qrgEncoder = new QRGEncoder(bowlInfo, null, QRGContents.Type.TEXT, dimen);
                     try {
                         // getting our qrcode in the form of bitmap.
                         bitmap = qrgEncoder.encodeAsBitmap();
                         // the bitmap is set inside our image
                         // view using .setimagebitmap method.
                         qrCodeIV.setImageBitmap(bitmap);
+                        saveBowl(bowlInfo, bowlName, bowlAddress);
                         Toast.makeText(getApplicationContext(), qrinfo+" 밥그릇 큐알코드가 생성되었습니다.", Toast.LENGTH_SHORT).show();
                     } catch (WriterException e) {
                         // this method is called for
@@ -115,5 +129,22 @@ public class qrcodeCreateActivity extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void saveBowl(String info, String name, String address) {
+        Bowl bowl = new Bowl(info, name, address);
+        bowlService.saveBowl(bowl).enqueue(new Callback<BowlResponse>() {
+            @Override
+            public void onResponse(Call<BowlResponse> call, Response<BowlResponse> response) {
+                if (response.isSuccessful()) {
+                    Log.d("qrcodeCreateActivity", "bowl id : " + response.body().getId());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BowlResponse> call, Throwable t) {
+                Log.d("qrcodeCreateActivity", "error save bowl");
+            }
+        });
     }
 }

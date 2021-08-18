@@ -18,7 +18,7 @@ public class Bowl extends BaseTimeEntity {
     @Column(name = "bowl_id")
     private Long id;
 
-    @Lob
+    @Column(unique = true)
     private String info;
     private String name;
 
