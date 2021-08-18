@@ -1,4 +1,4 @@
-package org.techtown.catsby.QRcode;
+package org.techtown.catsby.qrcode;
 
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -21,9 +21,9 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.zxing.WriterException;
 
-import org.techtown.catsby.QRcode.data.model.Bowl;
-import org.techtown.catsby.QRcode.data.model.BowlResponse;
-import org.techtown.catsby.QRcode.data.service.QRBowlService;
+import org.techtown.catsby.qrcode.data.model.Bowl;
+import org.techtown.catsby.qrcode.data.model.BowlResponse;
+import org.techtown.catsby.qrcode.data.service.QRBowlService;
 import org.techtown.catsby.R;
 import org.techtown.catsby.retrofit.RetrofitClient;
 
@@ -33,7 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class qrcodeCreateActivity extends AppCompatActivity {
+public class QrcodeCreateActivity extends AppCompatActivity {
 
     // variables for imageview, edittext,
     // button, bitmap and qrencoder.

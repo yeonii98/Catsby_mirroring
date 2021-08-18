@@ -1,8 +1,8 @@
-package org.techtown.catsby.QRcode.data.service;
+package org.techtown.catsby.qrcode.data.service;
 
-import org.techtown.catsby.QRcode.data.model.Bowl;
-import org.techtown.catsby.QRcode.data.model.BowlResponse;
-import org.techtown.catsby.QRcode.data.model.BowlUserRequest;
+import org.techtown.catsby.qrcode.data.model.Bowl;
+import org.techtown.catsby.qrcode.data.model.BowlResponse;
+import org.techtown.catsby.qrcode.data.model.BowlUserRequest;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
