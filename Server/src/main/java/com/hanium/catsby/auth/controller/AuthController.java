@@ -1,6 +1,7 @@
 package com.hanium.catsby.auth.controller;
 
 import com.google.firebase.auth.FirebaseAuthException;
+import com.hanium.catsby.auth.domain.AuthResponse;
 import com.hanium.catsby.auth.service.AuthService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,8 +22,8 @@ public class AuthController {
     @PostMapping(value = "/kakao")
     public ResponseEntity<AuthResponse> authKakao(@RequestBody AuthRequest request) throws FirebaseAuthException {
         String accessToken = request.getAccessToken();
-        String customToken = authService.createCustomToken(accessToken);
-        return ResponseEntity.ok(new AuthResponse(customToken));
+        AuthResponse response = authService.createCustomToken(accessToken);
+        return ResponseEntity.ok(response);
     }
 
     @Data
@@ -30,9 +31,5 @@ public class AuthController {
         private String accessToken;
     }
 
-    @Data
-    @AllArgsConstructor
-    static class AuthResponse {
-        private String customToken;
-    }
+
 }

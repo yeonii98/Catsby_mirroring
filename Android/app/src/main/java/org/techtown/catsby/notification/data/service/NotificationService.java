@@ -21,5 +21,5 @@ public interface NotificationService {
     Call<NotificationList> getNotifications(@Path("uid") String uid, @Query("page") int page);
 
     @PATCH("/user/token/{uid}")
-    Call<ApiResponse> updateFCMToken(@Path("uid") String uid, @Body FCMToken toekn);
+    Call<ApiResponse> updateFCMToken(@Path("uid") String uid, @Body FCMToken token);
 }

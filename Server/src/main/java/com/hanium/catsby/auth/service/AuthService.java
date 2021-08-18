@@ -2,14 +2,17 @@ package com.hanium.catsby.auth.service;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.UserRecord;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.hanium.catsby.auth.domain.AuthResponse;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Map;
 
 import static com.google.firebase.auth.UserRecord.*;
 
@@ -17,7 +20,9 @@ import static com.google.firebase.auth.UserRecord.*;
 public class AuthService {
 
     // firebase custom token 생성
-    public String createCustomToken(String accessToken) throws FirebaseAuthException {
+    public AuthResponse createCustomToken(String accessToken) throws FirebaseAuthException {
+        AuthResponse response = new AuthResponse();
+
         String email = getKakaoEmail(accessToken);
         if (email == null)
             return null;
@@ -26,10 +31,14 @@ public class AuthService {
         if (uid == null) {
             // 기존 사용자 uid
             uid = FirebaseAuth.getInstance().getUserByEmail(email).getUid();
+            response.setSaved(true);
+        } else {
+            response.setSaved(false);
         }
 
         String customToken = FirebaseAuth.getInstance().createCustomToken(uid);
-        return customToken;
+        response.setCustomToken(customToken);
+        return response;
     }
 
     public String getKakaoEmail(String accessToken) {
@@ -63,15 +72,18 @@ public class AuthService {
     }
 
     // firebase 인증 사용자 생성
-    private String createUser(String email)  {
+    public String createUser(String email) {
         try {
-            if (FirebaseAuth.getInstance().getUserByEmail(email) == null) {
-                CreateRequest request = new CreateRequest().setEmail(email);
-                return FirebaseAuth.getInstance().createUser(request).getUid();
-            }
+            FirebaseAuth.getInstance().getUserByEmail(email);
+            return null;
         } catch (FirebaseAuthException e) {
-            e.printStackTrace();
+            CreateRequest request = new CreateRequest().setEmail(email);
+            try {
+                return FirebaseAuth.getInstance().createUser(request).getUid();
+            } catch (FirebaseAuthException ex) {
+                ex.printStackTrace();
+            }
         }
-        return null;
+        return  null;
     }
 }
