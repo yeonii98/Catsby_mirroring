@@ -6,13 +6,20 @@ public class Feed {
     private String nickName;
     private int img;
     private String content;
+    private Long like;
 
-    public Feed(int id, int bowlImg, String nickName, int img, String content) {
+
+    public Feed(int id, int bowlImg, String nickName, int img, String content, long like) {
         this.id = id;
         this.bowlImg = bowlImg;
         this.nickName= nickName;
         this.img = img;
         this.content = content;
+        this.like = like;
+    }
+
+    public long getLike(){
+        return like;
     }
 
     public int getId() {
