@@ -1,4 +1,7 @@
-package org.techtown.catsby.retrofit.dto;
+package org.techtown.catsby.setting.data.model;
+
+import org.techtown.catsby.community.data.model.TownCommunity;
+import org.techtown.catsby.retrofit.dto.BowlCommunity;
 
 public class MyPost {
     private int myPost_id;

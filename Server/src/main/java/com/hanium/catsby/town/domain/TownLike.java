@@ -1,4 +1,4 @@
-package com.hanium.catsby.Town.domain;
+package com.hanium.catsby.town.domain;
 
 import com.hanium.catsby.util.BaseTimeEntity;
 import com.hanium.catsby.user.domain.Users;
@@ -19,14 +19,15 @@ public class TownLike extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int townLike_id;
+    @Column(name = "townLike_id")
+    private int id;
 
-    @ManyToOne	(fetch = FetchType.LAZY)
+    @ManyToOne	(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")//user_id라는 컬럼이 만들어짐
     private Users user;
 
-    @OneToOne	(fetch = FetchType.LAZY)
+    @ManyToOne	(fetch = FetchType.EAGER)
     @JoinColumn(name = "townCommunity_id")//town_community_id_Id라는 컬럼이 만들어짐
-    private com.hanium.catsby.Town.domain.TownCommunity townCommunity;
+    private TownCommunity townCommunity;
 }
 

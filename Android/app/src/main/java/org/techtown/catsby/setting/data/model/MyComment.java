@@ -1,4 +1,7 @@
-package org.techtown.catsby.retrofit.dto;
+package org.techtown.catsby.setting.data.model;
+
+import org.techtown.catsby.community.data.model.TownComment;
+import org.techtown.catsby.retrofit.dto.BowlComment;
 
 public class MyComment {
     private int myComment_id;

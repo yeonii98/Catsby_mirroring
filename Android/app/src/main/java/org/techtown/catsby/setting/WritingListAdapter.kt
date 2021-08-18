@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.catsbe.writingList
+import com.example.catsby.writingList
 import kotlinx.android.synthetic.main.writinglist.view.*
 import org.techtown.catsby.R
 
