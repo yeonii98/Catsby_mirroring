@@ -3,6 +3,7 @@ package org.techtown.catsby.retrofit;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.techtown.catsby.QRcode.data.service.BowlService;
 import org.techtown.catsby.login.data.service.LoginService;
 import org.techtown.catsby.notification.data.service.NotificationService;
 
@@ -37,6 +38,10 @@ public class RetrofitClient {
 
     public static LoginService getLoginService() {
         return getInstacne().create(LoginService.class);
+    }
+
+    public static BowlService getBowlService() {
+        return getInstacne().create(BowlService.class);
     }
 
 }

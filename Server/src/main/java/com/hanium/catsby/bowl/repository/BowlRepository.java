@@ -42,4 +42,13 @@ public class BowlRepository {
                 .setParameter("bowlId", bowlId)
                 .getResultList();
     }
+
+    public Bowl findByBowlInfo(String info) {
+        return em.createQuery(
+                "select b" +
+                        " from Bowl b" +
+                        " where b.info = :info", Bowl.class)
+                .setParameter("info", info)
+                .getSingleResult();
+    }
 }
