@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -26,6 +28,7 @@ public class CommentlistActivity extends AppCompatActivity {
     TextView commentlist_text;
     TextView commentlist_username;
     ImageView commentlist_image;
+    TextView commentlist_date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,5 +52,14 @@ public class CommentlistActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    /*
+    @NonNull
+    @Override
+    public FragmentCommunity.RecyclerAdapter.ItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.comment_list_item,
+                viewGroup, false);
+        return new FragmentCommunity.RecyclerAdapter.ItemViewHolder(view);
+    } */
 
 }
