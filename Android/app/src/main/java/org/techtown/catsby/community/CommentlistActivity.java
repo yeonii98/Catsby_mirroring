@@ -7,23 +7,32 @@ import androidx.appcompat.widget.Toolbar;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.techtown.catsby.R;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class CommentlistActivity extends AppCompatActivity {
 
-    EditText addcomment;
+    EditText commentlist_add;
     ImageView image_profile;
-    TextView post;
+    Button commentlist_postbtn;
+    Button commentlist_delete;
+    Button commentlist_update;
+    TextView commentlist_text;
+    TextView commentlist_username;
+    ImageView commentlist_image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_commentlist);
 
+        //뒤로가기
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 

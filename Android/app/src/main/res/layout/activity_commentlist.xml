@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <include
@@ -11,13 +12,59 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyceler_view2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/bottom"
-        android:layout_marginTop="433dp"
-        android:layout_marginBottom="439dp" />
+
+    <LinearLayout
+        android:layout_width="500dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="60dp">
+
+        <ImageView
+            android:id="@+id/commentlist_image"
+            android:layout_width="49dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/black" />
+
+        <TextView
+            android:id="@+id/commentlist_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="25dp"
+            android:text="닉네임"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/commentlist_text"
+            android:layout_width="146dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="25dp"
+            android:layout_weight="1"
+            android:text="댓글 리스트입니다...." />
+
+        <Button
+            android:id="@+id/commentlist_update"
+            android:layout_marginTop="10dp"
+            android:layout_width="15dp"
+            android:layout_height="34dp"
+            android:layout_weight="1"
+            android:text="수정"
+            android:textSize="11sp" />
+
+        <Button
+            android:id="@+id/commentlist_delete"
+            android:layout_marginTop="10dp"
+            android:layout_width="15dp"
+            android:layout_height="34dp"
+            android:layout_weight="1"
+            android:text="삭제"
+            android:layout_marginRight="10dp"
+            android:textSize="11sp" />
+
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -27,36 +74,36 @@
         android:padding="4dp"
         android:layout_alignParentBottom="true">
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:id="@+id/image_profile"/>
+            android:id="@+id/image_profile"
+            android:layout_marginLeft="5dp"
+            android:background="@color/black"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/image_profile"
             android:hint="댓글을 입력하세요..."
-            android:id="@+id/add_comment"
+            android:id="@+id/commentlist_add"
             android:layout_centerVertical="true"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="12dp"
             android:layout_marginEnd="10dp"
             android:background="@android:color/transparent"
-            android:layout_toLeftOf="@+id/post"/>
+            android:layout_toLeftOf="@+id/commentlist_postbtn"/>
 
-        <TextView
-            android:layout_width="wrap_content"
+        <Button
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:id="@+id/post"
+            android:id="@+id/commentlist_postbtn"
             android:text="게시"
             android:layout_marginEnd="5dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:textColor="@color/colorPrimary"/>
-
+            android:textColor="@color/black"/>
 
 
     </RelativeLayout>
-
 
 </RelativeLayout>
