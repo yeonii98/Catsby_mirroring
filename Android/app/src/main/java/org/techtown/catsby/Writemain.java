@@ -50,6 +50,12 @@ public class Writemain extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_writemain);
 
+        //뒤로가기 화살표
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         tedPermission();
         findViewById(R.id.btnGallery).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +76,8 @@ public class Writemain extends AppCompatActivity{
         });
 
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

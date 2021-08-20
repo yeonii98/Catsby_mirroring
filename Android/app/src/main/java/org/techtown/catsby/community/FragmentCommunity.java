@@ -240,7 +240,7 @@ public class FragmentCommunity extends Fragment {
             itemViewHolder.chatbubble.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), commentlistActivity.class);
+                    Intent intent = new Intent(getActivity(), CommentlistActivity.class);
                     startActivity(intent);
                 }
             });
