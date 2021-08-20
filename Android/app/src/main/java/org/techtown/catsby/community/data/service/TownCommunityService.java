@@ -17,8 +17,8 @@ public interface TownCommunityService {
     @GET("townCommunity")
     Call<List<TownCommunity>> getTownList();
 
-    @POST("townCommunity/write")
-    Call<Void> postTown(@Body TownCommunity townCommunity);
+    @POST("townCommunity/write/{uid}")
+    Call<Void> postTown(@Body TownCommunity townCommunity, @Path("uid") String uid);
 
     @PUT("townCommunity/{id}")
     Call<Void> putTown(@Path("id") int id, @Body TownCommunity townCommunity);

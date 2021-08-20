@@ -34,8 +34,8 @@ public class TownCommunityService {
     }
 
     @Transactional
-    public void writeTownCommunity(TownCommunity townCommunity) {//글 쓰기
-        townCommunity.setUser(userRepository.findUser((long) 2));
+    public void writeTownCommunity(TownCommunity townCommunity, String uid) {//글 쓰기
+        townCommunity.setUser(userRepository.findUserByUid(uid));
         townCommunity.setDate(currentTime());
         townCommunityRepository.save(townCommunity);
 

@@ -10,13 +10,13 @@ public class TownCommunity {
 
     private User user;
 
-    private String image;
-
     private String content;
 
     private String title;
 
     private String date;
+
+    private String image;
 
     private List<TownLike> townLike;
 
@@ -33,6 +33,12 @@ public class TownCommunity {
     public TownCommunity(String title, String content){
         this.title = title;
         this.content = content;
+    }
+
+    public TownCommunity(String title, String content, String image){
+        this.title = title;
+        this.content = content;
+        this.image = image;
     }
 
     public int getId() {

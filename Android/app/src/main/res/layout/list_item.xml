@@ -136,8 +136,7 @@
         <Button
             android:id="@+id/town_commentBtn"
             android:layout_width="67dp"
-            android:layout_height="29dp"
-            android:background="#9F9F9F"
+            android:layout_height="match_parent"
             android:text="게시" />
 
     </LinearLayout>
