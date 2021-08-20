@@ -5,7 +5,7 @@ import com.google.gson.GsonBuilder;
 
 
 import org.techtown.catsby.community.data.service.TownLikeService;
-import org.techtown.catsby.QRcode.data.service.QRBowlService;
+import org.techtown.catsby.qrcode.data.service.QRBowlService;
 import org.techtown.catsby.login.data.service.LoginService;
 import org.techtown.catsby.notification.data.service.NotificationService;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;

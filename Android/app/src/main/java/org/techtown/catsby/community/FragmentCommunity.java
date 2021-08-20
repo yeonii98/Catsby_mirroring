@@ -184,6 +184,7 @@ public class FragmentCommunity extends Fragment {
             itemViewHolder.img.setBackgroundColor(Color.LTGRAY);
             itemViewHolder.date.setText(memo.getDate());
             itemViewHolder.likeCnt.setText(Integer.toString(memo.getLikeCnt()));
+
             itemViewHolder.deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -235,6 +236,15 @@ public class FragmentCommunity extends Fragment {
                     startActivityForResult(intent,1);
                 }
             });
+
+            itemViewHolder.chatbubble.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), commentlistActivity.class);
+                    startActivity(intent);
+                }
+            });
+
 
             itemViewHolder.commentBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -358,6 +368,8 @@ public class FragmentCommunity extends Fragment {
             private TextView likeCnt;
             private ImageView likeImg;
 
+            private ImageView chatbubble;
+
             public ItemViewHolder(@NonNull View itemView) {
                 super(itemView);
 
@@ -368,6 +380,7 @@ public class FragmentCommunity extends Fragment {
                 deleteBtn = itemView.findViewById(R.id.town_delete);
                 updateBtn = itemView.findViewById(R.id.town_update);
                 date = itemView.findViewById(R.id.town_date);
+                chatbubble = itemView.findViewById(R.id.town_comment);
 
                 commentBtn = itemView.findViewById(R.id.town_commentBtn);
                 commentContent = itemView.findViewById(R.id.town_comment_content);
