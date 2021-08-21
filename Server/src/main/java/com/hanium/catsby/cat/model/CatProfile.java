@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 public class CatProfile {
     //@Id
     //@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer cat_id;
+    private int cat_id;
 
     private String name;
     private String health;
@@ -39,6 +39,7 @@ public class CatProfile {
         this.created_time = created_time;
         this.updated_time = updated_time;
     }
+
 
     public Integer getCat_id() {
         return cat_id;

@@ -55,10 +55,10 @@ public class CatProfileController {
             @RequestParam(value = "name") String name,
             @RequestParam(value = "health", required = false) String health,
             @RequestParam(value = "address", required = false) String address,
-            @RequestParam(value = "gender", required = false) boolean gender,
+            @RequestParam(value = "gender", required = false) Boolean gender,
             @RequestParam(value = "image", required = false) Blob image,
             @RequestParam(value = "content", required = false) String content,
-            @RequestParam(value = "spayed", required = false) boolean spayed)
+            @RequestParam(value = "spayed", required = false) Boolean spayed)
     {
         CatProfile catProfile = new CatProfile(name, health, address, gender, image, content, spayed);
         mapper.insertCatProfile(name,health,address,gender,image,content,spayed);
@@ -69,12 +69,12 @@ public class CatProfileController {
     @PutMapping("/cat/{cat_id}")
     public void postCatProfile(@PathVariable("cat_id") int cat_id,
                                @RequestParam(value="name") String name,
-                               @RequestParam(value="health", required = false) String health ,
+                               @RequestParam(value="health", required = false)   String health ,
                                @RequestParam(value="address", required = false) String address,
-                               @RequestParam(value="gender", required = false) boolean gender,
+                               @RequestParam(value="gender", required = false) Boolean gender,
                                @RequestParam(value="image", required = false) Blob image,
                                @RequestParam(value="content", required = false) String content,
-                               @RequestParam(value="spayed", required = false) boolean spayed){
+                               @RequestParam(value="spayed", required = false) Boolean spayed){
 
         mapper.updateCatProfile(cat_id,name,health,address,gender,image,content,spayed);
     }
