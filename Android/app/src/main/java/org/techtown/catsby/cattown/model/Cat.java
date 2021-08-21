@@ -1,16 +1,25 @@
 package org.techtown.catsby.cattown.model;
 
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 
 public class Cat {
-    private int catpicture;
+    private Integer catpicture;
     private String name;
     private int helppeople;
+    private int isdone;
 
-    public int getCatPicture() {
+    public Cat(String name, Integer catpicture, int isdone) {
+        this.name = name;
+        this.catpicture = catpicture;
+        //this.helpPeople = helpPeople;
+        this.isdone = isdone;
+    }
+
+    public Integer getCatPicture() {
         return catpicture;
     }
-    public void setCatPicture(int catpicture) {
+    public void setCatPicture(Integer catpicture) {
         this.catpicture = catpicture;
     }
 
@@ -27,6 +36,8 @@ public class Cat {
     public void setHelpPeople(int helppeople) {
         this.helppeople=helppeople;
     }
+
+
 }
 
 
