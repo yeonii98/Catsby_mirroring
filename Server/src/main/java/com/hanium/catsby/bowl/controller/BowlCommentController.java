@@ -65,13 +65,9 @@ public class BowlCommentController {
     }
 
     @GetMapping("/bowl-comments/{communityId}")
-    public BowlCommentResult bowlComment(@PathVariable("communityId") Long communityId) {
-        List<BowlComment> findcomment = bowlCommentService.findCommentByCommunityId(communityId);
-        List<BowlCommentDto> collect = findcomment.stream().map(c -> new BowlCommentDto(c.getContent(), c.getCreatedDate(), c.getUser(), c.getBowlCommunity()))
-                .collect(Collectors.toList());
-        return new BowlCommentResult(collect);
-
-        //return findBowls;
+    public List<BowlComment> bowlComment(@PathVariable("communityId") Long communityId) {
+        List<BowlComment> findComment = bowlCommentService.findCommentByCommunityId(communityId);
+        return findComment;
     }
 
     @Data
