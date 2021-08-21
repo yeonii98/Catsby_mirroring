@@ -67,7 +67,6 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
 
     ArrayList<Long> tempCommunityId = new ArrayList<>();
 
-
     BowlService bowlService = RetrofitClient.getBowlService();
     BowlCommunityService bowlCommunityService = RetrofitClient.getBowlCommunityService();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
