@@ -36,13 +36,13 @@ public class TownCommentService {
     }
 
     @Transactional
-    public void writeTownComment(int id, TownComment requestTownComment){
+    public void writeTownComment(int id, String uid, TownComment requestTownComment){
         TownCommunity townCommunity = townCommunityRepository.findById(id)
                 .orElseThrow(()->{
                     return new IllegalArgumentException("댓글 쓰기 실패 : 게시글 id를 찾을 수 없습니다.");
                 }); //영속화 완료
 
-        requestTownComment.setUser(userRepository.findUser((long) 2));
+        requestTownComment.setUser(userRepository.findUserByUid(uid));
         requestTownComment.setTownCommunity(townCommunity);
         requestTownComment.setDate(currentTime());
         townCommentRepository.save(requestTownComment);

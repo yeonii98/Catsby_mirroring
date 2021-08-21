@@ -7,12 +7,13 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 
 public interface MyWritingService {
 
-    @GET("myPost")
-    Call<List<MyPost>> getMyPosts();
+    @GET("myPost/{uid}")
+    Call<List<MyPost>> getMyPosts(@Path("uid") String uid);
 
-    @GET("myComment")
-    Call<List<MyComment>> getMyComments();
+    @GET("myComment/{uid}")
+    Call<List<MyComment>> getMyComments(@Path("uid") String uid);
 }

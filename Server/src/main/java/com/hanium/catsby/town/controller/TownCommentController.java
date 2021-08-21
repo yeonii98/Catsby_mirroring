@@ -15,9 +15,9 @@ public class TownCommentController {
     NotificationService notificationService;
 
     //댓글 쓰기
-    @PostMapping("townCommunity/{id}/comment")
-    public String writeTownComment(@PathVariable int id, @RequestBody TownComment townComment){//현재 유저의 정보도 넣어야 함
-        townCommentService.writeTownComment(id, townComment);
+    @PostMapping("townCommunity/{id}/comment/{uid}")
+    public String writeTownComment(@PathVariable int id, @PathVariable String uid, @RequestBody TownComment townComment){//현재 유저의 정보도 넣어야 함
+        townCommentService.writeTownComment(id, uid, townComment);
 
 //        String content = townComment.getTownCommunity().getTitle();
 //        String message = id + NotificationUtil.makeNotification(content, NotificationType.COMMENT);

@@ -6,16 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_writing_list.*
 import org.techtown.catsby.R
 import org.techtown.catsby.retrofit.RetrofitClient
-import org.techtown.catsby.setting.data.model.MyComment
-import org.techtown.catsby.setting.data.model.MyPost
-import org.techtown.catsby.setting.data.service.MyWritingService
 import org.techtown.catsby.setting.Comment
 import org.techtown.catsby.setting.CommentAdapter
 import org.techtown.catsby.setting.Writing
 import org.techtown.catsby.setting.WritingListAdapter
+import org.techtown.catsby.setting.data.model.MyComment
+import org.techtown.catsby.setting.data.model.MyPost
+import org.techtown.catsby.setting.data.service.MyWritingService
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,6 +35,7 @@ class writingList : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var myWritingService: MyWritingService? = null
+    private var uid = FirebaseAuth.getInstance().uid
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +60,7 @@ class writingList : Fragment() {
         val adapter1 = WritingListAdapter()
 
         myWritingService = RetrofitClient.getMyWritingService()
-        myWritingService?.myPosts?.enqueue(object : Callback<List<MyPost>> {
+        myWritingService?.getMyPosts(uid)?.enqueue(object : Callback<List<MyPost>> {
             override fun onResponse(call: Call<List<MyPost>>, response: Response<List<MyPost>>) {
                 if (response.isSuccessful) {
                     //정상적으로 통신이 성공된 경우
@@ -99,7 +101,7 @@ class writingList : Fragment() {
             recyclerView1.layoutManager = LinearLayoutManager(context)
             val adapter2 = CommentAdapter()
 
-            myWritingService?.myComments?.enqueue(object : Callback<List<MyComment>> {
+            myWritingService?.getMyComments(uid)?.enqueue(object : Callback<List<MyComment>> {
                 override fun onResponse(call: Call<List<MyComment>>, response: Response<List<MyComment>>) {
                     if (response.isSuccessful) {
                         //정상적으로 통신이 성공된 경우
