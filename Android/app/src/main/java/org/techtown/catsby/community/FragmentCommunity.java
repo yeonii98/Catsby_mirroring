@@ -5,12 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -76,8 +74,8 @@ public class FragmentCommunity extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerview);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+//        recyclerView.setLayoutManager(linearLayoutManager);
 
         recyclerAdapter = new RecyclerAdapter(memoList);
         recyclerView.setAdapter(recyclerAdapter);
@@ -93,7 +91,7 @@ public class FragmentCommunity extends Fragment {
                 if(response.isSuccessful()){
                     //정상적으로 통신이 성공된 경우
                     List<TownCommunity> result = response.body();
-                    index = result.get(result.size() - 1).getId();
+//                    index = result.get(result.size() - 1).getId();
 
                     for(int i = 0; i < result.size(); i++){
                         if(result.get(i).getImage() != null)
@@ -327,7 +325,9 @@ public class FragmentCommunity extends Fragment {
             itemViewHolder.chatbubble.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), CommentlistActivity.class);
+                    Intent intent = new Intent(getActivity(), TownCommentListActivity.class);
+                    intent.putExtra("id",listdata.get(position).getId());
+                    System.out.println(listdata.get(position).getId());
                     startActivity(intent);
                 }
             });

@@ -9,6 +9,9 @@ public class TownComment {
     private String content;
     private String date;
 
+    TownComment(){
+
+    }
     public TownComment(String content){
         this.content = content;
     }
