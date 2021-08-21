@@ -58,6 +58,7 @@ public class BowlActivity extends AppCompatActivity {
         //fragmentBowlInfo.setArguments(bundle);
 
         //뷰페이저 세팅
+        
         ViewPager viewPager = findViewById(R.id.viewPager);
         fragmentPagerAdapter = new BowlViewPagerAdapter(getSupportFragmentManager());
 
