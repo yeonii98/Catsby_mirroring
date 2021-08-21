@@ -59,7 +59,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         private ImageView feedImg;
         private TextView content;
 
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             bowlImg = itemView.findViewById(R.id.feed_bowlImg);
@@ -115,8 +114,13 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             public void onClick(View v) {
                 Context context = view.getContext();
                 Intent intent = new Intent(context, CommentlistActivity.class);
+                System.out.println("intent = !!!!!!!!!!!!!!!!! " + itemData.size());
 
                 List<BowlComment> tempComment = itemData.get(position).getBowlComments().get(position);
+
+                System.out.println("position = " + position);
+                System.out.println("tempComment = @@@@@@@@@@@@@ " + tempComment.size());
+
                 intent.putExtra("comment", (Serializable) tempComment);
 
                 context.startActivity(intent);

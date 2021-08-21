@@ -47,7 +47,6 @@ import retrofit2.Response;
 
 import static java.time.LocalDateTime.now;
 
-//import com.like.LikeButton;
 public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterClickListener {
     private Context mContext;
 
@@ -74,7 +73,6 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
     public static ArrayList<List<BowlComment>> bowlCommunityComment = new ArrayList<List<BowlComment>>();
 
     ArrayList<Long> tempCommunityId = new ArrayList<>();
-
 
     BowlService bowlService = RetrofitClient.getBowlService();
     BowlCommunityService bowlCommunityService = RetrofitClient.getBowlCommunityService();
