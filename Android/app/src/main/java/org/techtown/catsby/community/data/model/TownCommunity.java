@@ -20,12 +20,22 @@ public class TownCommunity {
 
     private List<TownLike> townLike;
 
+    private List<TownComment> townComment;
+
     public List<TownLike> getTownLike() {
         return townLike;
     }
 
     public void setTownLike(List<TownLike> townLike) {
         this.townLike = townLike;
+    }
+
+    public List<TownComment> getTownComments() {
+        return townComment;
+    }
+
+    public void setTownComments(List<TownComment> townComments) {
+        this.townComment = townComments;
     }
 
     public boolean anonymous;
