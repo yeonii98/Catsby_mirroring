@@ -4,6 +4,7 @@ import com.hanium.catsby.bowl.domain.Bowl;
 import com.hanium.catsby.bowl.domain.BowlUser;
 import com.hanium.catsby.bowl.repository.BowlRepository;
 import com.hanium.catsby.bowl.repository.BowlUserRepository;
+import com.hanium.catsby.notification.exception.DuplicateBowlInfoException;
 import com.hanium.catsby.user.domain.Users;
 import com.hanium.catsby.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,8 @@ public class BowlService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Long enroll(Bowl bowl){
+    public Long enroll(Bowl bowl) throws DuplicateBowlInfoException {
+        isDuplicatedBowlInfo(bowl.getInfo());
         bowlRepository.save(bowl);
         return bowl.getId();
     }
@@ -59,10 +61,17 @@ public class BowlService {
     @Transactional
     public Long saveBowlUser(String bowlInfo, String  uid) {
         Users user = userRepository.findUserByUid(uid);
-        Bowl bowl = bowlRepository.findByBowlInfo(bowlInfo);
+        Bowl bowl = bowlRepository.findByBowlInfo(bowlInfo).get(0);
 
         bowlUserRepository.save(new BowlUser(bowl, user));
 
         return bowl.getId();
+    }
+
+    public void isDuplicatedBowlInfo(String bowlIfo) throws DuplicateBowlInfoException {
+        List<Bowl> bowl = bowlRepository.findByBowlInfo(bowlIfo);
+        if (bowl.size() > 0) {
+            throw new DuplicateBowlInfoException("중복 되었습니다.");
+        }
     }
 }
