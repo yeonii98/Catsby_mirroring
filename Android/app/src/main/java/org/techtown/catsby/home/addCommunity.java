@@ -48,6 +48,7 @@ public class addCommunity extends AppCompatActivity {
                     Gson gson = new GsonBuilder()
                             .setLenient()
                             .create();
+
                     Retrofit retrofit = new Retrofit.Builder()
                             .baseUrl("http://10.0.2.2:8080/")
                             .addConverterFactory(GsonConverterFactory.create(gson))

@@ -1,16 +1,23 @@
 package org.techtown.catsby.community;
 
+import android.graphics.Bitmap;
+
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.Data;
+
+@Data
 public class Memo {
     private int id;
+    private String uid;
     private String maintext; //제목
     private String subtext; //내용
     private String nickname; // 닉네임
     private String date; // 날짜
     private int isdone; //완료여부
     private boolean push = true;
+    private Bitmap img;
     private int likeCnt = 0; //좋아요 개수
 
     public Memo(){
@@ -25,20 +32,29 @@ public class Memo {
         this.push = push;
     }
 
-    public Memo(int id, String maintext, String subtext, String nickname, String date, int likeCnt ,int isdone) {
+    public Memo(int id, String uid, String maintext, String subtext, String nickname, String date, int likeCnt, Bitmap img) {
         this.id = id;
+        this.uid = uid;
         this.maintext = maintext;
         this.subtext = subtext;
         this.nickname = nickname;
         this.date = date;
         this.likeCnt = likeCnt;
-        this.isdone = isdone;
+        this.img = img;
     }
 
-    public Memo(String title, String content, int i) {
+    public Memo(String uid, String maintext, String subtext, String nickname, String date,Bitmap bm) {
+        this.uid = uid;
+        this.maintext = maintext;
+        this.subtext = subtext;
+        this.nickname = nickname;
+        this.date = date;
+        this.img = bm;
+    }
+
+    public Memo(String title, String content) {
         this.maintext = title;
         this.subtext = content;
-        this.isdone = i;
     }
 
 
@@ -48,6 +64,14 @@ public class Memo {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getMaintext() {
@@ -98,5 +122,12 @@ public class Memo {
         this.likeCnt = likeCnt;
     }
 
+    public Bitmap getImg() {
+        return img;
+    }
+
+    public void setImg(Bitmap img) {
+        this.img = img;
+    }
 }
 

@@ -4,6 +4,7 @@ import com.hanium.catsby.user.service.MyCommentService;
 import com.hanium.catsby.user.domain.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -14,9 +15,8 @@ public class MyCommentController {
     @Autowired
     MyCommentService myCommentService;
 
-    @GetMapping("/myComment")
-    public List myPost(Users user){
-        return myCommentService.listMyComment((long) 2);
+    @GetMapping("/myComment/{uid}")
+    public List myPost(@PathVariable String uid){
+        return myCommentService.listMyComment(uid);
     }
-
 }

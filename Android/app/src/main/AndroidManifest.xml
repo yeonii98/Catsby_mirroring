@@ -33,8 +33,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-
-        <activity android:name=".Bowladd"/>
+        <activity android:name=".community.CommentlistActivity"></activity>
+        <activity android:name=".Bowladd" />
         <activity android:name=".community.AddActivity" />
         <activity android:name=".community.UpdateActivity" />
         <activity android:name=".Writemain" />
@@ -56,7 +56,6 @@
             android:value="AIzaSyCRJVQUNcW1NU0pkH30EhQFWQ0ZkO3An4I" />
 
         <activity android:name=".MainActivity" />
-
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".home.BowlActivity" />
         <activity android:name=".qrcode.QrcodeActivity" />

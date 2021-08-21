@@ -11,8 +11,8 @@ import retrofit2.http.Path;
 
 public interface TownCommentService {
 
-    @POST("townCommunity/{id}/comment")
-    Call<Void> postTownComment(@Path("id") int id, @Body TownComment townComment);
+    @POST("townCommunity/{id}/comment/{uid}")
+    Call<Void> postTownComment(@Path("id") int id,@Path("uid") String uid, @Body TownComment townComment);
 
     @PUT("townCommunity/{id}/comment/{townComment_id}")
     Call<Void> putTownComment(@Path("id") int id, @Path("townComment_id") int townComment_id, @Body TownComment townComment);
