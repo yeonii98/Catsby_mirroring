@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.techtown.catsby.R;
-import org.techtown.catsby.community.commentlistActivity;
+import org.techtown.catsby.community.CommentlistActivity;
 import org.techtown.catsby.home.FragmentHome;
 import org.techtown.catsby.home.model.Feed;
 import org.techtown.catsby.retrofit.RetrofitClient;
@@ -114,7 +114,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 Context context = view.getContext();
-                Intent intent = new Intent(context, commentlistActivity.class);
+                Intent intent = new Intent(context, CommentlistActivity.class);
 
                 List<BowlComment> tempComment = itemData.get(position).getBowlComments().get(position);
                 intent.putExtra("comment", (Serializable) tempComment);

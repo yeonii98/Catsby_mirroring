@@ -2,6 +2,7 @@ package org.techtown.catsby;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
@@ -81,17 +82,15 @@ public class Writemain extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_writemain);
 
-<<<<<<< HEAD
         if (user != null) {
             loadBowls(user.getUid());
         }
-=======
-        //뒤로가기 화살표
+
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
->>>>>>> a83e15367d1e2441f45ce17487fc0bf3dc68474a
+
 
         tedPermission();
         findViewById(R.id.btnGallery).setOnClickListener(new View.OnClickListener() {
@@ -119,12 +118,12 @@ public class Writemain extends AppCompatActivity{
                 EditText postContext = (EditText)findViewById(R.id.context);
                 allContext = (String) postContext.getText().toString();
                 savePost(bowlList.get(cPosition).getId(), user.getUid(), allContext);
+                postContext.setText("게시글 저장 완료");
             }
         });
 
     }
 
-<<<<<<< HEAD
     private void savePost(int id, String uid, String context) {
         BowlCommunityPost bowlCommunityPost = new BowlCommunityPost(id, uid, context);
         System.out.println("id = " + id);
@@ -178,9 +177,6 @@ public class Writemain extends AppCompatActivity{
         cPosition = clickPosition;
         //System.out.println("click ~~~ position = " + clickPosition);
     }
-=======
->>>>>>> a83e15367d1e2441f45ce17487fc0bf3dc68474a
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
