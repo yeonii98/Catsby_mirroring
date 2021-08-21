@@ -2,6 +2,10 @@ package com.hanium.catsby.util;
 
 import com.hanium.catsby.notification.domain.NotificationType;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+
 public class NotificationUtil {
 
     public static String makeNotification(String content, NotificationType type) {
@@ -21,5 +25,32 @@ public class NotificationUtil {
             message = "님이 \"" + content + "\" 밥그릇에 급여했습니다.";
         }
         return message;
+    }
+
+    public static String getDateDifference(LocalDateTime notificationTime) {
+
+        LocalDateTime today = LocalDateTime.now();
+
+        long years = ChronoUnit.YEARS.between(notificationTime, today);
+        long months = ChronoUnit.MONTHS.between(notificationTime, today);
+        long days = ChronoUnit.DAYS.between(notificationTime, today);
+        long hours = ChronoUnit.HOURS.between(notificationTime, today);
+        long minutes = ChronoUnit.MINUTES.between(notificationTime, today);
+        long seconds = ChronoUnit.SECONDS.between(notificationTime, today);
+
+        if (years == 0 && months == 0 && days == 0 && hours == 0 && minutes == 0) {
+            return seconds + "초 전";
+        } else if (years == 0 && months == 0 && days == 0 && hours == 0) {
+            return minutes + "분 전";
+        } else if (years == 0 && months == 0 && days == 0) {
+            return hours + "시간 전";
+        } else if (years == 0 && months == 0) {
+            return days + "일 전";
+        } else if (years == 0) {
+            return months + "달 전";
+        }
+
+
+        return notificationTime.toLocalDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
     }
 }

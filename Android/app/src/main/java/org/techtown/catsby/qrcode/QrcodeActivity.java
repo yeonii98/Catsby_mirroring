@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 
 import org.techtown.catsby.R;
+import org.techtown.catsby.qrcode.ScannerActivity;
 
 import java.util.ArrayList;
 import java.util.List;

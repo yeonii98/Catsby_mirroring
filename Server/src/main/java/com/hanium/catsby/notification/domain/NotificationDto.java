@@ -1,6 +1,7 @@
 package com.hanium.catsby.notification.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.hanium.catsby.util.NotificationUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -14,12 +15,12 @@ public class NotificationDto {
     private String message;
 
     @JsonFormat(pattern="yyyy.MM.dd", timezone = "Asia/Seoul")
-    private LocalDateTime date;
+    private String date;
 
     public NotificationDto(Notification notification) {
         this.id = notification.getId();
         this.userId = notification.getUser().getId();
         this.message = notification.getMessage();
-        this.date = notification.getCreatedDate();
+        this.date = NotificationUtil.getDateDifference(notification.getCreatedDate());
     }
 }
