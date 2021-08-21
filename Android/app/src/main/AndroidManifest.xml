@@ -38,7 +38,7 @@
         <activity android:name=".community.AddActivity" />
         <activity android:name=".community.UpdateActivity" />
         <activity android:name=".Writemain" />
-        <activity android:name=".QRcode.qrcodeCreateActivity" />
+        <activity android:name=".qrcode.qrcodeCreateActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -59,9 +59,9 @@
 
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".home.BowlActivity" />
-        <activity android:name=".QRcode.qrcodeActivity" />
-        <activity android:name=".QRcode.LoadingActivity" />
-        <activity android:name=".QRcode.scannerActivity" />
+        <activity android:name=".qrcode.qrcodeActivity" />
+        <activity android:name=".qrcode.LoadingActivity" />
+        <activity android:name=".qrcode.scannerActivity" />
         <activity android:name=".notification.NotificationActivity" />
         <activity android:name=".cattown.CatTownDetailActivity" />
         <activity

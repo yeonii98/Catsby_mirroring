@@ -1,4 +1,4 @@
-package org.techtown.catsby.QRcode.data.model;
+package org.techtown.catsby.qrcode.data.model;
 
 public class BowlResponse {
 

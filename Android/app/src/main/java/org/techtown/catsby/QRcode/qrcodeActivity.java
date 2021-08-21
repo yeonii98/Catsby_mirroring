@@ -1,4 +1,4 @@
-package org.techtown.catsby.QRcode;
+package org.techtown.catsby.qrcode;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -12,11 +12,12 @@ import android.view.View;
 import android.widget.Button;
 
 import org.techtown.catsby.R;
+import org.techtown.catsby.qrcode.ScannerActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class qrcodeActivity extends AppCompatActivity {
+public class QrcodeActivity extends AppCompatActivity {
 
     Button btnScan;
     String[] permissions = {
@@ -37,7 +38,7 @@ public class qrcodeActivity extends AppCompatActivity {
         btnScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), scannerActivity.class));
+                startActivity(new Intent(getApplicationContext(), ScannerActivity.class));
             }
         });
 

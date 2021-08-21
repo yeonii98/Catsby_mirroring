@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,19 +27,8 @@ public class Bowl extends BaseTimeEntity {
     @Lob
     private byte[] image;
 
-/*
-    @Column(name = "created_time")
-    private LocalDateTime createDate;
-
-    @Column(name = "updated_time")
-    private LocalDateTime updateDate;
-*/
-
-
-/*
-    public void setCreateDate() {
-        this.createDate = LocalDateTime.now();
-    }*/
+    private String filename;
+    private String path;
 
     @JsonIgnore
     @OneToMany(mappedBy = "bowl", cascade = CascadeType.ALL)

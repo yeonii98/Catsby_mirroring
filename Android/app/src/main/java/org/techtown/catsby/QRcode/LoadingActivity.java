@@ -1,4 +1,4 @@
-package org.techtown.catsby.QRcode;
+package org.techtown.catsby.qrcode;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -160,7 +160,7 @@ public class LoadingActivity extends AppCompatActivity {
             latitude = locationResult.getLastLocation().getLatitude();
             fusedLocationProviderClient.removeLocationUpdates(locationCallback);
 
-            Intent intent = new Intent(LoadingActivity.this, qrcodeActivity.class);
+            Intent intent = new Intent(LoadingActivity.this, QrcodeActivity.class);
             intent.putExtra("latitude", latitude);
             intent.putExtra("longitude", longitude);
             startActivity(intent);
