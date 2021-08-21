@@ -52,8 +52,7 @@ public class BowlCommunityController {
         Long cnt = bowlCommunityService.findLikesByCommunity(communityId);
         return cnt;
     }
-
-
+    
     @Data
     @AllArgsConstructor
     static class BowlCommunityResult<T> {
