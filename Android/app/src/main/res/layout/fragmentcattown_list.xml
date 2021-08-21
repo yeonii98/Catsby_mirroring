@@ -1,35 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="#000000"
+    android:background="#C5C5C5"
     android:layout_width="match_parent"
-    android:layout_height="50dp">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/towncatimage"
-        android:layout_width="110dp"
-        android:layout_height="100dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:src="@drawable/ic_launcher_background"
         android:layout_marginBottom="10dp" />
 
-    <TextView
-        android:id="@+id/towncatname"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="100dp"
-        android:gravity="center_vertical"
-        android:textColor="#FFFFFF"
-        android:textSize="20dp" />
 
-    <TextView
-        android:id="@+id/towncathelppeople"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="100dp"
-        android:gravity="center_vertical"
-        android:textColor="#FFFFFF"
-        android:textSize="20dp" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/towncatname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical"
+            android:textColor="#FFFFFF"
+            android:text="고양이 이름"
+            android:textSize="25dp" />
+
+
+        <TextView
+            android:id="@+id/towncathelppeople"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical"
+            android:textColor="#FFFFFF"
+            android:text="도와주는 사람"
+            android:textSize="10dp" />
+
+        <TextView
+            android:id="@+id/towncatid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical"
+            android:textColor="#FFFFFF"
+            android:text="고양이 아이디"
+            android:visibility="visible"
+            android:textSize="10dp" />
+
+
+    </LinearLayout>
+
+
+
+
+</LinearLayout>

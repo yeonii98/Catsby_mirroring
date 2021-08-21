@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.techtown.catsby.R;
+//import org.techtown.catsby.cattown.FragmentCatTown.OnTimePickerSetListener;
+import org.techtown.catsby.cattown.adapter.FragmentCatTownAdapter;
 import org.techtown.catsby.community.Memo;
 import org.techtown.catsby.retrofit.dto.CatProfile;
 import org.techtown.catsby.retrofit.dto.TownCommunity;
@@ -25,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import java.util.List;
@@ -35,8 +38,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class CatTownDetailActivity extends AppCompatActivity {
-
+public class CatTownDetailActivity extends AppCompatActivity  {
+//implements FragmentCatTown.OnTimePickerSetListener
     private ViewPager2 sliderViewPager;
     private LinearLayout layoutIndicator;
 
@@ -53,7 +56,18 @@ public class CatTownDetailActivity extends AppCompatActivity {
 
     private Button editBtn;
 
+    public int linkedid;
+
     List<CatProfile> catList;
+
+    /*
+    @Override
+    public void onTimePickerSet(int linkid){
+        linkedid = linkid;
+    }
+
+     */
+
 
     private String[] images = new String[] {
             "https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_960_720.jpg",
@@ -68,15 +82,19 @@ public class CatTownDetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //붙여넣기 시작
+        Intent intent = getIntent();
+        String linkedid = intent.getStringExtra("linkedid");
+        System.out.println(linkedid);
+        int linkedid1 = Integer.parseInt(linkedid);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
+
         CatService retrofitService = retrofit.create(CatService.class);
-        Call<CatProfile> call = retrofitService.getCatProfile(1);
+        Call<CatProfile> call = retrofitService.getCatProfile(linkedid1);
         call.enqueue(new Callback<CatProfile>() {
 
 
@@ -189,9 +207,6 @@ public class CatTownDetailActivity extends AppCompatActivity {
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        Intent intent = getIntent();
-        String catName = intent.getStringExtra("id");
 
         catInfo = (TextView) findViewById(R.id.tv_catinfo);
         catAge = (TextView) findViewById(R.id.tv_catage);

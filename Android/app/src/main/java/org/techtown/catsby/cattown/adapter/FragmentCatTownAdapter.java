@@ -23,22 +23,25 @@ public class FragmentCatTownAdapter extends RecyclerView.Adapter<FragmentCatTown
         this.catdata = catdata;
     }
 
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView townCatImage;
         TextView townCatName;
+        TextView townCatId;
         //TextView townHelpPeople;
 
         ViewHolder(View itemView) {
             super(itemView); // 뷰 객체에 대한 참조
             townCatImage = itemView.findViewById(R.id.towncatimage);
             townCatName = itemView.findViewById(R.id.towncatname);
+            townCatId = itemView.findViewById(R.id.towncatid);
             //townHelpPeople = itemView.findViewById(R.id.towncathelppeople);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(),CatTownDetailActivity.class);
-                    intent.putExtra("id", townCatName.getText());
+                    intent.putExtra("linkedid",townCatId.getText());
                     v.getContext().startActivity(intent);
                 }
             });
@@ -58,6 +61,7 @@ public class FragmentCatTownAdapter extends RecyclerView.Adapter<FragmentCatTown
         //이미지 보류
         holder.townCatImage.setImageBitmap(null);
         holder.townCatName.setText(cat.getName());
+        holder.townCatId.setText(cat.getCat_id());
         /*   error   */
         //holder.townHelpPeople.setText(cat.getHelpPeople());
     }

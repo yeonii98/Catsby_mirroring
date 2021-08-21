@@ -1,5 +1,6 @@
 package org.techtown.catsby.cattown;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.Image;
@@ -10,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.jetbrains.annotations.NotNull;
 import org.techtown.catsby.R;
 import org.techtown.catsby.cattown.adapter.FragmentCatTownAdapter;
 import org.techtown.catsby.cattown.addCat.AddCatActivity;
@@ -40,19 +43,34 @@ public class FragmentCatTown extends Fragment {
     private int catpicture;
     private String name;
     private int helppeople;
+    private String linkid = "";
 
+    private TextView tvgoneid;
     List<Cat> catlist;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_cattown, container, false);
-        setHasOptionsMenu(true);
 
         super.onCreate(savedInstanceState);
 
-        catlist = new ArrayList<>();
+        View view = inflater.inflate(R.layout.fragment_cattown, container, false);
+        setHasOptionsMenu(true);
 
-        //붙여넣기 시작
+        recyclerView = (RecyclerView)view.findViewById(R.id.recyceler_view);
+        catList = new ArrayList<>();
+
+        adapter = new FragmentCatTownAdapter(catList);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext(), RecyclerView.VERTICAL, false));
+
+        tvgoneid = (TextView)view.findViewById(R.id.towncatid);
+
+        catpicture = R.drawable.pic_001;
+        name = "Happy";
+        helppeople = 2;
+
+        catlist = new ArrayList<>();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://10.0.2.2:8080/")
@@ -60,18 +78,19 @@ public class FragmentCatTown extends Fragment {
                 .build();
 
         CatService catService1 = retrofit.create(CatService.class);
-
         Call<List<CatProfile>> call = catService1.getCatProfileList();
 
         call.enqueue(new Callback<List<CatProfile>>() {
-
             @Override
             public void onResponse(Call<List<CatProfile>> call, Response<List<CatProfile>> response) {
                 if(response.isSuccessful()){
                     List<CatProfile> result = response.body();
                     for(int i=0; i<result.size(); i++) {
                         //result.get(i).getImage()
-                        Cat cat = new Cat(result.get(i).getCatName(), null,0);
+                        linkid = Integer.toString(result.get(i).getCatId());
+                        Cat cat = new Cat(result.get(i).getCatName(), null, linkid,0);
+                        //tvgoneid.setText(linkid);
+                        System.out.println(linkid);
                         adapter.addItem(cat);
                     }
                     adapter.notifyDataSetChanged();
@@ -87,54 +106,10 @@ public class FragmentCatTown extends Fragment {
             }
             });
 
-/*
-        private void addItem(int picture, String catName, int helper) {
-            Cat cat = new Cat();
-            cat.setCatPicture(picture);
-            cat.setName(catName);
-            cat.setHelpPeople(helper);
-            catList.add(cat);
-        }
-
- */
-
-
-        recyclerView = (RecyclerView)view.findViewById(R.id.recyceler_view);
-        catList = new ArrayList<>();
-
-        adapter = new FragmentCatTownAdapter(catList);
-        recyclerView.setAdapter(adapter);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext(), RecyclerView.VERTICAL, false));
-        catpicture = R.drawable.pic_001;
-        name = "Happy";
-        helppeople = 2;
-
-        /*
-        addItem(catpicture, name + "  1", helppeople);
-        addItem(catpicture, name+ "  2", helppeople);
-        addItem(catpicture, name + "  3", helppeople);
-        addItem(catpicture, name + "  4", helppeople);
-        addItem(catpicture, name + "  5", helppeople);
-        addItem(catpicture, name + "  6", helppeople);
-        addItem(catpicture, name + "  7", helppeople);
-        addItem(catpicture, name + "  8", helppeople);
-        addItem(catpicture, name + "  9", helppeople);
-        addItem(catpicture, name + "  6", helppeople);
-        addItem(catpicture, name + "  7", helppeople);
-        addItem(catpicture, name + "  8", helppeople);
-        addItem(catpicture, name + "  9", helppeople);
-        addItem(catpicture, name + "  6", helppeople);
-        addItem(catpicture, name + "  7", helppeople);
-        addItem(catpicture, name + "  8", helppeople);
-        addItem(catpicture, name + "  9", helppeople);
-
-         */
         adapter.notifyDataSetChanged();
         return view;
+
     }
-
-
 
 
     @Override
