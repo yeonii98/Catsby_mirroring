@@ -1,5 +1,6 @@
 package com.hanium.catsby.town.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hanium.catsby.util.BaseTimeEntity;
 import com.hanium.catsby.user.domain.Users;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,7 @@ public class TownComment extends BaseTimeEntity {
     @JoinColumn(name = "user_id")//user_id라는 컬럼이 만들어짐
     private Users user;
 
+    @JsonIgnore
     @ManyToOne	(fetch = FetchType.LAZY)
     @JoinColumn(name = "townCommunity_id")//town_community_id라는 컬럼이 만들어짐
     private TownCommunity townCommunity;

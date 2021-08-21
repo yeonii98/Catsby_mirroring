@@ -76,8 +76,8 @@ public class FragmentCommunity extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerview);
 
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(linearLayoutManager);
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+//        recyclerView.setLayoutManager(linearLayoutManager);
 
         recyclerAdapter = new RecyclerAdapter(memoList);
         recyclerView.setAdapter(recyclerAdapter);
@@ -93,7 +93,7 @@ public class FragmentCommunity extends Fragment {
                 if(response.isSuccessful()){
                     //정상적으로 통신이 성공된 경우
                     List<TownCommunity> result = response.body();
-                    index = result.get(result.size() - 1).getId();
+//                    index = result.get(result.size() - 1).getId();
 
                     for(int i = 0; i < result.size(); i++){
                         if(result.get(i).getImage() != null)
@@ -328,6 +328,8 @@ public class FragmentCommunity extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), CommentlistActivity.class);
+                    intent.putExtra("id",listdata.get(position).getId());
+                    System.out.println(listdata.get(position).getId());
                     startActivity(intent);
                 }
             });
