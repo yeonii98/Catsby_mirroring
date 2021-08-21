@@ -1,5 +1,6 @@
 package org.techtown.catsby.home;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -46,8 +47,14 @@ import retrofit2.Response;
 
 import static java.time.LocalDateTime.now;
 
-//import com.like.LikeButton;
 public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterClickListener {
+    private Context mContext;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        mContext = context;
+    }
 
     ArrayList<Bowl> bowlList= new ArrayList<>();
     ArrayList<Feed> feedList = new ArrayList<>();
@@ -114,6 +121,11 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
                         bowlCommunityUserId.add(0);
                     }
                 }
+                RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerview);
+                recyclerView.addItemDecoration(new DividerItemDecoration(mContext, 1));
+                RecyclerView.LayoutManager feedLayoutManager = new LinearLayoutManager(getActivity());
+                recyclerView.setLayoutManager(feedLayoutManager);
+                recyclerView.setAdapter(feedAdapter);
             }
 
             @Override

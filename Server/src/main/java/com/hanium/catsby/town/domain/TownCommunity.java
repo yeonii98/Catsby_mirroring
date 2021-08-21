@@ -11,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Blob;
 import java.util.List;
 
 @Data
@@ -49,4 +50,6 @@ public class TownCommunity extends BaseTimeEntity {
     @OneToMany(mappedBy = "townCommunity", fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"townCommunity"}) //무한참조 방지
     private List<TownLike> townLike;
+
+    private boolean anonymous;
 }

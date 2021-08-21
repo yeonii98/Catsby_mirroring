@@ -26,9 +26,9 @@ public class TownCommunityController {
     }
 
     //글 쓰기
-    @PostMapping("townCommunity/write")
-    public String writeTown(@RequestBody TownCommunity townCommunity){//현재 유저의 정보도 넣어야 함
-        townCommunityService.writeTownCommunity(townCommunity);
+    @PostMapping("townCommunity/write/{uid}")
+    public String writeTown(@RequestBody TownCommunity townCommunity, @PathVariable String uid){
+        townCommunityService.writeTownCommunity(townCommunity, uid);
         return "글 쓰기 ";
     }
 

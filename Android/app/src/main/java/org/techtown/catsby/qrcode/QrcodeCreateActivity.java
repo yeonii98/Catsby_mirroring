@@ -21,14 +21,23 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.zxing.WriterException;
 
-import org.techtown.catsby.qrcode.data.model.Bowl;
 import org.techtown.catsby.qrcode.data.model.BowlResponse;
 import org.techtown.catsby.qrcode.data.service.QRBowlService;
 import org.techtown.catsby.R;
 import org.techtown.catsby.retrofit.RetrofitClient;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
+
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,7 +52,7 @@ public class QrcodeCreateActivity extends AppCompatActivity {
     private Button generateQrBtn;
     Bitmap bitmap;
     QRGEncoder qrgEncoder;
-    String qrinfo, bowlInfo, bowlName, bowlAddress;
+    String qrInfo, bowlInfo, bowlName, bowlAddress;
 
     private QRBowlService QRBowlService;
 
@@ -100,17 +109,16 @@ public class QrcodeCreateActivity extends AppCompatActivity {
                     bowlName = dataEdt.getText().toString();
                     bowlAddress = dataEdt2.getText().toString();
                     bowlInfo = bowlName.concat(bowlAddress);
-                    qrinfo = bowlAddress.concat("위치의 ".concat(bowlName));
+                    qrInfo = bowlAddress.concat("위치의 ".concat(bowlName));
                     qrgEncoder = new QRGEncoder(bowlInfo, null, QRGContents.Type.TEXT, dimen);
                     try {
                         // getting our qrcode in the form of bitmap.
                         bitmap = qrgEncoder.encodeAsBitmap();
                         // the bitmap is set inside our image
                         // view using .setimagebitmap method.
-                        qrCodeIV.setImageBitmap(bitmap);
+
                         saveBowl(bowlInfo, bowlName, bowlAddress);
-                        Toast.makeText(getApplicationContext(), qrinfo+" 밥그릇 큐알코드가 생성되었습니다.", Toast.LENGTH_SHORT).show();
-                    } catch (WriterException e) {
+                    } catch (WriterException | IOException e) {
                         // this method is called for
                         // exception handling.
                         Log.e("Tag", e.toString());
@@ -131,13 +139,31 @@ public class QrcodeCreateActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void saveBowl(String info, String name, String address) {
-        Bowl bowl = new Bowl(info, name, address);
-        QRBowlService.saveBowl(bowl).enqueue(new Callback<BowlResponse>() {
+
+    private void saveBowl(String info, String name, String address) throws IOException {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("info", toRequestBody(info));
+        map.put("name", toRequestBody(name));
+        map.put("address", toRequestBody(address));
+
+        File temp = getApplication().getCacheDir();
+        String fileNmae = bowlName + ".jpg";
+        File image = new File(temp, fileNmae);
+        image.createNewFile();
+        OutputStream os = new FileOutputStream(image);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), image);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", image.getName(), requestFile);
+        QRBowlService.saveBowl(map, body).enqueue(new Callback<BowlResponse>() {
             @Override
             public void onResponse(Call<BowlResponse> call, Response<BowlResponse> response) {
                 if (response.isSuccessful()) {
                     Log.d("qrcodeCreateActivity", "bowl id : " + response.body().getId());
+                    qrCodeIV.setImageBitmap(bitmap);
+                    Toast.makeText(getApplicationContext(), qrInfo +" 밥그릇 큐알코드가 생성되었습니다.", Toast.LENGTH_SHORT).show();
+                } else if (response.code() == 409) {
+                    Toast.makeText(getApplicationContext(), "밥그릇 이름이 중복되었습니다.", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -146,5 +172,10 @@ public class QrcodeCreateActivity extends AppCompatActivity {
                 Log.d("qrcodeCreateActivity", "error save bowl");
             }
         });
+    }
+
+    public static RequestBody toRequestBody (String value) {
+        RequestBody body = RequestBody.create(MediaType.parse("text/plain"), value);
+        return body ;
     }
 }

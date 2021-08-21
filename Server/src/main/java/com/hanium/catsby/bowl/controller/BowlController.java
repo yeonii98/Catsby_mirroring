@@ -2,12 +2,18 @@ package com.hanium.catsby.bowl.controller;
 
 import com.hanium.catsby.bowl.domain.Bowl;
 import com.hanium.catsby.bowl.service.BowlService;
+import com.hanium.catsby.notification.exception.DuplicateBowlInfoException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,16 +25,41 @@ public class BowlController {
     private final BowlService bowlService;
 
     @PostMapping("/bowl")
-    public CreateBowlResponse savaBowl(@RequestBody CreateBowlRequest request){
+        public ResponseEntity<CreateBowlResponse> savaBowl(@RequestParam("info") String info, @RequestParam("name") String name, @RequestParam("address") String address, @RequestPart MultipartFile files){
+
+        String fileName = files.getOriginalFilename();
+        String fileNameExtension = FilenameUtils.getExtension(fileName).toLowerCase();
+
+        File destinationFile;
+        String destinationFileName;
+        String filePath = "/";
+
+        do {
+            destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + fileNameExtension;
+            destinationFile = new File(filePath + destinationFileName);
+        } while (destinationFile.exists());
+
+        destinationFile.getParentFile().mkdir();
+        try {
+            files.transferTo(destinationFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         Bowl bowl = new Bowl();
-        bowl.setInfo(request.getInfo());
-        bowl.setName(request.getName());
-        bowl.setAddress(request.getAddress());
-//        bowl.setImage(request.getImage());
+        bowl.setInfo(info);
+        bowl.setName(name);
+        bowl.setAddress(address);
+        bowl.setFilename(destinationFileName);
+        bowl.setPath(filePath);
 
-        Long id = bowlService.enroll(bowl);
-        return new CreateBowlResponse(id);
+        try {
+            Long id = bowlService.enroll(bowl);
+            return ResponseEntity.ok(new CreateBowlResponse(id));
+        } catch (DuplicateBowlInfoException e) {
+            return ResponseEntity.status(409).body(new CreateBowlResponse(null));
+        }
     }
 
     @PutMapping("/bowl/{id}")

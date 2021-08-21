@@ -3,7 +3,6 @@ package org.techtown.catsby.retrofit;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-
 import org.techtown.catsby.community.data.service.TownLikeService;
 import org.techtown.catsby.qrcode.data.service.QRBowlService;
 import org.techtown.catsby.login.data.service.LoginService;
@@ -23,7 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class RetrofitClient {
-    private static final String BASE_URL = "http://192.168.0.12:8080/";
+    private static final String BASE_URL = "http://192.168.45.200:8080/";
 
     private static Retrofit getInstacne() {
         Gson gson = new GsonBuilder().setLenient().create();
@@ -61,8 +60,7 @@ public class RetrofitClient {
     public static UserService getUser(){
         return getInstacne().create(UserService.class);
     }
-
-
+    
     public static TownCommunityService getTownCommunityService(){
         return getInstacne().create(TownCommunityService.class);
     }
