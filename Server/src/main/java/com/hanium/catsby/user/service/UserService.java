@@ -46,6 +46,12 @@ public class UserService {
         return user.getId();
     }
 
+    @Transactional(readOnly = true)
+    public Users findUsersByUid(String uid){
+        Users user = userRepository.findUserByUid(uid);
+        return user;
+    }
+
     @Transactional
     public void updateFcmToken(String uid, String token) {
         Users user = userRepository.findUserByUid(uid);

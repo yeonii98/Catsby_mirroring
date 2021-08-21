@@ -1,5 +1,9 @@
 package org.techtown.catsby.retrofit.dto;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 public class User {
 
     private int id;
@@ -9,6 +13,9 @@ public class User {
     private String createDate;
     private String updateDate;
     private String uid;
+
+    @SerializedName("bowlComments")
+    private List<BowlComment> bowlComment;
 
     public String getUid() {
         return uid;

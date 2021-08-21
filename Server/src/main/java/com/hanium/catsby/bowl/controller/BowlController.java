@@ -5,6 +5,7 @@ import com.hanium.catsby.bowl.service.BowlService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -17,14 +18,14 @@ public class BowlController {
 
     private final BowlService bowlService;
 
-    @PostMapping("/bowl/enroll")
+    @PostMapping("/bowl")
     public CreateBowlResponse savaBowl(@RequestBody CreateBowlRequest request){
 
         Bowl bowl = new Bowl();
         bowl.setInfo(request.getInfo());
         bowl.setName(request.getName());
         bowl.setAddress(request.getAddress());
-        bowl.setImage(request.getImage());
+//        bowl.setImage(request.getImage());
 
         Long id = bowlService.enroll(bowl);
         return new CreateBowlResponse(id);
@@ -46,19 +47,24 @@ public class BowlController {
     public BowlResult bowls() {
         List<Bowl> findBowls = bowlService.findAllBowls();
         List<BowlDto> collect = findBowls.stream()
-                .map(b -> new BowlDto(b.getInfo(), b.getName(), b.getAddress(), b.getImage(), b.getCreatedDate()))
+                .map(b -> new BowlDto(b.getId(), b.getInfo(), b.getName(), b.getAddress(), b.getImage(), b.getCreatedDate()))
                 .collect(Collectors.toList());
         return new BowlResult(collect);
     }
-
 
     @GetMapping("/bowls/{uid}")
     public BowlResult userBowlList(@PathVariable("uid") String uid) {
         List<Bowl> findBowls = bowlService.findUserBowls(uid);
         List<BowlDto> collect = findBowls.stream()
-                .map(b -> new BowlDto(b.getInfo(), b.getName(), b.getAddress(), b.getImage(), b.getCreatedDate()))
+                .map(b -> new BowlDto(b.getId(), b.getInfo(), b.getName(), b.getAddress(), b.getImage(), b.getCreatedDate()))
                 .collect(Collectors.toList());
         return new BowlResult(collect);
+    }
+
+    @PostMapping("/bowl/{uid}")
+    public ResponseEntity<CreateBowlResponse> addUser(@PathVariable("uid") String uid, @RequestBody AddUserRequest request) {
+        Long bowlId = bowlService.saveBowlUser(request.getBowlInfo(), uid);
+        return ResponseEntity.ok(new CreateBowlResponse(bowlId));
     }
 
     @Data
@@ -70,6 +76,7 @@ public class BowlController {
     @Data
     @AllArgsConstructor
     static class BowlDto{
+        private Long id;
         private String info;
         private String name;
         private String address;
@@ -113,4 +120,8 @@ public class BowlController {
         private byte[] image;
     }
 
+    @Data
+    private class AddUserRequest {
+        private String bowlInfo;
+    }
 }

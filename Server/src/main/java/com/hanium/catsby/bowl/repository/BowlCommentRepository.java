@@ -32,7 +32,6 @@ public class BowlCommentRepository {
     }
 
 
-
     public void deleteById(Long id) {
         BowlComment bowlComment = findBowlComment(id);
         em.remove(bowlComment);

@@ -45,10 +45,6 @@ public class FragmentBowlInfo extends Fragment {
         //Intent intent = getIntent();
 
         Bundle bundle = this.getArguments();
-
-        System.out.println("bundle왜!!!!!!!!!!!!!:::::::::::::::::::::: = " + bundle);
-        System.out.println("bundle = 번들$$#@!!!!!!!!!!!!!!!!!!!!!!!!!!!! " + bundle.getString("name"));
-
         name = (TextView)view.findViewById(R.id.name);
 
         if (bundle != null) {

@@ -1,14 +1,12 @@
 package com.hanium.catsby.bowl.controller;
 
-import com.hanium.catsby.bowl.domain.BowlComment;
 import com.hanium.catsby.bowl.domain.BowlCommunity;
 import com.hanium.catsby.bowl.service.BowlCommunityService;
+import com.hanium.catsby.bowl.service.BowlService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
-import javax.xml.stream.events.Comment;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,13 +15,15 @@ import java.util.List;
 public class BowlCommunityController {
 
     private final BowlCommunityService bowlCommunityService;
+    private final BowlService bowlService;
 
-    @PostMapping("/bowl-community/write/{userId}")
-    public CreateBowlCommunityResponse savaBowlCommunity(@PathVariable("userId") String userId, @RequestBody CreateBowlCommunityRequest request) {
+    @PostMapping("/bowl-community/write/{bowlId}/{uid}")
+    public CreateBowlCommunityResponse savaBowlCommunity(@PathVariable("bowlId") long bowlId, @PathVariable("uid") String uid, @RequestBody CreateBowlCommunityRequest request) {
         BowlCommunity bowlCommunity = new BowlCommunity();
+
         bowlCommunity.setImage(request.getImage());
         bowlCommunity.setContent(request.getContent());
-        Long communityId = bowlCommunityService.savaCommunity(bowlCommunity, userId);
+        Long communityId = bowlCommunityService.savaCommunity(bowlCommunity, uid, bowlId);
         return new CreateBowlCommunityResponse(communityId);
     }
 
@@ -53,12 +53,6 @@ public class BowlCommunityController {
         return cnt;
     }
 
-    /*
-    @GetMapping("/bowl-communities/comment/{communityId}")
-    public List<BowlComment> bowlCommunityComments(@PathVariable("communityId") Long communityId){
-        List<>
-    }*/
-
 
     @Data
     @AllArgsConstructor
@@ -76,7 +70,7 @@ public class BowlCommunityController {
 
     @PutMapping("/bowl-community/{communityId}")
     public UpdateBowlCommunityResponse updateBowlCommunity(@PathVariable("communityId") Long communityId, @RequestBody UpdateBowlCommunityRequest request){
-        bowlCommunityService.update(communityId, request.getImage(), request.getContent());
+        bowlCommunityService.update(communityId, request.getContent());
         BowlCommunity findBowlCommunity = bowlCommunityService.findCommunity(communityId);
         return new UpdateBowlCommunityResponse(findBowlCommunity.getId(), findBowlCommunity.getImage(), findBowlCommunity.getContent());
     }

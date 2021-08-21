@@ -60,13 +60,7 @@ public class BowlAdapter extends RecyclerView.Adapter<BowlAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull BowlAdapter.ViewHolder holder, int position) {
         Bowl item = itemData.get(position);
-        //holder.image.setImageResource(item.getImage());
-        System.out.println("item.getName() ??!!!!!!!!!!!!!@@@@@@@@@@@@@@@= " + item.getName());
-
-        //HashMap<Integer, ArrayList<String>> itemInformation= new HashMap<Integer, ArrayList<String>>();
-
         holder.text.setText(item.getName());
-
 
         if (bListener != null) {
             final int pos = position;

@@ -8,21 +8,48 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:gravity="center_vertical">
+
+
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/feed_bowlImg"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_margin="7.5dp"
             android:src="@mipmap/ic_launcher_round"
             app:civ_border_color="#939597"
-            app:civ_border_width="2dp"
-            android:id="@+id/feed_bowlImg"/>
+            app:civ_border_width="2dp" />
+
         <TextView
+            android:id="@+id/feed_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/feed_username"
-            android:text="User name"/>
+            android:text="User name" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/putButton"
+            android:layout_width="57dp"
+            android:layout_height="40dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="10dp"
+            android:text="수정"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/deleteButton"
+            android:layout_width="57dp"
+            android:layout_height="40dp"
+            android:layout_gravity="right"
+            android:layout_marginTop="10dp"
+            android:text="삭제"
+            android:textSize="10sp" />
+
     </LinearLayout>
 
     <ImageView
@@ -36,6 +63,30 @@
         android:layout_width="match_parent"
         android:layout_height="92dp"
         android:text="내용이 없습니다." />
+
+    <Button
+        android:id="@+id/putFinishButton"
+        android:layout_width="60dp"
+        android:layout_height="42dp"
+        android:layout_gravity="right"
+        android:layout_marginTop="10dp"
+        android:text="수정완료"
+        android:textSize="10sp"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/feed_content_EditText"
+        android:layout_width="match_parent"
+        android:layout_height="92dp"
+        android:background="@null"
+        android:cursorVisible="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="top"
+        android:text="클릭하여 글을 작성해주세요"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="match_parent"

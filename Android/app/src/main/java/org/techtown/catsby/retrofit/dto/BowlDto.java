@@ -1,15 +1,17 @@
 package org.techtown.catsby.retrofit.dto;
 
+import java.time.LocalDateTime;
+
 public class BowlDto {
     private int id;
     private String name;
     private String info;
     private String address;
     private byte[] image;
-    private String created_time;
-    private String updated_time;
+    private LocalDateTime created_time;
+    private LocalDateTime updated_time;
 
-    public BowlDto(String name, String address) {
+    public BowlDto( String name, String address) {
         this.name = name;
         this.address = address;
     }
@@ -34,11 +36,15 @@ public class BowlDto {
         return image;
     }
 
-    public String getCreated_time() {
+    public int getId() {
+        return id;
+    }
+
+    public LocalDateTime getCreated_time() {
         return created_time;
     }
 
-    public String getUpdated_time() {
+    public LocalDateTime getUpdated_time() {
         return updated_time;
     }
 }
