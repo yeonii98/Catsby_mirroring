@@ -52,7 +52,7 @@ public class CommentlistActivity extends AppCompatActivity {
         commentUpdate = (Button)findViewById(R.id.commentlist_update);
         commentText = (TextView)findViewById(R.id.commentlist_text );;
         userName = (TextView)findViewById(R.id.commentlist_username);;
-        
+
         //뒤로가기
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
@@ -70,10 +70,10 @@ public class CommentlistActivity extends AppCompatActivity {
         commentUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+
                 String putMessage = commentText.getText().toString();
                 putComment(item.get(0).getId(), putMessage);
-                
+
             }
         });
 
@@ -113,8 +113,8 @@ public class CommentlistActivity extends AppCompatActivity {
                 System.out.println("t.getMessage() = " + t.getMessage());
             }
         });
-        
-        
+
+
     }
 
 

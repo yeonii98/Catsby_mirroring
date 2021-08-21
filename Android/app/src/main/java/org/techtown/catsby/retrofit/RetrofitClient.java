@@ -22,7 +22,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class RetrofitClient {
-    private static final String BASE_URL = "http://192.168.45.200:8080/";
+    //    private static final String BASE_URL = "http://192.168.45.200:8080/";
+    private static final String BASE_URL = "http://10.0.2.2:8080/";
 
     private static Retrofit getInstacne() {
         Gson gson = new GsonBuilder().setLenient().create();
@@ -41,7 +42,7 @@ public class RetrofitClient {
                 .build();
     }
 
-    public static NotificationService getNotificationService(){
+    public static NotificationService getNotificationService() {
         return getInstacne().create(NotificationService.class);
     }
 
@@ -57,26 +58,26 @@ public class RetrofitClient {
         return getInstacne().create(BowlCommunityService.class);
     }
 
-    public static UserService getUser(){
+    public static UserService getUser() {
         return getInstacne().create(UserService.class);
     }
-    
-    public static TownCommunityService getTownCommunityService(){
+
+    public static TownCommunityService getTownCommunityService() {
         return getInstacne().create(TownCommunityService.class);
     }
 
-    public static MyWritingService getMyWritingService(){
+    public static MyWritingService getMyWritingService() {
         return getInstacne().create(MyWritingService.class);
     }
 
-    public static TownCommentService getTownCommentService(){
+    public static TownCommentService getTownCommentService() {
         return getInstacne().create(TownCommentService.class);
     }
 
-    public static TownLikeService getTownLikeService(){
+    public static TownLikeService getTownLikeService() {
         return getInstacne().create(TownLikeService.class);
     }
-    
+
     public static QRBowlService getQrBowlService() {
         return getInstacne().create(QRBowlService.class);
     }
