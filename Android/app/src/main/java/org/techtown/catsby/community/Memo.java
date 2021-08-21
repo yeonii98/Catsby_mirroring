@@ -32,7 +32,7 @@ public class Memo {
         this.push = push;
     }
 
-    public Memo(int id, String uid, String maintext, String subtext, String nickname, String date, int likeCnt, Bitmap img, int isdone) {
+    public Memo(int id, String uid, String maintext, String subtext, String nickname, String date, int likeCnt, Bitmap img) {
         this.id = id;
         this.uid = uid;
         this.maintext = maintext;
@@ -41,24 +41,15 @@ public class Memo {
         this.date = date;
         this.likeCnt = likeCnt;
         this.img = img;
-        this.isdone = isdone;
     }
 
-    public Memo(int id, String uid, String maintext, String subtext, String nickname, String date,Bitmap bm, int i) {
-        this.id = id;
+    public Memo(String uid, String maintext, String subtext, String nickname, String date,Bitmap bm) {
         this.uid = uid;
         this.maintext = maintext;
         this.subtext = subtext;
         this.nickname = nickname;
         this.date = date;
         this.img = bm;
-        this.isdone = i;
-    }
-
-    public Memo(String title, String content, int i) {
-        this.maintext = title;
-        this.subtext = content;
-        this.isdone = i;
     }
 
     public Memo(String title, String content) {

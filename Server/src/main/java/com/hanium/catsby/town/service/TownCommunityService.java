@@ -73,6 +73,8 @@ public class TownCommunityService {
                 }); //영속화 완료
         townCommunity.setTitle(requestTownCommunity.getTitle());
         townCommunity.setContent(requestTownCommunity.getContent());
+        townCommunity.setAnonymous(requestTownCommunity.isAnonymous());
+        townCommunity.setImage(requestTownCommunity.getImage());
         //해당 함수로 종료시(Service가 종료될 때) 트랜잭션이 종료된다. 이때 더티체킹이 일어남 - 자동 업데이트됨. db쪽으로 flush
 
         //myPost

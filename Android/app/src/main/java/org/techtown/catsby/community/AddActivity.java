@@ -92,13 +92,13 @@ public class AddActivity extends AppCompatActivity {
                 String title = edtTitle.getText().toString();
                 String content = edtContent.getText().toString();
 
-                System.out.println("townImg = " + (townImg.getDrawable() == null));
-
                 //db에 저장된 image값을 BinaryStringTobyteArray로 변환하고, byteArray를 bitmap으로 바꿔서 저장한다.
 
                 if (title.length() > 0 && content.length() > 0) {
-                    if(townImg.getDrawable() == null)
-                        townCommunity = new TownCommunity(title, content);
+                    if(townImg.getDrawable() == null){
+                        townCommunity = new TownCommunity(title, content, checkBox.isChecked());
+                    }
+
                     else{
                         Bitmap img = ((BitmapDrawable)townImg.getDrawable()).getBitmap();
 
@@ -108,7 +108,7 @@ public class AddActivity extends AppCompatActivity {
                         img.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                         byteArray = stream.toByteArray();
                         image = "&image=" + byteArrayToBinaryString(byteArray) ;
-                        townCommunity = new TownCommunity(title, content, image);
+                        townCommunity = new TownCommunity(title, content, image, checkBox.isChecked());
                     }
 
 
@@ -143,14 +143,15 @@ public class AddActivity extends AppCompatActivity {
                     intent.putExtra("date", datestr);
 
                     int idx = user.getEmail().indexOf("@");
+                    intent.putExtra("uid", uid);
+                    intent.putExtra("byteArray", byteArray);
+
                     if(!checkBox.isChecked())
                         intent.putExtra("nickName", user.getEmail().substring(0, idx));
                     else
                         intent.putExtra("nickName", "익명");
 
-                    intent.putExtra("uid", uid);
-                    System.out.println("byteArray = " + byteArray);
-                    intent.putExtra("byteArray", byteArray);
+
                     setResult(0, intent);
 
 

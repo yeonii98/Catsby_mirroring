@@ -28,17 +28,21 @@ public class TownCommunity {
         this.townLike = townLike;
     }
 
+    public boolean anonymous;
+
     public TownCommunity(){}
 
-    public TownCommunity(String title, String content){
+    public TownCommunity(String title, String content, boolean anonymous){
         this.title = title;
         this.content = content;
+        this.anonymous = anonymous;
     }
 
-    public TownCommunity(String title, String content, String image){
+    public TownCommunity(String title, String content, String image, boolean anonymous){
         this.title = title;
         this.content = content;
         this.image = image;
+        this.anonymous = anonymous;
     }
 
     public int getId() {
@@ -87,5 +91,13 @@ public class TownCommunity {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public boolean isAnonymous() {
+        return anonymous;
+    }
+
+    public void setAnonymous(boolean anonymous) {
+        this.anonymous = anonymous;
     }
 }
