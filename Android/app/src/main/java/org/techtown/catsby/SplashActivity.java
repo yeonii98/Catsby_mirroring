@@ -31,17 +31,17 @@ public class SplashActivity extends AppCompatActivity {
 
     private class SplashHandler implements Runnable {
         public void run() {
-            UserApiClient.getInstance().me(new Function2<User, Throwable, Unit>() {
-                @Override
-                public Unit invoke(User user, Throwable throwable) {
-                    if (user != null) {
+//            UserApiClient.getInstance().me(new Function2<User, Throwable, Unit>() {
+//                @Override
+//                public Unit invoke(User user, Throwable throwable) {
+//                    if (user != null) {
                         startActivity(new Intent(getApplication(), MainActivity.class));
-                    } else {
-                        startActivity(new Intent(getApplication(), LoginActivity.class));
-                    }
-                    return null;
-                }
-            });
+//                    } else {
+//                        startActivity(new Intent(getApplication(), LoginActivity.class));
+//                    }
+//                    return null;
+//                }
+//            });
             SplashActivity.this.finish();
         }
     }
