@@ -41,6 +41,12 @@ public class UserController {
         return userService.findUsers();
     }
 
+    @GetMapping("/user/{uid}")
+    public Users findUser(@PathVariable("uid") String uid) {
+        Users user = userService.findUsersByUid(uid);
+        return user;
+    }
+
     @PutMapping("/user/{id}")
     public UpdateUserResponse updateUserResponse(@PathVariable("id") Long id, @RequestBody UpdateUserRequest request) {
         userService.update(id, request.getNickname(), request.getAddress());

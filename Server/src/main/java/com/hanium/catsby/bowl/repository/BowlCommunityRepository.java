@@ -30,10 +30,9 @@ public class BowlCommunityRepository {
     }
 
     public List<BowlCommunity> findBowlCommunityByBowl(Long userId){
-        return em.createQuery("select DISTINCT bc from BowlUser bu" +
-                " join bu.bowl b" +
-                " join b.communityAndBowls cab" +
-                " join cab.bowlCommunity bc" +
+        return em.createQuery("select DISTINCT bc from BowlCommunity bc" +
+                " join bc.bowl b" +
+                " join b.bowlUsers bu" +
                 " where bc.user.id = :userId", BowlCommunity.class)
                 .setParameter("userId", userId)
                 .getResultList();

@@ -40,8 +40,6 @@ public class UpdateActivity extends AppCompatActivity {
         String content = intent.getStringExtra("content");
         int id = intent.getIntExtra("id",0);
         int position = intent.getIntExtra("position",0);
-
-
         edtTitle.setText(title);
         edtContent.setText(content);
 

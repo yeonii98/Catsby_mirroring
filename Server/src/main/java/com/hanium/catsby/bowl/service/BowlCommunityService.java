@@ -27,14 +27,13 @@ public class BowlCommunityService {
     MyPostRepository myPostRepository;
 
     @Transactional
-    public Long savaCommunity(BowlCommunity bowlCommunity, String userId) {
+    public Long savaCommunity(BowlCommunity bowlCommunity, String userId, Long bowlId) {
         Users user = userRepository.findUserByUid(userId);
-        System.out.println("user = " + user.getId());
         Users users = userRepository.findUser(user.getId());
-        //Bowl bowl = bowlRepository.findBowl(bowlId);
+        Bowl bowl = bowlRepository.findBowl(bowlId);
 
         bowlCommunity.setUser(users);
-        //bowlCommunity.setBowl(bowl);
+        bowlCommunity.setBowl(bowl);
         bowlCommunityRepository.save(bowlCommunity);
 
         //myPost
@@ -77,9 +76,8 @@ public class BowlCommunityService {
     }
 
     @Transactional
-    public void update(Long id, byte[] image, String content){
+    public void update(Long id, String content){
         BowlCommunity bowlCommunity = bowlCommunityRepository.findBowlCommunity(id);
-        bowlCommunity.setImage(image);
         bowlCommunity.setContent(content);
 
         //myPost

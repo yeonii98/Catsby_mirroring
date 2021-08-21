@@ -47,7 +47,7 @@ public class BowlController {
     public BowlResult bowls() {
         List<Bowl> findBowls = bowlService.findAllBowls();
         List<BowlDto> collect = findBowls.stream()
-                .map(b -> new BowlDto(b.getInfo(), b.getName(), b.getAddress(), b.getImage(), b.getCreatedDate()))
+                .map(b -> new BowlDto(b.getId(), b.getInfo(), b.getName(), b.getAddress(), b.getImage(), b.getCreatedDate()))
                 .collect(Collectors.toList());
         return new BowlResult(collect);
     }
@@ -56,7 +56,7 @@ public class BowlController {
     public BowlResult userBowlList(@PathVariable("uid") String uid) {
         List<Bowl> findBowls = bowlService.findUserBowls(uid);
         List<BowlDto> collect = findBowls.stream()
-                .map(b -> new BowlDto(b.getInfo(), b.getName(), b.getAddress(), b.getImage(), b.getCreatedDate()))
+                .map(b -> new BowlDto(b.getId(), b.getInfo(), b.getName(), b.getAddress(), b.getImage(), b.getCreatedDate()))
                 .collect(Collectors.toList());
         return new BowlResult(collect);
     }
@@ -76,6 +76,7 @@ public class BowlController {
     @Data
     @AllArgsConstructor
     static class BowlDto{
+        private Long id;
         private String info;
         private String name;
         private String address;
