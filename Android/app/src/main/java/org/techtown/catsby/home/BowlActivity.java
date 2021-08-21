@@ -13,7 +13,6 @@ import com.google.android.material.tabs.TabLayout;
 import org.techtown.catsby.R;
 
 public class BowlActivity extends AppCompatActivity {
-
     private FragmentPagerAdapter fragmentPagerAdapter;
 
     @Override
@@ -58,7 +57,7 @@ public class BowlActivity extends AppCompatActivity {
         //fragmentBowlInfo.setArguments(bundle);
 
         //뷰페이저 세팅
-        
+
         ViewPager viewPager = findViewById(R.id.viewPager);
         fragmentPagerAdapter = new BowlViewPagerAdapter(getSupportFragmentManager());
 
