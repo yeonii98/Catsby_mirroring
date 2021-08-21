@@ -5,12 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -327,7 +325,7 @@ public class FragmentCommunity extends Fragment {
             itemViewHolder.chatbubble.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), CommentlistActivity.class);
+                    Intent intent = new Intent(getActivity(), TownCommentListActivity.class);
                     intent.putExtra("id",listdata.get(position).getId());
                     System.out.println(listdata.get(position).getId());
                     startActivity(intent);
