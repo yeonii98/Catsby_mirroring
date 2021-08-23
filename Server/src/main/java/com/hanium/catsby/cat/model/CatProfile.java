@@ -24,6 +24,9 @@ public class CatProfile {
     private SimpleDateFormat created_time;
     private SimpleDateFormat updated_time;
 
+    public CatProfile() {
+    }
+
     //0811
     @Builder
     public CatProfile(String name, String health, String address,

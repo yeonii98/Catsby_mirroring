@@ -1,4 +1,4 @@
-package com.hanium.catsby.Cat.controller;
+package com.hanium.catsby.cat.controller;
 
 import com.hanium.catsby.Cat.mapper.CatProfileMapper;
 //package com.hanium.catsby.cat.controller;

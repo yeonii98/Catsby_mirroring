@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class TownCommentService {
@@ -33,6 +34,11 @@ public class TownCommentService {
         Date date = new Date(System.currentTimeMillis());
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(date);
+    }
+
+    @Transactional(readOnly = true)
+    public List listTownComment(int id){
+        return townCommentRepository.findByTownCommunity_Id(id);
     }
 
     @Transactional

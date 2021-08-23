@@ -1,5 +1,6 @@
 package com.hanium.catsby.Town.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hanium.catsby.util.BaseTimeEntity;
 import com.hanium.catsby.user.domain.Users;
 import lombok.AllArgsConstructor;

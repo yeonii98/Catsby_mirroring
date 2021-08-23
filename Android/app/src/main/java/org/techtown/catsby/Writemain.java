@@ -52,7 +52,7 @@ import retrofit2.Response;
 
 public class Writemain extends AppCompatActivity{
     ListView listview ;
-    
+
 
     private static final String TAG = "blackjin";
     private Boolean isPermission = true;

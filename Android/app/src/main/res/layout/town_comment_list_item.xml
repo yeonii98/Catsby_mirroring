@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="85dp">
+
+        <ImageView
+            android:id="@+id/cmtImg"
+            android:layout_width="49dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/black" />
+
+        <TextView
+            android:id="@+id/cmtNickName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="25dp"
+            android:text="닉네임"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/cmtContent"
+            android:layout_width="146dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="25dp"
+            android:layout_weight="1"
+            android:text="댓글 리스트입니다...." />
+
+        <Button
+            android:id="@+id/cmtUpdateBtn"
+            android:layout_width="15dp"
+            android:layout_height="34dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="1"
+            android:text="수정"
+            android:textSize="11sp" />
+
+        <Button
+            android:id="@+id/cmtDeleteBtn"
+            android:layout_width="15dp"
+            android:layout_height="34dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:text="삭제"
+            android:textSize="11sp" />
+
+    </LinearLayout>
+</LinearLayout>
