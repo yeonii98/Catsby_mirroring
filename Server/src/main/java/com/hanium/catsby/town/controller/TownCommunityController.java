@@ -1,7 +1,7 @@
-package com.hanium.catsby.town.controller;
+package com.hanium.catsby.Town.controller;
 
-import com.hanium.catsby.town.service.TownCommunityService;
-import com.hanium.catsby.town.domain.TownCommunity;
+import com.hanium.catsby.Town.service.TownCommunityService;
+import com.hanium.catsby.Town.domain.TownCommunity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

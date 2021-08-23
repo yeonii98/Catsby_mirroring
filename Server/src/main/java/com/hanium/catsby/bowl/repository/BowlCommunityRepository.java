@@ -25,12 +25,19 @@ public class BowlCommunityRepository {
         return em.find(BowlCommunity.class, id);
     }
 
+    public List<BowlCommunity> findBowlCommunitiesByBowl(Long bowlId){
+        return em.createQuery("select bc from BowlCommunity bc" +
+                "where bc.bowl.id = :bowlId", BowlCommunity.class)
+                .setParameter("bowlId", bowlId)
+                .getResultList();
+    }
+
     public List<BowlCommunity> findAllBowlCommunity() {
         return em.createQuery("select bm from BowlCommunity bm", BowlCommunity.class).getResultList();
     }
 
     public List<BowlCommunity> findBowlCommunityByBowl(Long userId){
-        return em.createQuery("select DISTINCT bc from BowlCommunity bc" +
+        return em.createQuery("select DISTINCT(bc) from BowlCommunity bc" +
                 " join bc.bowl b" +
                 " join b.bowlUsers bu" +
                 " where bc.user.id = :userId", BowlCommunity.class)

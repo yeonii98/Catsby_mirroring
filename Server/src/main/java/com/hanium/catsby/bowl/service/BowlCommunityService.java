@@ -63,8 +63,13 @@ public class BowlCommunityService {
 
 
     @Transactional(readOnly = true)
-    public BowlCommunity findCommunity(Long bowlId) {
-        return bowlCommunityRepository.findBowlCommunity(bowlId);
+    public BowlCommunity findCommunity(Long id) {
+        return bowlCommunityRepository.findBowlCommunity(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<BowlCommunity> findCommunityByBowl(Long bowlId) {
+        return bowlCommunityRepository.findBowlCommunitiesByBowl(bowlId);
     }
 
     @Transactional

@@ -44,11 +44,11 @@ public class CommentlistActivity extends AppCompatActivity {
         EditText commentlist_add;
         ImageView image_profile;
         Button commentlist_postbtn;
-        commentDelete = (Button)findViewById(R.id.commentlist_delete);
-
         ImageView commentlist_image;
         TextView commentlist_date;
 
+
+        commentDelete = (Button)findViewById(R.id.commentlist_delete);
         commentUpdate = (Button)findViewById(R.id.commentlist_update);
         commentText = (TextView)findViewById(R.id.commentlist_text );;
         userName = (TextView)findViewById(R.id.commentlist_username);;
@@ -57,7 +57,6 @@ public class CommentlistActivity extends AppCompatActivity {
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         Intent intent = getIntent();
         List<BowlComment> item = (List<BowlComment>) intent.getSerializableExtra("comment");
 
@@ -107,16 +106,12 @@ public class CommentlistActivity extends AppCompatActivity {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 System.out.println("success");
             }
-
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 System.out.println("t.getMessage() = " + t.getMessage());
             }
         });
-        
-        
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

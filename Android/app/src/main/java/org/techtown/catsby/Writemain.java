@@ -51,7 +51,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Writemain extends AppCompatActivity{
-
     ListView listview ;
 
     private static final String TAG = "blackjin";
@@ -72,7 +71,6 @@ public class Writemain extends AppCompatActivity{
     String allContext;
     BowlCheckListAdapter adapter;
     static int cPosition;
-
 
     private File tempFile;
     int[] bowlImg = {R.drawable.ic_baseline_favorite_24, R.drawable.ic_baseline_star_border_24, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
@@ -197,28 +195,23 @@ public class Writemain extends AppCompatActivity{
         }
 
         if (requestCode == PICK_FROM_ALBUM) {
-
             Uri photoUri = data.getData();
             Log.d(TAG, "PICK_FROM_ALBUM photoUri : " + photoUri);
 
             Cursor cursor = null;
 
             try {
-
                 /*
                  *  Uri 스키마를
                  *  content:/// 에서 file:/// 로  변경한다.
                  */
-                String[] proj = {MediaStore.Images.Media.DATA};
 
+                String[] proj = {MediaStore.Images.Media.DATA};
                 assert photoUri != null;
                 cursor = getContentResolver().query(photoUri, proj, null, null, null);
-
                 assert cursor != null;
                 int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-
                 cursor.moveToFirst();
-
                 tempFile = new File(cursor.getString(column_index));
 
                 Log.d(TAG, "tempFile Uri : " + Uri.fromFile(tempFile));
@@ -259,6 +252,7 @@ public class Writemain extends AppCompatActivity{
         try {
             tempFile = createImageFile();
         } catch (IOException e) {
+            System.out.println("e.getMessage() " + e.getMessage());
             Toast.makeText(this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
             finish();
             e.printStackTrace();
@@ -287,7 +281,7 @@ public class Writemain extends AppCompatActivity{
         // 파일 생성
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
         Log.d(TAG, "createImageFile : " + image.getAbsolutePath());
-
+        System.out.println("image = !!!!" + image);
         return image;
     }
 

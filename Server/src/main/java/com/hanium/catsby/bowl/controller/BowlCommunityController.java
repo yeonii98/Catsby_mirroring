@@ -47,12 +47,19 @@ public class BowlCommunityController {
         return findCommunities;
     }
 
+    /*오류 잡기*/
+    @GetMapping("/bowl-communities/{bowlId}")
+    public List<BowlCommunity> bowlCommunitiesByBowl(@PathVariable("bowlId") Long bowlId) {
+        List<BowlCommunity> community = bowlCommunityService.findCommunityByBowl(bowlId);
+        return community;
+    }
+
     @GetMapping("/bowl-communities/like/{communityId}")
     public Long bowlCommunityLikes(@PathVariable("communityId") Long communityId) {
         Long cnt = bowlCommunityService.findLikesByCommunity(communityId);
         return cnt;
     }
-    
+
     @Data
     @AllArgsConstructor
     static class BowlCommunityResult<T> {

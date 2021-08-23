@@ -48,6 +48,15 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     View view;
 
+    Button postButton;
+    EditText editText;
+    ImageView feedButton;
+    Button deleteButton ;
+    Button putButton ;
+    Button putFinishButton;
+    EditText putText;
+    TextView textView;
+
     public FeedAdapter(ArrayList<Feed> itemData) {
         this.itemData = itemData;
     }
@@ -78,6 +87,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull FeedAdapter.ViewHolder holder, int position) {
+        for (int i =0; i < itemData.size(); i ++){
+            getUser(position, user.getUid(), itemData.get(position).getUserId());
+        }
 
         Feed item = itemData.get(position);
         holder.bowlImg.setImageResource(item.getBowlImg());
@@ -85,14 +97,14 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         holder.feedImg.setImageResource(item.getImg());
         holder.content.setText(item.getContent());
 
-        Button postButton = (Button)view.findViewById(R.id.post_save_button);
-        EditText editText = (EditText)view.findViewById(R.id.post_title_edit);
-        ImageView feedButton = (ImageView)view.findViewById(R.id.feed_comment);
-        Button deleteButton = (Button)view.findViewById(R.id.deleteButton);
-        Button putButton = (Button)view.findViewById(R.id.putButton);
-        Button putFinishButton = (Button)view.findViewById(R.id.putFinishButton);
-        EditText putText = (EditText)view.findViewById(R.id.feed_content_EditText);
-        TextView textView = (TextView)view.findViewById(R.id.feed_content );
+        postButton = (Button)view.findViewById(R.id.post_save_button);
+        editText = (EditText)view.findViewById(R.id.post_title_edit);
+        feedButton = (ImageView)view.findViewById(R.id.feed_comment);
+        deleteButton = (Button)view.findViewById(R.id.deleteButton);
+        putButton = (Button)view.findViewById(R.id.putButton);
+        putFinishButton = (Button)view.findViewById(R.id.putFinishButton);
+        putText = (EditText)view.findViewById(R.id.feed_content_EditText);
+        textView = (TextView)view.findViewById(R.id.feed_content );
 
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,20 +121,16 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             }
         });
 
+
         feedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Context context = view.getContext();
                 Intent intent = new Intent(context, CommentlistActivity.class);
-                System.out.println("intent = !!!!!!!!!!!!!!!!! " + itemData.size());
 
                 List<BowlComment> tempComment = itemData.get(position).getBowlComments().get(position);
-
                 System.out.println("position = " + position);
-                System.out.println("tempComment = @@@@@@@@@@@@@ " + tempComment.size());
-
                 intent.putExtra("comment", (Serializable) tempComment);
-
                 context.startActivity(intent);
             }
         });
@@ -135,7 +143,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 textView.setVisibility(View.INVISIBLE);
                 putText.setVisibility(View.VISIBLE);
                 putText.setCursorVisible(true);
-
             }
         });
 
@@ -154,7 +161,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 textView.setVisibility(View.VISIBLE);
                 putText.setVisibility(View.INVISIBLE);
 
-                System.out.println("putMessage = " + putMessage);
             }
         });
     }
@@ -184,6 +190,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 FragmentHome.bowlCommunityUser.remove(position);
                 FragmentHome.bowlCommunityUserId.remove(position);
                 FragmentHome.bowlCommunityComment.remove(position);
+
                 itemData.remove(itemData.get(position));
                 FeedAdapter adapter = new FeedAdapter(itemData);
                 adapter.notifyItemRemoved(position);
@@ -217,6 +224,27 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             }
         });
 
+    }
+
+    private void getUser(int position, String uid, int userId){
+        userService.getUser(uid).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    User result = response.body();
+                    if (result.getId() == userId){
+                        putButton.setVisibility(View.VISIBLE);
+                        deleteButton.setVisibility(View.VISIBLE);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+            }
+        });
     }
 
     /* Bowl_Comment Post*/
