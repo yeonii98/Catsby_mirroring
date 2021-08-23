@@ -32,6 +32,7 @@ import org.techtown.catsby.community.data.model.TownComment;
 import org.techtown.catsby.community.data.model.TownCommunity;
 import org.techtown.catsby.community.data.service.TownCommentService;
 import org.techtown.catsby.community.data.service.TownCommunityService;
+import org.techtown.catsby.setting.MaincommentActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -331,6 +332,17 @@ public class FragmentCommunity extends Fragment {
                 }
             });
 
+            /* 홈화면 말풍선에 댓글 리스트 연동 시키기
+            itemViewHolder.mainchatbubble.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), MaincommentActivity.class);
+                    intent.putExtra("id",listdata.get(position).getId());
+                    System.out.println(listdata.get(position).getId());
+                    startActivity(intent);
+                }
+            }); */
+
 
             itemViewHolder.commentBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -450,6 +462,7 @@ public class FragmentCommunity extends Fragment {
 //            private ImageView likeImg;
 
             private ImageView chatbubble;
+//            private ImageView mainchatbubble;
 
             public ItemViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -462,6 +475,7 @@ public class FragmentCommunity extends Fragment {
                 updateBtn = itemView.findViewById(R.id.town_update);
                 date = itemView.findViewById(R.id.town_date);
                 chatbubble = itemView.findViewById(R.id.town_comment);
+               // mainchatbubble = itemView.findViewById(R.id.feed_comment);
 
                 commentBtn = itemView.findViewById(R.id.town_commentBtn);
                 commentContent = itemView.findViewById(R.id.town_comment_content);
