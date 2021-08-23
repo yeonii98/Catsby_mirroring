@@ -23,11 +23,11 @@ public class TownComment extends BaseTimeEntity {
     @Column(name = "townComment_id")
     private int id;
 
-    @ManyToOne	(fetch = FetchType.LAZY)
+    @ManyToOne	(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")//user_id라는 컬럼이 만들어짐
     private Users user;
 
-    @ManyToOne	(fetch = FetchType.LAZY)
+    @ManyToOne	(fetch = FetchType.EAGER)
     @JoinColumn(name = "townCommunity_id")//town_community_id라는 컬럼이 만들어짐
     private TownCommunity townCommunity;
 
