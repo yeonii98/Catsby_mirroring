@@ -69,7 +69,7 @@ public class CatProfileController {
     @PutMapping("/cat/{cat_id}")
     public void postCatProfile(@PathVariable("cat_id") int cat_id,
                                @RequestParam(value="name") String name,
-                               @RequestParam(value="health", required = false)   String health ,
+                               @RequestParam(value="health", required = false)  String health ,
                                @RequestParam(value="address", required = false) String address,
                                @RequestParam(value="gender", required = false) Boolean gender,
                                @RequestParam(value="image", required = false) Blob image,
