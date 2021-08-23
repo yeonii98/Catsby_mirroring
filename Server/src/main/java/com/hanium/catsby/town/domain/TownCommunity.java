@@ -1,5 +1,7 @@
 package com.hanium.catsby.town.domain;
 
+import com.hanium.catsby.town.domain.TownComment;
+import com.hanium.catsby.town.domain.TownLike;
 import com.hanium.catsby.util.BaseTimeEntity;
 import com.hanium.catsby.user.domain.Users;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -9,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Blob;
 import java.util.List;
 
 @Data
@@ -44,7 +47,9 @@ public class TownCommunity extends BaseTimeEntity {
     //@OrderBy("id desc")
     private List<TownComment> townComment;
 
-    @OneToOne(mappedBy = "townCommunity", fetch = FetchType.EAGER)
-    @JsonIgnoreProperties({"townCommunity"}) //무한참조 방지
-    private TownLike townlike;
+//    @OneToMany(mappedBy = "townCommunity", fetch = FetchType.EAGER)
+//    @JsonIgnoreProperties({"townCommunity"}) //무한참조 방지
+//    private List<TownLike> townLike;
+
+    private boolean anonymous;
 }

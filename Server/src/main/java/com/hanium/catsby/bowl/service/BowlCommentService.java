@@ -64,6 +64,16 @@ public class BowlCommentService {
         return bowlCommentRepository.findBowlComment(id);
     }
 
+
+    @Transactional(readOnly = true)
+    public List<BowlComment> findCommentByCommunityId(Long communityId){
+        return bowlCommentRepository.findBowlCommentByCommunityId(communityId);
+    }
+
+
+
+
+
     @Transactional
     public void delete(Long id) {
         //myComment

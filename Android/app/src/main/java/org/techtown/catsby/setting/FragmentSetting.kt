@@ -19,7 +19,7 @@ import androidx.fragment.app.setFragmentResultListener
 import com.example.catsbe.account
 import com.example.catsbe.alert
 import kotlinx.android.synthetic.main.fragment_setting.*
-import org.techtown.catsby.QRcode.LoadingActivity
+import org.techtown.catsby.qrcode.LoadingActivity
 import org.techtown.catsby.R
 
 // TODO: Rename parameter arguments, choose names that match
@@ -98,7 +98,7 @@ class FragmentSetting : Fragment() {
         }
         writingList.setOnClickListener {
             //setFrag(2)
-            replaceFragment(com.example.catsbe.writingList())
+            replaceFragment(com.example.catsby.writingList())
             //inflater.inflate(R.layout.fragment_writing_list, container, false)
         }
 

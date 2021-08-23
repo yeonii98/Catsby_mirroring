@@ -33,11 +33,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-
-        <activity android:name=".Bowladd"/>
+        <activity android:name=".setting.MaincommentActivity"></activity>
+        <activity android:name=".community.CommentlistActivity" />
+        <activity android:name=".community.TownCommentListActivity" />
+        <activity android:name=".Bowladd" />
         <activity android:name=".community.AddActivity" />
+        <activity android:name=".community.UpdateActivity" />
         <activity android:name=".Writemain" />
-        <activity android:name=".QRcode.qrcodeCreateActivity" />
+        <activity android:name=".qrcode.QrcodeCreateActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -55,12 +58,12 @@
             android:value="AIzaSyCRJVQUNcW1NU0pkH30EhQFWQ0ZkO3An4I" />
 
         <activity android:name=".MainActivity" />
-
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".home.BowlActivity" />
-        <activity android:name=".QRcode.qrcodeActivity" />
-        <activity android:name=".QRcode.LoadingActivity" />
-        <activity android:name=".QRcode.scannerActivity" />
+        <activity android:name=".qrcode.QrcodeActivity" />
+        <activity android:name=".qrcode.LoadingActivity" />
+        <activity android:name=".qrcode.ScannerActivity" />
+        <activity android:name=".qrcode.LoadingActivity" />
         <activity android:name=".notification.NotificationActivity" />
         <activity android:name=".cattown.CatTownDetailActivity" />
         <activity

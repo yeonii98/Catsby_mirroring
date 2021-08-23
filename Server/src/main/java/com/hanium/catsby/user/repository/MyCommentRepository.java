@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface MyCommentRepository extends JpaRepository<MyComment,Integer> {
-    List<MyComment> findByTownComment_User_IdOrBowlComment_User_IdOrderByMyCommentIdDesc(long t_user_id, long b_user_id);
+    List<MyComment> findByTownComment_User_UidOrBowlComment_User_UidOrderByMyCommentIdDesc(String t_user_uid, String b_user_uid);
 
     void deleteByTownComment_Id(int townComment_id);
     MyComment findByTownComment_Id(int townComment_id);

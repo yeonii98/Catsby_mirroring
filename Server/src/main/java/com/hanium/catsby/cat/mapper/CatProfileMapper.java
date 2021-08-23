@@ -1,4 +1,5 @@
-package com.hanium.catsby.cat.mapper;
+package com.hanium.catsby.Cat.mapper;
+
 
 import com.hanium.catsby.cat.model.CatProfile;
 import org.apache.ibatis.annotations.*;

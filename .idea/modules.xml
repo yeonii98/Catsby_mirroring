@@ -3,6 +3,12 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/21_hi018.iml" filepath="$PROJECT_DIR$/.idea/21_hi018.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Document/Document.iml" filepath="$PROJECT_DIR$/Document/Document.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Server/Server.iml" filepath="$PROJECT_DIR$/Server/Server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Android/app/src/androidTest/androidTest.iml" filepath="$PROJECT_DIR$/Android/app/src/androidTest/androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Document/Android/app/build/intermediates/packaged_manifests/debug/debug.iml" filepath="$PROJECT_DIR$/Document/Android/app/build/intermediates/packaged_manifests/debug/debug.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Android/app/src/main/main.iml" filepath="$PROJECT_DIR$/Android/app/src/main/main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Android/app/src/test/test.iml" filepath="$PROJECT_DIR$/Android/app/src/test/test.iml" />
     </modules>
   </component>
 </project>

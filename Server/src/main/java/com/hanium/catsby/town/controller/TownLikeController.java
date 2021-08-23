@@ -12,23 +12,28 @@ import org.springframework.web.bind.annotation.*;
 public class TownLikeController {
 
     @Autowired
-    TownLikeService townService;
+    TownLikeService townLikeService;
     NotificationService notificationService;
 
     @PostMapping("townCommunity/{id}/like")
     public String createTownLike(@PathVariable int id, @RequestBody TownLike townLike){//현재 유저의 정보도 넣어야 함
-        townService.createTownLike(id, townLike);
+        townLikeService.createTownLike(id, townLike);
 
-        String content = townLike.getTownCommunity().getTitle();
-        String message = id + NotificationUtil.makeNotification(content, NotificationType.LIKE);
-        notificationService.saveNotification(townLike.getTownCommunity().getUser(), message);
+//        String content = townLike.getTownCommunity().getTitle();
+//        String message = id + NotificationUtil.makeNotification(content, NotificationType.LIKE);
+//        notificationService.saveNotification(townLike.getTownCommunity().getUser(), message);
 
         return "좋아요";
     }
 
-    @DeleteMapping("townCommunity/{id}/like/{townLike_id}")
-    public String deleteTownLike(@PathVariable int townLike_id){
-        townService.deleteTownLike(townLike_id);
+    @DeleteMapping("townCommunity/{id}/like")
+    public String deleteTownLike(@PathVariable int id){
+        townLikeService.deleteTownLike(id, 2);
         return "좋아요 취소";
+    }
+
+    @GetMapping("townCommunity/{id}/like/{user_id}")
+    public int getLike(@PathVariable int id, @PathVariable int user_id){
+        return townLikeService.isPresent(id,user_id);
     }
 }

@@ -3,6 +3,7 @@ package org.techtown.catsby;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -19,36 +20,77 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Toast;
 
-import com.facebook.appevents.suggestedevents.ViewOnClickListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
 import android.Manifest;
-import org.techtown.catsby.R;
+
+import org.techtown.catsby.home.BowlCheckListAdapter;
+import org.techtown.catsby.home.model.Bowl;
+import org.techtown.catsby.retrofit.RetrofitClient;
+import org.techtown.catsby.retrofit.dto.BowlCommunity;
+import org.techtown.catsby.retrofit.dto.BowlCommunityPost;
+import org.techtown.catsby.retrofit.dto.BowlList;
+import org.techtown.catsby.retrofit.service.BowlCommunityService;
+import org.techtown.catsby.retrofit.service.BowlService;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class Writemain extends AppCompatActivity{
 
-    private static final String TAG = "blackjin";
+    ListView listview ;
 
+    private static final String TAG = "blackjin";
     private Boolean isPermission = true;
 
     private static final int PICK_FROM_ALBUM = 1;
     private static final int PICK_FROM_CAMERA = 2;
 
+    BowlService bowlService = RetrofitClient.getBowlService();
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    BowlCommunityService bowlCommunityService = RetrofitClient.getBowlCommunityService();
+
+    int[] postImg = {R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
+
+    ArrayList<String> bowlNameArray = new ArrayList<>();
+    ArrayList<Integer> bowIdArray = new ArrayList<>();
+    static ArrayList<Bowl> bowlList = new ArrayList<>();
+    String allContext;
+    BowlCheckListAdapter adapter;
+    static int cPosition;
+
+
     private File tempFile;
+    int[] bowlImg = {R.drawable.ic_baseline_favorite_24, R.drawable.ic_baseline_star_border_24, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_writemain);
+
+        if (user != null) {
+            loadBowls(user.getUid());
+        }
+
+        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         tedPermission();
         findViewById(R.id.btnGallery).setOnClickListener(new View.OnClickListener() {
@@ -69,6 +111,71 @@ public class Writemain extends AppCompatActivity{
             }
         });
 
+        Button postButton = (Button) findViewById(R.id.btn_signupfinish) ;
+        postButton.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditText postContext = (EditText)findViewById(R.id.context);
+                allContext = (String) postContext.getText().toString();
+                savePost(bowlList.get(cPosition).getId(), user.getUid(), allContext);
+                postContext.setText("게시글 저장 완료");
+            }
+        });
+
+    }
+
+    private void savePost(int id, String uid, String context) {
+        BowlCommunityPost bowlCommunityPost = new BowlCommunityPost(id, uid, context);
+        System.out.println("id = " + id);
+        bowlCommunityService.saveCommunity(id, uid, bowlCommunityPost).enqueue(new Callback<List<BowlCommunity>>() {
+            @Override
+            public void onResponse(Call<List<BowlCommunity>> call, Response<List<BowlCommunity>> response) {
+                System.out.println(" success" );
+            }
+
+            @Override
+            public void onFailure(Call<List<BowlCommunity>> call, Throwable t) {
+                System.out.println("t.getMessage() = " + t.getMessage());
+            }
+        });
+    }
+
+    private void loadBowls(String uid) {
+        bowlService.getBowls(uid).enqueue(new Callback<BowlList>() {
+            @Override
+            public void onResponse(Call<BowlList> call, Response<BowlList> response) {
+                if(response.isSuccessful()) {
+                    BowlList result = response.body();
+
+                    for(int i =0; i < result.size(); i++){
+                        bowlNameArray.add(result.getBowls().get(i).getName());
+                        Bowl bowl = new Bowl(result.getBowls().get(i).getId(), bowlImg[i] , result.getBowls().get(i).getName(), result.getBowls().get(i).getInfo(), result.getBowls().get(i).getAddress(), result.getBowls().get(i).getUpdated_time());
+                        bowlList.add(bowl);
+                    }
+
+                    adapter = new BowlCheckListAdapter(bowlList, allContext);
+                    // 첫 번째 아이템 추가.
+                    for (int i =0; i < bowlNameArray.size(); i++){
+                        adapter.addItem(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_indicator_active), bowlNameArray.get(i), i) ;
+                    }
+
+                    listview = (ListView) findViewById(R.id.listview1);
+                    listview.setAdapter(adapter);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<BowlList> call, Throwable t) {
+                System.out.println("t.getMessage() loadBowls= " + t.getMessage());
+            }
+        });
+
+    }
+
+    public static void clickSave(int clickPosition){
+        cPosition = clickPosition;
+        //System.out.println("click ~~~ position = " + clickPosition);
     }
 
     @Override

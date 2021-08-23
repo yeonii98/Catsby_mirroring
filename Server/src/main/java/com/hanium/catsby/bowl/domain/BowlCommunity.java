@@ -21,13 +21,9 @@ public class BowlCommunity extends BaseTimeEntity {
     @Column(name = "bowlCommunity_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private Users user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bowl_id")
-    private Bowl bowl;
 
     @Lob
     private byte[] image;
@@ -35,21 +31,30 @@ public class BowlCommunity extends BaseTimeEntity {
     @Lob
     private String content;
 
-    @OneToMany(mappedBy = "bowlCommunity", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties({"bowlCommunity"})
-    private List<BowlComment> bowlComments = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "bowl_id")
+    private Bowl bowl;
 
+    //@JsonIgnore
+    //@OneToMany(mappedBy = "bowlCommunity", cascade = CascadeType.ALL)
+    //@JsonIgnoreProperties({"bowlCommunity"})
+    //private List<BowlComment> bowlComments = new ArrayList<>();
+
+    /*
     @JsonIgnore
     @OneToOne(mappedBy = "bowlCommunity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private BowlLike bowlLike;
+    private BowlLike bowlLike;*/
 
+
+    /*
     public void setUser(Users user){
         this.user = user;
         user.getBowlCommunities().add(this);
-    }
+    }*/
 
-    public void setBowl(Bowl bowl){
-        this.bowl = bowl;
-        bowl.getBowlCommunities().add(this);
-    }
+    /*
+    @JsonIgnore
+    @OneToMany(mappedBy = "bowlCommunity", cascade = CascadeType.ALL)
+    private List<CommunityAndBowl> communityAndBowls = new ArrayList<>();*/
+
 }

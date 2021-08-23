@@ -27,14 +27,26 @@ public class Users extends BaseTimeEntity {
     @Column(name = "fcm_token")
     private String fcmToken;
 
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<BowlLike> bowlLikes = new ArrayList<>();
-
+    /*
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<BowlLike> bowlLikes = new ArrayList<>();
+*/
+    /*
+    //@JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<BowlCommunity> bowlCommunities = new ArrayList<>();
+*/
 
+
+    /*
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<BowlComment> bowlComments = new ArrayList<>();
+    */
+
+    /*
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bowlComment_id")
+    private BowlComment bowlComment;
+     */
 }

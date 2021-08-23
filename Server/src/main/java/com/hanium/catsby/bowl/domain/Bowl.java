@@ -17,7 +17,7 @@ public class Bowl extends BaseTimeEntity {
     @Column(name = "bowl_id")
     private Long id;
 
-    @Lob
+    @Column(unique = true)
     private String info;
     private String name;
 
@@ -27,12 +27,13 @@ public class Bowl extends BaseTimeEntity {
     @Lob
     private byte[] image;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "bowl", cascade = CascadeType.ALL)
-    private List<BowlCommunity> bowlCommunities = new ArrayList<>();
+    private String filename;
+    private String path;
 
     @JsonIgnore
     @OneToMany(mappedBy = "bowl", cascade = CascadeType.ALL)
-    private List<BowlUser> bowlUsers = new ArrayList<>();
+    private List<com.hanium.catsby.bowl.domain.BowlUser> bowlUsers = new ArrayList<>();
+
+
 
 }

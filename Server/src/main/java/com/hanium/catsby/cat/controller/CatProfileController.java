@@ -1,6 +1,9 @@
 package com.hanium.catsby.cat.controller;
 
-import com.hanium.catsby.cat.mapper.CatProfileMapper;
+import com.hanium.catsby.Cat.mapper.CatProfileMapper;
+//package com.hanium.catsby.cat.controller;
+
+
 import com.hanium.catsby.cat.model.CatProfile;
 import org.springframework.web.bind.annotation.*;
 

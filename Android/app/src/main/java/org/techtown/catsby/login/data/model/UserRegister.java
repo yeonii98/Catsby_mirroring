@@ -11,4 +11,5 @@ public class UserRegister {
         this.email = email;
         this.fcmToken = fcmToken;
     }
+
 }

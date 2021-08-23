@@ -14,8 +14,8 @@ public class MyPostService {
     MyPostRepository myPostRepository;
 
     @Transactional(readOnly = true)
-    public List listMyPost(Long user_id){
-        return myPostRepository.findByTownCommunity_User_IdOrBowlCommunity_User_IdOrderByMyPostIdDesc(user_id,user_id);
+    public List listMyPost(String user_uid){
+        return myPostRepository.findByTownCommunity_User_UidOrBowlCommunity_User_UidOrderByMyPostIdDesc(user_uid,user_uid);
     }
 
 }

@@ -67,7 +67,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
     private LoginService loginService;
 
-    private String customToken;
     private String token;
 
 
@@ -163,8 +162,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     loginService.getCustomToken(request).enqueue(new Callback<LoginResponse>() {
                         @Override
                         public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
-                            customToken = response.body().getCustomToken();
-                            signInWithKakaoToken(customToken);
+                            String customToken = response.body().getCustomToken();
+                            boolean isSaved = response.body().isSaved();
+                            signInWithKakaoToken(customToken, isSaved);
                         }
 
                         @Override
@@ -173,6 +173,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         }
                     });
 
+                } else {
+                    updateKakaoLoginUi();
                 }
 
                 if (throwable != null) {
@@ -208,14 +210,16 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 });
     }
 
-    private void signInWithKakaoToken(String customToken) {
+    private void signInWithKakaoToken(String customToken, boolean saved) {
         firebaseAuth.signInWithCustomToken(customToken)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Log.d("LoginActivity", "signInWithCustomToken:success");
-                            getFCMToken();
+                            Log.d("LoginActivity", "signInWithCustomToken:success ");
+                            if (!saved) {
+                                getFCMToken();
+                            }
                             updateKakaoLoginUi();
                         } else {
                             Log.w("LoginActivity", "signInWithCustomToken:failure", task.getException());
@@ -278,4 +282,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
         });
     }
+
+
 }

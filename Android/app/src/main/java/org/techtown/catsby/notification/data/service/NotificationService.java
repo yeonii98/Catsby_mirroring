@@ -4,7 +4,6 @@ import org.techtown.catsby.notification.data.model.FCMToken;
 import org.techtown.catsby.notification.data.model.NotificationList;
 import org.techtown.catsby.retrofit.ApiResponse;
 
-
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -21,5 +20,5 @@ public interface NotificationService {
     Call<NotificationList> getNotifications(@Path("uid") String uid, @Query("page") int page);
 
     @PATCH("/user/token/{uid}")
-    Call<ApiResponse> updateFCMToken(@Path("uid") String uid, @Body FCMToken toekn);
+    Call<ApiResponse> updateFCMToken(@Path("uid") String uid, @Body FCMToken token);
 }
