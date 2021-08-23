@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
