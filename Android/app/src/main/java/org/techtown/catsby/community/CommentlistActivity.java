@@ -50,7 +50,7 @@ public class CommentlistActivity extends AppCompatActivity {
         TextView commentlist_date;
 
         commentUpdate = (Button)findViewById(R.id.commentlist_update);
-        commentText = (TextView)findViewById(R.id.commentlist_text );;
+        commentText = (TextView)findViewById(R.id.commentlist_text);;
         userName = (TextView)findViewById(R.id.commentlist_username);;
 
         //뒤로가기
