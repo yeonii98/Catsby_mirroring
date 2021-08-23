@@ -78,7 +78,7 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
     BowlCommunityService bowlCommunityService = RetrofitClient.getBowlCommunityService();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     View view;
-    
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -134,6 +134,8 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
             }
         });
     }
+
+
 
     private void loadComments(long communityId) {
         bowlCommunityService.getComments(communityId).enqueue(new Callback<List<BowlComment>>() {
