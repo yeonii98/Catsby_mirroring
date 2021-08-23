@@ -79,8 +79,6 @@ public class TownCommentListActivity extends AppCompatActivity {
                 System.out.println("통신 실패" + t.getMessage());
             }
         });
-
-
     }
 
     @Override
