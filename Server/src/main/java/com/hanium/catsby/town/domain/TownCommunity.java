@@ -1,7 +1,7 @@
-package com.hanium.catsby.town.domain;
+package com.hanium.catsby.Town.domain;
 
-import com.hanium.catsby.town.domain.TownComment;
-import com.hanium.catsby.town.domain.TownLike;
+import com.hanium.catsby.Town.domain.TownComment;
+import com.hanium.catsby.Town.domain.TownLike;
 import com.hanium.catsby.util.BaseTimeEntity;
 import com.hanium.catsby.user.domain.Users;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
