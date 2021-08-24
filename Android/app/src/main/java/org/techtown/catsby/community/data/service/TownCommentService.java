@@ -20,9 +20,9 @@ public interface TownCommentService {
     @POST("townCommunity/{id}/comment/{uid}")
     Call<Void> postTownComment(@Path("id") int id,@Path("uid") String uid, @Body TownComment townComment);
 
-    @PUT("townCommunity/{id}/comment/{townComment_id}")
-    Call<Void> putTownComment(@Path("id") int id, @Path("townComment_id") int townComment_id, @Body TownComment townComment);
+    @PUT("townComment/{id}")
+    Call<Void> putTownComment(@Path("id") int id, @Body TownComment townComment);
 
-    @DELETE("townCommunity/{id}/comment/{townComment_id}")
-    Call<Void> deleteTownComment(@Path("id") int id, @Path("townComment_id") int townComment_id);
+    @DELETE("townComment/{id}")
+    Call<Void> deleteTownComment(@Path("id") int id);
 }

@@ -32,4 +32,27 @@ public class TownComment {
         return content;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setTownCommunity(TownCommunity townCommunity) {
+        this.townCommunity = townCommunity;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 }
