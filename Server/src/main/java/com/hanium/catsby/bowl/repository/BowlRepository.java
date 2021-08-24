@@ -28,7 +28,7 @@ public class BowlRepository {
     }
 
     public List<Bowl> findBowlByUsers(Long userId){
-        return em.createQuery("select b from BowlUser bu" +
+        return em.createQuery("select DISTINCT b from BowlUser bu" +
                 " join bu.bowl b" +
                 " where bu.user.id = :userId" , Bowl.class)
                 .setParameter("userId", userId)

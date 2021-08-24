@@ -13,7 +13,6 @@ public class BowlComment implements Serializable, Parcelable {
     private String createDate;
     private String updateDate;
 
-
     protected BowlComment(Parcel in) {
         id = in.readInt();
         content = in.readString();

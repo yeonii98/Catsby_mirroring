@@ -8,23 +8,31 @@ import org.techtown.catsby.retrofit.dto.BowlCommunityPost;
 import org.techtown.catsby.retrofit.dto.BowlCommunityUpdatePost;
 import org.techtown.catsby.retrofit.dto.BowlLike;
 
+import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 
 public interface BowlCommunityService {
 
+    @Multipart
     @POST("bowl-community/write/{bowlId}/{uid}")
-    Call<List<BowlCommunity>> saveCommunity(@Path("bowlId") int bowlId, @Path("uid") String uid, @Body BowlCommunityPost bowlCommunityPost);
+    Call<List<BowlCommunity>> saveCommunity(@Part MultipartBody.Part file,  @Path("bowlId") int bowlId, @Path("uid") String uid, @PartMap HashMap<String, RequestBody> content);
 
-    @GET("bowl-communities/{uid}")
-    Call<List<BowlCommunity>> getCommunities(@Path("uid") String uid);
+    @GET("/bowl-communities/{bowlId}")
+    Call<List<BowlCommunity>> getCommunitiesByBowl(@Path("bowlId") int bowlId);
 
     @DELETE("/bowl-community/{communityId}")
     Call<Void> deleteCommunity(@Path("communityId") long communityId);
