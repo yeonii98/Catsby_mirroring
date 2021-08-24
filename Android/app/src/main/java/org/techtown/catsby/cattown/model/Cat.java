@@ -4,13 +4,13 @@ import android.graphics.drawable.Drawable;
 import android.media.Image;
 
 public class Cat {
-    private Integer catpicture;
+    private byte[] catpicture;
     private String cat_id;
     private String name;
     private int helppeople;
     private int isdone;
 
-    public Cat(String name, Integer catpicture, String cat_id, int isdone) {
+    public Cat(String name, byte[] catpicture, String cat_id, int isdone) {
         this.name = name;
         this.catpicture = catpicture;
         this.cat_id = cat_id;
@@ -26,10 +26,10 @@ public class Cat {
         this.cat_id = cat_id;
     }
 
-    public Integer getCatPicture() {
+    public byte[] getCatPicture() {
         return catpicture;
     }
-    public void setCatPicture(Integer catpicture) {
+    public void setCatPicture(byte[] catpicture) {
         this.catpicture = catpicture;
     }
 

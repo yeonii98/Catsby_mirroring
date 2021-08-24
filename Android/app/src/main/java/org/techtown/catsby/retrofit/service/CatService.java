@@ -31,9 +31,9 @@ public interface CatService {
     Call<CatProfile> setPost(
             @Field("name") String name,
             @Field("health") String health,
-            @Field("addrss") String addrss,
+            @Field("address") String address,
             @Field("gender") boolean gender,
-            @Field("image")Image image,
+            @Field("image") byte[] image,
             @Field("content") String content,
             @Field("spayed") boolean spayed
             );
