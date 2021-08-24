@@ -2,8 +2,11 @@ package org.techtown.catsby.home.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Parcelable;
 import android.text.Editable;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +22,13 @@ import org.techtown.catsby.home.model.Feed;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.BowlComment;
 import org.techtown.catsby.retrofit.dto.BowlCommentPost;
+import org.techtown.catsby.retrofit.dto.BowlCommentUsingComment;
 import org.techtown.catsby.retrofit.dto.BowlCommunityPost;
 import org.techtown.catsby.retrofit.dto.BowlCommunityUpdatePost;
 import org.techtown.catsby.retrofit.dto.User;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
 import org.techtown.catsby.retrofit.service.UserService;
+import org.techtown.catsby.setting.MaincommentActivity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -84,7 +89,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         return new ViewHolder(view);
     }
 
-
     @Override
     public void onBindViewHolder(@NonNull FeedAdapter.ViewHolder holder, int position) {
         for (int i =0; i < itemData.size(); i ++){
@@ -94,9 +98,12 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         Feed item = itemData.get(position);
         holder.bowlImg.setImageResource(item.getBowlImg());
         holder.userName.setText(item.getNickName());
-        holder.feedImg.setImageResource(item.getImg());
-        holder.content.setText(item.getContent());
 
+        byte[] blob = Base64.decode(item.getImg(), Base64.DEFAULT);
+        Bitmap bmp = BitmapFactory.decodeByteArray(blob,0, blob.length);
+        holder.feedImg.setImageBitmap(bmp);
+
+        holder.content.setText(item.getContent());
         postButton = (Button)view.findViewById(R.id.post_save_button);
         editText = (EditText)view.findViewById(R.id.post_title_edit);
         feedButton = (ImageView)view.findViewById(R.id.feed_comment);
@@ -126,11 +133,18 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 Context context = view.getContext();
-                Intent intent = new Intent(context, CommentlistActivity.class);
+                Intent intent = new Intent(context, MaincommentActivity.class);
 
-                List<BowlComment> tempComment = itemData.get(position).getBowlComments().get(position);
-                System.out.println("position = " + position);
-                intent.putExtra("comment", (Serializable) tempComment);
+                int idx = -1;
+                List<BowlComment> tempComment = itemData.get(position).getBowlComments();
+
+                List<BowlCommentUsingComment> parameterBowlCommentList= new ArrayList<>();
+                for (int i =0; i < tempComment.size(); i++){
+                    BowlCommentUsingComment bowlCommentUsingComment = new BowlCommentUsingComment(tempComment.get(i).getId(), tempComment.get(i).getUser().getNickname(), tempComment.get(i).getContent(), tempComment.get(i).getCreateDate());
+                    parameterBowlCommentList.add(bowlCommentUsingComment);
+                }
+
+                intent.putExtra("comment", (Serializable) parameterBowlCommentList);
                 context.startActivity(intent);
             }
         });
@@ -189,7 +203,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 FragmentHome.bowlCommunityId.remove(position);
                 FragmentHome.bowlCommunityUser.remove(position);
                 FragmentHome.bowlCommunityUserId.remove(position);
-                FragmentHome.bowlCommunityComment.remove(position);
+                //FragmentHome.bowlCommunityComment.remove(position);
 
                 itemData.remove(itemData.get(position));
                 FeedAdapter adapter = new FeedAdapter(itemData);

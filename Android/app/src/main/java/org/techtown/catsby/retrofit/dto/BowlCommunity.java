@@ -1,10 +1,9 @@
 package org.techtown.catsby.retrofit.dto;
 
-
 public class BowlCommunity {
     private int id;
     private User user;
-//    private byte[] image;
+    private String image;
     private String content;
     private String createDate;
     private String updateDate;
@@ -17,9 +16,9 @@ public class BowlCommunity {
         return user;
     }
 
-//    public byte[] getImage() {
-//        return image;
-//    }
+    public String getImage() {
+        return image;
+    }
 
     public String getContent() {
         return content;

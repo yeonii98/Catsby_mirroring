@@ -39,13 +39,19 @@ import org.techtown.catsby.retrofit.dto.BowlList;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
 import org.techtown.catsby.retrofit.service.BowlService;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -73,7 +79,10 @@ public class Writemain extends AppCompatActivity{
     BowlCheckListAdapter adapter;
     static int cPosition;
 
-    private File tempFile;
+    Uri photoUri;
+
+    File tempFile;
+    File image;
     int[] bowlImg = {R.drawable.ic_baseline_favorite_24, R.drawable.ic_baseline_star_border_24, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
 
     @Override
@@ -116,17 +125,52 @@ public class Writemain extends AppCompatActivity{
             public void onClick(View view) {
                 EditText postContext = (EditText)findViewById(R.id.context);
                 allContext = (String) postContext.getText().toString();
-                savePost(bowlList.get(cPosition).getId(), user.getUid(), allContext);
+
+                System.out.println("image = " + image);
+                savePost(image, bowlList.get(cPosition).getId(), user.getUid(), allContext);
+
                 postContext.setText("게시글 저장 완료");
             }
         });
 
     }
 
-    private void savePost(int id, String uid, String context) {
-        BowlCommunityPost bowlCommunityPost = new BowlCommunityPost(id, uid, context);
+    private void savePost(File file, int id, String uid, String context) {
+
+        RequestBody content = RequestBody.create(MediaType.parse("text/plain"), context);
+        RequestBody filePath = RequestBody.create(MediaType.parse("text/plain"), image.toString());
+
+        HashMap<String, RequestBody> map = new HashMap<String, RequestBody>();
+        map.put("content", content);
+        map.put("path", filePath);
+
+
+        InputStream inputStream = null;
+        try {
+            inputStream = this.getContentResolver().openInputStream(photoUri);
+
+        }catch(IOException e) {
+            e.printStackTrace();
+        }
+
+        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpg"), byteArrayOutputStream.toByteArray());
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName() ,requestBody);
+
+
+
+        //RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        //MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
+
+
+        //String path = image.toString();
+        //BowlCommunityPost bowlCommunityPost = new BowlCommunityPost(context, path);
+
+
         System.out.println("id = " + id);
-        bowlCommunityService.saveCommunity(id, uid, bowlCommunityPost).enqueue(new Callback<List<BowlCommunity>>() {
+        bowlCommunityService.saveCommunity(body, id, uid, map).enqueue(new Callback<List<BowlCommunity>>() {
             @Override
             public void onResponse(Call<List<BowlCommunity>> call, Response<List<BowlCommunity>> response) {
                 System.out.println(" success" );
@@ -196,16 +240,11 @@ public class Writemain extends AppCompatActivity{
         }
 
         if (requestCode == PICK_FROM_ALBUM) {
-            Uri photoUri = data.getData();
+            photoUri = data.getData();
             Log.d(TAG, "PICK_FROM_ALBUM photoUri : " + photoUri);
 
             Cursor cursor = null;
-
             try {
-                /*
-                 *  Uri 스키마를
-                 *  content:/// 에서 file:/// 로  변경한다.
-                 */
 
                 String[] proj = {MediaStore.Images.Media.DATA};
                 assert photoUri != null;
@@ -213,7 +252,10 @@ public class Writemain extends AppCompatActivity{
                 assert cursor != null;
                 int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 cursor.moveToFirst();
+
+                image = new File(cursor.getString(column_index));
                 tempFile = new File(cursor.getString(column_index));
+                //System.out.println("tempFile = " + tempFile);
 
                 Log.d(TAG, "tempFile Uri : " + Uri.fromFile(tempFile));
 
@@ -252,6 +294,7 @@ public class Writemain extends AppCompatActivity{
 
         try {
             tempFile = createImageFile();
+
         } catch (IOException e) {
             System.out.println("e.getMessage() " + e.getMessage());
             Toast.makeText(this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
@@ -292,11 +335,9 @@ public class Writemain extends AppCompatActivity{
     private void setImage() {
 
         ImageView imageView = findViewById(R.id.imageView);
-
         BitmapFactory.Options options = new BitmapFactory.Options();
         Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
         Log.d(TAG, "setImage : " + tempFile.getAbsolutePath());
-
         imageView.setImageBitmap(originalBm);
 
         /**
