@@ -221,7 +221,6 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.actionbar_write, menu);
-        inflater.inflate(R.menu.actionbar_addbowl, menu);
     }
 
     @Override
@@ -231,12 +230,6 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
                 Intent intent = new Intent(getActivity(), Writemain.class);
                 startActivity(intent);
                 break;
-
-            case R.id.addbowl:
-                Intent intent2 = new Intent(getActivity(), Bowladd.class);
-                startActivity(intent2);
-                break;
-
         }
         return super.onOptionsItemSelected(item);
     }
