@@ -113,8 +113,6 @@ public class CommentlistActivity extends AppCompatActivity {
                 System.out.println("t.getMessage() = " + t.getMessage());
             }
         });
-
-
     }
 
 

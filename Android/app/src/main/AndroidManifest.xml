@@ -36,7 +36,6 @@
         <activity android:name=".setting.MaincommentActivity"></activity>
         <activity android:name=".community.CommentlistActivity" />
         <activity android:name=".community.TownCommentListActivity" />
-        <activity android:name=".Bowladd" />
         <activity android:name=".community.AddActivity" />
         <activity android:name=".community.UpdateActivity" />
         <activity android:name=".Writemain" />
