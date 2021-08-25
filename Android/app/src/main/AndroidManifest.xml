@@ -34,7 +34,7 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity android:name=".setting.MaincommentActivity"></activity>
-        <activity android:name=".community.CommentlistActivity" />
+        <activity android:name=".community.commentlistActivity" />
         <activity android:name=".community.TownCommentListActivity" />
         <activity android:name=".community.AddActivity" />
         <activity android:name=".community.UpdateActivity" />

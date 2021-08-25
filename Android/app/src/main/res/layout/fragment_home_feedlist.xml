@@ -145,6 +145,7 @@
             android:layout_width="67dp"
             android:layout_height="29dp"
             android:background="#9F9F9F"
+            android:layout_marginRight="7dp"
             android:text="게시" />
 
     </LinearLayout>
