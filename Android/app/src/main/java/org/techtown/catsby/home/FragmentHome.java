@@ -21,6 +21,7 @@ import org.techtown.catsby.home.adapter.BowlAdapter;
 import org.techtown.catsby.home.adapter.FeedAdapter;
 import org.techtown.catsby.home.model.Bowl;
 import org.techtown.catsby.home.model.Feed;
+import org.techtown.catsby.qrcode.LoadingActivity;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.BowlComment;
 import org.techtown.catsby.retrofit.dto.BowlCommunity;
@@ -215,7 +216,9 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.actionbar_write, menu);
+        inflater.inflate(R.menu.actionbar_qrscan, menu);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -223,9 +226,13 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
             case R.id.action_write:
                 Intent intent = new Intent(getActivity(), Writemain.class);
                 startActivity(intent);
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
+            case R.id.action_qrscan:
+                Intent intent2 = new Intent(getActivity(), LoadingActivity.class);
+                startActivity(intent2);
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }
