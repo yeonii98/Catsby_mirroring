@@ -226,13 +226,12 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
             case R.id.action_write:
                 Intent intent = new Intent(getActivity(), Writemain.class);
                 startActivity(intent);
+                break;
 
             case R.id.action_qrscan:
                 Intent intent2 = new Intent(getActivity(), LoadingActivity.class);
                 startActivity(intent2);
-
-            default:
-                return super.onOptionsItemSelected(item);
         }
+        return super.onOptionsItemSelected(item);
     }
 }
