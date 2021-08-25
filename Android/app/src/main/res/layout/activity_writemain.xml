@@ -70,7 +70,7 @@
             android:id="@+id/context"
             android:layout_width="408dp"
             android:layout_height="279dp"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="7dp"
             android:layout_weight="1"
             android:hint="내용을 입력하세요."
             android:paddingLeft="5dp"

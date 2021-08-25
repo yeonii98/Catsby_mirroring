@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="7dp"
         android:layout_marginTop="7dp"
         android:layout_marginBottom="1dp"
         android:gravity="left"
@@ -19,13 +19,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
+            android:layout_marginLeft="7dp"
             android:text="2021-08-16" />
 
         <Button
-            android:layout_marginLeft="200dp"
             android:id="@+id/cmtUpdateBtn"
             android:layout_width="55dp"
             android:layout_height="34dp"
+            android:layout_marginLeft="190dp"
+            android:background="#FFACDBE8"
             android:text="수정"
             android:textSize="11sp" />
 
@@ -33,7 +35,9 @@
             android:id="@+id/cmtDeleteBtn"
             android:layout_width="55dp"
             android:layout_height="34dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="7dp"
+            android:background="#FFACDBE8"
             android:text="삭제"
             android:textSize="11sp" />
 
@@ -55,7 +59,7 @@
             android:layout_gravity="center"
             android:layout_width="45dp"
             android:layout_height="45dp"
-            android:layout_margin="7.5dp"
+            android:layout_marginLeft="7dp"
             android:src="@mipmap/ic_launcher_round"
             android:id="@+id/user_img"/>
 
@@ -70,7 +74,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
                 android:text="닉네임"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold" />
 
             <EditText

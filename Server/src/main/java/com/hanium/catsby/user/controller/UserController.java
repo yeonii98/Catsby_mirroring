@@ -21,7 +21,7 @@ public class UserController {
 
     @PostMapping("/register")
     public BaseResponse createUser(@RequestBody CreateUserRequest request) {
-        if (userRepository.findUserByUid(request.getUid()) != null) {
+        if (!userRepository.findUserToChkByUid(request.getUid()).isEmpty()) {
             return new BaseResponse("Already User Is Saved");
         } else {
             userService.savaUser(request.getUid(), request.getEmail(), request.getFcmToken());
