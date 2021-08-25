@@ -1,8 +1,8 @@
 package com.hanium.catsby.bowl.service;
 
+import com.hanium.catsby.bowl.domain.BowlCommunity;
 import com.hanium.catsby.bowl.domain.Bowl;
 import com.hanium.catsby.bowl.repository.BowlRepository;
-import com.hanium.catsby.bowl.domain.BowlCommunity;
 import com.hanium.catsby.bowl.repository.BowlCommunityRepository;
 import com.hanium.catsby.user.domain.Users;
 import com.hanium.catsby.user.repository.UserRepository;
@@ -27,14 +27,15 @@ public class BowlCommunityService {
     MyPostRepository myPostRepository;
 
     @Transactional
-    public Long savaCommunity(BowlCommunity bowlCommunity, Long userId, Long bowlId) {
-
-        Users users = userRepository.findUser(userId);
+    public Long savaCommunity(BowlCommunity bowlCommunity, String userId, Long bowlId) {
+        Users user = userRepository.findUserByUid(userId);
+        Users users = userRepository.findUser(user.getId());
         Bowl bowl = bowlRepository.findBowl(bowlId);
+        System.out.println("users = " + bowlId);
+        System.out.println("bowl = " + bowl);
 
         bowlCommunity.setUser(users);
         bowlCommunity.setBowl(bowl);
-
         bowlCommunityRepository.save(bowlCommunity);
 
         //myPost
@@ -49,23 +50,40 @@ public class BowlCommunityService {
         return bowlCommunityRepository.findAllBowlCommunity();
     }
 
+
     @Transactional(readOnly = true)
-    public BowlCommunity findCommunity(Long bowlId) {
-        return bowlCommunityRepository.findBowlCommunity(bowlId);
+    public List<BowlCommunity> findCommunitiesByUser(String userId) {
+        Users user = userRepository.findUserByUid(userId);
+        return bowlCommunityRepository.findBowlCommunityByBowl(user.getId());
+    }
+
+
+    @Transactional(readOnly = true)
+    public Long findLikesByCommunity(Long communityId) {
+        return bowlCommunityRepository.findBowlLikesByCommunity(communityId);
+    }
+
+
+    @Transactional(readOnly = true)
+    public BowlCommunity findCommunity(Long id) {
+        return bowlCommunityRepository.findBowlCommunity(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<BowlCommunity> findCommunityByBowl(Long bowlId) {
+        return bowlCommunityRepository.findBowlCommunitiesByBowl(bowlId);
     }
 
     @Transactional
     public void delete(Long id) {
         //myPost
         myPostRepository.deleteByBowlCommunity_Id(id);
-
         bowlCommunityRepository.deleteById(id);
     }
 
     @Transactional
-    public void update(Long id, byte[] image, String content){
+    public void update(Long id, String content){
         BowlCommunity bowlCommunity = bowlCommunityRepository.findBowlCommunity(id);
-        bowlCommunity.setImage(image);
         bowlCommunity.setContent(content);
 
         //myPost

@@ -6,8 +6,10 @@ import com.hanium.catsby.util.BaseTimeEntity;
 import com.hanium.catsby.user.domain.Users;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,13 +23,9 @@ public class BowlCommunity extends BaseTimeEntity {
     @Column(name = "bowlCommunity_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private Users user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bowl_id")
-    private Bowl bowl;
 
     @Lob
     private byte[] image;
@@ -35,21 +33,14 @@ public class BowlCommunity extends BaseTimeEntity {
     @Lob
     private String content;
 
-    @OneToMany(mappedBy = "bowlCommunity", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties({"bowlCommunity"})
-    private List<BowlComment> bowlComments = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "bowl_id")
+    private Bowl bowl;
 
+    /*
     @JsonIgnore
     @OneToOne(mappedBy = "bowlCommunity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private BowlLike bowlLike;
+    private BowlLike bowlLike;*/
 
-    public void setUser(Users user){
-        this.user = user;
-        user.getBowlCommunities().add(this);
-    }
 
-    public void setBowl(Bowl bowl){
-        this.bowl = bowl;
-        bowl.getBowlCommunities().add(this);
-    }
 }

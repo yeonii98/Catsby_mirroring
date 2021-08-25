@@ -49,9 +49,9 @@ public class NotificationActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
+//        if (user != null) {
             loadNotifications(user.getUid());
-        }
+//        }
     }
 
     private void loadNotifications(String uid) {

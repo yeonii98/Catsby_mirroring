@@ -12,22 +12,25 @@ import java.text.SimpleDateFormat;
 public class CatProfile {
     //@Id
     //@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer cat_id;
+    private int cat_id;
 
     private String name;
     private String health;
     private String address;
     private Boolean gender;
-    private Blob image;
+    private byte[] image;
     private String content;
     private Boolean spayed;
     private SimpleDateFormat created_time;
     private SimpleDateFormat updated_time;
 
+    public CatProfile() {
+    }
+
     //0811
     @Builder
     public CatProfile(String name, String health, String address,
-                      Boolean gender, Blob image, String content, Boolean spayed) {
+                      Boolean gender, byte[] image, String content, Boolean spayed) {
         this.cat_id = cat_id;
         this.name = name;
         this.health = health;
@@ -39,6 +42,7 @@ public class CatProfile {
         this.created_time = created_time;
         this.updated_time = updated_time;
     }
+
 
     public Integer getCat_id() {
         return cat_id;
@@ -80,11 +84,11 @@ public class CatProfile {
         this.gender = gender;
     }
 
-    public Blob getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(Blob image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 

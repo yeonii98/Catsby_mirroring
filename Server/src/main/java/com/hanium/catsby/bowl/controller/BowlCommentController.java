@@ -1,12 +1,16 @@
 package com.hanium.catsby.bowl.controller;
 
-import com.hanium.catsby.bowl.domain.BowlComment;
-import com.hanium.catsby.bowl.domain.BowlCommunity;
 import com.hanium.catsby.bowl.service.BowlCommentService;
+import com.hanium.catsby.bowl.domain.BowlCommunity;
+import com.hanium.catsby.user.domain.Users;
+
+
+import com.hanium.catsby.bowl.domain.BowlComment;
 import com.hanium.catsby.notification.domain.NotificationType;
 import com.hanium.catsby.notification.service.NotificationService;
-import com.hanium.catsby.user.domain.Users;
+import com.hanium.catsby.user.service.UserService;
 import com.hanium.catsby.util.NotificationUtil;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -22,14 +26,15 @@ public class BowlCommentController {
 
     private final BowlCommentService bowlCommentService;
     private final NotificationService notificationService;
+    private final UserService userService;
 
-    @PostMapping("/bowl-comment/{userId}/{communityId}")
-    public CreateBowlCommentResponse saveBowlComment(@PathVariable("userId") Long userId, @PathVariable("communityId") Long communityId, @RequestBody CreateBowlCommentRequest request){
-
+    @PostMapping("/bowl-comment/{uid}/{communityId}")
+    public CreateBowlCommentResponse saveBowlComment(@PathVariable("uid") String uid, @PathVariable("communityId") Long communityId, @RequestBody CreateBowlCommentRequest request){
+        Long userId = userService.findUserByUid(uid);
         BowlComment bowlComment = new BowlComment();
         bowlComment.setContent(request.getContent());
-        Long id = bowlCommentService.savaComment(bowlComment, userId, communityId);
 
+        Long id = bowlCommentService.savaComment(bowlComment, userId, communityId);
         String content = bowlComment.getBowlCommunity().getContent();
         String message = userId + NotificationUtil.makeNotification(content, NotificationType.COMMENT);
         notificationService.saveNotification(bowlComment.getBowlCommunity().getUser(), message);
@@ -59,6 +64,12 @@ public class BowlCommentController {
         return new BowlCommentResult(collect);
     }
 
+    @GetMapping("/bowl-comments/{communityId}")
+    public List<BowlComment> bowlComment(@PathVariable("communityId") Long communityId) {
+        List<BowlComment> findComment = bowlCommentService.findCommentByCommunityId(communityId);
+        return findComment;
+    }
+
     @Data
     @AllArgsConstructor
     static class BowlCommentResult<T> {
@@ -72,19 +83,18 @@ public class BowlCommentController {
         private LocalDateTime createDate;
         private Users user;
         private BowlCommunity bowlCommunity;
-
     }
 
-    @PutMapping("/bowl-comment/{id}")
-    public UpdateBowlCommentResponse updateBowlComment(@PathVariable("id") Long id, @RequestBody UpdateBowlCommentRequest request){
-        bowlCommentService.update(id, request.getContent());
-        BowlComment findBowlComment = bowlCommentService.findBowlComment(id);
+    @PutMapping("/bowl-comment/{commentId}")
+    public UpdateBowlCommentResponse updateBowlComment(@PathVariable("commentId") Long commentId, @RequestBody UpdateBowlCommentRequest request){
+        bowlCommentService.update(commentId, request.getContent());
+        BowlComment findBowlComment = bowlCommentService.findBowlComment(commentId);
         return new UpdateBowlCommentResponse(findBowlComment.getId(), findBowlComment.getContent());
 
     }
 
-    @DeleteMapping("/bowl-comment/{id}")
-    public void DeleteBowlComment(@PathVariable("id") Long id){
+    @DeleteMapping("/bowl-comment/{commentId}")
+    public void DeleteBowlComment(@PathVariable("commentId") Long id){
         bowlCommentService.delete(id);
     }
 

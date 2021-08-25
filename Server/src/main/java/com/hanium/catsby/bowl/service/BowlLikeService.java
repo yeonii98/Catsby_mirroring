@@ -36,6 +36,7 @@ public class BowlLikeService {
         return bowlLikeRepository.findAllBowlLike();
     }
 
+
     @Transactional
     public void delete(Long id) {
         bowlLikeRepository.deleteById(id);

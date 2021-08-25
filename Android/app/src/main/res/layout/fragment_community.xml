@@ -13,7 +13,6 @@
         android:id="@+id/search_view"/>
 
     <ScrollView
-        android:background="#DFDBDB"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -28,6 +27,7 @@
 
     <Button
         android:id="@+id/btnAdd"
+        android:background="#FFACDBE8"
         android:text="글쓰기"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

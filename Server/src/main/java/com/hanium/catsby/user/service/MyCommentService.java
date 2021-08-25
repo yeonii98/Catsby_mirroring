@@ -14,8 +14,8 @@ public class MyCommentService {
     MyCommentRepository myCommentRepository;
 
     @Transactional(readOnly = true)
-    public List listMyComment(Long user_id){
-        return myCommentRepository.findByTownComment_User_IdOrBowlComment_User_IdOrderByMyCommentIdDesc(user_id, user_id);
+    public List listMyComment(String user_uid){
+        return myCommentRepository.findByTownComment_User_UidOrBowlComment_User_UidOrderByMyCommentIdDesc(user_uid, user_uid);
     }
 
 }

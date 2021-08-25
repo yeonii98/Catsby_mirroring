@@ -1,16 +1,48 @@
 package org.techtown.catsby.home.model;
 
-public class Feed {
-    private int bowlImg;
-    private String userName;
-    private int img;
-    private String content;
+import org.techtown.catsby.retrofit.dto.BowlComment;
 
-    public Feed(int bowlImg, String userName, int img, String content) {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Feed {
+    private int id;
+    private int userId;
+    private int bowlImg;
+    private String nickName;
+    private byte[] img;
+    private String content;
+    private Long like;
+    private List<BowlComment> bowlComments;
+
+    public List<BowlComment> getBowlComments() {
+        return this.bowlComments;
+    }
+
+    public Feed(int id, int bowlImg, int userId, String nickName, byte[] img, String content, List<BowlComment> bowlComments) {
+        this.id = id;
+        this.userId = userId;
         this.bowlImg = bowlImg;
-        this.userName = userName;
+        this.nickName= nickName;
         this.img = img;
         this.content = content;
+        this.bowlComments = bowlComments;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public long getLike(){
+        return like;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getBowlImg() {
@@ -21,19 +53,19 @@ public class Feed {
         this.bowlImg = bowlImg;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getNickName() {
+        return nickName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
-    public int getImg() {
+    public byte[] getImg() {
         return img;
     }
 
-    public void setImg(int img) {
+    public void setImg(byte[] img) {
         this.img = img;
     }
 

@@ -1,12 +1,36 @@
 package org.techtown.catsby.retrofit.dto;
 
-public class BowlComment {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
+public class BowlComment implements Serializable, Parcelable {
     private int id;
     private User user;
     private BowlCommunity bowlCommunity;
     private String content;
     private String createDate;
     private String updateDate;
+
+    protected BowlComment(Parcel in) {
+        id = in.readInt();
+        content = in.readString();
+        createDate = in.readString();
+        updateDate = in.readString();
+    }
+
+    public static final Creator<BowlComment> CREATOR = new Creator<BowlComment>() {
+        @Override
+        public BowlComment createFromParcel(Parcel in) {
+            return new BowlComment(in);
+        }
+
+        @Override
+        public BowlComment[] newArray(int size) {
+            return new BowlComment[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -30,5 +54,18 @@ public class BowlComment {
 
     public String getUpdateDate() {
         return updateDate;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(id);
+        parcel.writeString(content);
+        parcel.writeString(createDate);
+        parcel.writeString(updateDate);
     }
 }

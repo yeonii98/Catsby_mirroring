@@ -1,11 +1,11 @@
-package com.hanium.catsby.town.service;
+package com.hanium.catsby.Town.service;
 
 import com.hanium.catsby.user.domain.MyComment;
 import com.hanium.catsby.user.repository.MyCommentRepository;
-import com.hanium.catsby.town.domain.TownComment;
-import com.hanium.catsby.town.domain.TownCommunity;
-import com.hanium.catsby.town.repository.TownCommentRepository;
-import com.hanium.catsby.town.repository.TownCommunityRepository;
+import com.hanium.catsby.Town.domain.TownComment;
+import com.hanium.catsby.Town.domain.TownCommunity;
+import com.hanium.catsby.Town.repository.TownCommentRepository;
+import com.hanium.catsby.Town.repository.TownCommunityRepository;
 import com.hanium.catsby.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class TownCommentService {
@@ -35,14 +36,19 @@ public class TownCommentService {
         return format.format(date);
     }
 
+    @Transactional(readOnly = true)
+    public List listTownComment(int id){
+        return townCommentRepository.findByTownCommunity_Id(id);
+    }
+
     @Transactional
-    public void writeTownComment(int id, TownComment requestTownComment){
+    public void writeTownComment(int id, String uid, TownComment requestTownComment){
         TownCommunity townCommunity = townCommunityRepository.findById(id)
                 .orElseThrow(()->{
                     return new IllegalArgumentException("댓글 쓰기 실패 : 게시글 id를 찾을 수 없습니다.");
                 }); //영속화 완료
 
-        requestTownComment.setUser(userRepository.findUser((long) 2));
+        requestTownComment.setUser(userRepository.findUserByUid(uid));
         requestTownComment.setTownCommunity(townCommunity);
         requestTownComment.setDate(currentTime());
         townCommentRepository.save(requestTownComment);

@@ -3,7 +3,6 @@ package org.techtown.catsby.notification.data.model;
 import java.util.List;
 
 public class NotificationList {
-
     private List<Notification> notificationList;
 
     public List<Notification> getNotificationList() {

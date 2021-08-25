@@ -24,6 +24,14 @@ public class BowlCommentRepository {
         return em.find(BowlComment.class, id);
     }
 
+    public List<BowlComment> findBowlCommentByCommunityId (Long communityId) {
+        return em.createQuery("select bc from BowlComment bc" +
+                " where bc.bowlCommunity.id = :communityId", BowlComment.class)
+                .setParameter("communityId", communityId)
+                .getResultList();
+    }
+
+
     public void deleteById(Long id) {
         BowlComment bowlComment = findBowlComment(id);
         em.remove(bowlComment);

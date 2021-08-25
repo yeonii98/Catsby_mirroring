@@ -1,5 +1,6 @@
 package org.techtown.catsby.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,13 +39,14 @@ public class FragmentBowlInfo extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_bowlinfo, container, false);
-
         imageView = (ImageView) view.findViewById(R.id.imageView);
         imageView.setImageResource(R.drawable.ic_launcher_background);
 
-        Bundle bundle = getArguments();
+        //Intent intent = getIntent();
 
-        name = (TextView) view.findViewById(R.id.name);
+        Bundle bundle = this.getArguments();
+        name = (TextView)view.findViewById(R.id.name);
+
         if (bundle != null) {
             name.setText(bundle.getString("name"));
         } else {
@@ -58,6 +60,7 @@ public class FragmentBowlInfo extends Fragment {
         location = (TextView) view.findViewById(R.id.location);
         location.setText("남산타워");
 
+
         notificationService = RetrofitClient.getNotificationService();
         completedFeed = (Button) view.findViewById(R.id.btn_completed_feed);
         completedFeed.setOnClickListener(new View.OnClickListener() {
@@ -66,6 +69,7 @@ public class FragmentBowlInfo extends Fragment {
 //                sendNotification(bowlId, FirebaseAuth.getInstance().getUid());
             }
         });
+
         return view;
     }
 
