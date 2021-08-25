@@ -62,7 +62,6 @@
         <activity android:name=".qrcode.QrcodeActivity" />
         <activity android:name=".qrcode.LoadingActivity" />
         <activity android:name=".qrcode.ScannerActivity" />
-        <activity android:name=".qrcode.LoadingActivity" />
         <activity android:name=".notification.NotificationActivity" />
         <activity android:name=".cattown.CatTownDetailActivity" />
         <activity
