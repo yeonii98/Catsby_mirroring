@@ -33,7 +33,7 @@ public interface CatService {
             @Field("health") String health,
             @Field("address") String address,
             @Field("gender") boolean gender,
-            @Field("image") byte[] image,
+            @Field("image") String image,
             @Field("content") String content,
             @Field("spayed") boolean spayed
             );

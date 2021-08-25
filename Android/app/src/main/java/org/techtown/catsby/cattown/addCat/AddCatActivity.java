@@ -73,6 +73,8 @@ public class AddCatActivity extends AppCompatActivity{
     Bitmap imgBitmap;
     Bitmap bitmap;
 
+    String cimage = "";
+
     //이미지 업로드
     public void imageUpload(View view) {
         Intent intent = new Intent();
@@ -94,16 +96,20 @@ public class AddCatActivity extends AppCompatActivity{
                     imageuri.setVisibility(View.VISIBLE);
                     imageuri.setText(fileUri.toString());
 
+                    //데이터베이스에 이미지 저장 : Data URI -> Bitmap -> Byte Array -> 이진 스트링 -> Blob
                     InputStream instream = resolver.openInputStream(fileUri);
+                    //1. URI to Bitmap
                     imgBitmap = BitmapFactory.decodeStream(instream);
-                    //데이터베이스에 이미지 저장 : Data URI -> Byte Array -> Blob
-                    //imageArray = bitmapToByteArray(imgBitmap);
-                    //System.out.println(imageArray);
-                    byte[] inputData = getBytes(instream);
-                    imageArray = inputData;
 
+                    //2. Bitmap to byteArray
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    imgBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    byte[] bytes = baos.toByteArray();
 
-                    System.out.println("@imgBitmap = " + imgBitmap);
+                    //3. byteArray to BinaryString
+                    cimage = "&image=" + byteArrayToBinaryString(bytes);
+
+                    //System.out.println("@imgBitmap = " + imgBitmap);
                     instream.close();
                     saveBitmapToJpeg(imgBitmap);    // 내부 저장소에 저장
                     Toast.makeText(getApplicationContext(), "이미지 불러오기 성공", Toast.LENGTH_SHORT).show();
@@ -114,24 +120,7 @@ public class AddCatActivity extends AppCompatActivity{
         }
     }
 
-    public static byte[] getBytes(InputStream inputStream) throws IOException {
 
-        byte[] bytesResult = null;
-        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-        int bufferSize = 1024;
-        byte[] buffer = new byte[bufferSize];
-        try {
-            int len;
-            while ((len = inputStream.read(buffer)) != -1) {
-                byteBuffer.write(buffer, 0, len);
-            }
-            bytesResult = byteBuffer.toByteArray();
-        } finally {
-            // close the stream
-            try{ byteBuffer.close(); } catch (IOException ignored){ /* do nothing */ }
-        }
-        return bytesResult;
-    }
 
     public byte[] bitmapToByteArray( Bitmap bitmap ) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream() ;
@@ -139,6 +128,28 @@ public class AddCatActivity extends AppCompatActivity{
         byte[] byteArray = stream.toByteArray() ;
         return byteArray ;
     }
+
+    // 바이너리 바이트 배열을 스트링으로
+    public static String byteArrayToBinaryString(byte[] b) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < b.length; ++i) {
+            sb.append(byteToBinaryString(b[i]));
+        }
+        return sb.toString();
+    }
+
+    // 바이너리 바이트를 스트링으로
+    public static String byteToBinaryString(byte n) {
+        StringBuilder sb = new StringBuilder("00000000");
+        for (int bit = 0; bit < 8; bit++) {
+            if (((n >> bit) & 1) > 0) {
+            sb.setCharAt(7 - bit, '1');
+            }
+        }
+        return sb.toString(); }
+
+
+
 
 
     public void saveBitmapToJpeg(Bitmap bitmap) {   // 선택한 이미지 내부 저장소에 저장
@@ -214,11 +225,11 @@ public class AddCatActivity extends AppCompatActivity{
                 String catcontent = edtcontent.getText().toString();
                 byte[] catimage = imageArray;
 
-                System.out.println("catimage ="+imageArray);
+                System.out.println("catimage ="+cimage);
 
                 CatService retrofitService = retrofit.create(CatService.class);
                 Call<CatProfile> call = retrofitService.setPost(
-                        catname,cathealth,catloc, catgender, catimage, catcontent, catspayed);
+                        catname,cathealth,catloc, catgender, cimage, catcontent, catspayed);
                 call.enqueue(new Callback<CatProfile>(){
 
                     @Override

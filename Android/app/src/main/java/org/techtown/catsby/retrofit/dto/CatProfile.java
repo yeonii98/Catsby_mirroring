@@ -14,7 +14,7 @@ public class CatProfile {
     private String health;
     private String address;
     private Boolean gender;
-    private byte[] image;
+    private String image;
     private String content;
     private Boolean spayed;
     private SimpleDateFormat created_time;
@@ -33,7 +33,7 @@ public class CatProfile {
 
     public Boolean getGender() {return gender; }
 
-    public byte[] getImage() {return image; }
+    public String getImage() {return image; }
 
     public Boolean getSpayed() {return spayed;}
 
@@ -43,7 +43,7 @@ public class CatProfile {
 
     public SimpleDateFormat getUpdated_time() {return updated_time; }
 
-    public CatProfile(String name, String health, String address, Boolean gender, byte[] image, String content, Boolean spayed) {
+    public CatProfile(String name, String health, String address, Boolean gender, String image, String content, Boolean spayed) {
         this.name = name;
         this.health = health;
         this.address = address;
