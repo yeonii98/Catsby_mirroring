@@ -145,8 +145,8 @@
             android:id="@+id/post_save_button"
             android:layout_width="67dp"
             android:layout_height="29dp"
-            android:background="#9F9F9F"
             android:layout_marginRight="7dp"
+            android:background="#FFACDBE8"
             android:text="게시" />
 
     </LinearLayout>

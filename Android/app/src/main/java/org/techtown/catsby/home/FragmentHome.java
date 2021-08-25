@@ -62,7 +62,7 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
     final BowlAdapter bowlAdapter = new BowlAdapter(bowlList);
 
     ArrayList<byte[]> bowlImageArray = new ArrayList<>();
-    int[] bowlImg = {R.drawable.ic_baseline_favorite_24, R.drawable.ic_baseline_star_border_24, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
+    int[] bowlImg = {R.drawable.fish, R.drawable.cutecat, R.drawable.flowercat, R.drawable.fish, R.drawable.cutecat};
 
     public static ArrayList<String> bowlCommunityContext = new ArrayList<>();
     public static ArrayList<Integer> bowlCommunityId = new ArrayList<>();
