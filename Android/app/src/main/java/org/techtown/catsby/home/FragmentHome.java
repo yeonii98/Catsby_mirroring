@@ -96,7 +96,6 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
                         Feed feed = new Feed(BowlCommunityResult.get(i).getId(), bowlImg[i], BowlCommunityResult.get(i).getUser().getId(), BowlCommunityResult.get(i).getUser().getNickname(), BowlCommunityResult.get(i).getImage().getBytes() , BowlCommunityResult.get(i).getContent());
                         feedList.add(feed);
                     }
-
                     RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerview);
                     recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), 1));
                     RecyclerView.LayoutManager feedLayoutManager = new LinearLayoutManager(getActivity());
