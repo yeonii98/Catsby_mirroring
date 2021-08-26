@@ -28,7 +28,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class commentlistActivity extends AppCompatActivity {
+public class CommentlistActivity extends AppCompatActivity {
 
     Button commentUpdate;
     TextView commentText;
@@ -113,8 +113,6 @@ public class commentlistActivity extends AppCompatActivity {
                 System.out.println("t.getMessage() = " + t.getMessage());
             }
         });
-
-
     }
 
 
