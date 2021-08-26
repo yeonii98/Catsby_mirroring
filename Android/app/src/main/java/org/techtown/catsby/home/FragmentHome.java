@@ -60,7 +60,7 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
     }
     ArrayList<Bowl> bowlList= new ArrayList<>();
     ArrayList<Feed> feedList= new ArrayList<>();
-    final BowlAdapter bowlAdapter = new BowlAdapter(bowlList);
+    BowlAdapter bowlAdapter;
 
 
     ArrayList<byte[]> bowlImageArray = new ArrayList<>();
@@ -87,6 +87,7 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
     }
 
     private void loadCommunity(int bowlId) {
+        feedList= new ArrayList<>();
         bowlCommunityService.getCommunitiesByBowl(bowlId).enqueue(new Callback<List<BowlCommunity>>() {
             @Override
             public void onResponse(Call<List<BowlCommunity>> call, Response<List<BowlCommunity>> response) {
@@ -114,6 +115,8 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
 
 
     private void loadBowls(String uid) {
+        bowlList= new ArrayList<>();
+        bowlAdapter = new BowlAdapter(bowlList);
         bowlService.getBowls(uid).enqueue(new Callback<BowlList>() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
