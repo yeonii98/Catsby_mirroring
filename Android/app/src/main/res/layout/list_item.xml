@@ -31,6 +31,14 @@
             android:layout_weight="1" />
 
         <Button
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/ic_baseline_menu_24"
+            android:id="@+id/town_menu">
+
+        </Button>
+
+        <Button
             android:id="@+id/town_update"
             android:layout_width="50dp"
             android:layout_height="wrap_content"

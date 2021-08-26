@@ -1,12 +1,17 @@
 package org.techtown.catsby.community;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -251,9 +256,11 @@ public class FragmentCommunity extends Fragment {
             itemViewHolder.date.setText(memo.getDate());
 //            itemViewHolder.likeCnt.setText(Integer.toString(memo.getLikeCnt()));
 
+            itemViewHolder.deleteBtn.setVisibility(View.GONE);
+            itemViewHolder.updateBtn.setVisibility(View.GONE);
+
             if(!uid.equals(memo.getUid())){
-                itemViewHolder.deleteBtn.setVisibility(View.GONE);
-                itemViewHolder.updateBtn.setVisibility(View.GONE);
+                itemViewHolder.town_menu.setVisibility(View.GONE);
             }
 
             itemViewHolder.deleteBtn.setOnClickListener(new View.OnClickListener() {
@@ -446,7 +453,7 @@ public class FragmentCommunity extends Fragment {
                 listdata.get(position).setImg(bm);
         }
 
-        class ItemViewHolder extends RecyclerView.ViewHolder {
+        class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
             private TextView nickname;
             private TextView title;
             private TextView content;
@@ -457,6 +464,8 @@ public class FragmentCommunity extends Fragment {
 
             private Button commentBtn;
             private EditText commentContent;
+
+            private Button town_menu;
 
 //            private TextView likeCnt;
 //            private ImageView likeImg;
@@ -482,7 +491,51 @@ public class FragmentCommunity extends Fragment {
 
 //                likeCnt = itemView.findViewById(R.id.likeCnt);
 //                likeImg = itemView.findViewById(R.id.town_likeBtn);
+
+                town_menu = itemView.findViewById(R.id.town_menu);
+                town_menu.setOnCreateContextMenuListener(this);
             }
+
+            @Override
+            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+                MenuItem Edit = menu.add(Menu.NONE, R.id.item1, 1, "수정하기");
+                MenuItem Delete = menu.add(Menu.NONE, R.id.item2, 2, "삭제하기");
+                Edit.setOnMenuItemClickListener(onMenuItemClickListener);
+                Delete.setOnMenuItemClickListener(onMenuItemClickListener);
+            }
+
+            private final MenuItem.OnMenuItemClickListener onMenuItemClickListener = new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.item1:
+
+                            return true;
+
+                        case R.id.item2:
+                            AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
+                            ad.setTitle("게시글 삭제");
+                            ad.setMessage("해당 게시물을 삭제하시겠습니까?");
+
+                            ad.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            });
+
+                            ad.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            ad.show();
+                            return true;
+                    }
+                    return false;
+                }
+            };
         }
     }
 }
