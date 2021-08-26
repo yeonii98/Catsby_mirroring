@@ -59,8 +59,12 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
         mContext = context;
     }
     ArrayList<Bowl> bowlList= new ArrayList<>();
+<<<<<<< HEAD
+    final BowlAdapter bowlAdapter = new BowlAdapter(bowlList);
+=======
     ArrayList<Feed> feedList= new ArrayList<>();
     BowlAdapter bowlAdapter;
+>>>>>>> 574e7485b5e051840ff4139ae269a42de3931ab2
 
 
     ArrayList<byte[]> bowlImageArray = new ArrayList<>();
@@ -94,6 +98,7 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
                 if(response.isSuccessful()) {
                     List<BowlCommunity> BowlCommunityResult = response.body();
 
+                    ArrayList<Feed> feedList= new ArrayList<>();
                     for (int i=0; i < BowlCommunityResult.size(); i++) {
                         Feed feed = new Feed(BowlCommunityResult.get(i).getId(), bowlImg[i], BowlCommunityResult.get(i).getUser().getId(), BowlCommunityResult.get(i).getUser().getNickname(), BowlCommunityResult.get(i).getImage().getBytes() , BowlCommunityResult.get(i).getContent());
                         feedList.add(feed);
