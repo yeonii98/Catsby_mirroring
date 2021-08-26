@@ -5,36 +5,39 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import org.techtown.catsby.R;
-import org.techtown.catsby.community.Comments;
-import org.techtown.catsby.community.TownCommentListActivity;
-import org.techtown.catsby.community.data.service.TownCommentService;
+import org.techtown.catsby.home.model.Bowl;
+import org.techtown.catsby.retrofit.dto.BowlComment;
+import org.techtown.catsby.retrofit.dto.BowlCommentUsingComment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MaincommentActivity extends AppCompatActivity {
-
-    private RecyclerView mainrecyclerView;
-
-    List<Comments> maincommentList;
+    List<BowlCommentUsingComment> mainCommentList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maincomment);
-
-        mainrecyclerView = findViewById(R.id.maincmt_recyclerview);
-        maincommentList = new ArrayList<>();
+        //maincommentList = new ArrayList<>();
 
         //뒤로가기
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Intent intent = getIntent();
+        mainCommentList = (List<BowlCommentUsingComment>) intent.getSerializableExtra("comment");
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        MainCommentAdapter mainCommentAdapter = new MainCommentAdapter(mainCommentList);
+        RecyclerView BowlCommunityRecyclerView = findViewById(R.id.maincmt_recyclerview);
+        BowlCommunityRecyclerView.setLayoutManager(new LinearLayoutManager(this)) ;
+        BowlCommunityRecyclerView.setAdapter(mainCommentAdapter);
     }
 
     @Override

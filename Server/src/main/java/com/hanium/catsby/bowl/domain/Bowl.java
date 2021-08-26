@@ -21,7 +21,6 @@ public class Bowl extends BaseTimeEntity {
     private String info;
     private String name;
 
-    //주소 형식 찾아보기
     private String address;
 
     @Lob
@@ -33,7 +32,6 @@ public class Bowl extends BaseTimeEntity {
     @JsonIgnore
     @OneToMany(mappedBy = "bowl", cascade = CascadeType.ALL)
     private List<com.hanium.catsby.bowl.domain.BowlUser> bowlUsers = new ArrayList<>();
-
 
 
 }

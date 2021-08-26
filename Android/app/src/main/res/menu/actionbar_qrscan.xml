@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/addbowl"
-        android:icon="@drawable/ic_baseline_add_box_24"
+        android:id="@+id/action_qrscan"
+        android:icon="@drawable/ic_baseline_qr_code_scanner_24"
         android:title="Notification"
         app:showAsAction="always"/>
 

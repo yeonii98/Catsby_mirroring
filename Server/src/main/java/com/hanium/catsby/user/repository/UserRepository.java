@@ -27,6 +27,12 @@ public class UserRepository {
                 .getSingleResult();
     }
 
+    public List<Users> findUserToChkByUid(String uid) {
+        return em.createQuery("select u from Users u where u.uid = :uid", Users.class)
+                .setParameter("uid", uid)
+                .getResultList();
+    }
+
     public List<Users> findAllUser() {
         return em.createQuery("select u from Users u", Users.class).getResultList();
     }

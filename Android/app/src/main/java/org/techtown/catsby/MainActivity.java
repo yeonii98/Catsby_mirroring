@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
     private final FragmentCatTown fragmentcattown = new FragmentCatTown();
     private final FragmentCommunity fragmentcommunity = new FragmentCommunity();
     private final FragmentSetting fragmentsetting = new FragmentSetting();
-
+    Menu menu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +40,13 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.frameLayout, fragmenthome).commitAllowingStateLoss();
         BottomNavigationView bottomNavigationView = findViewById(R.id.navigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
+        menu = bottomNavigationView.getMenu();
+        menu.findItem(R.id.iconHome).setIcon(R.drawable.ic_baseline_home_24);
     }
 
     @Override
@@ -86,15 +89,31 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
             {
                 case R.id.iconHome:
                     transaction.replace(R.id.frameLayout, fragmenthome).commitAllowingStateLoss();
+                    menuItem.setIcon(R.drawable.ic_baseline_home_24);
+                    menu.findItem(R.id.iconCommunity).setIcon(R.drawable.ic_outline_people_alt_24);
+                    menu.findItem(R.id.iconCatTown).setIcon(R.drawable.ic_outline_text_snippet_24);
+                    menu.findItem(R.id.iconSetting).setIcon(R.drawable.ic_outline_settings_24);
                     break;
                 case R.id.iconCommunity:
                     transaction.replace(R.id.frameLayout, fragmentcommunity).commitAllowingStateLoss();
+                    menuItem.setIcon(R.drawable.ic_baseline_people_alt_24);
+                    menu.findItem(R.id.iconHome).setIcon(R.drawable.ic_outline_home_24);
+                    menu.findItem(R.id.iconCatTown).setIcon(R.drawable.ic_outline_text_snippet_24);
+                    menu.findItem(R.id.iconSetting).setIcon(R.drawable.ic_outline_settings_24);
                     break;
                 case R.id.iconCatTown:
                     transaction.replace(R.id.frameLayout, fragmentcattown).commitAllowingStateLoss();
+                    menuItem.setIcon(R.drawable.ic_baseline_text_snippet_24);
+                    menu.findItem(R.id.iconHome).setIcon(R.drawable.ic_outline_home_24);
+                    menu.findItem(R.id.iconCommunity).setIcon(R.drawable.ic_outline_people_alt_24);
+                    menu.findItem(R.id.iconSetting).setIcon(R.drawable.ic_outline_settings_24);
                     break;
                 case R.id.iconSetting:
                     transaction.replace(R.id.frameLayout, fragmentsetting).commitAllowingStateLoss();
+                    menuItem.setIcon(R.drawable.ic_baseline_settings_24);
+                    menu.findItem(R.id.iconHome).setIcon(R.drawable.ic_outline_home_24);
+                    menu.findItem(R.id.iconCommunity).setIcon(R.drawable.ic_outline_people_alt_24);
+                    menu.findItem(R.id.iconCatTown).setIcon(R.drawable.ic_outline_text_snippet_24);
                     break;
             }
             return true;

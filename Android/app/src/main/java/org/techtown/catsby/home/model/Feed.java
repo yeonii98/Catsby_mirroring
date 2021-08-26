@@ -10,16 +10,16 @@ public class Feed {
     private int userId;
     private int bowlImg;
     private String nickName;
-    private int img;
+    private byte[] img;
     private String content;
     private Long like;
-    private ArrayList<List<BowlComment>> bowlComments;
+    private List<BowlComment> bowlComments;
 
-    public ArrayList<List<BowlComment>> getBowlComments() {
-        return bowlComments;
+    public List<BowlComment> getBowlComments() {
+        return this.bowlComments;
     }
 
-    public Feed(int id, int bowlImg, int userId, String nickName, int img, String content, ArrayList<List<BowlComment>> bowlComments) {
+    public Feed(int id, int bowlImg, int userId, String nickName, byte[] img, String content, List<BowlComment> bowlComments) {
         this.id = id;
         this.userId = userId;
         this.bowlImg = bowlImg;
@@ -61,11 +61,11 @@ public class Feed {
         this.nickName = nickName;
     }
 
-    public int getImg() {
+    public byte[] getImg() {
         return img;
     }
 
-    public void setImg(int img) {
+    public void setImg(byte[] img) {
         this.img = img;
     }
 

@@ -7,7 +7,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.sql.Blob;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 
 @RestController
@@ -17,20 +22,21 @@ public class BowlCommunityController {
     private final BowlCommunityService bowlCommunityService;
     private final BowlService bowlService;
 
-    @PostMapping("/bowl-community/write/{bowlId}/{uid}")
-    public CreateBowlCommunityResponse savaBowlCommunity(@PathVariable("bowlId") long bowlId, @PathVariable("uid") String uid, @RequestBody CreateBowlCommunityRequest request) {
+    @PostMapping("/bowl-community/write/{bowlId}/{uid}")  //@RequestBody CreateBowlCommunityRequest request
+    public CreateBowlCommunityResponse savaBowlCommunity(@RequestParam(value = "file") MultipartFile file, @PathVariable("bowlId") long bowlId, @PathVariable("uid") String uid, @RequestParam HashMap<String, RequestBody> request ) throws IOException {
         BowlCommunity bowlCommunity = new BowlCommunity();
-
-        bowlCommunity.setImage(request.getImage());
-        bowlCommunity.setContent(request.getContent());
+        bowlCommunity.setImage(file.getBytes());
+        String con = String.valueOf(request.get("content"));
+        bowlCommunity.setContent(con);
         Long communityId = bowlCommunityService.savaCommunity(bowlCommunity, uid, bowlId);
         return new CreateBowlCommunityResponse(communityId);
     }
 
     @Data
     static class CreateBowlCommunityRequest{
-        private byte[] image;
+        //private Blob image;
         private String content;
+        private String path;
     }
 
     @Data
@@ -41,10 +47,17 @@ public class BowlCommunityController {
         }
     }
 
+    /*
     @GetMapping("/bowl-communities/{uid}")
     public List<BowlCommunity> bowlCommunities(@PathVariable("uid") String uid) {
         List<BowlCommunity> findCommunities = bowlCommunityService.findCommunitiesByUser(uid);
         return findCommunities;
+    }*/
+
+    @GetMapping("/bowl-communities/{bowlId}")
+    public List<BowlCommunity> bowlCommunitiesByBowl(@PathVariable("bowlId") Long bowlId) {
+        List<BowlCommunity> community = bowlCommunityService.findCommunityByBowl(bowlId);
+        return community;
     }
 
     @GetMapping("/bowl-communities/like/{communityId}")
@@ -52,7 +65,6 @@ public class BowlCommunityController {
         Long cnt = bowlCommunityService.findLikesByCommunity(communityId);
         return cnt;
     }
-
 
     @Data
     @AllArgsConstructor
@@ -63,7 +75,7 @@ public class BowlCommunityController {
     @Data
     @AllArgsConstructor
     static class BowlCommunityDto{
-        private byte[] image;
+        private Blob image;
         private String content;
         private LocalDateTime createDate;
     }
@@ -72,7 +84,7 @@ public class BowlCommunityController {
     public UpdateBowlCommunityResponse updateBowlCommunity(@PathVariable("communityId") Long communityId, @RequestBody UpdateBowlCommunityRequest request){
         bowlCommunityService.update(communityId, request.getContent());
         BowlCommunity findBowlCommunity = bowlCommunityService.findCommunity(communityId);
-        return new UpdateBowlCommunityResponse(findBowlCommunity.getId(), findBowlCommunity.getImage(), findBowlCommunity.getContent());
+        return new UpdateBowlCommunityResponse(findBowlCommunity.getId(), findBowlCommunity.getContent());
     }
 
 
@@ -84,7 +96,6 @@ public class BowlCommunityController {
     @Data
     static class UpdateBowlCommunityRequest{
         private Long id;
-        private byte[] image;
         private String content;
     }
 
@@ -92,7 +103,6 @@ public class BowlCommunityController {
     @AllArgsConstructor
     static class UpdateBowlCommunityResponse{
         private Long id;
-        private byte[] image;
         private String content;
     }
 }
