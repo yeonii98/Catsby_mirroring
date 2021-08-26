@@ -2,17 +2,15 @@ package com.hanium.catsby.auth.service;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.auth.UserRecord;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.hanium.catsby.auth.domain.AuthResponse;
+import com.hanium.catsby.auth.dto.AuthResponse;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Map;
 
 import static com.google.firebase.auth.UserRecord.*;
 

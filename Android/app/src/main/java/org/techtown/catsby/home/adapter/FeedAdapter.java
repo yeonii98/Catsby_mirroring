@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Parcelable;
-import android.text.Editable;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,14 +15,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.techtown.catsby.R;
-import org.techtown.catsby.community.CommentlistActivity;
 import org.techtown.catsby.home.FragmentHome;
 import org.techtown.catsby.home.model.Feed;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.BowlComment;
 import org.techtown.catsby.retrofit.dto.BowlCommentPost;
 import org.techtown.catsby.retrofit.dto.BowlCommentUsingComment;
-import org.techtown.catsby.retrofit.dto.BowlCommunityPost;
 import org.techtown.catsby.retrofit.dto.BowlCommunityUpdatePost;
 import org.techtown.catsby.retrofit.dto.User;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
@@ -99,7 +95,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     loadComments(itemData.get(getAdapterPosition()).getId(), getAdapterPosition());
-
 
                 }
             });

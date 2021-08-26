@@ -34,10 +34,15 @@ public class UserService {
     }
 
     @Transactional
-    public void update(Long id, String nickname, String address) {
-        Users user = userRepository.findUser(id);
-        user.setNickname(nickname);
+    public void updateAddress(String uid, String address) {
+        Users user = userRepository.findUserByUid(uid);
         user.setAddress(address);
+    }
+
+    @Transactional
+    public void updateNickname(String uid, String nickname) {
+        Users user = userRepository.findUserByUid(uid);
+        user.setNickname(nickname);
     }
 
     @Transactional(readOnly = true)

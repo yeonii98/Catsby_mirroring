@@ -120,13 +120,6 @@
             android:text="내 글 목록"
             android:textSize="25dp" />
 
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="15dp"
-            android:text="QR 스캔 테스트"
-            android:id="@+id/qrscantest" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

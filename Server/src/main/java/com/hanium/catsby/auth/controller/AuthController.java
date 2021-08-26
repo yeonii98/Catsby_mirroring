@@ -1,9 +1,9 @@
 package com.hanium.catsby.auth.controller;
 
 import com.google.firebase.auth.FirebaseAuthException;
-import com.hanium.catsby.auth.domain.AuthResponse;
+import com.hanium.catsby.auth.dto.AuthRequest;
+import com.hanium.catsby.auth.dto.AuthResponse;
 import com.hanium.catsby.auth.service.AuthService;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +25,4 @@ public class AuthController {
         AuthResponse response = authService.createCustomToken(accessToken);
         return ResponseEntity.ok(response);
     }
-
-    @Data
-    static class AuthRequest {
-        private String accessToken;
-    }
-
-
 }

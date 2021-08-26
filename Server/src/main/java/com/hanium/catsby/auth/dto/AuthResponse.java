@@ -1,4 +1,4 @@
-package com.hanium.catsby.auth.domain;
+package com.hanium.catsby.auth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
