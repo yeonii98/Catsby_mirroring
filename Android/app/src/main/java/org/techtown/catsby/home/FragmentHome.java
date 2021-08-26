@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import org.techtown.catsby.R;
 import org.techtown.catsby.Writemain;
 import org.techtown.catsby.home.adapter.BowlAdapter;
