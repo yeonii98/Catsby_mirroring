@@ -47,26 +47,44 @@ public class UserController {
         return user;
     }
 
-    @PutMapping("/user/{id}")
-    public UpdateUserResponse updateUserResponse(@PathVariable("id") Long id, @RequestBody UpdateUserRequest request) {
-        userService.update(id, request.getNickname(), request.getAddress());
-        Users findUser = userService.findUser(id);
-        return new UpdateUserResponse(findUser.getId(), findUser.getNickname(), findUser.getAddress());
+    @PutMapping("/user/address/{uid}")
+    public UpdateUserAddressResponse updateUserAddressResponse(@PathVariable("uid") String uid, @RequestBody UpdateUserAddressRequest request) {
+        userService.updateAddress(uid, request.getAddress());
+        Users findUser = userService.findUsersByUid(uid);
+        return new UpdateUserAddressResponse(findUser.getId(), findUser.getAddress());
+    }
+
+    @PutMapping("/user/nickname/{uid}")
+    public UpdateUserNicknameResponse updateUserNicknameResponse(@PathVariable("uid") String uid, @RequestBody UpdateUserNicknameRequest request) {
+        userService.updateNickname(uid, request.getNickname());
+        Users findUser = userService.findUsersByUid(uid);
+        return new UpdateUserNicknameResponse(findUser.getId(), findUser.getNickname());
     }
 
     @Data
-    static class UpdateUserRequest{
+    static class UpdateUserAddressRequest{
         private Long id;
-        private String nickname;
         private String address;
     }
 
     @Data
     @AllArgsConstructor
-    static class UpdateUserResponse{
+    static class UpdateUserAddressResponse{
+        private Long id;
+        private String address;
+    }
+
+    @Data
+    static class UpdateUserNicknameRequest{
         private Long id;
         private String nickname;
-        private String address;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class UpdateUserNicknameResponse{
+        private Long id;
+        private String nickname;
     }
 
     @PatchMapping("/user/token/{uid}")

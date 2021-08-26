@@ -21,6 +21,7 @@ import org.techtown.catsby.home.adapter.BowlAdapter;
 import org.techtown.catsby.home.adapter.FeedAdapter;
 import org.techtown.catsby.home.model.Bowl;
 import org.techtown.catsby.home.model.Feed;
+import org.techtown.catsby.qrcode.LoadingActivity;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.BowlComment;
 import org.techtown.catsby.retrofit.dto.BowlCommunity;
@@ -61,7 +62,7 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
     final BowlAdapter bowlAdapter = new BowlAdapter(bowlList);
 
     ArrayList<byte[]> bowlImageArray = new ArrayList<>();
-    int[] bowlImg = {R.drawable.ic_baseline_favorite_24, R.drawable.ic_baseline_star_border_24, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
+    int[] bowlImg = {R.drawable.fish, R.drawable.cutecat, R.drawable.flowercat, R.drawable.fish, R.drawable.cutecat};
 
     public static ArrayList<String> bowlCommunityContext = new ArrayList<>();
     public static ArrayList<Integer> bowlCommunityId = new ArrayList<>();
@@ -215,7 +216,9 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.actionbar_write, menu);
+        inflater.inflate(R.menu.actionbar_qrscan, menu);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -224,8 +227,11 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
                 Intent intent = new Intent(getActivity(), Writemain.class);
                 startActivity(intent);
                 break;
+
+            case R.id.action_qrscan:
+                Intent intent2 = new Intent(getActivity(), LoadingActivity.class);
+                startActivity(intent2);
         }
         return super.onOptionsItemSelected(item);
     }
-
 }
