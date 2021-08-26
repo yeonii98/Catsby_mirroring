@@ -60,17 +60,11 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
     }
     ArrayList<Bowl> bowlList= new ArrayList<>();
     final BowlAdapter bowlAdapter = new BowlAdapter(bowlList);
+    ArrayList<Feed> feedList= new ArrayList<>();
 
     ArrayList<byte[]> bowlImageArray = new ArrayList<>();
     int[] bowlImg = {R.drawable.fish, R.drawable.cutecat, R.drawable.flowercat, R.drawable.fish, R.drawable.cutecat};
 
-    public static ArrayList<String> bowlCommunityContext = new ArrayList<>();
-    public static ArrayList<Integer> bowlCommunityId = new ArrayList<>();
-    public static ArrayList<String> bowlCommunityUser= new ArrayList<>();
-    public static ArrayList<Integer> bowlCommunityUserId = new ArrayList<>();
-    public static ArrayList<byte[]> bowlCommunityImage = new ArrayList<>();
-    public static ArrayList<List<BowlComment>> bowlCommunityComment = new ArrayList<List<BowlComment>>();
-    ArrayList<Long> tempCommunityId = new ArrayList<>();
     BowlService bowlService = RetrofitClient.getBowlService();
     BowlCommunityService bowlCommunityService = RetrofitClient.getBowlCommunityService();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -92,31 +86,22 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
     }
 
     private void loadCommunity(int bowlId) {
-
         bowlCommunityService.getCommunitiesByBowl(bowlId).enqueue(new Callback<List<BowlCommunity>>() {
             @Override
             public void onResponse(Call<List<BowlCommunity>> call, Response<List<BowlCommunity>> response) {
                 if(response.isSuccessful()) {
                     List<BowlCommunity> BowlCommunityResult = response.body();
 
-                    for(int i = 0; i < BowlCommunityResult.size(); i++){
-                        tempCommunityId.add((long) BowlCommunityResult.get(i).getId());
+                    for (int i=0; i < BowlCommunityResult.size(); i++) {
+                        Feed feed = new Feed(BowlCommunityResult.get(i).getId(), bowlImg[i], BowlCommunityResult.get(i).getUser().getId(), BowlCommunityResult.get(i).getUser().getNickname(), BowlCommunityResult.get(i).getImage().getBytes() , BowlCommunityResult.get(i).getContent());
+                        feedList.add(feed);
                     }
-
-                    for(int i =0; i < BowlCommunityResult.size(); i++){
-                        bowlCommunityContext.add(BowlCommunityResult.get(i).getContent());
-                        bowlCommunityId.add(BowlCommunityResult.get(i).getId());
-                        bowlCommunityUser.add(BowlCommunityResult.get(i).getUser().getNickname());
-                        bowlCommunityUserId.add(BowlCommunityResult.get(i).getUser().getId());
-
-                        byte[] blob = Base64.decode(BowlCommunityResult.get(i).getImage(), Base64.DEFAULT);
-                        Bitmap bmp = BitmapFactory.decodeByteArray(blob,0, blob.length);
-                        bowlCommunityImage.add(BowlCommunityResult.get(i).getImage().getBytes());
-                    }
-
-                    for(int i = 0; i < BowlCommunityResult.size(); i++){
-                        loadComments((long) BowlCommunityResult.get(i).getId());
-                    }
+                    RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerview);
+                    recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), 1));
+                    RecyclerView.LayoutManager feedLayoutManager = new LinearLayoutManager(getActivity());
+                    recyclerView.setLayoutManager(feedLayoutManager);
+                    FeedAdapter feedAdapter = new FeedAdapter(feedList);
+                    recyclerView.setAdapter(feedAdapter);
                 }
             }
             @Override
@@ -124,52 +109,6 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
                 System.out.println("t.getMessage() loadCommunity = " + t.getMessage());
             }
         });
-    }
-
-
-
-    private void loadComments(long communityId) {
-        ArrayList<Feed> feedList = new ArrayList<>();
-
-        bowlCommunityService.getComments(communityId).enqueue(new Callback<List<BowlComment>>() {
-            @Override
-            public void onResponse(Call<List<BowlComment>> call, Response<List<BowlComment>> response) {
-                if(response.isSuccessful()){
-                    List<BowlComment> bowlComments = response.body();
-                    if (bowlComments.size() > 0){
-                        bowlCommunityComment.add(bowlComments);
-                    }
-                    else{
-                        bowlCommunityComment.add(new ArrayList<>());
-                    }
-                }
-
-                for (int i = 0; i< bowlCommunityId.size(); i++) {
-
-                    try{
-                        Feed feed = new Feed(bowlCommunityId.get(i), bowlImg[i], bowlCommunityUserId.get(i), bowlCommunityUser.get(i), bowlCommunityImage.get(i), bowlCommunityContext.get(i), bowlCommunityComment.get(i));
-                        feedList.add(feed);
-
-                        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerview);
-                        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), 1));
-                        RecyclerView.LayoutManager feedLayoutManager = new LinearLayoutManager(getActivity());
-                        recyclerView.setLayoutManager(feedLayoutManager);
-                        FeedAdapter feedAdapter = new FeedAdapter(feedList);
-                        recyclerView.setAdapter(feedAdapter);
-                    }
-                    catch(Exception e){
-                        System.out.println("e.getMessage()  = " + e.getMessage());
-                    }
-
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<BowlComment>> call, Throwable t) {
-                System.out.println("t.getMessage() = " + t.getMessage());
-            }
-        });
-
     }
 
 

@@ -31,8 +31,6 @@ public class BowlCommunityService {
         Users user = userRepository.findUserByUid(userId);
         Users users = userRepository.findUser(user.getId());
         Bowl bowl = bowlRepository.findBowl(bowlId);
-        System.out.println("users = " + bowlId);
-        System.out.println("bowl = " + bowl);
 
         bowlCommunity.setUser(users);
         bowlCommunity.setBowl(bowl);
