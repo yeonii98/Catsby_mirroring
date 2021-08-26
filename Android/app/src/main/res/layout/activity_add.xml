@@ -73,7 +73,7 @@
         android:background="#E3E2E2"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:layout_marginright="7dp"
+        android:layout_marginRight="7dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView

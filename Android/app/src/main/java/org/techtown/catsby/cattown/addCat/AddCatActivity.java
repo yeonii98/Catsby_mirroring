@@ -23,6 +23,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
 
 import org.techtown.catsby.R;
 import org.techtown.catsby.cattown.FragmentCatTown;
@@ -54,34 +55,24 @@ public class AddCatActivity extends AppCompatActivity{
     TextView textView;
 
     private Button saveButton;
-    private Button button;
+    private Button cancelButton;
     private Button imageButton;
     private EditText edtName;
     private EditText edtHealth;
     private EditText edtLoc;
+    private EditText edtcontent;
     private RadioGroup rbgender;
+    private RadioGroup rbisspayed;
     private RadioButton rbfemale;
     private RadioButton rbmale;
-    private RadioGroup rbisspayed;
     private RadioButton rbspayed;
     private RadioButton rbnospayed;
-    private EditText edtcontent;
-    private String message;
-    private String location;
     private TextView imageuri;
+
     byte imageArray [];
     Bitmap imgBitmap;
     Bitmap bitmap;
-
     String cimage = "";
-
-    //이미지 업로드
-    public void imageUpload(View view) {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, 101);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) { // 갤러리
@@ -94,7 +85,7 @@ public class AddCatActivity extends AppCompatActivity{
                     //이미지 선택 시 버튼 없애고 텍스트뷰로 경로 보여주기
                     imageButton.setVisibility(View.GONE);
                     imageuri.setVisibility(View.VISIBLE);
-                    imageuri.setText(fileUri.toString());
+                    imageuri.setText("사진이 선택되었습니다.");
 
                     //데이터베이스에 이미지 저장 : Data URI -> Bitmap -> Byte Array -> 이진 스트링 -> Blob
                     InputStream instream = resolver.openInputStream(fileUri);
@@ -107,7 +98,8 @@ public class AddCatActivity extends AppCompatActivity{
                     byte[] bytes = baos.toByteArray();
 
                     //3. byteArray to BinaryString
-                    cimage = "&image=" + byteArrayToBinaryString(bytes);
+                    cimage = byteArrayToBinaryString(bytes);
+                    //cimage = "&image=" + byteArrayToBinaryString(bytes);
 
                     //System.out.println("@imgBitmap = " + imgBitmap);
                     instream.close();
@@ -121,6 +113,13 @@ public class AddCatActivity extends AppCompatActivity{
     }
 
 
+    //이미지 업로드
+    public void imageUpload(View view) {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, 101);
+    }
 
     public byte[] bitmapToByteArray( Bitmap bitmap ) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream() ;
@@ -149,9 +148,6 @@ public class AddCatActivity extends AppCompatActivity{
         return sb.toString(); }
 
 
-
-
-
     public void saveBitmapToJpeg(Bitmap bitmap) {   // 선택한 이미지 내부 저장소에 저장
         File tempFile = new File(getCacheDir(), imgName);    // 파일 경로와 이름
         try {
@@ -173,11 +169,13 @@ public class AddCatActivity extends AppCompatActivity{
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("우리동네 고양이 추가하기");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         imageButton = findViewById(R.id.buttonCatImage);
         saveButton = findViewById(R.id.buttonCatSave);
+        cancelButton = findViewById(R.id.buttonCatCancel);
         edtName = findViewById(R.id.editCatName);
         edtHealth = findViewById(R.id.editCatHealth);
         edtLoc = findViewById(R.id.editloc);
@@ -204,23 +202,38 @@ public class AddCatActivity extends AppCompatActivity{
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String catname = edtName.getText().toString();
                 String cathealth = edtHealth.getText().toString();
                 String catloc = edtLoc.getText().toString();
-                Boolean catgender = true;
+                int catgender;
                 if(rbfemale.isChecked()==true){
-                    catgender = true;
-                }else{
-                    catgender = false;
-                }
-                Boolean catspayed = true;
-                if(rbspayed.isChecked()==true){
-                    catspayed = true;
+                    //암컷
+                    catgender = 1;
+                }else if(rbmale.isChecked()==true){
+                    //수컷
+                    catgender = 2;
                 }else {
-                    catspayed = false;
+                    //성별 모름
+                    catgender = 0;
+                }
+                int catspayed;
+                if(rbspayed.isChecked()==true){
+                    //중성화 완료
+                    catspayed = 1;
+                }else if(rbnospayed.isChecked()==true){
+                    catspayed = 2;
+                }else {
+                    catspayed = 0;
                 }
                 String catcontent = edtcontent.getText().toString();
                 byte[] catimage = imageArray;
@@ -249,13 +262,27 @@ public class AddCatActivity extends AppCompatActivity{
                     }
                 });
             }
+
         });
 
+
+
     }
 
-    public void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home: {
+                finish();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
+
+}
+
 
     /* 고양이 위치 찾기 (기능 삭제)
     public void startLocationService() {
@@ -305,17 +332,3 @@ public class AddCatActivity extends AppCompatActivity{
     }
 
      */
-
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home: {
-                finish();
-                return true;
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-}

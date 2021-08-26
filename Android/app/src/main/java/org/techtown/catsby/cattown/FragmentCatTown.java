@@ -3,6 +3,7 @@ package org.techtown.catsby.cattown;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -44,8 +45,11 @@ public class FragmentCatTown extends Fragment {
     private String name;
     private int helppeople;
     private String linkid = "";
-
-    private TextView tvgoneid;
+    private long lastTimeBackPressed;
+    private TextView tvcatgen;
+    private TextView tvcatloc;
+    private String text1;
+    private String text2;
     List<Cat> catlist;
 
     @Override
@@ -64,11 +68,8 @@ public class FragmentCatTown extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext(), RecyclerView.VERTICAL, false));
 
-        tvgoneid = (TextView)view.findViewById(R.id.towncatid);
-
-        catpicture = R.drawable.pic_001;
-        name = "Happy";
-        helppeople = 2;
+        tvcatgen = (TextView)view.findViewById(R.id.towncatgen);
+        tvcatloc = (TextView)view.findViewById(R.id.towncatloc);
 
         catlist = new ArrayList<>();
 
@@ -86,10 +87,34 @@ public class FragmentCatTown extends Fragment {
                 if(response.isSuccessful()){
                     List<CatProfile> result = response.body();
                     for(int i=0; i<result.size(); i++) {
-                        //result.get(i).getImage()
+
+                        //리스트에 표시될 이미지
+                        if(result.get(i).getImage() != null){
+                            bm = makeBitMap(result.get(i).getImage());}
+                        else{
+                            bm = null;}
+
+                        //리스트에 표시될 성별
+                        String text1;
+                        if(result.get(i).getGender()==1){
+                            text1 = "암컷";
+                        } else if(result.get(i).getGender()==2) {
+                            text1 = "수컷";
+                        } else {
+                            text1 = "성별 모름";
+                        }
+                        //tvcatgen.setText(text1);
+
+                        //리스트에 표시될 발견 지역
+                        String text2;
+                        text2 = result.get(i).getAddress();
+                        //tvcatloc.setText(text2);
+
+                        //매핑을 위한 고양이 아이디
                         linkid = Integer.toString(result.get(i).getCatId());
-                        Cat cat = new Cat(result.get(i).getCatName(), null, linkid,0);
-                        //tvgoneid.setText(linkid);
+
+                        Cat cat = new Cat(result.get(i).getCatName(), bm, linkid,text2, text1,0);
+
                         System.out.println(linkid);
                         adapter.addItem(cat);
                     }
@@ -111,6 +136,33 @@ public class FragmentCatTown extends Fragment {
 
     }
 
+    private Bitmap bm=null;
+
+    public Bitmap makeBitMap(String s){
+        int idx = s.indexOf("=");
+        byte[] b = binaryStringToByteArray(s.substring(idx+1));
+        Bitmap bm = BitmapFactory.decodeByteArray(b,0,b.length);
+        return bm;
+    }
+
+    public byte[] binaryStringToByteArray(String s){
+        int count=s.length()/8;
+        byte[] b=new byte[count];
+        for(int i=1; i<count; ++i){
+            String t=s.substring((i-1)*8, i*8);
+            b[i-1]=binaryStringToByte(t);
+        }
+        return b;
+    }
+
+    public byte binaryStringToByte(String s){
+        byte ret=0, total=0;
+        for(int i=0; i<8; ++i){
+            ret = (s.charAt(7-i)=='1') ? (byte)(1 << i) : 0;
+            total = (byte) (ret|total);
+        }
+        return total;
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -127,6 +179,8 @@ public class FragmentCatTown extends Fragment {
                 return super.onOptionsItemSelected(item) ;
         }
     }
+
+
 
 
 }

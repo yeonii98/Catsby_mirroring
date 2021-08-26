@@ -32,10 +32,10 @@ public interface CatService {
             @Field("name") String name,
             @Field("health") String health,
             @Field("address") String address,
-            @Field("gender") boolean gender,
+            @Field("gender") int gender,
             @Field("image") String image,
             @Field("content") String content,
-            @Field("spayed") boolean spayed
+            @Field("spayed") int spayed
             );
 
 

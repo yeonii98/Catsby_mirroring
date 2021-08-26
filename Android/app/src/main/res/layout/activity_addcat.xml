@@ -1,129 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
-
+    <include
+        layout="@layout/toolbar"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:id="@+id/backButtonLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#7A7A7A"
+        android:layout_marginTop="20dp"
+        android:background="#FFFFFF"
         android:orientation="vertical">
-
-        <include
-            layout="@layout/toolbar"
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="#818181">
+            android:layout_marginBottom="10dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="20dp"
+            android:background="#FFFFFF">
 
             <TextView
                 android:id="@+id/addCatName"
                 android:layout_width="wrap_content"
-                android:layout_height="45dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textSize="16dp"
                 android:text="이름"
                 android:textAlignment="center"
-                android:textColor="#FFFFFF"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/editCatName"
                 android:layout_width="249dp"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
+                android:textSize="14dp"
+                android:hint="고양이의 이름을 입력해주세요"
                 android:inputType="textPersonName" />
         </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="#787878">
+            android:layout_marginBottom="10dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="20dp"
+            android:background="#FFFFFF">
 
             <TextView
                 android:id="@+id/addCatHealth"
                 android:layout_width="wrap_content"
-                android:layout_height="41dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textSize="16dp"
                 android:text="건강상태"
                 android:textAlignment="center"
-                android:textColor="#FFFFFF"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/editCatHealth"
                 android:layout_width="249dp"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="10dp"
+                android:hint="고양이의 건강 상태를 입력해주세요"
+                android:textSize="14dp"
                 android:inputType="textPersonName" />
         </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="#9A9A9A">
+            android:layout_marginBottom="10dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="20dp"
+            android:background="#FFFFFF">
 
             <TextView
                 android:id="@+id/addCatLive"
                 android:layout_width="wrap_content"
-                android:layout_height="41dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textSize="16dp"
                 android:text="발견위치"
                 android:textAlignment="center"
-                android:textColor="#FFFFFF"
                 android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/editloc"
-                    android:layout_width="249dp"
-                    android:layout_height="70dp"
-                    android:layout_marginBottom="10dp"
-                    android:hint="발견 위치를 적어주세요"/>
+            <EditText
+                android:id="@+id/editloc"
+                android:layout_width="249dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="14dp"
+                android:hint="고양이의 발견 위치를 입력해주세요"/>
 
         </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="#5A5959">
+            android:layout_marginBottom="10dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="20dp"
+            android:background="#FFFFFF">
 
             <TextView
                 android:id="@+id/addCatGender"
                 android:layout_width="wrap_content"
-                android:layout_height="41dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_gravity="center"
                 android:text="성별"
                 android:textAlignment="center"
-                android:textColor="#FFFFFF"
+                android:textSize="16dp"
                 android:textStyle="bold" />
 
-                <RadioGroup
+            <RadioGroup
                     android:layout_width="249dp"
-                    android:layout_height="70dp"
+                    android:layout_height="60dp"
                     android:orientation="horizontal"
                     android:id="@+id/rb_gender">
                     <RadioButton
                         android:id="@+id/rb_female"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:textColor="#555555"
+                        android:textSize="14dp"
                         android:text="암컷"
                         android:layout_weight="1"/>
                     <RadioButton
                         android:id="@+id/rb_male"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:textColor="#555555"
+                        android:textSize="14dp"
                         android:text="수컷"
+                        android:layout_weight="1"/>
+                    <RadioButton
+                        android:id="@+id/rb_unknown"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textColor="#555555"
+                        android:textSize="14dp"
+                        android:text="모름"
                         android:layout_weight="1"/>
                 </RadioGroup>
 
@@ -132,36 +162,51 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="#5A5959">
-
+            android:layout_marginBottom="10dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="20dp"
+            android:background="#FFFFFF">
 
             <TextView
                 android:id="@+id/addCatSpayed"
                 android:layout_width="wrap_content"
-                android:layout_height="41dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_gravity="center"
+                android:textSize="16dp"
                 android:text="중성화여부"
                 android:textAlignment="center"
-                android:textColor="#FFFFFF"
                 android:textStyle="bold" />
 
             <RadioGroup
                 android:id="@+id/rb_isspayed"
                 android:layout_width="249dp"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
                 android:orientation="horizontal">
                 <RadioButton
                     android:id="@+id/rb_spayed"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:textColor="#555555"
+                    android:textSize="14dp"
                     android:text="중성화 완료"
                     android:layout_weight="1"/>
                 <RadioButton
                     android:id="@+id/rb_nospayed"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:textColor="#555555"
+                    android:textSize="14dp"
                     android:text="중성화 안함"
+                    android:layout_weight="1"/>
+                <RadioButton
+                    android:id="@+id/rb_spayedunknown"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textColor="#555555"
+                    android:textSize="14dp"
+                    android:text="모름"
                     android:layout_weight="1"/>
 
             </RadioGroup>
@@ -170,27 +215,33 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="#717171">
+            android:layout_height="60dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="#FFFFFF">
 
             <TextView
                 android:id="@+id/addCatImage"
-                android:layout_width="136dp"
-                android:layout_height="39dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_gravity="center"
+                android:textSize="16dp"
                 android:text="이미지"
                 android:textAlignment="center"
-                android:textColor="#FFFFFF"
                 android:textStyle="bold" />
 
             <Button
                 android:id="@+id/buttonCatImage"
                 android:layout_width="wrap_content"
                 android:layout_marginLeft="30dp"
-                android:layout_marginTop="15dp"
                 android:layout_marginRight="30dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
+                android:backgroundTint="#FFACDBE8"
+                android:textColor="#FFFFFF"
                 android:visibility="visible"
                 android:text="사진 등록하기" />
 
@@ -203,6 +254,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:visibility="gone"
+                android:textSize="14dp"
                 android:text="사진 등록하기" />
 
 
@@ -212,50 +264,58 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="#858585">
+            android:layout_height="60dp"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="20dp"
+            android:background="#FFFFFF">
 
             <TextView
                 android:id="@+id/addCatExplanation"
                 android:layout_width="wrap_content"
-                android:layout_height="41dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="1"
-                android:text="기타 설명"
+                android:textSize="16dp"
+                android:text="특이 사항"
                 android:textAlignment="center"
-                android:textColor="#FFFFFF"
                 android:textStyle="bold" />
 
             <EditText
                 android:id="@+id/editCatExplanation"
                 android:layout_width="249dp"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
+                android:hint="고양이의 특이 사항을 입력해주세요"
+                android:textSize="14dp"
                 android:inputType="textPersonName" />
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="#000000">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="#FFFFFF"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/buttonCatSave"
-                android:layout_width="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginRight="30dp"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:backgroundTint="#FFACDBE8"
+                android:textColor="#FFFFFF"
                 android:text="저장" />
 
             <Button
                 android:id="@+id/buttonCatCancel"
-                android:layout_width="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginRight="30dp"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="30dp"
+                android:backgroundTint="#FFACDBE8"
+                android:textColor="#FFFFFF"
                 android:text="취소" />
 
         </LinearLayout>
@@ -264,4 +324,4 @@
     </LinearLayout>
 
 
-</RelativeLayout>
+</LinearLayout>

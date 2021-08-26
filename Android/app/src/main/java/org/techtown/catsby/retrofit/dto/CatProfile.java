@@ -13,13 +13,22 @@ public class CatProfile {
     private String name;
     private String health;
     private String address;
-    private Boolean gender;
+    private int gender;
     private String image;
     private String content;
-    private Boolean spayed;
+    private int spayed;
     private SimpleDateFormat created_time;
     private SimpleDateFormat updated_time;
     private List<ClipData.Item> profile;
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public int getCatId(){
         return cat_id;
@@ -31,11 +40,11 @@ public class CatProfile {
 
     public String getAddress() {return address; }
 
-    public Boolean getGender() {return gender; }
+    public int getGender() {return gender; }
 
     public String getImage() {return image; }
 
-    public Boolean getSpayed() {return spayed;}
+    public int getSpayed() {return spayed;}
 
     public String getContent() {return content; }
 
@@ -43,7 +52,7 @@ public class CatProfile {
 
     public SimpleDateFormat getUpdated_time() {return updated_time; }
 
-    public CatProfile(String name, String health, String address, Boolean gender, String image, String content, Boolean spayed) {
+    public CatProfile(String name, String health, String address, int gender, String image, String content, int spayed) {
         this.name = name;
         this.health = health;
         this.address = address;

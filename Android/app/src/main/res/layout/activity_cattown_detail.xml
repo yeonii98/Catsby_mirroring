@@ -20,44 +20,33 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="고양이 상세정보 (고양이 프로필)"
-                android:textSize="25dp"/>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="7dp"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_catinfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="30dp"
                     android:text="이름" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="/ " />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:layout_marginTop="7dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_catgender"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="성별" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="/ " />
-
-                <TextView
-                    android:id="@+id/tv_catage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="나이" />
 
             </LinearLayout>
 
@@ -67,37 +56,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/sliderViewPager"
+                <ImageView
+                    android:id="@+id/CatDetailImageView"
                     android:layout_width="match_parent"
                     android:layout_height="253dp"
-                    android:layout_margin="10dp"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginRight="7dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"/>
 
-                <LinearLayout
-                    android:id="@+id/layoutIndicators"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center"
-                    app:layout_constraintTop_toBottomOf="@+id/sliderViewPager"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"/>
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/tv_careuser"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="고양이를 챙겨주는 유저는 N명 입니다."
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"/>
-            </androidx.constraintlayout.widget.ConstraintLayout>
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -107,8 +78,8 @@
                     android:id="@+id/area"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="7dp"
                     android:text="활동지역"
                     android:textSize="20dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -119,7 +90,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="활동 지역 내용"
-                    android:layout_margin="5dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginLeft="7dp"
+                    android:textSize="16dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/area"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -133,7 +106,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="7dp"
                     android:text="중성화여부"
                     android:textSize="20dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -143,6 +116,7 @@
                     android:id="@+id/cb_yesneuter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
                     android:layout_marginLeft="5dp"
                     android:enabled="false"
                     android:checked="false"
@@ -154,10 +128,22 @@
                     android:id="@+id/cb_noneuter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
                     android:enabled="false"
                     android:text="N"
                     app:layout_constraintTop_toBottomOf="@+id/isneuter"
                     app:layout_constraintLeft_toRightOf="@+id/cb_yesneuter"/>
+
+                <CheckBox
+                    android:id="@+id/cb_unknownneuter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="7dp"
+                    android:enabled="false"
+                    android:text="모름"
+                    app:layout_constraintTop_toBottomOf="@+id/isneuter"
+                    app:layout_constraintLeft_toRightOf="@+id/cb_noneuter"/>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -169,7 +155,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="7dp"
                     android:text="건강 상태"
                     android:textSize="20dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -179,7 +165,8 @@
                     android:id="@+id/tv_health"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginTop="7dp"
                     android:text="건강 상태 내용"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/health"/>
@@ -187,14 +174,15 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="70dp">
 
                 <TextView
                     android:id="@+id/feature"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="7dp"
                     android:text="특징"
                     android:textSize="20dp"
                     app:layout_constraintStart_toStartOf="parent"
@@ -204,8 +192,10 @@
                     android:id="@+id/tv_feature"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
+                    android:layout_marginLeft="7dp"
+                    android:layout_marginTop="7dp"
                     android:text="특징 내용"
+                    android:textSize="16dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/feature"/>
             </androidx.constraintlayout.widget.ConstraintLayout>

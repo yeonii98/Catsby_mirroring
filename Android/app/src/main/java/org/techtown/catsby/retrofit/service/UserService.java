@@ -12,5 +12,4 @@ public interface UserService {
     Call<User> getUser(@Path("uid") String uid);
 
 
-
 }
