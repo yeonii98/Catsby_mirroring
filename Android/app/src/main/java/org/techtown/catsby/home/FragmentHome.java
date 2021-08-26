@@ -59,8 +59,9 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
         mContext = context;
     }
     ArrayList<Bowl> bowlList= new ArrayList<>();
-    final BowlAdapter bowlAdapter = new BowlAdapter(bowlList);
     ArrayList<Feed> feedList= new ArrayList<>();
+    final BowlAdapter bowlAdapter = new BowlAdapter(bowlList);
+
 
     ArrayList<byte[]> bowlImageArray = new ArrayList<>();
     int[] bowlImg = {R.drawable.fish, R.drawable.cutecat, R.drawable.flowercat, R.drawable.fish, R.drawable.cutecat};
