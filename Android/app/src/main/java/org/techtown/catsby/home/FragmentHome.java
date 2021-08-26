@@ -1,11 +1,9 @@
 package org.techtown.catsby.home;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
@@ -15,16 +13,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import org.techtown.catsby.Bowladd;
 import org.techtown.catsby.R;
 import org.techtown.catsby.Writemain;
 import org.techtown.catsby.home.adapter.BowlAdapter;
 import org.techtown.catsby.home.adapter.FeedAdapter;
 import org.techtown.catsby.home.model.Bowl;
 import org.techtown.catsby.home.model.Feed;
+import org.techtown.catsby.qrcode.LoadingActivity;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.BowlComment;
 import org.techtown.catsby.retrofit.dto.BowlCommunity;
@@ -32,8 +29,6 @@ import org.techtown.catsby.retrofit.dto.BowlList;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
 import org.techtown.catsby.retrofit.service.BowlService;
 
-import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -67,7 +62,7 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
     final BowlAdapter bowlAdapter = new BowlAdapter(bowlList);
 
     ArrayList<byte[]> bowlImageArray = new ArrayList<>();
-    int[] bowlImg = {R.drawable.ic_baseline_favorite_24, R.drawable.ic_baseline_star_border_24, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
+    int[] bowlImg = {R.drawable.fish, R.drawable.cutecat, R.drawable.flowercat, R.drawable.fish, R.drawable.cutecat};
 
     public static ArrayList<String> bowlCommunityContext = new ArrayList<>();
     public static ArrayList<Integer> bowlCommunityId = new ArrayList<>();
@@ -136,9 +131,11 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
     private void loadComments(long communityId) {
         ArrayList<Feed> feedList = new ArrayList<>();
 
+        System.out.println("pre: communityId = " + communityId);
         bowlCommunityService.getComments(communityId).enqueue(new Callback<List<BowlComment>>() {
             @Override
             public void onResponse(Call<List<BowlComment>> call, Response<List<BowlComment>> response) {
+                System.out.println("after: communityId = " + communityId);
                 if(response.isSuccessful()){
                     List<BowlComment> bowlComments = response.body();
                     if (bowlComments.size() > 0){
@@ -221,8 +218,9 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.actionbar_write, menu);
-        inflater.inflate(R.menu.actionbar_addbowl, menu);
+        inflater.inflate(R.menu.actionbar_qrscan, menu);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -232,13 +230,10 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
                 startActivity(intent);
                 break;
 
-            case R.id.addbowl:
-                Intent intent2 = new Intent(getActivity(), Bowladd.class);
+            case R.id.action_qrscan:
+                Intent intent2 = new Intent(getActivity(), LoadingActivity.class);
                 startActivity(intent2);
-                break;
-
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

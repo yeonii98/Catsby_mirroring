@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,8 +17,11 @@ import org.techtown.catsby.R;
 import org.techtown.catsby.home.adapter.FeedAdapter;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.BowlComment;
+import org.techtown.catsby.retrofit.dto.BowlCommentUpdate;
+import org.techtown.catsby.retrofit.dto.BowlCommentUpdatePost;
 import org.techtown.catsby.retrofit.dto.BowlCommentUsingComment;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -33,20 +37,26 @@ public class MainCommentAdapter extends RecyclerView.Adapter<MainCommentAdapter.
     Button commentUpdate;
     View view;
 
+
+
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView contentView ;
+
+        EditText editText;
+        TextView textView ;
         TextView nickNameView;
 
         ViewHolder(View itemView) {
             super(itemView) ;
-            contentView = itemView.findViewById(R.id.maincmtContent) ;
-            nickNameView = itemView.findViewById(R.id.maincmtNickName);
+            textView = view.findViewById(R.id.maincmtContent) ;
+            nickNameView = view.findViewById(R.id.maincmtNickName);
+            editText = view.findViewById(R.id.editCmtContent);
         }
     }
 
     // 생성자에서 데이터 리스트 객체를 전달받음.
     MainCommentAdapter(List<BowlCommentUsingComment> list) {
         this.mData = list ;
+
     }
 
     @NonNull
@@ -70,13 +80,29 @@ public class MainCommentAdapter extends RecyclerView.Adapter<MainCommentAdapter.
             String text = mData.get(position).getContent() ;
             String nickName = mData.get(position).getNickname();
 
-            holder.contentView.setText(text) ;
+            holder.textView.setText(text);
             holder.nickNameView.setText(nickName);
 
             commentDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     deleteComment(position, mData.get(position).getId());
+                }
+            });
+
+            commentUpdate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    commentUpdate.setVisibility(View.INVISIBLE);
+                    //putFinishButton.setVisibility(View.VISIBLE);
+                    holder.textView.setVisibility(View.INVISIBLE);
+                    holder.editText.setVisibility(View.VISIBLE);
+                    holder.editText.setCursorVisible(true);
+
+                    String putMessage = holder.textView.getText().toString();
+                    putComment(position, mData.get(position).getId(), putMessage);
+
                 }
             });
         }
@@ -86,14 +112,11 @@ public class MainCommentAdapter extends RecyclerView.Adapter<MainCommentAdapter.
         bowlCommunityService.deleteComment(id).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                System.out.println(" success ");
-
                 MainCommentAdapter adapter = new MainCommentAdapter(mData);
                 mData.remove(position);
                 adapter.notifyItemRemoved(position);
                 adapter.notifyItemRemoved(view.getVerticalScrollbarPosition());
                 notifyDataSetChanged();
-
             }
 
             @Override
@@ -102,6 +125,22 @@ public class MainCommentAdapter extends RecyclerView.Adapter<MainCommentAdapter.
             }
         });
     }
+
+    private void putComment(int position, int id, String text){
+        BowlCommentUpdate bowlCommentUpdate = new BowlCommentUpdate(text);
+        bowlCommunityService.putComment(id, bowlCommentUpdate).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
+    }
+
+
 
     @Override
     public int getItemCount() {

@@ -22,12 +22,14 @@ public class BowlCommunityController {
     private final BowlCommunityService bowlCommunityService;
     private final BowlService bowlService;
 
-    @PostMapping("/bowl-community/write/{bowlId}/{uid}")  //@RequestBody CreateBowlCommunityRequest request
+    @PostMapping("/bowl-community/write/{bowlId}/{uid}")
     public CreateBowlCommunityResponse savaBowlCommunity(@RequestParam(value = "file") MultipartFile file, @PathVariable("bowlId") long bowlId, @PathVariable("uid") String uid, @RequestParam HashMap<String, RequestBody> request ) throws IOException {
         BowlCommunity bowlCommunity = new BowlCommunity();
         bowlCommunity.setImage(file.getBytes());
+
         String con = String.valueOf(request.get("content"));
         bowlCommunity.setContent(con);
+
         Long communityId = bowlCommunityService.savaCommunity(bowlCommunity, uid, bowlId);
         return new CreateBowlCommunityResponse(communityId);
     }

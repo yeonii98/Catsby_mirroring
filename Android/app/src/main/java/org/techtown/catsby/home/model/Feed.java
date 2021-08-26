@@ -13,12 +13,13 @@ public class Feed {
     private byte[] img;
     private String content;
     private Long like;
-    private List<BowlComment> bowlComments;
+    //private List<BowlComment> bowlComments;
 
-    public List<BowlComment> getBowlComments() {
-        return this.bowlComments;
-    }
+    //public List<BowlComment> getBowlComments() {
+    //    return this.bowlComments;
+    //}
 
+    /*
     public Feed(int id, int bowlImg, int userId, String nickName, byte[] img, String content, List<BowlComment> bowlComments) {
         this.id = id;
         this.userId = userId;
@@ -27,6 +28,15 @@ public class Feed {
         this.img = img;
         this.content = content;
         this.bowlComments = bowlComments;
+    }*/
+
+    public Feed(int id, int bowlImg, int userId, String nickName, byte[] img, String content) {
+        this.id = id;
+        this.userId = userId;
+        this.bowlImg = bowlImg;
+        this.nickName= nickName;
+        this.img = img;
+        this.content = content;
     }
 
     public int getUserId() {
