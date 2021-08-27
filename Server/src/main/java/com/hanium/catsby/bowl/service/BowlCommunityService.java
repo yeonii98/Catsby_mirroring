@@ -74,8 +74,6 @@ public class BowlCommunityService {
 
     @Transactional
     public void delete(Long id) {
-        //myPost
-        myPostRepository.deleteByBowlCommunity_Id(id);
         bowlCommunityRepository.deleteById(id);
     }
 
@@ -83,10 +81,5 @@ public class BowlCommunityService {
     public void update(Long id, String content){
         BowlCommunity bowlCommunity = bowlCommunityRepository.findBowlCommunity(id);
         bowlCommunity.setContent(content);
-
-        //myPost
-        MyPost myPost = myPostRepository.findByBowlCommunity_Id(id);
-        myPost.setBowlCommunity(bowlCommunity);
-
     }
 }
