@@ -56,7 +56,8 @@
             android:layout_marginRight="3dp"
             android:background="#FFACDBE8"
             android:text="수정"
-            android:textSize="11sp" />
+            android:textSize="11sp"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/mainCmtUpdateFinishBtn"
@@ -76,6 +77,7 @@
             android:layout_marginTop="17dp"
             android:layout_marginRight="7dp"
             android:text="삭제"
+            android:visibility="gone"
             android:background="#FFACDBE8"
             android:textSize="11sp" />
 

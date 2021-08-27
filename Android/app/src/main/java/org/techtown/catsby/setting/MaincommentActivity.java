@@ -32,7 +32,6 @@ public class MaincommentActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         mainCommentList = (List<BowlCommentUsingComment>) intent.getSerializableExtra("comment");
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         MainCommentAdapter mainCommentAdapter = new MainCommentAdapter(mainCommentList);
         RecyclerView BowlCommunityRecyclerView = findViewById(R.id.maincmt_recyclerview);
