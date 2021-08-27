@@ -13,6 +13,7 @@ public class User {
     private String createDate;
     private String updateDate;
     private String uid;
+    private String fcmToken;
 
     @SerializedName("bowlComments")
     private List<BowlComment> bowlComment;
