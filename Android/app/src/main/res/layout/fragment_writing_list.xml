@@ -31,7 +31,7 @@
            android:layout_width="match_parent"
            android:layout_height="match_parent"
            android:layout_weight="1"
-           android:backgroundTint="#A1CCD8"
+           android:backgroundTint="#ACDBE8"
            android:text="게시글" />
 
        <Button
@@ -39,7 +39,7 @@
            android:layout_width="match_parent"
            android:layout_height="match_parent"
            android:text="댓글"
-           android:backgroundTint="#A1CCD8"
+           android:backgroundTint="#ACDBE8"
            android:layout_weight="1" />
    </LinearLayout>
 

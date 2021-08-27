@@ -16,7 +16,7 @@
             android:id="@+id/feed_bowlImg"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_margin="7.5dp"
+            android:layout_marginLeft="7dp"
             android:src="@mipmap/ic_launcher_round"
             app:civ_border_color="#939597"
             app:civ_border_width="2dp" />
@@ -25,6 +25,7 @@
             android:id="@+id/feed_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
             android:text="User name" />
 
         <View
@@ -64,7 +65,9 @@
         android:id="@+id/feed_content"
         android:layout_width="match_parent"
         android:layout_height="92dp"
-        android:text="내용이 없습니다." />
+        android:text="내용이 없습니다."
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"/>
 
     <Button
         android:id="@+id/putFinishButton"
@@ -98,6 +101,8 @@
             android:id="@+id/feed_comment"
             android:layout_width="35dp"
             android:layout_height="35dp"
+            android:layout_marginLeft="7dp"
+
             android:src="@drawable/ic_baseline_chat_bubble_24" />
 
         <ImageView
@@ -140,7 +145,8 @@
             android:id="@+id/post_save_button"
             android:layout_width="67dp"
             android:layout_height="29dp"
-            android:background="#9F9F9F"
+            android:layout_marginRight="7dp"
+            android:background="#FFACDBE8"
             android:text="게시" />
 
     </LinearLayout>

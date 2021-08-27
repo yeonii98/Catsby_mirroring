@@ -110,6 +110,7 @@ public class UpdateActivity extends AppCompatActivity {
                     System.out.println("townImg = " + townImg.getDrawable());
                     if(townImg.getDrawable() == null){
                         townCommunity = new TownCommunity(title, content, checkBox.isChecked());
+                        byteArray = null;
                     }
 
                     else{
@@ -155,11 +156,10 @@ public class UpdateActivity extends AppCompatActivity {
 
                     int idx = user.getEmail().indexOf("@");
                     if(!checkBox.isChecked())
-                        intent.putExtra("nickName", user.getEmail().substring(0, idx));
+                        intent.putExtra("nickName", nickName);
                     else
                         intent.putExtra("nickName", "익명");
-                    setResult(0, intent);
-
+                    setResult(3, intent);
 
                     finish();
                 }

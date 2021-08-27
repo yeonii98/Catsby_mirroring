@@ -98,9 +98,8 @@ public class Writemain extends AppCompatActivity{
         setSupportActionBar(mToolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
         tedPermission();
+
         findViewById(R.id.btnGallery).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -143,12 +142,9 @@ public class Writemain extends AppCompatActivity{
         HashMap<String, RequestBody> map = new HashMap<String, RequestBody>();
         map.put("content", content);
         map.put("path", filePath);
-
-
         InputStream inputStream = null;
         try {
             inputStream = this.getContentResolver().openInputStream(photoUri);
-
         }catch(IOException e) {
             e.printStackTrace();
         }
@@ -156,20 +152,9 @@ public class Writemain extends AppCompatActivity{
         Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream);
+
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpg"), byteArrayOutputStream.toByteArray());
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName() ,requestBody);
-
-
-
-        //RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        //MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
-
-
-        //String path = image.toString();
-        //BowlCommunityPost bowlCommunityPost = new BowlCommunityPost(context, path);
-
-
-        System.out.println("id = " + id);
         bowlCommunityService.saveCommunity(body, id, uid, map).enqueue(new Callback<List<BowlCommunity>>() {
             @Override
             public void onResponse(Call<List<BowlCommunity>> call, Response<List<BowlCommunity>> response) {

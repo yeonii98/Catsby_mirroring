@@ -102,11 +102,6 @@ class FragmentSetting : Fragment() {
             //inflater.inflate(R.layout.fragment_writing_list, container, false)
         }
 
-        qrscantest.setOnClickListener(View.OnClickListener {
-            val intent = Intent(activity, LoadingActivity::class.java)
-            startActivity(intent)
-        })
-
         //프로필 이미지 버튼 클릭 시 (프로필 사진 변경)
         imageButton.setOnClickListener {
             openGallery()

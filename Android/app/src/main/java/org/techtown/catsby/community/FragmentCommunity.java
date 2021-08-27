@@ -1,12 +1,17 @@
 package org.techtown.catsby.community;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -32,6 +37,8 @@ import org.techtown.catsby.community.data.model.TownComment;
 import org.techtown.catsby.community.data.model.TownCommunity;
 import org.techtown.catsby.community.data.service.TownCommentService;
 import org.techtown.catsby.community.data.service.TownCommunityService;
+import org.techtown.catsby.retrofit.dto.User;
+import org.techtown.catsby.retrofit.service.UserService;
 import org.techtown.catsby.setting.MaincommentActivity;
 
 import java.io.ByteArrayOutputStream;
@@ -57,7 +64,7 @@ public class FragmentCommunity extends Fragment {
     String uid = FirebaseAuth.getInstance().getUid();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-
+    List<Integer> idList = new ArrayList<>();
     List<Memo> memoList;
 
     @Nullable
@@ -82,7 +89,7 @@ public class FragmentCommunity extends Fragment {
         recyclerView.setAdapter(recyclerAdapter);
 
         recyclerView.setLayoutManager(layoutManager);
-
+        Memo memo;
         //레트로핏
         townCommunityService = RetrofitClient.getTownCommunityService();
 
@@ -130,23 +137,23 @@ public class FragmentCommunity extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), AddActivity.class);
-                startActivityForResult(intent, 0);
+                startActivityForResult(intent, 2);
             }
         });
 
         //검색
-        SearchView searchView = view.findViewById(R.id.search_view);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return true;
-            }
-        });
+//        SearchView searchView = view.findViewById(R.id.search_view);
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                return true;
+//            }
+//        });
 
         return view;
     }
@@ -155,34 +162,51 @@ public class FragmentCommunity extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 0){
+        if(resultCode == 2){
             String title = data.getStringExtra("title");
             String content = data.getStringExtra("content");
             String date = data.getStringExtra("date");
             String nickName = data.getStringExtra("nickName");
             String uid = data.getStringExtra("uid");
+            int id = 0;
+            if(memoList.size() != 0) {
+                id = memoList.get(memoList.size() - 1).getId() + 1;
+                while (true) {
+                    if (idList.contains(id)) id++;
+                    else break;
+                }
+
+                idList.add(id);
+            }
             byte[] byteArray = data.getByteArrayExtra("byteArray");
             if(byteArray != null)
                 bm = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
 
-            Memo memo = new Memo(uid,title, content,nickName,date, bm);
+            Memo memo = new Memo(id, uid,title, content,nickName,date, bm);
+            System.out.println("memo.getId() = " + memo.getId());
             recyclerAdapter.addItem(memo);
             recyclerAdapter.notifyDataSetChanged();
 
             recyclerView.smoothScrollToPosition(recyclerAdapter.getItemCount());
         }
-        else if(requestCode == 1){
+        else if(resultCode == 3){
             String title = data.getStringExtra("title");
             String content = data.getStringExtra("content");
             int position = data.getIntExtra("position",0);
             String nickName = data.getStringExtra("nickName");
             byte[] byteArray = data.getByteArrayExtra("byteArray");
+            System.out.println("byteArray = " + byteArray);
             if(byteArray != null)
                 bm = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
-
+            else
+                bm = null;
+            System.out.println("bmbmbmbmbm = " + bm);
             recyclerAdapter.updateItem(position,title,content,nickName,bm);
             recyclerAdapter.notifyDataSetChanged();
         }
+
+        else return;
+
     }
 
     public Bitmap makeBitMap(String s){
@@ -251,6 +275,8 @@ public class FragmentCommunity extends Fragment {
             itemViewHolder.date.setText(memo.getDate());
 //            itemViewHolder.likeCnt.setText(Integer.toString(memo.getLikeCnt()));
 
+
+
             if(!uid.equals(memo.getUid())){
                 itemViewHolder.deleteBtn.setVisibility(View.GONE);
                 itemViewHolder.updateBtn.setVisibility(View.GONE);
@@ -268,7 +294,7 @@ public class FragmentCommunity extends Fragment {
                         public void onClick(DialogInterface dialog, int which) {
                             removeItem(position);
                             notifyItemRemoved(position);
-
+                            System.out.println("memo.getId() = " + memo.getId());
                             townCommunityService.deleteTown(memo.getId()).enqueue(new Callback<Void>() {
                                 @Override
                                 public void onResponse(Call<Void> call, Response<Void> response) {
@@ -318,7 +344,7 @@ public class FragmentCommunity extends Fragment {
 
                     intent.putExtra("nickName",listdata.get(position).getNickname());
                     intent.putExtra("position",position);
-                    startActivityForResult(intent,1);
+                    startActivityForResult(intent,3);
                 }
             });
 
@@ -446,7 +472,7 @@ public class FragmentCommunity extends Fragment {
                 listdata.get(position).setImg(bm);
         }
 
-        class ItemViewHolder extends RecyclerView.ViewHolder {
+        class ItemViewHolder extends RecyclerView.ViewHolder{
             private TextView nickname;
             private TextView title;
             private TextView content;
@@ -457,6 +483,8 @@ public class FragmentCommunity extends Fragment {
 
             private Button commentBtn;
             private EditText commentContent;
+
+            private Button town_menu;
 
 //            private TextView likeCnt;
 //            private ImageView likeImg;
