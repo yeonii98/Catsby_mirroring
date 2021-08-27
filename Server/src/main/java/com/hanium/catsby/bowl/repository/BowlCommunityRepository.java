@@ -28,7 +28,7 @@ public class BowlCommunityRepository {
     public List<BowlCommunity> findBowlCommunitiesByBowl(Long bowlId){
         return em.createQuery("select bc from BowlCommunity bc" +
                 " join bc.bowl b" +
-                " where b.id = :bowlId", BowlCommunity.class)
+                " where b.id = :bowlId ", BowlCommunity.class)
                 .setParameter("bowlId", bowlId)
                 .getResultList();
     }
