@@ -37,6 +37,8 @@ import org.techtown.catsby.community.data.model.TownComment;
 import org.techtown.catsby.community.data.model.TownCommunity;
 import org.techtown.catsby.community.data.service.TownCommentService;
 import org.techtown.catsby.community.data.service.TownCommunityService;
+import org.techtown.catsby.retrofit.dto.User;
+import org.techtown.catsby.retrofit.service.UserService;
 import org.techtown.catsby.setting.MaincommentActivity;
 
 import java.io.ByteArrayOutputStream;
@@ -62,7 +64,7 @@ public class FragmentCommunity extends Fragment {
     String uid = FirebaseAuth.getInstance().getUid();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-
+    List<Integer> idList = new ArrayList<>();
     List<Memo> memoList;
 
     @Nullable
@@ -87,7 +89,7 @@ public class FragmentCommunity extends Fragment {
         recyclerView.setAdapter(recyclerAdapter);
 
         recyclerView.setLayoutManager(layoutManager);
-
+        Memo memo;
         //레트로핏
         townCommunityService = RetrofitClient.getTownCommunityService();
 
@@ -135,23 +137,23 @@ public class FragmentCommunity extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), AddActivity.class);
-                startActivityForResult(intent, 0);
+                startActivityForResult(intent, 2);
             }
         });
 
         //검색
-        SearchView searchView = view.findViewById(R.id.search_view);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return true;
-            }
-        });
+//        SearchView searchView = view.findViewById(R.id.search_view);
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                return true;
+//            }
+//        });
 
         return view;
     }
@@ -160,34 +162,51 @@ public class FragmentCommunity extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == 0){
+        if(resultCode == 2){
             String title = data.getStringExtra("title");
             String content = data.getStringExtra("content");
             String date = data.getStringExtra("date");
             String nickName = data.getStringExtra("nickName");
             String uid = data.getStringExtra("uid");
+            int id = 0;
+            if(memoList.size() != 0) {
+                id = memoList.get(memoList.size() - 1).getId() + 1;
+                while (true) {
+                    if (idList.contains(id)) id++;
+                    else break;
+                }
+
+                idList.add(id);
+            }
             byte[] byteArray = data.getByteArrayExtra("byteArray");
             if(byteArray != null)
                 bm = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
 
-            Memo memo = new Memo(uid,title, content,nickName,date, bm);
+            Memo memo = new Memo(id, uid,title, content,nickName,date, bm);
+            System.out.println("memo.getId() = " + memo.getId());
             recyclerAdapter.addItem(memo);
             recyclerAdapter.notifyDataSetChanged();
 
             recyclerView.smoothScrollToPosition(recyclerAdapter.getItemCount());
         }
-        else if(requestCode == 1){
+        else if(resultCode == 3){
             String title = data.getStringExtra("title");
             String content = data.getStringExtra("content");
             int position = data.getIntExtra("position",0);
             String nickName = data.getStringExtra("nickName");
             byte[] byteArray = data.getByteArrayExtra("byteArray");
+            System.out.println("byteArray = " + byteArray);
             if(byteArray != null)
                 bm = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
-
+            else
+                bm = null;
+            System.out.println("bmbmbmbmbm = " + bm);
             recyclerAdapter.updateItem(position,title,content,nickName,bm);
             recyclerAdapter.notifyDataSetChanged();
         }
+
+        else return;
+
     }
 
     public Bitmap makeBitMap(String s){
@@ -256,11 +275,11 @@ public class FragmentCommunity extends Fragment {
             itemViewHolder.date.setText(memo.getDate());
 //            itemViewHolder.likeCnt.setText(Integer.toString(memo.getLikeCnt()));
 
-            itemViewHolder.deleteBtn.setVisibility(View.GONE);
-            itemViewHolder.updateBtn.setVisibility(View.GONE);
+
 
             if(!uid.equals(memo.getUid())){
-                itemViewHolder.town_menu.setVisibility(View.GONE);
+                itemViewHolder.deleteBtn.setVisibility(View.GONE);
+                itemViewHolder.updateBtn.setVisibility(View.GONE);
             }
 
             itemViewHolder.deleteBtn.setOnClickListener(new View.OnClickListener() {
@@ -275,7 +294,7 @@ public class FragmentCommunity extends Fragment {
                         public void onClick(DialogInterface dialog, int which) {
                             removeItem(position);
                             notifyItemRemoved(position);
-
+                            System.out.println("memo.getId() = " + memo.getId());
                             townCommunityService.deleteTown(memo.getId()).enqueue(new Callback<Void>() {
                                 @Override
                                 public void onResponse(Call<Void> call, Response<Void> response) {
@@ -325,7 +344,7 @@ public class FragmentCommunity extends Fragment {
 
                     intent.putExtra("nickName",listdata.get(position).getNickname());
                     intent.putExtra("position",position);
-                    startActivityForResult(intent,1);
+                    startActivityForResult(intent,3);
                 }
             });
 
@@ -453,7 +472,7 @@ public class FragmentCommunity extends Fragment {
                 listdata.get(position).setImg(bm);
         }
 
-        class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
+        class ItemViewHolder extends RecyclerView.ViewHolder{
             private TextView nickname;
             private TextView title;
             private TextView content;
@@ -491,51 +510,7 @@ public class FragmentCommunity extends Fragment {
 
 //                likeCnt = itemView.findViewById(R.id.likeCnt);
 //                likeImg = itemView.findViewById(R.id.town_likeBtn);
-
-                town_menu = itemView.findViewById(R.id.town_menu);
-                town_menu.setOnCreateContextMenuListener(this);
             }
-
-            @Override
-            public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-                MenuItem Edit = menu.add(Menu.NONE, R.id.item1, 1, "수정하기");
-                MenuItem Delete = menu.add(Menu.NONE, R.id.item2, 2, "삭제하기");
-                Edit.setOnMenuItemClickListener(onMenuItemClickListener);
-                Delete.setOnMenuItemClickListener(onMenuItemClickListener);
-            }
-
-            private final MenuItem.OnMenuItemClickListener onMenuItemClickListener = new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.item1:
-
-                            return true;
-
-                        case R.id.item2:
-                            AlertDialog.Builder ad = new AlertDialog.Builder(getContext());
-                            ad.setTitle("게시글 삭제");
-                            ad.setMessage("해당 게시물을 삭제하시겠습니까?");
-
-                            ad.setPositiveButton("예", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                }
-                            });
-
-                            ad.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                            ad.show();
-                            return true;
-                    }
-                    return false;
-                }
-            };
         }
     }
 }

@@ -73,7 +73,7 @@
         android:text="내용이 없습니다."
         android:layout_marginLeft="7dp"
         android:layout_marginRight="7dp"
-        android:visibility="gone"/>
+        />
 
     <Button
         android:id="@+id/putFinishButton"
