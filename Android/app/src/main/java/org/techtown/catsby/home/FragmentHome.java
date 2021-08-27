@@ -65,7 +65,7 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
 
 
     ArrayList<byte[]> bowlImageArray = new ArrayList<>();
-    int[] bowlImg = {R.drawable.fish, R.drawable.cutecat, R.drawable.flowercat, R.drawable.fish, R.drawable.cutecat};
+    int[] bowlImg = {R.drawable.fish, R.drawable.cutecat, R.drawable.flowercat, R.drawable.fish, R.drawable.cutecat, R.drawable.flowercat, R.drawable.fish, R.drawable.cutecat};
 
     BowlService bowlService = RetrofitClient.getBowlService();
     BowlCommunityService bowlCommunityService = RetrofitClient.getBowlCommunityService();

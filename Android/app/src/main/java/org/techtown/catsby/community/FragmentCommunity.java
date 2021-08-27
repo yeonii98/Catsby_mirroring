@@ -55,10 +55,10 @@ public class FragmentCommunity extends Fragment {
     private String result;
     private RecyclerView recyclerView;
     public RecyclerAdapter recyclerAdapter;
-    private TownCommunityService townCommunityService;
-    private TownCommentService townCommentService;
+    private TownCommunityService townCommunityService = RetrofitClient.getTownCommunityService();
+    private TownCommentService townCommentService = RetrofitClient.getTownCommentService();;
     private TownLikeService townLikeService;
-    private int index = 0;
+    private UserService userService = RetrofitClient.getUser();;
     private Bitmap bm = null;
     private String nickName;
     String uid = FirebaseAuth.getInstance().getUid();
@@ -89,46 +89,64 @@ public class FragmentCommunity extends Fragment {
         recyclerView.setAdapter(recyclerAdapter);
 
         recyclerView.setLayoutManager(layoutManager);
-        Memo memo;
-        //레트로핏
-        townCommunityService = RetrofitClient.getTownCommunityService();
 
-        townCommunityService.getTownList().enqueue(new Callback<List<TownCommunity>>() {
+        userService.getUser(uid).enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<List<TownCommunity>> call, Response<List<TownCommunity>> response) {
+            public void onResponse(Call<User> call, Response<User> response) {
                 if(response.isSuccessful()){
-                    //정상적으로 통신이 성공된 경우
-                    List<TownCommunity> result = response.body();
-//                    index = result.get(result.size() - 1).getId();
+                    User result = response.body();
+                    String userAddress = result.getAddress();
 
-                    for(int i = 0; i < result.size(); i++){
-                        if(result.get(i).getImage() != null)
-                            bm = makeBitMap(result.get(i).getImage());
-                        else
-                            bm = null;
+                    townCommunityService.getTownList().enqueue(new Callback<List<TownCommunity>>() {
+                        @Override
+                        public void onResponse(Call<List<TownCommunity>> call, Response<List<TownCommunity>> response) {
+                            if (response.isSuccessful()) {
+                                //정상적으로 통신이 성공된 경우
+                                List<TownCommunity> result = response.body();
 
-                        if(result.get(i).isAnonymous())
-                            nickName = "익명";
-                        else
-                            nickName = result.get(i).getUser().getNickname();
+                                for (int i = 0; i < result.size(); i++) {
+                                    if(!userAddress.equals(result.get(i).getUser().getAddress())) continue;
 
-                        Memo memo = new Memo(result.get(i).getId(),result.get(i).getUser().getUid(),
-                                result.get(i).getTitle(),result.get(i).getContent(),
-                                nickName,result.get(i).getDate(),bm);
-                        recyclerAdapter.addItem(memo);
-                    }
-                    recyclerAdapter.notifyDataSetChanged();
+                                    if (result.get(i).getImage() != null)
+                                        bm = makeBitMap(result.get(i).getImage());
+                                    else
+                                        bm = null;
 
-                } else {
-                    System.out.println("실패");
+                                    if (result.get(i).isAnonymous())
+                                        nickName = "익명";
+                                    else
+                                        nickName = result.get(i).getUser().getNickname();
+
+                                    Memo memo = new Memo(result.get(i).getId(), result.get(i).getUser().getUid(),
+                                            result.get(i).getTitle(), result.get(i).getContent(),
+                                            nickName, result.get(i).getDate(), bm);
+                                    recyclerAdapter.addItem(memo);
+                                }
+                                recyclerAdapter.notifyDataSetChanged();
+
+                            } else {
+                                System.out.println("실패");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<TownCommunity>> call, Throwable t) {
+                            System.out.println("통신 실패!");
+                        }
+                    });
+
                 }
+                System.out.println("성공");
             }
 
             @Override
-            public void onFailure(Call<List<TownCommunity>> call, Throwable t) {
-                System.out.println("통신 실패!");
+            public void onFailure(Call<User> call, Throwable t) {
+                System.out.println("실패" + t.getMessage());
             }
         });
+
+
+
 
 
         //새로운 메모 작성
@@ -162,14 +180,14 @@ public class FragmentCommunity extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(resultCode == 2){
+        if (resultCode == 2) {
             String title = data.getStringExtra("title");
             String content = data.getStringExtra("content");
             String date = data.getStringExtra("date");
             String nickName = data.getStringExtra("nickName");
             String uid = data.getStringExtra("uid");
             int id = 0;
-            if(memoList.size() != 0) {
+            if (memoList.size() != 0) {
                 id = memoList.get(memoList.size() - 1).getId() + 1;
                 while (true) {
                     if (idList.contains(id)) id++;
@@ -179,58 +197,55 @@ public class FragmentCommunity extends Fragment {
                 idList.add(id);
             }
             byte[] byteArray = data.getByteArrayExtra("byteArray");
-            if(byteArray != null)
-                bm = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
+            if (byteArray != null)
+                bm = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
 
-            Memo memo = new Memo(id, uid,title, content,nickName,date, bm);
+            Memo memo = new Memo(id, uid, title, content, nickName, date, bm);
             System.out.println("memo.getId() = " + memo.getId());
             recyclerAdapter.addItem(memo);
             recyclerAdapter.notifyDataSetChanged();
 
             recyclerView.smoothScrollToPosition(recyclerAdapter.getItemCount());
-        }
-        else if(resultCode == 3){
+        } else if (resultCode == 3) {
             String title = data.getStringExtra("title");
             String content = data.getStringExtra("content");
-            int position = data.getIntExtra("position",0);
+            int position = data.getIntExtra("position", 0);
             String nickName = data.getStringExtra("nickName");
             byte[] byteArray = data.getByteArrayExtra("byteArray");
             System.out.println("byteArray = " + byteArray);
-            if(byteArray != null)
-                bm = BitmapFactory.decodeByteArray(byteArray,0,byteArray.length);
+            if (byteArray != null)
+                bm = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
             else
                 bm = null;
             System.out.println("bmbmbmbmbm = " + bm);
-            recyclerAdapter.updateItem(position,title,content,nickName,bm);
+            recyclerAdapter.updateItem(position, title, content, nickName, bm);
             recyclerAdapter.notifyDataSetChanged();
-        }
-
-        else return;
+        } else return;
 
     }
 
-    public Bitmap makeBitMap(String s){
+    public Bitmap makeBitMap(String s) {
         int idx = s.indexOf("=");
-        byte[] b = binaryStringToByteArray(s.substring(idx+1));
-        Bitmap bm = BitmapFactory.decodeByteArray(b,0,b.length);
+        byte[] b = binaryStringToByteArray(s.substring(idx + 1));
+        Bitmap bm = BitmapFactory.decodeByteArray(b, 0, b.length);
         return bm;
     }
 
-    public byte[] binaryStringToByteArray(String s){
-        int count=s.length()/8;
-        byte[] b=new byte[count];
-        for(int i=1; i<count; ++i){
-            String t=s.substring((i-1)*8, i*8);
-            b[i-1]=binaryStringToByte(t);
+    public byte[] binaryStringToByteArray(String s) {
+        int count = s.length() / 8;
+        byte[] b = new byte[count];
+        for (int i = 1; i < count; ++i) {
+            String t = s.substring((i - 1) * 8, i * 8);
+            b[i - 1] = binaryStringToByte(t);
         }
         return b;
     }
 
-    public byte binaryStringToByte(String s){
-        byte ret=0, total=0;
-        for(int i=0; i<8; ++i){
-            ret = (s.charAt(7-i)=='1') ? (byte)(1 << i) : 0;
-            total = (byte) (ret|total);
+    public byte binaryStringToByte(String s) {
+        byte ret = 0, total = 0;
+        for (int i = 0; i < 8; ++i) {
+            ret = (s.charAt(7 - i) == '1') ? (byte) (1 << i) : 0;
+            total = (byte) (ret | total);
         }
         return total;
     }
@@ -267,7 +282,7 @@ public class FragmentCommunity extends Fragment {
             itemViewHolder.content.setText(memo.getSubtext());
             itemViewHolder.nickname.setText(memo.getNickname());
 
-            if(memo.getImg() == null)
+            if (memo.getImg() == null)
                 itemViewHolder.img.setVisibility(View.GONE);
             else
                 itemViewHolder.img.setImageBitmap(memo.getImg());
@@ -276,8 +291,7 @@ public class FragmentCommunity extends Fragment {
 //            itemViewHolder.likeCnt.setText(Integer.toString(memo.getLikeCnt()));
 
 
-
-            if(!uid.equals(memo.getUid())){
+            if (!uid.equals(memo.getUid())) {
                 itemViewHolder.deleteBtn.setVisibility(View.GONE);
                 itemViewHolder.updateBtn.setVisibility(View.GONE);
             }
@@ -298,12 +312,13 @@ public class FragmentCommunity extends Fragment {
                             townCommunityService.deleteTown(memo.getId()).enqueue(new Callback<Void>() {
                                 @Override
                                 public void onResponse(Call<Void> call, Response<Void> response) {
-                                    if(response.isSuccessful()){
+                                    if (response.isSuccessful()) {
                                         System.out.println("삭제 성공");
                                     } else {
                                         System.out.println("실패");
                                     }
                                 }
+
                                 @Override
                                 public void onFailure(Call<Void> call, Throwable t) {
                                     System.out.println("통신 실패!");
@@ -326,25 +341,24 @@ public class FragmentCommunity extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), UpdateActivity.class);
-                    intent.putExtra("title",listdata.get(position).getMaintext());
-                    intent.putExtra("content",listdata.get(position).getSubtext());
-                    intent.putExtra("id",listdata.get(position).getId());
+                    intent.putExtra("title", listdata.get(position).getMaintext());
+                    intent.putExtra("content", listdata.get(position).getSubtext());
+                    intent.putExtra("id", listdata.get(position).getId());
 
                     byte[] byteArray = new byte[0];
-                    if(listdata.get(position).getImg() != null){
+                    if (listdata.get(position).getImg() != null) {
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         listdata.get(position).getImg().compress(Bitmap.CompressFormat.JPEG, 100, stream);
                         byteArray = stream.toByteArray();
-                        intent.putExtra("img",byteArray);
-                    }
-                    else
-                        intent.putExtra("img",byteArray);
+                        intent.putExtra("img", byteArray);
+                    } else
+                        intent.putExtra("img", byteArray);
 
                     System.out.println(byteArray.length);
 
-                    intent.putExtra("nickName",listdata.get(position).getNickname());
-                    intent.putExtra("position",position);
-                    startActivityForResult(intent,3);
+                    intent.putExtra("nickName", listdata.get(position).getNickname());
+                    intent.putExtra("position", position);
+                    startActivityForResult(intent, 3);
                 }
             });
 
@@ -352,7 +366,7 @@ public class FragmentCommunity extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), TownCommentListActivity.class);
-                    intent.putExtra("id",listdata.get(position).getId());
+                    intent.putExtra("id", listdata.get(position).getId());
                     System.out.println(listdata.get(position).getId());
                     startActivity(intent);
                 }
@@ -374,14 +388,13 @@ public class FragmentCommunity extends Fragment {
                 @Override
                 public void onClick(View v) {
                     String content = itemViewHolder.commentContent.getText().toString();
-                    if(content.length() > 0){
+                    if (content.length() > 0) {
                         itemViewHolder.commentContent.setText("");
                         TownComment townComment = new TownComment(content);
-                        townCommentService = RetrofitClient.getTownCommentService();
-                        townCommentService.postTownComment(memo.getId(),uid,townComment).enqueue(new Callback<Void>() {
+                        townCommentService.postTownComment(memo.getId(), uid, townComment).enqueue(new Callback<Void>() {
                             @Override
                             public void onResponse(Call<Void> call, Response<Void> response) {
-                                if(response.isSuccessful()){
+                                if (response.isSuccessful()) {
                                     //정상적으로 통신이 성공된 경우
                                     System.out.println("댓글 쓰기 성공");
                                 } else {
@@ -464,15 +477,15 @@ public class FragmentCommunity extends Fragment {
             listdata.remove(position);
         }
 
-        public void updateItem(int position, String title, String content,String nickName, Bitmap bm){
+        public void updateItem(int position, String title, String content, String nickName, Bitmap bm) {
             listdata.get(position).setMaintext(title);
             listdata.get(position).setSubtext(content);
             listdata.get(position).setNickname(nickName);
-            if(bm != null)
+            if (bm != null)
                 listdata.get(position).setImg(bm);
         }
 
-        class ItemViewHolder extends RecyclerView.ViewHolder{
+        class ItemViewHolder extends RecyclerView.ViewHolder {
             private TextView nickname;
             private TextView title;
             private TextView content;
@@ -503,7 +516,7 @@ public class FragmentCommunity extends Fragment {
                 updateBtn = itemView.findViewById(R.id.town_update);
                 date = itemView.findViewById(R.id.town_date);
                 chatbubble = itemView.findViewById(R.id.town_comment);
-               // mainchatbubble = itemView.findViewById(R.id.feed_comment);
+                // mainchatbubble = itemView.findViewById(R.id.feed_comment);
 
                 commentBtn = itemView.findViewById(R.id.town_commentBtn);
                 commentContent = itemView.findViewById(R.id.town_comment_content);
