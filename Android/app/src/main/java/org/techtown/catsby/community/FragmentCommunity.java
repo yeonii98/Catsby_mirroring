@@ -56,8 +56,7 @@ public class FragmentCommunity extends Fragment {
     private String nickName;
     String uid = FirebaseAuth.getInstance().getUid();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-
+    
     List<Memo> memoList;
 
     @Nullable
