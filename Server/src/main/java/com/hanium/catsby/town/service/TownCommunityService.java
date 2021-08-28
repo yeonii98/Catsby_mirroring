@@ -1,9 +1,9 @@
-package com.hanium.catsby.Town.service;
+package com.hanium.catsby.town.service;
 
 import com.hanium.catsby.user.domain.MyPost;
 import com.hanium.catsby.user.repository.MyPostRepository;
-import com.hanium.catsby.Town.domain.TownCommunity;
-import com.hanium.catsby.Town.repository.TownCommunityRepository;
+import com.hanium.catsby.town.domain.TownCommunity;
+import com.hanium.catsby.town.repository.TownCommunityRepository;
 
 import com.hanium.catsby.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +61,7 @@ public class TownCommunityService {
     @Transactional
     public void deleteTownCommunity(int id) {//글 삭제
         //myPost
-        myPostRepository.deleteByTownCommunity_Id(id);
+//        myPostRepository.deleteByTownCommunity_Id(id);
         townCommunityRepository.deleteById(id);
     }
 
@@ -76,9 +76,5 @@ public class TownCommunityService {
         townCommunity.setAnonymous(requestTownCommunity.isAnonymous());
         townCommunity.setImage(requestTownCommunity.getImage());
         //해당 함수로 종료시(Service가 종료될 때) 트랜잭션이 종료된다. 이때 더티체킹이 일어남 - 자동 업데이트됨. db쪽으로 flush
-
-        //myPost
-        MyPost myPost = myPostRepository.findByTownCommunity_Id(id);
-        myPost.setTownCommunity(townCommunity);
     }
 }

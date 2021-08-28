@@ -153,8 +153,7 @@ public class AddActivity extends AppCompatActivity {
                         intent.putExtra("nickName", "익명");
 
 
-                    setResult(0, intent);
-
+                    setResult(2, intent);
 
                     finish();
                 }
