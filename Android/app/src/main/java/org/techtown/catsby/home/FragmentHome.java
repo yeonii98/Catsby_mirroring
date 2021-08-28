@@ -53,7 +53,6 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
         super.onAttach(context);
         mContext = context;
     }
-
     BowlAdapter bowlAdapter;
     ArrayList<byte[]> bowlImageArray = new ArrayList<>();
 
