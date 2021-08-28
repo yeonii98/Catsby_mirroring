@@ -27,6 +27,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -294,9 +295,12 @@ public class FragmentCommunity extends Fragment {
             itemViewHolder.nickname.setText(memo.getNickname());
             itemViewHolder.date.setText(memo.getDate());
 //            itemViewHolder.likeCnt.setText(Integer.toString(memo.getLikeCnt()));
+
+
             if (memo.getImg() == null)
                 itemViewHolder.img.setVisibility(View.GONE);
             else
+//                Glide.with(itemViewHolder.img).load(memo.getImg()).override(200,200).into(itemViewHolder.img);
                 itemViewHolder.img.setImageBitmap(memo.getImg());
             if (!uid.equals(memo.getUid())) {
                 itemViewHolder.deleteBtn.setVisibility(View.GONE);
@@ -354,7 +358,7 @@ public class FragmentCommunity extends Fragment {
                     byte[] byteArray = new byte[0];
                     if (listdata.get(position).getImg() != null) {
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        listdata.get(position).getImg().compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                        listdata.get(position).getImg().compress(Bitmap.CompressFormat.JPEG, 20, stream);
                         byteArray = stream.toByteArray();
                         intent.putExtra("img", byteArray);
                     } else

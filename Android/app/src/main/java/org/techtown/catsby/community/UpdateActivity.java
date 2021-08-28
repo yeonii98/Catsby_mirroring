@@ -120,7 +120,7 @@ public class UpdateActivity extends AppCompatActivity {
                         String image = "";
 
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        img.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                        img.compress(Bitmap.CompressFormat.JPEG, 20, stream);
                         byteArray = stream.toByteArray();
                         image = "&image=" + byteArrayToBinaryString(byteArray) ;
                         townCommunity = new TownCommunity(title, content, image, checkBox.isChecked());
