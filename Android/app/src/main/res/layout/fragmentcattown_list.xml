@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="#C5C5C5"
+    android:background="#FFFFFF"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/towncatimage"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/ic_launcher_background"
-        android:layout_marginBottom="10dp" />
+    <LinearLayout
+        android:layout_width="70dp"
+        android:layout_height="70dp">
+        <ImageView
+            android:id="@+id/towncatimage"
+            android:scaleType="centerCrop"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="7dp"
+
+            android:src="@drawable/ic_launcher_background"
+            android:layout_marginBottom="10dp" />
+
+    </LinearLayout>
 
 
     <LinearLayout
@@ -23,22 +32,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+            android:layout_marginTop="5dp"
             android:layout_marginLeft="20dp"
             android:gravity="center_vertical"
-            android:textColor="#FFFFFF"
             android:text="고양이 이름"
             android:textSize="25dp" />
 
 
         <TextView
-            android:id="@+id/towncathelppeople"
+            android:id="@+id/towncatgen"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="20dp"
             android:gravity="center_vertical"
-            android:textColor="#FFFFFF"
-            android:text="도와주는 사람"
+            android:text="성별"
+            android:textSize="10dp" />
+
+        <TextView
+            android:id="@+id/towncatloc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp"
+            android:gravity="center_vertical"
+            android:text="발견 위치"
+            android:visibility="visible"
             android:textSize="10dp" />
 
         <TextView
@@ -48,9 +67,8 @@
             android:layout_alignParentTop="true"
             android:layout_marginLeft="20dp"
             android:gravity="center_vertical"
-            android:textColor="#FFFFFF"
-            android:text="고양이 아이디"
-            android:visibility="visible"
+            android:text="발견 위치"
+            android:visibility="gone"
             android:textSize="10dp" />
 
 

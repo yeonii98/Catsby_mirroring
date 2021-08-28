@@ -1,11 +1,11 @@
-package com.hanium.catsby.Town.service;
+package com.hanium.catsby.town.service;
 
 import com.hanium.catsby.user.domain.MyComment;
 import com.hanium.catsby.user.repository.MyCommentRepository;
-import com.hanium.catsby.Town.domain.TownComment;
-import com.hanium.catsby.Town.domain.TownCommunity;
-import com.hanium.catsby.Town.repository.TownCommentRepository;
-import com.hanium.catsby.Town.repository.TownCommunityRepository;
+import com.hanium.catsby.town.domain.TownComment;
+import com.hanium.catsby.town.domain.TownCommunity;
+import com.hanium.catsby.town.repository.TownCommentRepository;
+import com.hanium.catsby.town.repository.TownCommunityRepository;
 import com.hanium.catsby.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,7 +62,7 @@ public class TownCommentService {
     @Transactional
     public void deleteTownComment(int commentId){
         //myComment
-        myCommentRepository.deleteByTownComment_Id(commentId);
+//        myCommentRepository.deleteByTownComment_Id(commentId);
 
         townCommentRepository.deleteById(commentId);
     }
@@ -78,8 +78,8 @@ public class TownCommentService {
         //해당 함수로 종료시(Service가 종료될 때) 트랜잭션이 종료된다. 이때 더티체킹이 일어남 - 자동 업데이트됨. db쪽으로 flush
 
         //myComment
-        MyComment myComment = myCommentRepository.findByTownComment_Id(townComment_id);
-        myComment.setTownComment(townComment);
+//        MyComment myComment = myCommentRepository.findByTownComment_Id(townComment_id);
+//        myComment.setTownComment(townComment);
 
     }
 }

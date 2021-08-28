@@ -8,7 +8,6 @@ public class BowlCommunityUpdatePost {
     private String content;
     private int bowl;
 
-
     public BowlCommunityUpdatePost(String content) {
         this.content = content;
     }

@@ -31,11 +31,11 @@ public interface CatService {
     Call<CatProfile> setPost(
             @Field("name") String name,
             @Field("health") String health,
-            @Field("addrss") String addrss,
-            @Field("gender") boolean gender,
-            @Field("image")Image image,
+            @Field("address") String address,
+            @Field("gender") int gender,
+            @Field("image") String image,
             @Field("content") String content,
-            @Field("spayed") boolean spayed
+            @Field("spayed") int spayed
             );
 
 

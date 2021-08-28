@@ -22,8 +22,27 @@ public class BowlActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
-        String info = intent.getStringExtra("info");
-        System.out.println("name = " + name);
+
+        FragmentBowlInfo fragmentBowlInfo = new FragmentBowlInfo();
+        Bundle bundle = new Bundle(1);
+        bundle.putString("name", name);
+        bundle.putString("name", name);
+        fragmentBowlInfo.setArguments(bundle);
+
+        //뷰페이저 세팅
+        ViewPager viewPager = findViewById(R.id.viewPager);
+        fragmentPagerAdapter = new BowlViewPagerAdapter(getSupportFragmentManager());
+
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        viewPager.setAdapter(fragmentPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+    }
+}
+
+        //Intent intent = getIntent();
+        //String name = intent.getStringExtra("name");
+        //String info = intent.getStringExtra("info");
+        //System.out.println("name = " + name);
 
         /*
         try{
@@ -58,13 +77,13 @@ public class BowlActivity extends AppCompatActivity {
 
         //뷰페이저 세팅
 
-        ViewPager viewPager = findViewById(R.id.viewPager);
-        fragmentPagerAdapter = new BowlViewPagerAdapter(getSupportFragmentManager());
+        //ViewPager viewPager = findViewById(R.id.viewPager);
+        //fragmentPagerAdapter = new BowlViewPagerAdapter(getSupportFragmentManager());
 
-        TabLayout tabLayout = findViewById(R.id.bowl_map);
-        viewPager.setAdapter(fragmentPagerAdapter);
-        tabLayout.setupWithViewPager(viewPager);
+        //TabLayout tabLayout = findViewById(R.id.bowl_map);
+        //viewPager.setAdapter(fragmentPagerAdapter);
+        //tabLayout.setupWithViewPager(viewPager);
         
         //this.startActivity(bowlInfoIntent);
-    }
-}
+    //}
+//}
