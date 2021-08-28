@@ -7,6 +7,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -21,13 +22,21 @@ public class BowlActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bowl);
 
         Intent intent = getIntent();
+        int id = intent.getIntExtra("id", 0);
         String name = intent.getStringExtra("name");
+        Log.e("BowlActivity", "name : " + name + ", id : " + id);
 
-        FragmentBowlInfo fragmentBowlInfo = new FragmentBowlInfo();
-        Bundle bundle = new Bundle(1);
-        bundle.putString("name", name);
-        bundle.putString("name", name);
-        fragmentBowlInfo.setArguments(bundle);
+//        FragmentBowlInfo fragmentBowlInfo = new FragmentBowlInfo();
+//        Bundle bundle = new Bundle(1);
+//        bundle.putString("name", name);
+//        bundle.putString("name", name);
+//        fragmentBowlInfo.setArguments(bundle);
+
+        FragmentBowlMap fragmentBowlMap = new FragmentBowlMap();
+        Bundle bundle1 = new Bundle();
+//        bundle1.putString("", name);
+        bundle1.putString("name", name);
+        fragmentBowlMap.setArguments(bundle1);
 
         //뷰페이저 세팅
         ViewPager viewPager = findViewById(R.id.viewPager);

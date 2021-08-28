@@ -98,9 +98,26 @@ public class BowlController {
         return ResponseEntity.ok(new CreateBowlResponse(bowlId));
     }
 
-    @GetMapping("/bowl/location")
-    public void bowlLocation() {
+    @GetMapping("/bowl/location/{bowlId}")
+    public ResponseEntity<BowlLocationResponse> bowlLocation(@PathVariable("bowlId") Long id) {
+        Bowl bowl = bowlService.findOne(id);
+        return ResponseEntity.ok(new BowlLocationResponse(bowl));
 
+    }
+
+    @Data
+    static class BowlLocationResponse{
+        Long id;
+        String name;
+        Double latitude;
+        Double longitude;
+
+        public BowlLocationResponse(Bowl bowl) {
+            this.id = bowl.getId();
+            this.name = bowl.getName();
+            this.latitude = bowl.getLatitude();
+            this.longitude = bowl.getLongitude();
+        }
     }
 
     @Data

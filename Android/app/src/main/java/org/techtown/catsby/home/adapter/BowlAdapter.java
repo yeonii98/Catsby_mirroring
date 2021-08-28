@@ -77,10 +77,10 @@ public class BowlAdapter extends RecyclerView.Adapter<BowlAdapter.ViewHolder> {
                     }
 
                     Bowl item = itemData.get(idx);
+                    intent.putExtra("id", item.getId());
                     intent.putExtra("name", item.getName());
                     intent.putExtra("address", item.getAddress());
                     intent.putExtra("info", item.getInfo());
-                    intent.putExtra("time", item.getLocalDateTime());
 
                     v.getContext().startActivity(intent);
                 }
