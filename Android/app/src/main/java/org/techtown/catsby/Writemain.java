@@ -94,6 +94,11 @@ public class Writemain extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_writemain);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("홈 화면 글쓰기");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         if (user != null) {
             loadBowls(user.getUid());
         }

@@ -24,6 +24,12 @@ public class MaincommentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maincomment);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("댓글");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         //maincommentList = new ArrayList<>();
 
         //뒤로가기
