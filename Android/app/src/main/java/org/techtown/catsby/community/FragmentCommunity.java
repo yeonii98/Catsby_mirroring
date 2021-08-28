@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -66,6 +67,7 @@ public class FragmentCommunity extends Fragment {
 
     List<Integer> idList = new ArrayList<>();
     List<Memo> memoList;
+    int addressExist = 1;
 
     @Nullable
     @Override
@@ -97,44 +99,53 @@ public class FragmentCommunity extends Fragment {
                     User result = response.body();
                     String userAddress = result.getAddress();
 
-                    townCommunityService.getTownList().enqueue(new Callback<List<TownCommunity>>() {
-                        @Override
-                        public void onResponse(Call<List<TownCommunity>> call, Response<List<TownCommunity>> response) {
-                            if (response.isSuccessful()) {
-                                //정상적으로 통신이 성공된 경우
-                                List<TownCommunity> result = response.body();
+                    if(userAddress != null){
+                        addressExist = 1;
+                        townCommunityService.getTownList().enqueue(new Callback<List<TownCommunity>>() {
+                            @Override
+                            public void onResponse(Call<List<TownCommunity>> call, Response<List<TownCommunity>> response) {
+                                if (response.isSuccessful()) {
+                                    //정상적으로 통신이 성공된 경우
+                                    List<TownCommunity> result = response.body();
 
-                                for (int i = 0; i < result.size(); i++) {
-                                    if(!userAddress.equals(result.get(i).getUser().getAddress())) continue;
+                                    for (int i = 0; i < result.size(); i++) {
+                                        if(!userAddress.equals(result.get(i).getUser().getAddress())) continue;
 
-                                    if (result.get(i).getImage() != null)
-                                        bm = makeBitMap(result.get(i).getImage());
-                                    else
-                                        bm = null;
+                                        if (result.get(i).getImage() != null)
+                                            bm = makeBitMap(result.get(i).getImage());
+                                        else
+                                            bm = null;
 
-                                    if (result.get(i).isAnonymous())
-                                        nickName = "익명";
-                                    else
-                                        nickName = result.get(i).getUser().getNickname();
+                                        if (result.get(i).isAnonymous())
+                                            nickName = "익명";
+                                        else
+                                            nickName = result.get(i).getUser().getNickname();
 
-                                    Memo memo = new Memo(result.get(i).getId(), result.get(i).getUser().getUid(),
-                                            result.get(i).getTitle(), result.get(i).getContent(),
-                                            nickName, result.get(i).getDate(), bm);
-                                    recyclerAdapter.addItem(memo);
+                                        Memo memo = new Memo(result.get(i).getId(), result.get(i).getUser().getUid(),
+                                                result.get(i).getTitle(), result.get(i).getContent(),
+                                                nickName, result.get(i).getDate(), bm);
+                                        recyclerAdapter.addItem(memo);
+                                    }
+                                    recyclerAdapter.notifyDataSetChanged();
+
+                                } else {
+                                    System.out.println("실패");
                                 }
-                                recyclerAdapter.notifyDataSetChanged();
-
-                            } else {
-                                System.out.println("실패");
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Call<List<TownCommunity>> call, Throwable t) {
-                            System.out.println("통신 실패!");
-                        }
-                    });
-
+                            @Override
+                            public void onFailure(Call<List<TownCommunity>> call, Throwable t) {
+                                System.out.println("통신 실패!");
+                            }
+                        });
+                    }
+                    else{
+                        Memo memo = new Memo("설정에서 동네를 등록해주세요", "동네를 등록 한 후 글쓰기가 가능합니다.");
+                        addressExist = 0;
+                        recyclerAdapter.addItem(memo);
+                        btnAdd.setEnabled(false);
+                        recyclerAdapter.notifyDataSetChanged();
+                    }
                 }
                 System.out.println("성공");
             }
@@ -281,21 +292,16 @@ public class FragmentCommunity extends Fragment {
             itemViewHolder.title.setText(memo.getMaintext());
             itemViewHolder.content.setText(memo.getSubtext());
             itemViewHolder.nickname.setText(memo.getNickname());
-
+            itemViewHolder.date.setText(memo.getDate());
+//            itemViewHolder.likeCnt.setText(Integer.toString(memo.getLikeCnt()));
             if (memo.getImg() == null)
                 itemViewHolder.img.setVisibility(View.GONE);
             else
                 itemViewHolder.img.setImageBitmap(memo.getImg());
-
-            itemViewHolder.date.setText(memo.getDate());
-//            itemViewHolder.likeCnt.setText(Integer.toString(memo.getLikeCnt()));
-
-
             if (!uid.equals(memo.getUid())) {
                 itemViewHolder.deleteBtn.setVisibility(View.GONE);
                 itemViewHolder.updateBtn.setVisibility(View.GONE);
             }
-
             itemViewHolder.deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -362,15 +368,26 @@ public class FragmentCommunity extends Fragment {
                 }
             });
 
-            itemViewHolder.chatbubble.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), TownCommentListActivity.class);
-                    intent.putExtra("id", listdata.get(position).getId());
-                    System.out.println(listdata.get(position).getId());
-                    startActivity(intent);
-                }
-            });
+            itemViewHolder.chatbubble.setVisibility(View.GONE);
+            itemViewHolder.linearLayout.setVisibility(View.GONE);
+            itemViewHolder.userImg.setVisibility(View.GONE);
+
+
+            if(addressExist == 1){
+
+                itemViewHolder.chatbubble.setVisibility(View.VISIBLE);
+                itemViewHolder.linearLayout.setVisibility(View.VISIBLE);
+                itemViewHolder.userImg.setVisibility(View.VISIBLE);
+
+                itemViewHolder.chatbubble.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getActivity(), TownCommentListActivity.class);
+                        intent.putExtra("id", listdata.get(position).getId());
+                        System.out.println(listdata.get(position).getId());
+                        startActivity(intent);
+                    }
+                });
 
             /* 홈화면 말풍선에 댓글 리스트 연동 시키기
             itemViewHolder.mainchatbubble.setOnClickListener(new View.OnClickListener() {
@@ -384,32 +401,32 @@ public class FragmentCommunity extends Fragment {
             }); */
 
 
-            itemViewHolder.commentBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String content = itemViewHolder.commentContent.getText().toString();
-                    if (content.length() > 0) {
-                        itemViewHolder.commentContent.setText("");
-                        TownComment townComment = new TownComment(content);
-                        townCommentService.postTownComment(memo.getId(), uid, townComment).enqueue(new Callback<Void>() {
-                            @Override
-                            public void onResponse(Call<Void> call, Response<Void> response) {
-                                if (response.isSuccessful()) {
-                                    //정상적으로 통신이 성공된 경우
-                                    System.out.println("댓글 쓰기 성공");
-                                } else {
-                                    System.out.println("실패");
+                itemViewHolder.commentBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String content = itemViewHolder.commentContent.getText().toString();
+                        if (content.length() > 0) {
+                            itemViewHolder.commentContent.setText("");
+                            TownComment townComment = new TownComment(content);
+                            townCommentService.postTownComment(memo.getId(), uid, townComment).enqueue(new Callback<Void>() {
+                                @Override
+                                public void onResponse(Call<Void> call, Response<Void> response) {
+                                    if (response.isSuccessful()) {
+                                        //정상적으로 통신이 성공된 경우
+                                        System.out.println("댓글 쓰기 성공");
+                                    } else {
+                                        System.out.println("실패");
+                                    }
                                 }
-                            }
 
-                            @Override
-                            public void onFailure(Call<Void> call, Throwable t) {
-                                System.out.println("통신 실패 : " + t.getMessage());
-                            }
-                        });
+                                @Override
+                                public void onFailure(Call<Void> call, Throwable t) {
+                                    System.out.println("통신 실패 : " + t.getMessage());
+                                }
+                            });
+                        }
                     }
-                }
-            });
+                });
 
 
 //            townLikeService = RetrofitClient.getTownLikeService();
@@ -466,6 +483,8 @@ public class FragmentCommunity extends Fragment {
 //                    }
 //                }
 //            });
+            }
+
 
         }
 
@@ -505,6 +524,10 @@ public class FragmentCommunity extends Fragment {
             private ImageView chatbubble;
 //            private ImageView mainchatbubble;
 
+            private ImageView userImg;
+
+            private LinearLayout linearLayout;
+
             public ItemViewHolder(@NonNull View itemView) {
                 super(itemView);
 
@@ -523,6 +546,10 @@ public class FragmentCommunity extends Fragment {
 
 //                likeCnt = itemView.findViewById(R.id.likeCnt);
 //                likeImg = itemView.findViewById(R.id.town_likeBtn);
+
+                userImg = itemView.findViewById(R.id.user_img);
+
+                linearLayout = itemView.findViewById(R.id.linearLayout);
             }
         }
     }

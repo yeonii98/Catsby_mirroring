@@ -15,7 +15,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginLeft="7dp"
-            android:src="@mipmap/ic_launcher_round"
+            android:src="@drawable/catsby_logo_black"
             app:civ_border_color="#939597"
             app:civ_border_width="2dp"
             android:id="@+id/user_img"/>
@@ -98,12 +98,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp">
-<!--        <ImageView-->
-<!--            android:layout_width="35dp"-->
-<!--            android:layout_height="35dp"-->
-<!--            android:layout_marginLeft="7.5dp"-->
-<!--            android:src="@drawable/ic_baseline_favorite_border_24"-->
-<!--            android:id="@+id/town_likeBtn"/>-->
+
 <!--        <TextView-->
 <!--            android:id="@+id/likeCnt"-->
 <!--            android:layout_width="wrap_content"-->
@@ -116,7 +111,12 @@
             android:layout_marginRight="7dp"
             android:src="@drawable/ic_baseline_chat_bubble_24"
             android:id="@+id/town_comment"/>
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
 
+            android:src="@drawable/ic_baseline_favorite_border_24"
+            android:id="@+id/town_likeBtn"/>
     </LinearLayout>
 
     <LinearLayout

@@ -74,6 +74,7 @@ public class AddActivity extends AppCompatActivity {
 
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("커뮤니티 글 쓰기");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

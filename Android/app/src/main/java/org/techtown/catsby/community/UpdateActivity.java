@@ -68,6 +68,7 @@ public class UpdateActivity extends AppCompatActivity {
 
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("커뮤니티 글 수정하기");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
