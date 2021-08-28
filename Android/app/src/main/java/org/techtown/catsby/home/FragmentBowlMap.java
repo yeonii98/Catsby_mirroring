@@ -6,6 +6,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,15 +26,26 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.techtown.catsby.R;
+import org.techtown.catsby.retrofit.RetrofitClient;
+import org.techtown.catsby.retrofit.dto.BowlLocation;
+import org.techtown.catsby.retrofit.service.BowlService;
 
 import java.io.IOException;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FragmentBowlMap extends Fragment implements OnMapReadyCallback {
     private View view;
     private GoogleMap mgoogleMap;
     private MapView mapView;
     private Context context;
+    private BowlService bowlService;
+
+    Long id;
+    String name;
 
     public static FragmentBowlMap newInstance(){
         FragmentBowlMap fragGoogleMap = new FragmentBowlMap();
@@ -49,20 +61,42 @@ public class FragmentBowlMap extends Fragment implements OnMapReadyCallback {
         mapView.onResume();
         mapView.getMapAsync(this);
 
+//        Bundle bundle = getArguments();
+//        String name = bundle.getString("name");
+//        Log.e("FragmentBowlMap", "name : " + name);
+        id = 2L;  //////
+//        name = "sss";
+        bowlService = RetrofitClient.getBowlService();
+
         return view;
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mgoogleMap = googleMap;
-        LatLng namsan = new LatLng(37.551968, 126.988500);
-        MarkerOptions marker = new MarkerOptions();
-        marker.position(namsan); //좌표
-        marker.title("남산타워");
+        bowlService.getBowlLocation(id).enqueue(new Callback<BowlLocation>() {
 
-        mgoogleMap.addMarker(marker);
+            @Override
+            public void onResponse(Call<BowlLocation> call, Response<BowlLocation> response) {
+                if (response.isSuccessful()) {
+                    mgoogleMap = googleMap;
+                    LatLng place = new LatLng(response.body().getLatitude(), response.body().getLongitude());
+                    MarkerOptions marker = new MarkerOptions();
+                    marker.position(place); //좌표
+                    marker.title(response.body().getName());
 
-        mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(namsan,16));
+                    mgoogleMap.addMarker(marker);
+
+                    mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, 16));
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BowlLocation> call, Throwable t) {
+
+            }
+        });
+
     }
 
 

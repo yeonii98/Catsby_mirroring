@@ -1,12 +1,15 @@
 package org.techtown.catsby.retrofit.dto;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class BowlCommunity {
     private int id;
     private User user;
     private String image;
     private String content;
-    private String createDate;
-    private String updateDate;
+    private String createdDate;
+    private String updatedDate;
 
     public int getId() {
         return id;
@@ -24,11 +27,11 @@ public class BowlCommunity {
         return content;
     }
 
-    public String getCreateDate() {
-        return createDate;
+    public String getCreatedDate() {
+        return createdDate;
     }
 
-    public String getUpdateDate() {
-        return updateDate;
+    public String getUpdatedDate() {
+        return updatedDate;
     }
 }

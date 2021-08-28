@@ -1,10 +1,13 @@
-package org.techtown.catsby.home;
+package org.techtown.catsby.home.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+
+import org.techtown.catsby.home.FragmentBowlInfo;
+import org.techtown.catsby.home.FragmentBowlMap;
 
 public class BowlViewPagerAdapter extends FragmentPagerAdapter {
     public BowlViewPagerAdapter(@NonNull FragmentManager fm) {

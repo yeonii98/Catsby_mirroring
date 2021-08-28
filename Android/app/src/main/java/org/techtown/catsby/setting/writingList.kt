@@ -70,7 +70,7 @@ class writingList : Fragment() {
                     if (result != null) {
                         for (i in 0..result.size-1){
                             if(result.get(i).townCommunity == null)
-                                adapter1.items.add(Writing(result.get(i).bowlCommunity.content,result.get(i).bowlCommunity.updateDate))
+                                adapter1.items.add(Writing(result.get(i).bowlCommunity.content,result.get(i).bowlCommunity.createdDate))
 
                             else if(result.get(i).bowlCommunity == null)
                                 adapter1.items.add(Writing(result.get(i).townCommunity.title,result.get(i).townCommunity.date))

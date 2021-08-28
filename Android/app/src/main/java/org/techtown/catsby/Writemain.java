@@ -30,11 +30,10 @@ import com.gun0912.tedpermission.TedPermission;
 
 import android.Manifest;
 
-import org.techtown.catsby.home.BowlCheckListAdapter;
+import org.techtown.catsby.home.adapter.BowlCheckListAdapter;
 import org.techtown.catsby.home.model.Bowl;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.BowlCommunity;
-import org.techtown.catsby.retrofit.dto.BowlCommunityPost;
 import org.techtown.catsby.retrofit.dto.BowlList;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
 import org.techtown.catsby.retrofit.service.BowlService;
@@ -90,6 +89,11 @@ public class Writemain extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_writemain);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("홈 화면 글쓰기");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         if (user != null) {
             loadBowls(user.getUid());
         }
@@ -98,9 +102,8 @@ public class Writemain extends AppCompatActivity{
         setSupportActionBar(mToolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
         tedPermission();
+
         findViewById(R.id.btnGallery).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -125,10 +128,7 @@ public class Writemain extends AppCompatActivity{
             public void onClick(View view) {
                 EditText postContext = (EditText)findViewById(R.id.context);
                 allContext = (String) postContext.getText().toString();
-
-                System.out.println("image = " + image);
                 savePost(image, bowlList.get(cPosition).getId(), user.getUid(), allContext);
-
                 postContext.setText("게시글 저장 완료");
             }
         });
@@ -143,12 +143,9 @@ public class Writemain extends AppCompatActivity{
         HashMap<String, RequestBody> map = new HashMap<String, RequestBody>();
         map.put("content", content);
         map.put("path", filePath);
-
-
         InputStream inputStream = null;
         try {
             inputStream = this.getContentResolver().openInputStream(photoUri);
-
         }catch(IOException e) {
             e.printStackTrace();
         }
@@ -156,20 +153,9 @@ public class Writemain extends AppCompatActivity{
         Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 20, byteArrayOutputStream);
+
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpg"), byteArrayOutputStream.toByteArray());
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName() ,requestBody);
-
-
-
-        //RequestBody requestBody = RequestBody.create(MediaType.parse("multipart/form-data"), file);
-        //MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
-
-
-        //String path = image.toString();
-        //BowlCommunityPost bowlCommunityPost = new BowlCommunityPost(context, path);
-
-
-        System.out.println("id = " + id);
         bowlCommunityService.saveCommunity(body, id, uid, map).enqueue(new Callback<List<BowlCommunity>>() {
             @Override
             public void onResponse(Call<List<BowlCommunity>> call, Response<List<BowlCommunity>> response) {
@@ -359,14 +345,12 @@ public class Writemain extends AppCompatActivity{
             public void onPermissionGranted() {
                 // 권한 요청 성공
                 isPermission = true;
-
             }
 
             @Override
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {
                 // 권한 요청 실패
                 isPermission = false;
-
             }
         };
 

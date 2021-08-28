@@ -59,9 +59,11 @@ public class BowlService {
     }
 
     @Transactional
-    public Long saveBowlUser(String bowlInfo, String  uid) {
+    public Long saveBowlUser(String  uid, String bowlInfo, double latitude, double longitude)  {
         Users user = userRepository.findUserByUid(uid);
         Bowl bowl = bowlRepository.findByBowlInfo(bowlInfo).get(0);
+        bowl.setLatitude(latitude);
+        bowl.setLongitude(longitude);
 
         bowlUserRepository.save(new BowlUser(bowl, user));
 

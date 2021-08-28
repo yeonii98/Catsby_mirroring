@@ -1,4 +1,4 @@
-package org.techtown.catsby.home;
+package org.techtown.catsby.home.model;
 
 import android.graphics.drawable.Drawable;
 

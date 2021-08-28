@@ -15,9 +15,9 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginLeft="7dp"
-            android:src="@mipmap/ic_launcher_round"
+            android:src="@drawable/catsby_logo_black"
             app:civ_border_color="#939597"
-            app:civ_border_width="2dp"
+            app:civ_border_width="1dp"
             android:id="@+id/user_img"/>
         <TextView
             android:id="@+id/user_nickname"
@@ -35,7 +35,7 @@
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:background="@android:color/holo_orange_light"
+            android:background="#ACDBE8"
             android:text="수정" />
         <Button
             android:id="@+id/town_delete"
@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_marginRight="7dp"
-            android:background="@android:color/holo_orange_light"
+            android:background="#ACDBE8"
             android:text="삭제" />
     </LinearLayout>
     <LinearLayout
@@ -53,12 +53,13 @@
 
         <TextView
             android:id="@+id/town_title"
-            android:textSize="18dp"
+            android:textSize="22dp"
             android:layout_marginLeft="7dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Title~~~~~~~~"
-            android:background="@color/browser_actions_divider_color"/>
+            android:textStyle="bold"
+            />
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -67,7 +68,7 @@
 
         <TextView
             android:id="@+id/town_content"
-            android:textSize="20dp"
+            android:textSize="18dp"
             android:layout_marginLeft="7dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -97,12 +98,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp">
-<!--        <ImageView-->
-<!--            android:layout_width="35dp"-->
-<!--            android:layout_height="35dp"-->
-<!--            android:layout_marginLeft="7.5dp"-->
-<!--            android:src="@drawable/ic_baseline_favorite_border_24"-->
-<!--            android:id="@+id/town_likeBtn"/>-->
+
 <!--        <TextView-->
 <!--            android:id="@+id/likeCnt"-->
 <!--            android:layout_width="wrap_content"-->
@@ -115,7 +111,12 @@
             android:layout_marginRight="7dp"
             android:src="@drawable/ic_baseline_chat_bubble_24"
             android:id="@+id/town_comment"/>
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
 
+            android:src="@drawable/ic_baseline_favorite_border_24"
+            android:id="@+id/town_likeBtn"/>
     </LinearLayout>
 
     <LinearLayout
@@ -141,9 +142,9 @@
         <Button
             android:id="@+id/town_commentBtn"
             android:layout_width="67dp"
-            android:layout_height="match_parent"
+            android:layout_height="30dp"
             android:text="게시"
-            android:layout_marginRight="7dp"/>
-
+            android:layout_marginRight="7dp"
+            android:background="#ACDBE8"/>
     </LinearLayout>
 </LinearLayout>

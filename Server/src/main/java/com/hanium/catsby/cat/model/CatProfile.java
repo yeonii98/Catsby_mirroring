@@ -17,10 +17,10 @@ public class CatProfile {
     private String name;
     private String health;
     private String address;
-    private Boolean gender;
-    private byte[] image;
+    private int gender;
+    private String image;
     private String content;
-    private Boolean spayed;
+    private int spayed;
     private SimpleDateFormat created_time;
     private SimpleDateFormat updated_time;
 
@@ -30,7 +30,7 @@ public class CatProfile {
     //0811
     @Builder
     public CatProfile(String name, String health, String address,
-                      Boolean gender, byte[] image, String content, Boolean spayed) {
+                      int gender, String image, String content, int spayed) {
         this.cat_id = cat_id;
         this.name = name;
         this.health = health;
@@ -42,6 +42,7 @@ public class CatProfile {
         this.created_time = created_time;
         this.updated_time = updated_time;
     }
+
 
 
     public Integer getCat_id() {
@@ -76,19 +77,19 @@ public class CatProfile {
         this.address = address;
     }
 
-    public Boolean getGender() {
+    public int getGender() {
         return gender;
     }
 
-    public void setGender(Boolean gender) {
+    public void setGender(int gender) {
         this.gender = gender;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -100,11 +101,11 @@ public class CatProfile {
         this.content = content;
     }
 
-    public Boolean getSpayed() {
+    public int getSpayed() {
         return spayed;
     }
 
-    public void setSpayed(Boolean spayed) {
+    public void setSpayed(int spayed) {
         this.spayed = spayed;
     }
 

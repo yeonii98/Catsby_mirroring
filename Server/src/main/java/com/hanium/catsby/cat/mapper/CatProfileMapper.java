@@ -27,16 +27,16 @@ public interface CatProfileMapper {
     //@Options(useGeneratedKeys = true, keyProperty = "cat_id")
     int insertCatProfile(@Param("name") String name,
                          @Param("health") String health, @Param("address") String address,
-                         @Param("gender") boolean gender, @Param("image") byte[] image,
-                         @Param("content") String content, @Param("spayed") boolean spayed);
+                         @Param("gender") int gender, @Param("image") String image,
+                         @Param("content") String content, @Param("spayed") int spayed);
 
     //고양이 수정
     @Update("UPDATE Cat SET cat_id=#{cat_id}, name=#{name}, health=#{health}, address=#{address}, gender=#{gender}, image=#{image}, content=#{content}, spayed=#{spayed} WHERE cat_id=#{cat_id}")
     int updateCatProfile(
             @Param("cat_id") int cat_id, @Param("name") String name,
             @Param("health") String health, @Param("address") String address,
-            @Param("gender") boolean gender, @Param("image") byte[] image,
-            @Param("content") String content, @Param("spayed") boolean spayed);
+            @Param("gender") int gender, @Param("image") String image,
+            @Param("content") String content, @Param("spayed") int spayed);
 
     //고양이 삭제
     @Delete("DELETE FROM Cat Where cat_id=#{cat_id}")

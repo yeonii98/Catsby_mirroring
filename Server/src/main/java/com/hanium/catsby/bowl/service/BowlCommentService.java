@@ -53,10 +53,6 @@ public class BowlCommentService {
     public void update(Long id, String content) {
         BowlComment bowlComment = bowlCommentRepository.findBowlComment(id);
         bowlComment.setContent(content);
-
-        //myComment
-        MyComment myComment = myCommentRepository.findByBowlComment_Id(id);
-        myComment.setBowlComment(bowlComment);
     }
 
     @Transactional(readOnly = true)
@@ -76,9 +72,6 @@ public class BowlCommentService {
 
     @Transactional
     public void delete(Long id) {
-        //myComment
-        myCommentRepository.deleteByBowlComment_Id(id);
-
         bowlCommentRepository.deleteById(id);
     }
 }

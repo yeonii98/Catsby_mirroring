@@ -9,6 +9,7 @@ import lombok.Data;
 
 @Data
 public class Memo {
+
     private int id;
     private String uid;
     private String maintext; //제목
@@ -31,6 +32,10 @@ public class Memo {
 //    public void setPush(boolean push) {
 //        this.push = push;
 //    }
+
+    public Memo(int id){
+        this.id = id;
+    }
 
     public Memo(int id, String uid, String maintext, String subtext, String nickname, String date, Bitmap img) {
         this.id = id;

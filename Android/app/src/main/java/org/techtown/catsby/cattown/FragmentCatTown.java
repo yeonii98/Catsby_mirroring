@@ -1,6 +1,10 @@
 package org.techtown.catsby.cattown;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -8,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,12 +20,22 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.jetbrains.annotations.NotNull;
 import org.techtown.catsby.R;
 import org.techtown.catsby.cattown.adapter.FragmentCatTownAdapter;
 import org.techtown.catsby.cattown.addCat.AddCatActivity;
 import org.techtown.catsby.cattown.model.Cat;
+import org.techtown.catsby.retrofit.dto.CatProfile;
+import org.techtown.catsby.retrofit.service.CatService;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FragmentCatTown extends Fragment {
     RecyclerView recyclerView;
@@ -29,14 +44,22 @@ public class FragmentCatTown extends Fragment {
     private int catpicture;
     private String name;
     private int helppeople;
+    private String linkid = "";
+    private long lastTimeBackPressed;
+    private TextView tvcatgen;
+    private TextView tvcatloc;
+    private String text1;
+    private String text2;
+    List<Cat> catlist;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_cattown, container, false);
-        setHasOptionsMenu(true);
 
         super.onCreate(savedInstanceState);
+
+        View view = inflater.inflate(R.layout.fragment_cattown, container, false);
+        setHasOptionsMenu(true);
 
         recyclerView = (RecyclerView)view.findViewById(R.id.recyceler_view);
         catList = new ArrayList<>();
@@ -44,38 +67,101 @@ public class FragmentCatTown extends Fragment {
         adapter = new FragmentCatTownAdapter(catList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext(), RecyclerView.VERTICAL, false));
-        catpicture = R.drawable.pic_001;
-        name = "Happy";
-        helppeople = 2;
 
-        addItem(catpicture, name + "  1", helppeople);
-        addItem(catpicture, name+ "  2", helppeople);
-        addItem(catpicture, name + "  3", helppeople);
-        addItem(catpicture, name + "  4", helppeople);
-        addItem(catpicture, name + "  5", helppeople);
-        addItem(catpicture, name + "  6", helppeople);
-        addItem(catpicture, name + "  7", helppeople);
-        addItem(catpicture, name + "  8", helppeople);
-        addItem(catpicture, name + "  9", helppeople);
-        addItem(catpicture, name + "  6", helppeople);
-        addItem(catpicture, name + "  7", helppeople);
-        addItem(catpicture, name + "  8", helppeople);
-        addItem(catpicture, name + "  9", helppeople);
-        addItem(catpicture, name + "  6", helppeople);
-        addItem(catpicture, name + "  7", helppeople);
-        addItem(catpicture, name + "  8", helppeople);
-        addItem(catpicture, name + "  9", helppeople);
+        tvcatgen = (TextView)view.findViewById(R.id.towncatgen);
+        tvcatloc = (TextView)view.findViewById(R.id.towncatloc);
+
+        catlist = new ArrayList<>();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        CatService catService1 = retrofit.create(CatService.class);
+        Call<List<CatProfile>> call = catService1.getCatProfileList();
+
+        call.enqueue(new Callback<List<CatProfile>>() {
+            @Override
+            public void onResponse(Call<List<CatProfile>> call, Response<List<CatProfile>> response) {
+                if(response.isSuccessful()){
+                    List<CatProfile> result = response.body();
+                    for(int i=0; i<result.size(); i++) {
+
+                        //리스트에 표시될 이미지
+                        if(result.get(i).getImage() != null){
+                            bm = makeBitMap(result.get(i).getImage());}
+                        else{
+                            bm = null;}
+
+                        //리스트에 표시될 성별
+                        String text1;
+                        if(result.get(i).getGender()==1){
+                            text1 = "암컷";
+                        } else if(result.get(i).getGender()==2) {
+                            text1 = "수컷";
+                        } else {
+                            text1 = "성별 모름";
+                        }
+                        //tvcatgen.setText(text1);
+
+                        //리스트에 표시될 발견 지역
+                        String text2;
+                        text2 = result.get(i).getAddress();
+                        //tvcatloc.setText(text2);
+
+                        //매핑을 위한 고양이 아이디
+                        linkid = Integer.toString(result.get(i).getCatId());
+
+                        Cat cat = new Cat(result.get(i).getCatName(), bm, linkid,text2, text1,0);
+
+                        System.out.println(linkid);
+                        adapter.addItem(cat);
+                    }
+                    adapter.notifyDataSetChanged();
+                }
+                else {
+                    System.out.println("실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CatProfile>> call, Throwable t) {
+                System.out.println("통신 실패");
+            }
+            });
 
         adapter.notifyDataSetChanged();
         return view;
+
     }
 
-    private void addItem(int picture, String catName, int helper) {
-        Cat cat = new Cat();
-        cat.setCatPicture(picture);
-        cat.setName(catName);
-        cat.setHelpPeople(helper);
-        catList.add(cat);
+    private Bitmap bm=null;
+
+    public Bitmap makeBitMap(String s){
+        int idx = s.indexOf("=");
+        byte[] b = binaryStringToByteArray(s.substring(idx+1));
+        Bitmap bm = BitmapFactory.decodeByteArray(b,0,b.length);
+        return bm;
+    }
+
+    public byte[] binaryStringToByteArray(String s){
+        int count=s.length()/8;
+        byte[] b=new byte[count];
+        for(int i=1; i<count; ++i){
+            String t=s.substring((i-1)*8, i*8);
+            b[i-1]=binaryStringToByte(t);
+        }
+        return b;
+    }
+
+    public byte binaryStringToByte(String s){
+        byte ret=0, total=0;
+        for(int i=0; i<8; ++i){
+            ret = (s.charAt(7-i)=='1') ? (byte)(1 << i) : 0;
+            total = (byte) (ret|total);
+        }
+        return total;
     }
 
     @Override
@@ -93,4 +179,8 @@ public class FragmentCatTown extends Fragment {
                 return super.onOptionsItemSelected(item) ;
         }
     }
+
+
+
+
 }

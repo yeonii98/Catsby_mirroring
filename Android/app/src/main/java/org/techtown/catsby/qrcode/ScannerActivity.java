@@ -3,9 +3,11 @@ package org.techtown.catsby.qrcode;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
@@ -13,6 +15,7 @@ import com.budiyev.android.codescanner.DecodeCallback;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.zxing.Result;
 
+import org.techtown.catsby.MainActivity;
 import org.techtown.catsby.qrcode.data.model.BowlResponse;
 import org.techtown.catsby.qrcode.data.model.BowlUserRequest;
 import org.techtown.catsby.qrcode.data.service.QRBowlService;
@@ -25,7 +28,6 @@ import retrofit2.Response;
 
 public class ScannerActivity extends AppCompatActivity {
 
-    TextView txt;
     CodeScanner codeScanner;
     CodeScannerView codeScannerView;
 
@@ -36,9 +38,12 @@ public class ScannerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scanner);
 
+        Intent intent = getIntent();
+        double latitude = intent.getDoubleExtra("latitude", 0);
+        double longitude = intent.getDoubleExtra("longitude", 0);
+
         QRBowlService = RetrofitClient.getQrBowlService();
 
-        txt = (TextView) findViewById(R.id.textView);
         codeScannerView = (CodeScannerView) findViewById(R.id.scannerView);
         codeScanner = new CodeScanner(this, codeScannerView);
 
@@ -48,8 +53,10 @@ public class ScannerActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        txt.setText(result.getText());
-                        saveBowlUser(result.getText());
+                        saveBowlUser(result.getText(), latitude, longitude);
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
+                        Toast.makeText(getApplicationContext(), "밥그릇 등록이 완료 되었습니다.", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -67,8 +74,8 @@ public class ScannerActivity extends AppCompatActivity {
         codeScanner.startPreview();
     }
 
-    private void saveBowlUser(String bowlInfo) {
-        QRBowlService.saveBowlUser(FirebaseAuth.getInstance().getUid(), new BowlUserRequest(bowlInfo)).enqueue(new Callback<BowlResponse>() {
+    private void saveBowlUser(String bowlInfo, double latitude, double longitude) {
+        QRBowlService.saveBowlUser(FirebaseAuth.getInstance().getUid(), new BowlUserRequest(bowlInfo, latitude, longitude)).enqueue(new Callback<BowlResponse>() {
             @Override
             public void onResponse(Call<BowlResponse> call, Response<BowlResponse> response) {
                 if (response.isSuccessful()) {

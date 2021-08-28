@@ -34,7 +34,7 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity android:name=".setting.MaincommentActivity"></activity>
-        <activity android:name=".community.commentlistActivity" />
+        <activity android:name=".community.CommentlistActivity" />
         <activity android:name=".community.TownCommentListActivity" />
         <activity android:name=".community.AddActivity" />
         <activity android:name=".community.UpdateActivity" />
@@ -54,12 +54,11 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCRJVQUNcW1NU0pkH30EhQFWQ0ZkO3An4I" />
+            android:value="AIzaSyDfszGSmo3tTGtk18MbCg9o_Vp3m2poD2A" />
 
         <activity android:name=".MainActivity" />
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".home.BowlActivity" />
-        <activity android:name=".qrcode.QrcodeActivity" />
         <activity android:name=".qrcode.LoadingActivity" />
         <activity android:name=".qrcode.ScannerActivity" />
         <activity android:name=".notification.NotificationActivity" />

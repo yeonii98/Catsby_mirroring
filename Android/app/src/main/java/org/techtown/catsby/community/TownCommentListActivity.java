@@ -60,6 +60,7 @@ public class TownCommentListActivity extends AppCompatActivity {
         //뒤로가기
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("커뮤니티 댓글 목록");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

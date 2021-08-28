@@ -1,5 +1,6 @@
 package org.techtown.catsby.notification;
 
+import android.graphics.Color;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
 import android.view.LayoutInflater;
@@ -51,6 +52,7 @@ import androidx.recyclerview.widget.RecyclerView;
             //이미지뷰 원형으로 표시
             image.setBackground(new ShapeDrawable(new OvalShape()));
             image.setClipToOutline(true);
+            image.getBackground().setAlpha(0);
         }
     }
 

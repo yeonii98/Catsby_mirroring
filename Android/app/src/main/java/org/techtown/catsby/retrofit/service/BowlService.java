@@ -2,6 +2,7 @@ package org.techtown.catsby.retrofit.service;
 
 import org.techtown.catsby.retrofit.dto.BowlDto;
 import org.techtown.catsby.retrofit.dto.BowlList;
+import org.techtown.catsby.retrofit.dto.BowlLocation;
 
 
 import retrofit2.Call;
@@ -19,6 +20,9 @@ public interface BowlService {
 
     @POST("/bowl/enroll")
     Call<Void> postBowl(@Body BowlDto bowlDto);
+
+    @GET("/bowl/location/{bowlId}")
+    Call<BowlLocation> getBowlLocation(@Path("bowlId") Long id);
 
 }
 
