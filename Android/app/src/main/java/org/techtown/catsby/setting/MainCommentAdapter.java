@@ -91,9 +91,7 @@ public class MainCommentAdapter extends RecyclerView.Adapter<MainCommentAdapter.
                     }
                 });
                 thread.start();
-
             }
-
         }
     }
 
