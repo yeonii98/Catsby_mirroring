@@ -33,6 +33,8 @@ public class addCommunity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_create_qr);
 
+
+
         bowlname = findViewById(R.id.idEdt);
         bowladdress = findViewById(R.id.addEdt);
 
