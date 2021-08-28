@@ -1,19 +1,19 @@
 package org.techtown.catsby.cattown;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import org.techtown.catsby.R;
-import org.w3c.dom.Text;
+import org.techtown.catsby.retrofit.dto.CatProfile;
+import org.techtown.catsby.retrofit.service.CatService;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,26 +22,29 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
-public class CatTownDetailActivity extends AppCompatActivity {
+import java.util.List;
 
-    private ViewPager2 sliderViewPager;
-    private LinearLayout layoutIndicator;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
+public class CatTownDetailActivity extends AppCompatActivity  {
 
     private TextView catInfo;
-    private TextView careUser;
+    private TextView catGender;
     private TextView area;
     private TextView health;
     private TextView feature;
-
+    private ImageView catimgview;
     private CheckBox yesNeuter;
     private CheckBox noNeuter;
+    private CheckBox unknownNeuter;
+    private Bitmap bm;
 
-    private Button editBtn;
+    List<CatProfile> catList;
 
-    private String[] images = new String[] {
-            "https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_960_720.jpg",
-            "https://cdn.pixabay.com/photo/2014/04/13/20/49/cat-323262_960_720.jpg"
-    };
 
     @Override
     protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
@@ -50,27 +53,146 @@ public class CatTownDetailActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("우리동네 고양이 상세보기");
+
+        Intent intent = getIntent();
+        String linkedid = intent.getStringExtra("linkedid");
+        System.out.println(linkedid);
+        int linkedid1 = Integer.parseInt(linkedid);
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+
+        CatService retrofitService = retrofit.create(CatService.class);
+        Call<CatProfile> call = retrofitService.getCatProfile(linkedid1);
+        call.enqueue(new Callback<CatProfile>() {
+
+
+            @Override
+            public void onResponse(Call<CatProfile> call, Response<CatProfile> response) {
+                if (response.isSuccessful()) {
+                    CatProfile result = response.body();
+                    //고양이 이름
+                    catInfo.setText(result.getCatName());
+                    //고양이 성별
+                    if(result.getGender()==2){
+                        catGender.setText("수컷");
+                    }else if(result.getGender()==1){
+                        catGender.setText("암컷");
+                    } else {
+                        catGender.setText("성별 모름");
+                    }
+                    //고양이 활동 지역
+                    area.setText(result.getAddress());
+                    //고양이 중성화 여부
+                    if(result.getSpayed()==2){
+                        noNeuter.setChecked(true);
+                        yesNeuter.setChecked(false);
+                        unknownNeuter.setChecked(false);
+                    } else if(result.getSpayed()==1) {
+                        noNeuter.setChecked(false);
+                        yesNeuter.setChecked(true);
+                        unknownNeuter.setChecked(false);
+                    } else {
+                        noNeuter.setChecked(false);
+                        yesNeuter.setChecked(false);
+                        unknownNeuter.setChecked(true);
+                    }
+                    //고양이 건강 상태
+                    health.setText(result.getHealth());
+                    //고양이 특징
+                    feature.setText(result.getContent());
+                    //고양이 사진
+                    if(result.getImage() != null){
+                        bm = makeBitMap(result.getImage());
+                        catimgview.setImageBitmap(bm);}
+                    else{
+                        bm = null;}
+
+                } else{
+                    System.out.println("실패");
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<CatProfile> call, Throwable t) {
+                System.out.println("통신 실패");
+            }
+        });
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Intent intent = getIntent();
-        String catName = intent.getStringExtra("id");
-
         catInfo = (TextView) findViewById(R.id.tv_catinfo);
-        careUser = (TextView) findViewById(R.id.tv_careuser);
+        catGender = (TextView) findViewById (R.id.tv_catgender);
         area = (TextView) findViewById(R.id.tv_area);
         health = (TextView) findViewById(R.id.tv_health);
         feature = (TextView) findViewById(R.id.tv_feature);
         yesNeuter = (CheckBox) findViewById(R.id.cb_yesneuter);
+        unknownNeuter = (CheckBox) findViewById(R.id.cb_unknownneuter);
         noNeuter = (CheckBox) findViewById(R.id.cb_noneuter);
+        catimgview = (ImageView)findViewById(R.id.CatDetailImageView);
 
-        catInfo.setText(catName + " ( 5세 / 수컷 )");
-        careUser.setText(catName + "를 챙겨주는 유저는 N명 입니다");
-        area.setText("고양이가 활동하는 지역을 적어주세요");
-        health.setText("고양이 건강 상태를 적어주세요");
-        feature.setText("고양이 특징을 적어주세요");
-        yesNeuter.setChecked(true);
 
+
+    }
+
+    public Bitmap makeBitMap(String s){
+        int idx = s.indexOf("=");
+        byte[] b = binaryStringToByteArray(s.substring(idx+1));
+        Bitmap bm = BitmapFactory.decodeByteArray(b,0,b.length);
+        return bm;
+    }
+
+    public byte[] binaryStringToByteArray(String s){
+        int count=s.length()/8;
+        byte[] b=new byte[count];
+        for(int i=1; i<count; ++i){
+            String t=s.substring((i-1)*8, i*8);
+            b[i-1]=binaryStringToByte(t);
+        }
+        return b;
+    }
+
+    public byte binaryStringToByte(String s){
+        byte ret=0, total=0;
+        for(int i=0; i<8; ++i){
+            ret = (s.charAt(7-i)=='1') ? (byte)(1 << i) : 0;
+            total = (byte) (ret|total);
+        }
+        return total;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home: {
+                finish();
+                return true;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+}
+
+////////////////////////////////////////////image slider 코드////////////////////////////////////////
+
+    /*
+    private String[] images = new String[] {
+            "https://cdn.pixabay.com/photo/2017/02/20/18/03/cat-2083492_960_720.jpg",
+            "https://cdn.pixabay.com/photo/2014/04/13/20/49/cat-323262_960_720.jpg"
+    };
+
+     */
+
+
+        /*
         sliderViewPager = findViewById(R.id.sliderViewPager);
         layoutIndicator = findViewById(R.id.layoutIndicators);
 
@@ -87,27 +209,9 @@ public class CatTownDetailActivity extends AppCompatActivity {
 
         setupIndicators(images.length);
 
-//        editBtn = (Button) findViewById(R.id.btn_cattown_edit);
-//        editBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getApplicationContext(), CatTownEditActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-    }
+         */
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home: {
-                finish();
-                return true;
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
+    /*
     private void setupIndicators(int count) {
         ImageView[] indicators = new ImageView[count];
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -140,4 +244,4 @@ public class CatTownDetailActivity extends AppCompatActivity {
             }
         }
     }
-}
+     */
