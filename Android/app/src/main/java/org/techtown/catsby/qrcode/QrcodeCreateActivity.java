@@ -63,6 +63,7 @@ public class QrcodeCreateActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("밥그릇 QR 생성");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         QRBowlService = RetrofitClient.getQrBowlService();
