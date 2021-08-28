@@ -371,6 +371,7 @@ public class FragmentCommunity extends Fragment {
             itemViewHolder.chatbubble.setVisibility(View.GONE);
             itemViewHolder.linearLayout.setVisibility(View.GONE);
             itemViewHolder.userImg.setVisibility(View.GONE);
+            itemViewHolder.likeImg.setVisibility(View.GONE);
 
 
             if(addressExist == 1){
@@ -378,6 +379,7 @@ public class FragmentCommunity extends Fragment {
                 itemViewHolder.chatbubble.setVisibility(View.VISIBLE);
                 itemViewHolder.linearLayout.setVisibility(View.VISIBLE);
                 itemViewHolder.userImg.setVisibility(View.VISIBLE);
+                itemViewHolder.likeImg.setVisibility(View.VISIBLE);
 
                 itemViewHolder.chatbubble.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -519,7 +521,7 @@ public class FragmentCommunity extends Fragment {
             private Button town_menu;
 
 //            private TextView likeCnt;
-//            private ImageView likeImg;
+            private ImageView likeImg;
 
             private ImageView chatbubble;
 //            private ImageView mainchatbubble;
@@ -545,7 +547,7 @@ public class FragmentCommunity extends Fragment {
                 commentContent = itemView.findViewById(R.id.town_comment_content);
 
 //                likeCnt = itemView.findViewById(R.id.likeCnt);
-//                likeImg = itemView.findViewById(R.id.town_likeBtn);
+                likeImg = itemView.findViewById(R.id.town_likeBtn);
 
                 userImg = itemView.findViewById(R.id.user_img);
 
