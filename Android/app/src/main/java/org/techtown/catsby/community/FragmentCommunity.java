@@ -115,7 +115,6 @@ public class FragmentCommunity extends Fragment {
                     System.out.println("실패");
                 }
             }
-
             @Override
             public void onFailure(Call<List<TownCommunity>> call, Throwable t) {
                 System.out.println("통신 실패!");
