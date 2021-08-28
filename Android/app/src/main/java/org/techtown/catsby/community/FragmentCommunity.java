@@ -354,7 +354,7 @@ public class FragmentCommunity extends Fragment {
                     byte[] byteArray = new byte[0];
                     if (listdata.get(position).getImg() != null) {
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        listdata.get(position).getImg().compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                        listdata.get(position).getImg().compress(Bitmap.CompressFormat.JPEG, 20, stream);
                         byteArray = stream.toByteArray();
                         intent.putExtra("img", byteArray);
                     } else
