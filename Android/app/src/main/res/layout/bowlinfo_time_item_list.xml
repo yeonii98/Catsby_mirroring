@@ -1,0 +1,16 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="text"
+        android:textSize="20dp"
+        android:layout_marginLeft="7dp"
+        android:gravity="center_vertical"
+        android:id="@+id/bowl_time_text"/>
+
+</RelativeLayout>
+

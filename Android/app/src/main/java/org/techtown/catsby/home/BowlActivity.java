@@ -2,7 +2,6 @@ package org.techtown.catsby.home;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
@@ -11,6 +10,7 @@ import android.os.Bundle;
 import com.google.android.material.tabs.TabLayout;
 
 import org.techtown.catsby.R;
+import org.techtown.catsby.home.adapter.BowlViewPagerAdapter;
 
 public class BowlActivity extends AppCompatActivity {
     private FragmentPagerAdapter fragmentPagerAdapter;

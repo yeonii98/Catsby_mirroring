@@ -1,4 +1,4 @@
-package org.techtown.catsby.home;
+package org.techtown.catsby.home.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import org.techtown.catsby.R;
 import org.techtown.catsby.Writemain;
+import org.techtown.catsby.home.model.BowlCheck;
 import org.techtown.catsby.home.model.Bowl;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;

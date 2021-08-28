@@ -6,9 +6,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -33,12 +30,10 @@ import com.gun0912.tedpermission.TedPermission;
 
 import android.Manifest;
 
-import org.techtown.catsby.home.BowlCheckListAdapter;
-import org.techtown.catsby.home.FragmentHome;
+import org.techtown.catsby.home.adapter.BowlCheckListAdapter;
 import org.techtown.catsby.home.model.Bowl;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.BowlCommunity;
-import org.techtown.catsby.retrofit.dto.BowlCommunityPost;
 import org.techtown.catsby.retrofit.dto.BowlList;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
 import org.techtown.catsby.retrofit.service.BowlService;
