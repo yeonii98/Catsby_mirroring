@@ -50,21 +50,35 @@
 
         <Button
             android:id="@+id/mainCmtUpdateBtn"
-            android:layout_width="50dp"
-            android:layout_height="37dp"
-            android:layout_marginTop="9dp"
-            android:layout_weight="1"
+            android:layout_width="45dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="17dp"
+            android:layout_marginRight="3dp"
+            android:background="#FFACDBE8"
             android:text="수정"
-            android:textSize="11sp" />
+            android:textSize="11sp"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/mainCmtUpdateFinishBtn"
+            android:layout_width="55dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="17dp"
+            android:layout_marginRight="3dp"
+            android:background="#FFACDBE8"
+            android:text="수정완료"
+            android:textSize="11sp"
+            android:visibility="gone"/>
 
         <Button
             android:id="@+id/mainCmtDeleteBtn"
-            android:layout_width="41dp"
-            android:layout_height="34dp"
-            android:layout_marginTop="10dp"
+            android:layout_width="45dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="17dp"
             android:layout_marginRight="7dp"
-            android:layout_weight="1"
             android:text="삭제"
+            android:visibility="gone"
+            android:background="#FFACDBE8"
             android:textSize="11sp" />
 
     </LinearLayout>

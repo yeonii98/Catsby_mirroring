@@ -6,6 +6,9 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -31,6 +34,7 @@ import com.gun0912.tedpermission.TedPermission;
 import android.Manifest;
 
 import org.techtown.catsby.home.BowlCheckListAdapter;
+import org.techtown.catsby.home.FragmentHome;
 import org.techtown.catsby.home.model.Bowl;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.BowlCommunity;
@@ -124,10 +128,7 @@ public class Writemain extends AppCompatActivity{
             public void onClick(View view) {
                 EditText postContext = (EditText)findViewById(R.id.context);
                 allContext = (String) postContext.getText().toString();
-
-                System.out.println("image = " + image);
                 savePost(image, bowlList.get(cPosition).getId(), user.getUid(), allContext);
-
                 postContext.setText("게시글 저장 완료");
             }
         });
@@ -344,14 +345,12 @@ public class Writemain extends AppCompatActivity{
             public void onPermissionGranted() {
                 // 권한 요청 성공
                 isPermission = true;
-
             }
 
             @Override
             public void onPermissionDenied(ArrayList<String> deniedPermissions) {
                 // 권한 요청 실패
                 isPermission = false;
-
             }
         };
 

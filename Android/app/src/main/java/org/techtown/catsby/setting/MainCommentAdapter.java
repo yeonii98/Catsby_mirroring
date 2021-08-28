@@ -12,6 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import org.jetbrains.annotations.NotNull;
 import org.techtown.catsby.R;
 import org.techtown.catsby.home.adapter.FeedAdapter;
@@ -20,7 +23,9 @@ import org.techtown.catsby.retrofit.dto.BowlComment;
 import org.techtown.catsby.retrofit.dto.BowlCommentUpdate;
 import org.techtown.catsby.retrofit.dto.BowlCommentUpdatePost;
 import org.techtown.catsby.retrofit.dto.BowlCommentUsingComment;
+import org.techtown.catsby.retrofit.dto.User;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
+import org.techtown.catsby.retrofit.service.UserService;
 import org.w3c.dom.Text;
 
 import java.util.List;
@@ -29,35 +34,69 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.view.View.VISIBLE;
+
 public class MainCommentAdapter extends RecyclerView.Adapter<MainCommentAdapter.ViewHolder> {
 
-    List<BowlCommentUsingComment> mData;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    List<BowlCommentUsingComment> bowlCommentData;
     BowlCommunityService bowlCommunityService = RetrofitClient.getBowlCommunityService();
     Button commentDelete;
     Button commentUpdate;
+    Button commentUpdateFinish;
     View view;
+    boolean[] bool;
 
-
+    MainCommentAdapter(List<BowlCommentUsingComment> list) {
+        this.bowlCommentData = list ;
+        bool = new boolean[bowlCommentData.size()];
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         EditText editText;
         TextView textView ;
         TextView nickNameView;
+        Button commentDelete1 = (Button)itemView.findViewById(R.id.mainCmtDeleteBtn);
+        Button commentUpdate1= (Button)itemView.findViewById(R.id.mainCmtUpdateBtn);
+        Button commentUpdateFinish1= (Button)itemView.findViewById(R.id.mainCmtUpdateFinishBtn);
+        //Button commentUpdateFinish1;
 
         ViewHolder(View itemView) {
             super(itemView) ;
             textView = view.findViewById(R.id.maincmtContent) ;
             nickNameView = view.findViewById(R.id.maincmtNickName);
             editText = view.findViewById(R.id.editCmtContent);
+
+            for(int i=0; i < bowlCommentData.size(); i++){
+                UserService userService = RetrofitClient.getUser();
+                Call<User> call = userService.getUser(user.getUid());
+                int finalI = i;
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            User result = call.execute().body();
+                            assert result != null;
+                            if (!bool[finalI]){
+                                if (result.getId() == bowlCommentData.get(finalI).getUserId()){
+                                    bool[finalI] = true;
+                                }else{
+                                    bool[finalI] = false;
+                                }
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                thread.start();
+
+            }
+
         }
     }
 
-    // 생성자에서 데이터 리스트 객체를 전달받음.
-    MainCommentAdapter(List<BowlCommentUsingComment> list) {
-        this.mData = list ;
-
-    }
 
     @NonNull
     @NotNull
@@ -69,6 +108,7 @@ public class MainCommentAdapter extends RecyclerView.Adapter<MainCommentAdapter.
         view = inflater.inflate(R.layout.main_comment_list_item, parent, false) ;
         commentDelete = (Button)view.findViewById(R.id.mainCmtDeleteBtn);
         commentUpdate = (Button)view.findViewById(R.id.mainCmtUpdateBtn);
+        commentUpdateFinish = (Button)view.findViewById(R.id.mainCmtUpdateFinishBtn);
 
         MainCommentAdapter.ViewHolder vh = new MainCommentAdapter.ViewHolder(view) ;
         return vh ;
@@ -76,9 +116,9 @@ public class MainCommentAdapter extends RecyclerView.Adapter<MainCommentAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull MainCommentAdapter.ViewHolder holder, int position) {
-        if (mData.size() > 0 ){
-            String text = mData.get(position).getContent() ;
-            String nickName = mData.get(position).getNickname();
+        if (bowlCommentData.size() > 0 ){
+            String text = bowlCommentData.get(position).getContent() ;
+            String nickName = bowlCommentData.get(position).getNickname();
 
             holder.textView.setText(text);
             holder.nickNameView.setText(nickName);
@@ -86,23 +126,49 @@ public class MainCommentAdapter extends RecyclerView.Adapter<MainCommentAdapter.
             commentDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    deleteComment(position, mData.get(position).getId());
+                    deleteComment(position, bowlCommentData.get(position).getId());
                 }
             });
+
+            for(int i =0; i< bowlCommentData.size(); i++){
+                System.out.println("comment = !!!!" + bool[i]);
+            }
+
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (bool[position]) {
+                holder.commentDelete1.setVisibility(VISIBLE);
+                holder.commentUpdate1.setVisibility(VISIBLE);
+            }
 
             commentUpdate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    commentUpdate.setVisibility(View.INVISIBLE);
-                    //putFinishButton.setVisibility(View.VISIBLE);
-                    holder.textView.setVisibility(View.INVISIBLE);
-                    holder.editText.setVisibility(View.VISIBLE);
+                    holder.commentDelete1.setVisibility(View.GONE);
+                    holder.commentUpdate1.setVisibility(View.GONE);
+                    holder.commentUpdateFinish1.setVisibility(VISIBLE);
+                    holder.textView.setVisibility(View.GONE);
+                    holder.editText.setVisibility(VISIBLE);
                     holder.editText.setCursorVisible(true);
+                }
+            });
 
-                    String putMessage = holder.textView.getText().toString();
-                    putComment(position, mData.get(position).getId(), putMessage);
-
+            commentUpdateFinish.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String putMessage = holder.editText.getText().toString();
+                    holder.textView.setText(putMessage);
+                    putComment(bowlCommentData.get(position).getId(), putMessage);
+                    holder.commentUpdateFinish1.setVisibility(View.GONE);
+                    holder.commentUpdate1.setVisibility(VISIBLE);
+                    holder.commentDelete1.setVisibility(VISIBLE);
+                    holder.textView.setVisibility(VISIBLE);
+                    holder.editText.setVisibility(View.GONE);
                 }
             });
         }
@@ -112,8 +178,8 @@ public class MainCommentAdapter extends RecyclerView.Adapter<MainCommentAdapter.
         bowlCommunityService.deleteComment(id).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                MainCommentAdapter adapter = new MainCommentAdapter(mData);
-                mData.remove(position);
+                MainCommentAdapter adapter = new MainCommentAdapter(bowlCommentData);
+                bowlCommentData.remove(position);
                 adapter.notifyItemRemoved(position);
                 adapter.notifyItemRemoved(view.getVerticalScrollbarPosition());
                 notifyDataSetChanged();
@@ -126,7 +192,7 @@ public class MainCommentAdapter extends RecyclerView.Adapter<MainCommentAdapter.
         });
     }
 
-    private void putComment(int position, int id, String text){
+    private void putComment(int id, String text){
         BowlCommentUpdate bowlCommentUpdate = new BowlCommentUpdate(text);
         bowlCommunityService.putComment(id, bowlCommentUpdate).enqueue(new Callback<Void>() {
             @Override
@@ -144,7 +210,7 @@ public class MainCommentAdapter extends RecyclerView.Adapter<MainCommentAdapter.
 
     @Override
     public int getItemCount() {
-        return mData.size() ;
+        return bowlCommentData.size() ;
     }
 
 }
