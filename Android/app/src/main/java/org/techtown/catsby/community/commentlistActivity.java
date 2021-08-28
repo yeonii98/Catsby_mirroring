@@ -28,7 +28,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-class CommentlistActivity extends AppCompatActivity {
+public class CommentlistActivity extends AppCompatActivity {
 
     Button commentUpdate;
     TextView commentText;
