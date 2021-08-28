@@ -97,9 +97,7 @@ public class FragmentBowlInfo extends Fragment {
         timeRecyclerView.setAdapter(bowlInfoTimeAdapter);
 
         timeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false)) ;
-        addItem("여기에 추가하기면 됩니다");
-        addItem("여기에 추가하기면 됩니다");
-        addItem("여기에 추가하기면 됩니다");
+        addItem("10분전");
         bowlInfoTimeAdapter.notifyDataSetChanged();
 
         return view;
