@@ -21,7 +21,10 @@ public class Bowl extends BaseTimeEntity {
     private String info;
     private String name;
 
-    private String address;
+    private String address;  // 삭제
+
+    private Double latitude;
+    private Double longitude;
 
     @Lob
     private byte[] image;

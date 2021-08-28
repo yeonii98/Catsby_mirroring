@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -45,13 +46,14 @@ public class NotificationActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), new LinearLayoutManager(this).getOrientation()));
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//        if (user != null) {
+        if (user != null) {
             loadNotifications(user.getUid());
-//        }
+        }
     }
 
     private void loadNotifications(String uid) {
