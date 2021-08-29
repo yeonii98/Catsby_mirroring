@@ -53,7 +53,7 @@ public class FragmentBowlInfo extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_bowlinfo, container, false);
         imageView = (ImageView) view.findViewById(R.id.imageView);
-        imageView.setImageResource(R.drawable.ic_launcher_background);
+//        imageView.setImageResource(R.drawable.ic_launcher_background);
 
         //Intent intent = getIntent();
 
@@ -63,7 +63,7 @@ public class FragmentBowlInfo extends Fragment {
         if (bundle != null) {
             name.setText(bundle.getString("name"));
         } else {
-            name.setText("밥그릇~^^");
+            name.setText("나비밥그릇");
         }
 
 
@@ -98,6 +98,7 @@ public class FragmentBowlInfo extends Fragment {
 
         timeRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false)) ;
         addItem("10분전");
+        bowlInfoTimeAdapter.updateNotifications();
         bowlInfoTimeAdapter.notifyDataSetChanged();
 
         return view;
