@@ -1,3 +1,4 @@
+/*
 package org.techtown.catsby.setting
 
 
@@ -171,3 +172,5 @@ class setLocation : Fragment() {
             }
     }
 }
+
+ */
