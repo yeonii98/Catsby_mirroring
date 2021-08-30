@@ -13,12 +13,12 @@ import retrofit2.http.Path;
 
 public interface TownLikeService {
 
-    @POST("townCommunity/{id}/like")
-    Call<Void> postTownLike(@Path("id") int id, @Body TownLike townLike);
+    @POST("townCommunity/{id}/like/{uid}")
+    Call<Void> postTownLike(@Path("id") int id, @Path("uid") String uid, @Body TownLike townLike);
 
-    @DELETE("townCommunity/{id}/like")
-    Call<Void> deleteTownLike(@Path("id") int id);
+    @DELETE("townCommunity/{id}/like/{uid}")
+    Call<Void> deleteTownLike(@Path("id") int id, @Path("uid") String uid);
 
-    @GET("townCommunity/{id}/like/{user_id}")
-    Call<Integer> getTownLike(@Path("id") int id, @Path("user_id") int user_id);
+    @GET("townCommunity/{id}/like/{uid}")
+    Call<Integer> getTownLike(@Path("id") int id, @Path("uid") String uid);
 }

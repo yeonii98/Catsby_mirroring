@@ -16,25 +16,36 @@ public class Memo {
     private String subtext; //내용
     private String nickname; // 닉네임
     private String date; // 날짜
-    private int isdone; //완료여부
-//    private boolean push = true;
+    private int push;
     private Bitmap img;
-//    private int likeCnt = 0; //좋아요 개수
+    private int likeCnt = 0; //좋아요 개수
 
     public Memo(){
 
     }
 
-//    public boolean isPush() {
-//        return push;
-//    }
-//
-//    public void setPush(boolean push) {
-//        this.push = push;
-//    }
+    public int getPush() {
+        return push;
+    }
+
+    public void setPush(int push) {
+        this.push = push;
+    }
 
     public Memo(int id){
         this.id = id;
+    }
+
+    public Memo(int id, String uid, String maintext, String subtext, int likeCnt, String nickname, String date, Bitmap img, int push) {
+        this.id = id;
+        this.uid = uid;
+        this.maintext = maintext;
+        this.subtext = subtext;
+        this.likeCnt = likeCnt;
+        this.nickname = nickname;
+        this.date = date;
+        this.img = img;
+        this.push = push;
     }
 
     public Memo(int id, String uid, String maintext, String subtext, String nickname, String date, Bitmap img) {
@@ -110,21 +121,13 @@ public class Memo {
         this.date = date;
     }
 
-    public int getIsdone() {
-        return isdone;
+    public int getLikeCnt() {
+        return likeCnt;
     }
 
-    public void setIsdone(int isdone) {
-        this.isdone = isdone;
+    public void setLikeCnt(int likeCnt) {
+        this.likeCnt = likeCnt;
     }
-
-//    public int getLikeCnt() {
-//        return likeCnt;
-//    }
-//
-//    public void setLikeCnt(int likeCnt) {
-//        this.likeCnt = likeCnt;
-//    }
 
     public Bitmap getImg() {
         return img;

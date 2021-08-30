@@ -13,27 +13,29 @@ public class TownLikeController {
 
     @Autowired
     TownLikeService townLikeService;
+
+    @Autowired
     NotificationService notificationService;
 
-    @PostMapping("townCommunity/{id}/like")
-    public String createTownLike(@PathVariable int id, @RequestBody TownLike townLike){//현재 유저의 정보도 넣어야 함
-        townLikeService.createTownLike(id, townLike);
+    @PostMapping("townCommunity/{id}/like/{uid}")
+    public String createTownLike(@PathVariable int id, @PathVariable String uid, @RequestBody TownLike townLike){
+        townLikeService.createTownLike(id, uid, townLike);
 
-//        String content = townLike.getTownCommunity().getTitle();
-//        String message = id + NotificationUtil.makeNotification(content, NotificationType.LIKE);
-//        notificationService.saveNotification(townLike.getTownCommunity().getUser(), message);
+        String content = townLike.getTownCommunity().getTitle();
+        String message = id + NotificationUtil.makeNotification(content, NotificationType.LIKE);
+        notificationService.saveNotification(townLike.getTownCommunity().getUser(), message);
 
-        return "좋아요";
+        return "좋아요 완료";
     }
 
-    @DeleteMapping("townCommunity/{id}/like")
-    public String deleteTownLike(@PathVariable int id){
-        townLikeService.deleteTownLike(id, 2);
+    @DeleteMapping("townCommunity/{id}/like/{uid}")
+    public String deleteTownLike(@PathVariable int id, @PathVariable String uid){
+        townLikeService.deleteTownLike(id, uid);
         return "좋아요 취소";
     }
 
-    @GetMapping("townCommunity/{id}/like/{user_id}")
-    public int getLike(@PathVariable int id, @PathVariable int user_id){
-        return townLikeService.isPresent(id,user_id);
+    @GetMapping("townCommunity/{id}/like/{uid}")
+    public int getLike(@PathVariable int id, @PathVariable String uid){
+        return townLikeService.isPresent(id, uid);
     }
 }
