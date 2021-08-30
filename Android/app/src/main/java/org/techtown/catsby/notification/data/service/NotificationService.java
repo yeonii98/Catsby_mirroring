@@ -21,4 +21,7 @@ public interface NotificationService {
 
     @PATCH("/user/token/{uid}")
     Call<ApiResponse> updateFCMToken(@Path("uid") String uid, @Body FCMToken token);
+
+    @GET("/notification/bowl/{bowlId}")
+    Call<NotificationList> getBowlNotifications(@Path("bowlId") Long bowlId);
 }

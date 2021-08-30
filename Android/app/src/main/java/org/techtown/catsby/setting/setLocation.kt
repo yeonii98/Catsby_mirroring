@@ -1,28 +1,30 @@
+/*
 package org.techtown.catsby.setting
 
 
-import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.content.pm.PackageManager
-import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
 import android.os.Looper
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import com.google.android.gms.location.*
+import com.google.firebase.auth.FirebaseAuth
 import com.yanzhenjie.permission.AndPermission
 import com.yanzhenjie.permission.runtime.Permission
-import com.yanzhenjie.permission.runtime.Permission.ACCESS_FINE_LOCATION
 import kotlinx.android.synthetic.main.fragment_set_location.*
 import kotlinx.android.synthetic.main.fragment_setting.*
 import org.techtown.catsby.R
+import org.techtown.catsby.retrofit.dto.CatProfile
+import org.techtown.catsby.retrofit.dto.User
+import org.techtown.catsby.retrofit.service.CatService
+import retrofit2.Call
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -54,14 +56,18 @@ class setLocation : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
+        //레이아웃 설정
         return inflater.inflate(R.layout.fragment_set_location, container, false)
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         val geocoder = Geocoder(context)
+
+        //현재 유저
+        val userid = FirebaseAuth.getInstance().currentUser
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
 
@@ -71,31 +77,40 @@ class setLocation : Fragment() {
         ) {
             Toast.makeText(context, "위치 권한을 설정해주세요.", Toast.LENGTH_SHORT).show()
         } else {
-            myposbtn.setOnClickListener{
+            myposbtn.setOnClickListener {
                 requestLocation()
                 fusedLocationClient.lastLocation.addOnSuccessListener {
                     val address = geocoder.getFromLocation(it.latitude, it.longitude, 1)
-                    myadd = address[0].subLocality
+                    // myadd = address[0].subLocality
                     mypostv.setText(myadd)
 
                     // 값 꾸러미(bundle) 생성 - bundle은 일반적인 형태로 생성해도 됩니다.
                     val bundle = bundleOf("myaddkey" to myadd)
                     // 요청키로 수신측의 리스너에 값을 전달
                     setFragmentResult("myaddkey", bundle)
+
+                    //val retrofitService: User = retrofit.create(UserService::class.java)
+                    //val call: Call<User> = retrofitService.putUser(userid, myadd)
+
+
+
                 }
 
             }}
-        AndPermission.with(this)
-            .runtime()
-            .permission(Permission.Group.LOCATION)
-            .onGranted {permissions ->
-                Log.d("Main", "허용된 권한 갯수 : ${permissions.size}")
-            }
-            .onDenied {permissions ->
-                Log.d("main", "거부된 권한 갯수 : ${permissions.size}")
-            }
-            .start()
+        /*
+            AndPermission.with(this)
+                .runtime()
+                .permission(Permission.Group.LOCATION)
+                .onGranted { permissions ->
+                    Log.d("Main", "허용된 권한 갯수 : ${permissions.size}")
+                }
+                .onDenied { permissions ->
+                    Log.d("main", "거부된 권한 갯수 : ${permissions.size}")
+                }
+                .start()
 
+
+         */
 
     }
 
@@ -157,3 +172,5 @@ class setLocation : Fragment() {
             }
     }
 }
+
+ */

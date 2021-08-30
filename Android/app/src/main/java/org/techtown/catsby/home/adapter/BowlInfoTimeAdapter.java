@@ -13,12 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 import org.techtown.catsby.R;
 import org.techtown.catsby.home.model.BowlInfoTimeItem;
+import org.techtown.catsby.notification.data.model.Notification;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BowlInfoTimeAdapter extends RecyclerView.Adapter<BowlInfoTimeAdapter.ViewHolder> {
 
-    private ArrayList<BowlInfoTimeItem> itemData = null;
+    private ArrayList<BowlInfoTimeItem> itemData = new ArrayList<>();
 
     public BowlInfoTimeAdapter(ArrayList<BowlInfoTimeItem> itemData) {
         this.itemData = itemData;
@@ -60,6 +62,15 @@ public class BowlInfoTimeAdapter extends RecyclerView.Adapter<BowlInfoTimeAdapte
 
             bowlTime = itemView.findViewById(R.id.bowl_time_text);
         }
+    }
+
+    public void updateNotifications() {
+        itemData.add(new BowlInfoTimeItem("1일전"));
+        itemData.add(new BowlInfoTimeItem("2일전"));
+        itemData.add(new BowlInfoTimeItem("3일전"));
+        itemData.add(new BowlInfoTimeItem("4일전"));
+
+        notifyDataSetChanged();
     }
 
 }

@@ -10,6 +10,7 @@ import org.techtown.catsby.notification.data.service.NotificationService;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
 import org.techtown.catsby.retrofit.service.BowlService;
 import org.techtown.catsby.retrofit.service.UserService;
+import org.techtown.catsby.setting.FragmentsetMyLoc;
 import org.techtown.catsby.setting.data.service.MyWritingService;
 import org.techtown.catsby.community.data.service.TownCommentService;
 import org.techtown.catsby.community.data.service.TownCommunityService;
