@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentTransaction
 import kotlinx.android.synthetic.main.fragment_account.*
 import org.techtown.catsby.R
-import org.techtown.catsby.setting.setLocation
+import org.techtown.catsby.setting.FragmentsetMyLoc
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -45,13 +45,13 @@ class account : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         accountTownManage.setOnClickListener {
             //setFrag(2)
-            replaceFragment(setLocation())
+            replaceFragment(FragmentsetMyLoc())
             //inflater.inflate(R.layout.fragment_writing_list, container, false)
         }
     }
 
     private fun replaceFragment(fragment: Fragment){
-        val fragmentTransaction: FragmentTransaction = fragmentManager!!.beginTransaction()
+        val fragmentTransaction: FragmentTransaction = requireFragmentManager().beginTransaction()
         fragmentTransaction.replace(R.id.frameLayout, fragment)
         fragmentTransaction.commit()
     }

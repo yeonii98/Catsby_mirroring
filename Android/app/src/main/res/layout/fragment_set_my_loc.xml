@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation= "vertical"
+    tools:context=".setting.FragmentsetMyLoc">
+
+    <include
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/tvmyloc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="주소를 등록해주세요"
+        android:layout_marginTop="40dp"
+        android:textSize="20dp"
+        android:layout_gravity="center" />
+
+    <Button
+        android:id="@+id/btnfindloc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+        android:backgroundTint="#FFACDBE8"
+        android:text="우리 동네 찾기" />
+
+    <Button
+        android:id="@+id/btnsetloc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+        android:backgroundTint="#FFACDBE8"
+        android:visibility="gone"
+        android:text="이 위치로 동네 설정하기" />
+
+
+
+</LinearLayout>
