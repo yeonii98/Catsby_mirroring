@@ -2,11 +2,9 @@ package org.techtown.catsby.home;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
 import android.app.FragmentManager;
 import android.content.Intent;
@@ -23,12 +21,10 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
 import org.techtown.catsby.R;
 import org.techtown.catsby.home.adapter.BowlInfoTimeAdapter;
-//import org.techtown.catsby.home.adapter.BowlViewPagerAdapter;
 import org.techtown.catsby.notification.data.service.NotificationService;
 import org.techtown.catsby.retrofit.ApiResponse;
 import org.techtown.catsby.retrofit.RetrofitClient;
