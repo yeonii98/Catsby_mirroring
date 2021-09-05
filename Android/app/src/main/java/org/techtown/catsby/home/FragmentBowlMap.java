@@ -1,12 +1,7 @@
 package org.techtown.catsby.home;
 
-import android.app.FragmentManager;
 import android.content.Context;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +12,9 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -29,9 +22,6 @@ import org.techtown.catsby.R;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.BowlLocation;
 import org.techtown.catsby.retrofit.service.BowlService;
-
-import java.io.IOException;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,11 +51,10 @@ public class FragmentBowlMap extends Fragment implements OnMapReadyCallback {
         mapView.onResume();
         mapView.getMapAsync(this);
 
-//        Bundle bundle = getArguments();
-//        String name = bundle.getString("name");
-//        Log.e("FragmentBowlMap", "name : " + name);
-        id = 2L;  //////
-//        name = "sss";
+        Bundle bundle = getArguments();
+        id = bundle.getLong("bowlId");
+        name = bundle.getString("name");
+
         bowlService = RetrofitClient.getBowlService();
 
         return view;
@@ -87,7 +76,6 @@ public class FragmentBowlMap extends Fragment implements OnMapReadyCallback {
                     mgoogleMap.addMarker(marker);
 
                     mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, 16));
-
                 }
             }
 

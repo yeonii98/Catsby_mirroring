@@ -1,10 +1,10 @@
 package org.techtown.catsby.home.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,18 +12,29 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 import org.techtown.catsby.R;
-import org.techtown.catsby.home.model.BowlInfoTimeItem;
+import org.techtown.catsby.retrofit.dto.BowlFeed;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BowlInfoTimeAdapter extends RecyclerView.Adapter<BowlInfoTimeAdapter.ViewHolder> {
 
-    private ArrayList<BowlInfoTimeItem> itemData = null;
+    private List<BowlFeed> itemData;
 
-    public BowlInfoTimeAdapter(ArrayList<BowlInfoTimeItem> itemData) {
+    public BowlInfoTimeAdapter(List<BowlFeed> itemData) {
         this.itemData = itemData;
     }
 
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView formatTime, time;
+
+        ViewHolder(View itemView) {
+            super(itemView); // 뷰 객체에 대한 참조
+
+            formatTime = itemView.findViewById(R.id.txt_bowl_formatTime);
+            time = itemView.findViewById(R.id.txt_bowl_time);
+        }
+    }
     @NonNull
     @NotNull
     @Override
@@ -40,11 +51,9 @@ public class BowlInfoTimeAdapter extends RecyclerView.Adapter<BowlInfoTimeAdapte
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull BowlInfoTimeAdapter.ViewHolder holder, int position) {
-        BowlInfoTimeItem item = itemData.get(position);
-
-        System.out.println("item = !!!!!!!!!!!!!" + item.getTimeItem());
-
-        holder.bowlTime.setText(item.getTimeItem());
+        BowlFeed item = itemData.get(position);
+        holder.formatTime.setText(item.getFormatTime());
+        holder.time.setText(item.getTime());
     }
 
     @Override
@@ -52,14 +61,8 @@ public class BowlInfoTimeAdapter extends RecyclerView.Adapter<BowlInfoTimeAdapte
         return itemData.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView bowlTime;
-
-        ViewHolder(View itemView) {
-            super(itemView); // 뷰 객체에 대한 참조
-
-            bowlTime = itemView.findViewById(R.id.bowl_time_text);
-        }
+    public void loadBowlFeedTime(List<BowlFeed> bowlFeeds) {
+        itemData = bowlFeeds;
+        notifyDataSetChanged();
     }
-
 }

@@ -1,6 +1,8 @@
 package com.hanium.catsby.bowl.controller;
 
 import com.hanium.catsby.bowl.domain.Bowl;
+import com.hanium.catsby.bowl.domain.BowlFeed;
+import com.hanium.catsby.bowl.domain.dto.BowlFeedDto;
 import com.hanium.catsby.bowl.service.BowlService;
 import com.hanium.catsby.notification.exception.DuplicateBowlInfoException;
 import lombok.AllArgsConstructor;
@@ -102,7 +104,11 @@ public class BowlController {
     public ResponseEntity<BowlLocationResponse> bowlLocation(@PathVariable("bowlId") Long id) {
         Bowl bowl = bowlService.findOne(id);
         return ResponseEntity.ok(new BowlLocationResponse(bowl));
+    }
 
+    @GetMapping("/bowl/feed/{bowlId}")
+    public ResponseEntity<BowlResult> bowlFeed(@PathVariable("bowlId") Long id) {
+        return ResponseEntity.ok(new BowlResult<List<BowlFeedDto>>(bowlService.findBowlFeed(id)));
     }
 
     @Data

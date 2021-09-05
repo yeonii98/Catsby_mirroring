@@ -1,6 +1,7 @@
-package com.hanium.catsby.notification.domain;
+package com.hanium.catsby.notification.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.hanium.catsby.notification.domain.Notification;
 import com.hanium.catsby.util.NotificationUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;

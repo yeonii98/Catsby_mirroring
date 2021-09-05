@@ -14,7 +14,7 @@ import retrofit2.http.Query;
 public interface NotificationService {
 
     @GET("/notification/send/{bowlId}/{uid}")
-    Call<ApiResponse> sendNotification(@Path("bowlId") Long bowlId, @Path("userId") String uid);
+    Call<ApiResponse> sendNotification(@Path("bowlId") Long bowlId, @Path("uid") String uid);
 
     @GET("/notification/{uid}")
     Call<NotificationList> getNotifications(@Path("uid") String uid, @Query("page") int page);

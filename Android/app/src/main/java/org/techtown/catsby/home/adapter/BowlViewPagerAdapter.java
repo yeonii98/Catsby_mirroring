@@ -9,23 +9,22 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import org.techtown.catsby.home.FragmentBowlInfo;
 import org.techtown.catsby.home.FragmentBowlMap;
 
+import java.util.ArrayList;
+
 public class BowlViewPagerAdapter extends FragmentPagerAdapter {
+    ArrayList<Fragment> fragment = new ArrayList<>();
+
     public BowlViewPagerAdapter(@NonNull FragmentManager fm) {
         super(fm);
+        fragment.add(new FragmentBowlMap());
+        fragment.add(new FragmentBowlInfo());
     }
 
     //프래그먼트 교체를 보여주는 처리를 구현한 곳
     @NonNull
     @Override
     public Fragment getItem(int position) {
-        switch (position) {
-            case 0:
-                return FragmentBowlMap.newInstance();
-            case 1:
-                return FragmentBowlInfo.newInstance();
-            default:
-                return null;
-        }
+        return fragment.get(position);
     }
 
     @Override
