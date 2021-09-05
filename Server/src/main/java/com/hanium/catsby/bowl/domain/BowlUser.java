@@ -3,12 +3,14 @@ package com.hanium.catsby.bowl.domain;
 import com.hanium.catsby.util.BaseTimeEntity;
 import com.hanium.catsby.user.domain.Users;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @Table(name = "Bowl_User")
+@NoArgsConstructor
 public
 class BowlUser extends BaseTimeEntity {
 

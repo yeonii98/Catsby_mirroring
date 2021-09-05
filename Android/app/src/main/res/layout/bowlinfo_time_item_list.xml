@@ -1,16 +1,26 @@
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="40dp">
+    android:layout_height="40dp"
+    android:orientation="horizontal">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="text"
-        android:textSize="20dp"
+        android:textSize="12dp"
         android:layout_marginLeft="7dp"
-        android:gravity="center_vertical"
-        android:id="@+id/bowl_time_text"/>
+        android:id="@+id/txt_bowl_formatTime"/>
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/txt_bowl_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="20dp"
+        android:text="text"
+        android:textSize="8dp" />
+
+</LinearLayout>
 
