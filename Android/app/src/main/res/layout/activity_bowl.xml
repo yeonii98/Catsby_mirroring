@@ -1,51 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab_layout"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/const_vp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:id="@+id/bowl_map"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_weight="1">
+
+            <fragment
+                android:id="@+id/googleMap"
+                class="com.google.android.gms.maps.MapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="지도" />
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
 
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_gravity="center"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginRight="30px"
+                android:src="@drawable/catsby_logo_black"/>
+
+            <Button
+                android:id="@+id/btn_completed_feed"
+                android:layout_marginLeft="30px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#ACDBE8"
+                android:text="급여완료" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/bowl_information"
-            android:text="밥그릇 정보" />
+            android:orientation="vertical"
+            android:gravity="center">
 
-    </com.google.android.material.tabs.TabLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/const_vp"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tab_layout">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20px"
+                    android:text="밥그릇명 : "
+                    android:textSize="20dp"/>
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewPager"
+                <TextView
+                    android:id="@+id/txt_bowl_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="밥그릇 이름"
+                    android:textSize="18dp" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10px"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20px"
+                    android:text="밥그릇 위치 : "
+                    android:textSize="15dp"/>
+                <TextView
+                    android:id="@+id/txt_bowl_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="밥그릇 장소"
+                    android:textSize="13dp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_marginTop="50px"
+            android:layout_marginLeft="200px"
+            android:layout_marginRight="200px"
+            android:id="@+id/bowlinfo_time_recycler_view" />
+
+    </LinearLayout>
+</ScrollView>
