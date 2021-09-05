@@ -59,6 +59,8 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".home.BowlActivity" />
+        <activity android:name=".home.BowlInfoAndMapActivity" />
+
         <activity android:name=".qrcode.LoadingActivity" />
         <activity android:name=".qrcode.ScannerActivity" />
         <activity android:name=".notification.NotificationActivity" />
