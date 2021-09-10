@@ -113,13 +113,16 @@ public class Writemain extends AppCompatActivity{
         });
 
         findViewById(R.id.btnCamera).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
-                if(isPermission)  takePhoto();
-                else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
-            }
-        });
+                                                            @Override
+                                                            public void onClick(View v) {
+                                                                switch (v.getId()) {
+                                                                    case R.id.btnCamera:
+                                                                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                                                                        startActivityForResult(cameraIntent, PICK_FROM_CAMERA);
+                                                                        break;
+                                                                }
+                                                            }
+                                                        });
 
         Button postButton = (Button) findViewById(R.id.btn_signupfinish) ;
         postButton.setOnClickListener(new Button.OnClickListener() {
