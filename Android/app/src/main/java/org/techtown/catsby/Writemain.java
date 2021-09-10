@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.gun0912.tedpermission.PermissionListener;
@@ -113,16 +114,16 @@ public class Writemain extends AppCompatActivity{
         });
 
         findViewById(R.id.btnCamera).setOnClickListener(new View.OnClickListener() {
-                                                            @Override
-                                                            public void onClick(View v) {
-                                                                switch (v.getId()) {
-                                                                    case R.id.btnCamera:
-                                                                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                                                                        startActivityForResult(cameraIntent, PICK_FROM_CAMERA);
-                                                                        break;
-                                                                }
-                                                            }
-                                                        });
+            @Override
+            public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.btnCamera:
+                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(cameraIntent, PICK_FROM_CAMERA);
+                        break;
+                }
+            }
+        });
 
         Button postButton = (Button) findViewById(R.id.btn_signupfinish) ;
         postButton.setOnClickListener(new Button.OnClickListener() {
@@ -212,6 +213,7 @@ public class Writemain extends AppCompatActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         if (resultCode != Activity.RESULT_OK) {
             Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
 
@@ -290,7 +292,6 @@ public class Writemain extends AppCompatActivity{
             e.printStackTrace();
         }
         if (tempFile != null) {
-
             Uri photoUri = Uri.fromFile(tempFile);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
             startActivityForResult(intent, PICK_FROM_CAMERA);
@@ -323,6 +324,7 @@ public class Writemain extends AppCompatActivity{
     private void setImage() {
 
         ImageView imageView = findViewById(R.id.imageView);
+        Glide.with(this).load(photoUri).into(imageView);
         BitmapFactory.Options options = new BitmapFactory.Options();
         Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
         Log.d(TAG, "setImage : " + tempFile.getAbsolutePath());
@@ -375,12 +377,3 @@ public class Writemain extends AppCompatActivity{
         return super.onOptionsItemSelected(item);
     }
 }
-
-
-
-
-
-
-
-
-
