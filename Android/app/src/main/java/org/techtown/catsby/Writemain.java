@@ -3,14 +3,17 @@ package org.techtown.catsby;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -56,14 +59,18 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class Writemain extends AppCompatActivity{
-    ListView listview ;
-
 
     private static final String TAG = "blackjin";
+
+    ListView listview ;
+    Button btn_photo;
+    ImageView iv_photo;
+
     private Boolean isPermission = true;
 
-    private static final int PICK_FROM_ALBUM = 1;
-    private static final int PICK_FROM_CAMERA = 2;
+    final static int PICK_FROM_ALBUM= 1;
+    String mCurrentPhotoPath;
+    final static int PICK_FROM_CAMERA= 1;
 
     BowlService bowlService = RetrofitClient.getBowlService();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -104,36 +111,35 @@ public class Writemain extends AppCompatActivity{
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         tedPermission();
 
-        findViewById(R.id.btnGallery).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
-                if(isPermission) goToAlbum();
-                else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+        //카메라 시작
+
+        iv_photo = findViewById(R.id.iv_photo);
+        btn_photo = findViewById(R.id.btn_photo);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if(checkSelfPermission(Manifest.permission.CAMERA) ==
+                    PackageManager.PERMISSION_GRANTED &&
+                    checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                            PackageManager.PERMISSION_GRANTED) {
+                Log.d(TAG, "권한 설정 완료");
+            }
+            else
+                { Log.d(TAG, "권한 설정 요청");
+                ActivityCompat.requestPermissions(Writemain.this, new String[]
+                        {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                }
+        }
+        btn_photo.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View v) {
+                switch (v.getId()) {
+                    case R.id.btn_photo:
+                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(cameraIntent, PICK_FROM_CAMERA); break;
+                }
             }
         });
-
-        findViewById(R.id.btnCamera).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
-                if(isPermission)  takePhoto();
-                else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
-            }
-        });
-
-        Button postButton = (Button) findViewById(R.id.btn_signupfinish) ;
-        postButton.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EditText postContext = (EditText)findViewById(R.id.context);
-                allContext = (String) postContext.getText().toString();
-                savePost(image, bowlList.get(cPosition).getId(), user.getUid(), allContext);
-                postContext.setText("게시글 저장 완료");
-            }
-        });
-
     }
+
 
     private void savePost(File file, int id, String uid, String context) {
 
@@ -210,19 +216,15 @@ public class Writemain extends AppCompatActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode != Activity.RESULT_OK) {
-            Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
-
-            if (tempFile != null) {
-                if (tempFile.exists()) {
-                    if (tempFile.delete()) {
-                        Log.e(TAG, tempFile.getAbsolutePath() + " 삭제 성공");
-                        tempFile = null;
+        switch (requestCode) {
+            case PICK_FROM_CAMERA:
+                if (resultCode == RESULT_OK && data.hasExtra("data")) {
+                    Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                    if (bitmap != null) {
+                        iv_photo.setImageBitmap(bitmap);
                     }
                 }
-            }
-
-            return;
+                break;
         }
 
         if (requestCode == PICK_FROM_ALBUM) {
@@ -231,7 +233,6 @@ public class Writemain extends AppCompatActivity{
 
             Cursor cursor = null;
             try {
-
                 String[] proj = {MediaStore.Images.Media.DATA};
                 assert photoUri != null;
                 cursor = getContentResolver().query(photoUri, proj, null, null, null);
@@ -250,13 +251,10 @@ public class Writemain extends AppCompatActivity{
                     cursor.close();
                 }
             }
-
             setImage();
 
         } else if (requestCode == PICK_FROM_CAMERA) {
-
             setImage();
-
         }
     }
 
