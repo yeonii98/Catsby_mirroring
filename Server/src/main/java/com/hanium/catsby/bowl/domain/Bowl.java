@@ -20,9 +20,7 @@ public class Bowl extends BaseTimeEntity {
     @Column(unique = true)
     private String info;
     private String name;
-
-    private String address;  // 삭제
-
+    private String address;
     private Double latitude;
     private Double longitude;
 
