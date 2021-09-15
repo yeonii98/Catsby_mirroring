@@ -110,7 +110,6 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginLeft="7dp"
-
             android:src="@drawable/ic_baseline_chat_bubble_24" />
 
         <ImageView
@@ -120,13 +119,13 @@
             android:src="@drawable/ic_baseline_favorite_border_24"
             android:id="@+id/likeButton"/>
 
-        <TextView
-            android:id="@+id/like_people"
-            android:layout_width="128dp"
-            android:layout_height="33dp"
-            android:text="좋아요를 눌러주세요"
-            android:textAlignment="textStart"
-            android:textSize="10sp" />
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="7.5dp"
+            android:src="@drawable/ic_baseline_favorite_red"
+            android:id="@+id/likeFull"
+            android:visibility="gone"/>
 
     </LinearLayout>
 
