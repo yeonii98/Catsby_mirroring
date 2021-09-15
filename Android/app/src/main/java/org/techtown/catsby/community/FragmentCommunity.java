@@ -402,7 +402,7 @@ public class FragmentCommunity extends Fragment {
             itemViewHolder.mainchatbubble.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), MaincommentActivity.class);
+                    Intent intent = new Intent(getActivity(), BowlCommentActivity.class);
                     intent.putExtra("id",listdata.get(position).getId());
                     System.out.println(listdata.get(position).getId());
                     startActivity(intent);

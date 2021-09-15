@@ -20,11 +20,13 @@ import org.techtown.catsby.retrofit.dto.BowlComment;
 import org.techtown.catsby.retrofit.dto.BowlCommentPost;
 import org.techtown.catsby.retrofit.dto.BowlCommentUsingComment;
 import org.techtown.catsby.retrofit.dto.BowlCommunityUpdatePost;
+import org.techtown.catsby.retrofit.dto.BowlLike;
 import org.techtown.catsby.retrofit.dto.User;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
 import org.techtown.catsby.retrofit.service.UserService;
-import org.techtown.catsby.setting.MaincommentActivity;
+import org.techtown.catsby.home.BowlCommentActivity;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +42,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
-
     private ArrayList<Feed> itemData;
     BowlCommunityService bowlCommunityService = RetrofitClient.getBowlCommunityService();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -51,12 +52,13 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     EditText commentEditText;
     ImageView feedCommentButton;
     Button deleteButton ;
-    Button putButton ;
+    Button putButton;
     Button putFinishButton;
-    EditText putText;
     TextView textView;
     Context context;
     boolean[] bool;
+    ArrayList<Integer> likeCommunity;
+    ArrayList<Integer> likeId;
 
     public FeedAdapter(ArrayList<Feed> itemData) {
         this.itemData = itemData;
@@ -66,6 +68,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         bool = new boolean[itemData.size()];
     }
 
@@ -81,10 +84,12 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         private TextView textView1 = (TextView)itemView.findViewById(R.id.feed_content );
         private Button putFinishButton1 = (Button)itemView.findViewById(R.id.putFinishButton);
 
+        private ImageView likeButton= (ImageView)itemView.findViewById(R.id.likeButton);
+        private ImageView likeFullButton= (ImageView)itemView.findViewById(R.id.likeFull);
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
             context = view.getContext();
             bowlImg = itemView.findViewById(R.id.feed_bowlImg);
             userName = itemView.findViewById(R.id.feed_username);
@@ -96,12 +101,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             deleteButton = (Button)itemView.findViewById(R.id.deleteButton);
             putButton = (Button)itemView.findViewById(R.id.putButton);
             putFinishButton = (Button)itemView.findViewById(R.id.putFinishButton);
-            textView = (TextView)itemView.findViewById(R.id.feed_content );
+            textView = (TextView)itemView.findViewById(R.id.feed_content);
 
             itemView.findViewById(R.id.putButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     if (bool[getAdapterPosition()]) {
                         int pos = getAdapterPosition();
                         if (pos != RecyclerView.NO_POSITION) {
@@ -115,13 +119,39 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 }
             });
 
+
+            itemView.findViewById(R.id.likeButton).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    postLike(user.getUid(), itemData.get(getAdapterPosition()).getId());
+                    ViewHolder.this.likeButton.setVisibility(View.GONE);
+                    ViewHolder.this.likeFullButton.setVisibility(View.VISIBLE);
+
+                    loadLikes();
+                    //FeedAdapter adapter = new FeedAdapter(itemData);
+                    //adapter.notifyItemRemoved(getAdapterPosition());
+                    //adapter.notifyItemRemoved(view.getVerticalScrollbarPosition());
+                    //notifyDataSetChanged();
+                }
+            });
+
+            itemView.findViewById(R.id.likeFull).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ViewHolder.this.likeButton.setVisibility(View.VISIBLE);
+                    ViewHolder.this.likeFullButton.setVisibility(View.GONE);
+                    int idx = likeCommunity.indexOf(likeCommunity.get(ViewHolder.this.getAdapterPosition()));
+                    int id = likeId.get(idx);
+                    deleteLike(getAdapterPosition(), id, likeCommunity.get(ViewHolder.this.getAdapterPosition()));
+                }
+            });
+
             itemView.findViewById(R.id.deleteButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     deleteGetUser(getAdapterPosition(), itemData.get(getAdapterPosition()).getUserId(), user.getUid());
                 }
             });
-
 
             itemView.findViewById(R.id.putFinishButton).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -145,19 +175,18 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     loadComments(itemData.get(getAdapterPosition()).getId(), getAdapterPosition());
-
                 }
             });
 
             for (int i =0; i < itemData.size(); i ++) {
                 UserService userService = RetrofitClient.getUser();
-                Call<User> call = userService.getUser(user.getUid());
+                Call<User> callUser = userService.getUser(user.getUid());
                 int finalI = i;
-                Thread thread = new Thread(new Runnable() {
+                Thread userThread = new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            User result = call.execute().body();
+                            User result = callUser.execute().body();
                             assert result != null;
                             if (bool[finalI] == false){
                                 if (result.getId() == itemData.get(finalI).getUserId()){
@@ -171,8 +200,16 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                         }
                     }
                 });
-                thread.start();
+                userThread.start();
             }
+
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            loadLikes();
         }
     }
 
@@ -196,10 +233,28 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         holder.feedImg.setImageBitmap(bmp);
         holder.content.setText(item.getContent());
 
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        if (likeCommunity.contains(itemData.get(position).getId())){
+            holder.likeButton.setVisibility(View.GONE);
+            holder.likeFullButton.setVisibility(View.VISIBLE);
+        }
+        else{
+            holder.likeButton.setVisibility(View.VISIBLE);
+            holder.likeFullButton.setVisibility(View.GONE);
+        }
 
         if (bool[position]) {
             holder.putButton1.setVisibility(View.VISIBLE);
             holder.deleteButton1.setVisibility(View.VISIBLE);
+        }
+        else{
+            holder.putButton1.setVisibility(View.GONE);
+            holder.deleteButton1.setVisibility(View.GONE);
         }
 
         postButton.setOnClickListener(new Button.OnClickListener(){
@@ -224,11 +279,47 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 System.out.println("t.getMessage() = " + t.getMessage());
             }
         });
-
     }
 
-    private void deleteCommunity(int position, int dId){
-        bowlCommunityService.deleteCommunity(dId).enqueue(new Callback<Void>() {
+    private void loadLikes(){
+        Call<List<BowlLike>> callLike= bowlCommunityService.getLikes(user.getUid());
+        likeCommunity = new ArrayList<>();
+        likeId= new ArrayList<>();
+        Thread likeThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    List<BowlLike> bowlResult = callLike.execute().body();
+                    assert bowlResult != null;
+                    for (BowlLike bowlLike : bowlResult) {
+                        likeCommunity.add(bowlLike.getBowlCommunity().getId());
+                        likeId.add(bowlLike.getId());
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        likeThread.start();
+    }
+
+    private void deleteLike(int position, int deleteLikeId, int communityId){
+        bowlCommunityService.deleteLike(deleteLikeId).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                likeId.remove(likeId.indexOf(deleteLikeId));
+                likeCommunity.remove(likeCommunity.indexOf(communityId));
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void deleteCommunity(int position, int deleteId){
+        bowlCommunityService.deleteCommunity(deleteId).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 itemData.remove(itemData.get(position));
@@ -267,6 +358,20 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         });
     }
 
+    private void postLike(String uid, int communityId){
+        bowlCommunityService.saveLike(uid, communityId).enqueue(new Callback<List<BowlLike>>() {
+            @Override
+            public void onResponse(Call<List<BowlLike>> call, Response<List<BowlLike>> response) {
+                System.out.println("save success");
+            }
+
+            @Override
+            public void onFailure(Call<List<BowlLike>> call, Throwable t) {
+                System.out.println("t.getMessage() = " + t.getMessage());
+            }
+        });
+    }
+
     private void postComment(String uid, int id, String context) {
         BowlCommentPost bowlCommentPost = new BowlCommentPost(uid, id, context);
         bowlCommunityService.saveComment(uid, id, bowlCommentPost).enqueue(new Callback<List<BowlComment>>() {
@@ -291,7 +396,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                     List<BowlComment> bowlComments = response.body();
 
                     Context context = view.getContext();
-                    Intent intent = new Intent(context, MaincommentActivity.class);
+                    Intent intent = new Intent(context, BowlCommentActivity.class);
 
                     List<BowlComment> tempComment = bowlComments;
                     List<BowlCommentUsingComment> parameterBowlCommentList= new ArrayList<>();
@@ -301,8 +406,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                     }
                     intent.putExtra("comment", (Serializable) parameterBowlCommentList);
                     context.startActivity(intent);
+                }
             }
-        }
 
             @Override
             public void onFailure(Call<List<BowlComment>> call, Throwable t) {
@@ -310,7 +415,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
 
             }
         });
-        }
+    }
 
     @Override
     public int getItemCount() {
