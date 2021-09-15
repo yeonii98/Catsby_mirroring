@@ -37,10 +37,4 @@ public class BowlCommunity extends BaseTimeEntity {
     @JoinColumn(name = "bowl_id")
     private Bowl bowl;
 
-    /*
-    @JsonIgnore
-    @OneToOne(mappedBy = "bowlCommunity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private BowlLike bowlLike;*/
-
-
 }
