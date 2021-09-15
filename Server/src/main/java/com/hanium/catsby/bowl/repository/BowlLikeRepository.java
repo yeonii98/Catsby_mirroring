@@ -17,13 +17,16 @@ public class BowlLikeRepository {
         em.persist(bowlLike);
     }
 
-    public List<BowlLike> findAllBowlLike() {
-        return em.createQuery("select bl from BowlLike bl", BowlLike.class).getResultList();
-    }
-
     public void deleteById(Long id) {
         BowlLike bowlLike = findBowlLike(id);
         em.remove(bowlLike);
+    }
+
+    public List<BowlLike> findLikeByUserId(Long userId){
+        return em.createQuery("select bl from BowlLike bl" +
+                " where bl.user.id = :userId", BowlLike.class)
+                .setParameter("userId", userId)
+                .getResultList();
     }
 
     public BowlLike findBowlLike(Long id) {
