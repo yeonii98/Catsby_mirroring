@@ -5,19 +5,20 @@ import com.hanium.catsby.cat.mapper.CatProfileMapper;
 
 
 import com.hanium.catsby.cat.model.CatProfile;
+import com.hanium.catsby.user.domain.Users;
+import com.hanium.catsby.user.repository.UserRepository;
 import com.hanium.catsby.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class CatProfileController {
 
-    private CatProfileMapper mapper;
-
-    public CatProfileController(UserService userService, CatProfileMapper mapper) {
-        this.mapper = mapper;
-    }
+    private final CatProfileMapper mapper;
+    private final UserRepository userRepository;
 
     //고양이 목록
     @GetMapping("/cat")
@@ -43,8 +44,10 @@ public class CatProfileController {
             @RequestParam(value = "content", required = false) String content,
             @RequestParam(value = "spayed", required = false) int spayed)
     {
-        CatProfile catProfile = new CatProfile(uid, name, health, address, gender, image, content, spayed);
-        mapper.insertCatProfile(uid, name,health,address,gender,image,content,spayed);
+        Users user = userRepository.findUserByUid(uid);
+
+        CatProfile catProfile = new CatProfile(user.getId(), name, health, address, gender, image, content, spayed);
+        mapper.insertCatProfile(user.getId(), name,health,address,gender,image,content,spayed);
 
     }
 

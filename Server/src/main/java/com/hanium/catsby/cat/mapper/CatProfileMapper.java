@@ -23,9 +23,9 @@ public interface CatProfileMapper {
     CatProfile getCatProfile(@Param("cat_id") int cat_id);
 
     //고양이 등록
-    @Insert("INSERT INTO Cat(uid, name, health, address, gender, image, content, spayed) VALUES (#{name}, #{health}, #{address}, #{gender}, #{image}, #{content}, #{spayed})")
+    @Insert("INSERT INTO Cat(user_id, name, health, address, gender, image, content, spayed) VALUES (#{userId}, #{name}, #{health}, #{address}, #{gender}, #{image}, #{content}, #{spayed})")
     //@Options(useGeneratedKeys = true, keyProperty = "cat_id")
-    int insertCatProfile(@Param ("uid") String uid, @Param("name") String name,
+    int insertCatProfile(@Param ("userId") long userId, @Param("name") String name,
                          @Param("health") String health, @Param("address") String address,
                          @Param("gender") int gender, @Param("image") String image,
                          @Param("content") String content, @Param("spayed") int spayed);
