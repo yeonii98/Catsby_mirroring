@@ -10,11 +10,8 @@ import android.widget.TextView;
 import org.techtown.catsby.R;
 import org.techtown.catsby.home.BowlActivity;
 import org.techtown.catsby.home.model.Bowl;
-import org.techtown.catsby.retrofit.dto.BowlDto;
-
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -77,10 +74,10 @@ public class BowlAdapter extends RecyclerView.Adapter<BowlAdapter.ViewHolder> {
                     }
 
                     Bowl item = itemData.get(idx);
+                    intent.putExtra("id", item.getId());
                     intent.putExtra("name", item.getName());
                     intent.putExtra("address", item.getAddress());
                     intent.putExtra("info", item.getInfo());
-                    intent.putExtra("time", item.getLocalDateTime());
 
                     v.getContext().startActivity(intent);
                 }

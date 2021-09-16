@@ -162,7 +162,7 @@ public class LoadingActivity extends AppCompatActivity {
             latitude = locationResult.getLastLocation().getLatitude();
             fusedLocationProviderClient.removeLocationUpdates(locationCallback);
 
-            Intent intent = new Intent(LoadingActivity.this, QrcodeActivity.class);
+            Intent intent = new Intent(LoadingActivity.this, ScannerActivity.class);
             intent.putExtra("latitude", latitude);
             intent.putExtra("longitude", longitude);
             startActivity(intent);

@@ -2,17 +2,37 @@ package org.techtown.catsby.qrcode.data.model;
 
 public class BowlUserRequest {
 
-    private String uid;
+    private String bowlInfo;
+    private double latitude;
+    private double longitude;
 
-    public BowlUserRequest(String uid) {
-        this.uid = uid;
+    public BowlUserRequest(String bowlInfo, double latitude, double longitude) {
+        this.bowlInfo = bowlInfo;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
-    public String getUid() {
-        return uid;
+    public String getBowlInfo() {
+        return bowlInfo;
     }
 
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setBowlInfo(String bowlInfo) {
+        this.bowlInfo = bowlInfo;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }

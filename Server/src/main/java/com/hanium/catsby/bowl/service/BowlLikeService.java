@@ -22,7 +22,6 @@ public class BowlLikeService {
 
     @Transactional
     public Long saveBowlLike(BowlLike bowlLike, Long userId, Long communityId){
-
         BowlCommunity bowlCommunity = bowlCommunityRepository.findBowlCommunity(communityId);
         Users users = userRepository.findUser(userId);
         bowlLike.setUser(users);
@@ -32,8 +31,8 @@ public class BowlLikeService {
     }
 
     @Transactional(readOnly = true)
-    public List<BowlLike> findLikes() {
-        return bowlLikeRepository.findAllBowlLike();
+    public List<BowlLike> findLikes(Long userId){
+        return bowlLikeRepository.findLikeByUserId(userId);
     }
 
 

@@ -1,8 +1,16 @@
 package org.techtown.catsby.qrcode;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
@@ -26,9 +34,12 @@ import org.techtown.catsby.qrcode.data.service.QRBowlService;
 import org.techtown.catsby.R;
 import org.techtown.catsby.retrofit.RetrofitClient;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,12 +55,13 @@ import retrofit2.Response;
 
 public class QrcodeCreateActivity extends AppCompatActivity {
 
+    private static final String TAG = "CameraActivity";
     // variables for imageview, edittext,
     // button, bitmap and qrencoder.
     private ImageView qrCodeIV;
     private EditText dataEdt;
     private EditText dataEdt2;
-    private Button generateQrBtn;
+    private Button generateQrBtn, saveQrBtn;
     Bitmap bitmap;
     QRGEncoder qrgEncoder;
     String qrInfo, bowlInfo, bowlName, bowlAddress;
@@ -73,6 +85,7 @@ public class QrcodeCreateActivity extends AppCompatActivity {
         dataEdt = (EditText)findViewById(R.id.idEdt);
         dataEdt2 = (EditText)findViewById(R.id.addEdt);
         generateQrBtn = (Button)findViewById(R.id.idBtnGenerateQR);
+        saveQrBtn = (Button)findViewById(R.id.idBtnSaveQR);
 
         // initializing onclick listener for button.
         generateQrBtn.setOnClickListener(new View.OnClickListener() {
@@ -127,6 +140,77 @@ public class QrcodeCreateActivity extends AppCompatActivity {
                 }
             }
         });
+        saveQrBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try{
+                    BitmapDrawable drawable = (BitmapDrawable) qrCodeIV.getDrawable();
+                    Bitmap bitmap = drawable.getBitmap();
+                    if(bitmap == null){
+                        Toast.makeText(getApplicationContext(),"먼저 qr코드를 생성해주세요", Toast.LENGTH_SHORT).show();
+                    }else{
+                        saveImg(bitmap);
+                    }
+                }catch (Exception e){
+                    Log.w(TAG,"SAVE ERROR!",e);
+                    Toast.makeText(getApplicationContext(),"먼저 qr코드를 생성해주세요", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+    }
+    private void saveImg(Bitmap bitmap){
+        ContentValues values = new ContentValues();
+        String fileName =  "catsby"+System.currentTimeMillis()+".png";
+        values.put(MediaStore.Images.Media.DISPLAY_NAME,fileName);
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/*");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            values.put(MediaStore.Images.Media.IS_PENDING, 1);
+        }
+
+        ContentResolver contentResolver = getContentResolver();
+        Uri item = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+        try {
+            ParcelFileDescriptor pdf = contentResolver.openFileDescriptor(item, "w", null);
+            if (pdf == null) {
+                Log.d("Catsby", "null");
+            } else {
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+
+                byte[] inputData = stream.toByteArray();
+                FileOutputStream fos = new FileOutputStream(pdf.getFileDescriptor());
+                fos.write(inputData);
+                fos.close();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    values.clear();
+                    values.put(MediaStore.Images.Media.IS_PENDING, 0);
+                    contentResolver.update(item, values, null, null);
+                }
+
+                // 갱신
+                galleryAddPic(fileName);
+                Toast.makeText(getApplicationContext(),"갤러리에 qr코드가 저장되었습니다.", Toast.LENGTH_SHORT).show();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            Log.d("Catsby", "FileNotFoundException  : "+e.getLocalizedMessage());
+        } catch (Exception e) {
+            Log.d("Catsby", "FileOutputStream = : " + e.getMessage());
+        }
+    }
+
+    private void galleryAddPic(String Image_Path) {
+
+        Log.d("Catsby","갱신 : "+Image_Path);
+
+
+        File file = new File(Image_Path);
+        MediaScannerConnection.scanFile(getApplicationContext(),
+                new String[]{file.toString()},
+                null, null);
     }
 
     @Override
@@ -148,14 +232,14 @@ public class QrcodeCreateActivity extends AppCompatActivity {
         map.put("address", toRequestBody(address));
 
         File temp = getApplication().getCacheDir();
-        String fileNmae = bowlName + ".jpg";
-        File image = new File(temp, fileNmae);
+        String fileName = bowlName + ".jpg";
+        File image = new File(temp, fileName);
         image.createNewFile();
         OutputStream os = new FileOutputStream(image);
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
 
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), image);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("file", image.getName(), requestFile);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("files", image.getName(), requestFile);
         QRBowlService.saveBowl(map, body).enqueue(new Callback<BowlResponse>() {
             @Override
             public void onResponse(Call<BowlResponse> call, Response<BowlResponse> response) {

@@ -49,9 +49,9 @@ public class TownCommunity extends BaseTimeEntity {
     //@OrderBy("id desc")
     private List<TownComment> townComment;
 
-//    @OneToMany(mappedBy = "townCommunity", fetch = FetchType.EAGER)
-//    @JsonIgnoreProperties({"townCommunity"}) //무한참조 방지
-//    private List<TownLike> townLike;
+    @OneToMany(mappedBy = "townCommunity", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"townCommunity"}) //무한참조 방지
+    private List<TownLike> townLike;
 
     private boolean anonymous;
 }

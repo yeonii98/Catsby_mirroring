@@ -29,6 +29,7 @@ public interface CatService {
     @FormUrlEncoded
     @POST("cat/register")
     Call<CatProfile> setPost(
+            @Field("uid") String uid,
             @Field("name") String name,
             @Field("health") String health,
             @Field("address") String address,

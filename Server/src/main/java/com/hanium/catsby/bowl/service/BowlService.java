@@ -1,17 +1,23 @@
 package com.hanium.catsby.bowl.service;
 
 import com.hanium.catsby.bowl.domain.Bowl;
+import com.hanium.catsby.bowl.domain.BowlFeed;
 import com.hanium.catsby.bowl.domain.BowlUser;
+import com.hanium.catsby.bowl.domain.dto.BowlFeedDto;
+import com.hanium.catsby.bowl.repository.BowlFeedRepository;
 import com.hanium.catsby.bowl.repository.BowlRepository;
 import com.hanium.catsby.bowl.repository.BowlUserRepository;
 import com.hanium.catsby.notification.exception.DuplicateBowlInfoException;
 import com.hanium.catsby.user.domain.Users;
 import com.hanium.catsby.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +26,7 @@ public class BowlService {
     private final BowlRepository bowlRepository;
     private final BowlUserRepository bowlUserRepository;
     private final UserRepository userRepository;
+    private final BowlFeedRepository bowlFeedRepository;
 
     @Transactional
     public Long enroll(Bowl bowl) throws DuplicateBowlInfoException {
@@ -59,13 +66,38 @@ public class BowlService {
     }
 
     @Transactional
-    public Long saveBowlUser(String bowlInfo, String  uid) {
+    public Long saveBowlUser(String  uid, String bowlInfo, double latitude, double longitude)  {
         Users user = userRepository.findUserByUid(uid);
         Bowl bowl = bowlRepository.findByBowlInfo(bowlInfo).get(0);
+        bowl.setLatitude(latitude);
+        bowl.setLongitude(longitude);
 
         bowlUserRepository.save(new BowlUser(bowl, user));
 
         return bowl.getId();
+    }
+
+    @Transactional
+    public void saveBowlFeed(String uid, Long bowlId) {
+        Users user = userRepository.findUserByUid(uid);
+        Bowl bowl = bowlRepository.findBowl(bowlId);
+
+        BowlFeed feed = new BowlFeed();
+        feed.setUser(user);
+        feed.setBowl(bowl);
+        bowlFeedRepository.save(feed);
+
+        updateLastFeeding(bowlId);
+    }
+
+    @Transactional
+    public void updateLastFeeding(Long bowlId) {
+        Bowl bowl = bowlRepository.findBowl(bowlId);
+        bowl.setLastFeeding(LocalDateTime.now());
+    }
+
+    public List<BowlFeedDto> findBowlFeed(Long bowlId) {
+        return bowlFeedRepository.findByBowlId(bowlId, Sort.by(Sort.Direction.DESC, "id")).stream().map((bf) -> new BowlFeedDto(bf)).collect(Collectors.toList());
     }
 
     public void isDuplicatedBowlInfo(String bowlIfo) throws DuplicateBowlInfoException {

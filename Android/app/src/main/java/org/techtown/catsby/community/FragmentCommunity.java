@@ -1,23 +1,18 @@
 package org.techtown.catsby.community;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.SearchView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -39,7 +34,6 @@ import org.techtown.catsby.community.data.service.TownCommentService;
 import org.techtown.catsby.community.data.service.TownCommunityService;
 import org.techtown.catsby.retrofit.dto.User;
 import org.techtown.catsby.retrofit.service.UserService;
-import org.techtown.catsby.setting.MaincommentActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -56,8 +50,8 @@ public class FragmentCommunity extends Fragment {
     private RecyclerView recyclerView;
     public RecyclerAdapter recyclerAdapter;
     private TownCommunityService townCommunityService = RetrofitClient.getTownCommunityService();
-    private TownCommentService townCommentService = RetrofitClient.getTownCommentService();;
-    private TownLikeService townLikeService;
+    private TownCommentService townCommentService = RetrofitClient.getTownCommentService();
+    private TownLikeService townLikeService = RetrofitClient.getTownLikeService();
     private UserService userService = RetrofitClient.getUser();;
     private Bitmap bm = null;
     private String nickName;
@@ -66,6 +60,9 @@ public class FragmentCommunity extends Fragment {
 
     List<Integer> idList = new ArrayList<>();
     List<Memo> memoList;
+    int addressExist = 1;
+
+    int push;
 
     @Nullable
     @Override
@@ -97,44 +94,55 @@ public class FragmentCommunity extends Fragment {
                     User result = response.body();
                     String userAddress = result.getAddress();
 
-                    townCommunityService.getTownList().enqueue(new Callback<List<TownCommunity>>() {
-                        @Override
-                        public void onResponse(Call<List<TownCommunity>> call, Response<List<TownCommunity>> response) {
-                            if (response.isSuccessful()) {
-                                //정상적으로 통신이 성공된 경우
-                                List<TownCommunity> result = response.body();
+                    if(userAddress != null){
+                        addressExist = 1;
+                        townCommunityService.getTownList().enqueue(new Callback<List<TownCommunity>>() {
+                            @Override
+                            public void onResponse(Call<List<TownCommunity>> call, Response<List<TownCommunity>> response) {
+                                if (response.isSuccessful()) {
+                                    //정상적으로 통신이 성공된 경우
+                                    List<TownCommunity> result = response.body();
 
-                                for (int i = 0; i < result.size(); i++) {
-                                    if(!userAddress.equals(result.get(i).getUser().getAddress())) continue;
+                                    for (int i = 0; i < result.size(); i++) {
+                                        if(!userAddress.equals(result.get(i).getUser().getAddress())) continue;
+                                        
+                                        if (result.get(i).getImage() != null)
+                                            bm = makeBitMap(result.get(i).getImage());
+                                        else
+                                            bm = null;
 
-                                    if (result.get(i).getImage() != null)
-                                        bm = makeBitMap(result.get(i).getImage());
-                                    else
-                                        bm = null;
+                                        if (result.get(i).isAnonymous())
+                                            nickName = "익명";
+                                        else
+                                            nickName = result.get(i).getUser().getNickname();
 
-                                    if (result.get(i).isAnonymous())
-                                        nickName = "익명";
-                                    else
-                                        nickName = result.get(i).getUser().getNickname();
+                                        push = push(result.get(i).getTownLike().size(),result.get(i).getTownLike());
 
-                                    Memo memo = new Memo(result.get(i).getId(), result.get(i).getUser().getUid(),
-                                            result.get(i).getTitle(), result.get(i).getContent(),
-                                            nickName, result.get(i).getDate(), bm);
-                                    recyclerAdapter.addItem(memo);
+                                        Memo memo = new Memo(result.get(i).getId(), result.get(i).getUser().getUid(),
+                                                result.get(i).getTitle(), result.get(i).getContent(),result.get(i).getTownLike().size(),
+                                                nickName, result.get(i).getDate(), bm, push);
+                                        recyclerAdapter.addItem(memo);
+                                    }
+                                    recyclerAdapter.notifyDataSetChanged();
+
+                                } else {
+                                    System.out.println("실패");
                                 }
-                                recyclerAdapter.notifyDataSetChanged();
-
-                            } else {
-                                System.out.println("실패");
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Call<List<TownCommunity>> call, Throwable t) {
-                            System.out.println("통신 실패!");
-                        }
-                    });
-
+                            @Override
+                            public void onFailure(Call<List<TownCommunity>> call, Throwable t) {
+                                System.out.println("통신 실패!");
+                            }
+                        });
+                    }
+                    else{
+                        Memo memo = new Memo("설정에서 동네를 등록해주세요", "동네를 등록 한 후 글쓰기가 가능합니다.");
+                        addressExist = 0;
+                        recyclerAdapter.addItem(memo);
+                        btnAdd.setEnabled(false);
+                        recyclerAdapter.notifyDataSetChanged();
+                    }
                 }
                 System.out.println("성공");
             }
@@ -176,6 +184,15 @@ public class FragmentCommunity extends Fragment {
         return view;
     }
 
+    public int push(int size, List<TownLike> townLike){
+        for(int i = 0; i < size; i ++){
+            if(townLike.get(i).getUser().getUid().equals(uid)){
+                return 1;
+            }
+        }
+        return 0;
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -201,7 +218,6 @@ public class FragmentCommunity extends Fragment {
                 bm = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
 
             Memo memo = new Memo(id, uid, title, content, nickName, date, bm);
-            System.out.println("memo.getId() = " + memo.getId());
             recyclerAdapter.addItem(memo);
             recyclerAdapter.notifyDataSetChanged();
 
@@ -212,12 +228,10 @@ public class FragmentCommunity extends Fragment {
             int position = data.getIntExtra("position", 0);
             String nickName = data.getStringExtra("nickName");
             byte[] byteArray = data.getByteArrayExtra("byteArray");
-            System.out.println("byteArray = " + byteArray);
             if (byteArray != null)
                 bm = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
             else
                 bm = null;
-            System.out.println("bmbmbmbmbm = " + bm);
             recyclerAdapter.updateItem(position, title, content, nickName, bm);
             recyclerAdapter.notifyDataSetChanged();
         } else return;
@@ -276,25 +290,25 @@ public class FragmentCommunity extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull ItemViewHolder itemViewHolder, int position) {
             Memo memo = listdata.get(position);
-            boolean push = true;
 
             itemViewHolder.title.setText(memo.getMaintext());
             itemViewHolder.content.setText(memo.getSubtext());
             itemViewHolder.nickname.setText(memo.getNickname());
+            itemViewHolder.date.setText(memo.getDate());
+            itemViewHolder.likeCnt.setText(Integer.toString(memo.getLikeCnt()));
 
             if (memo.getImg() == null)
                 itemViewHolder.img.setVisibility(View.GONE);
             else
                 itemViewHolder.img.setImageBitmap(memo.getImg());
-
-            itemViewHolder.date.setText(memo.getDate());
-//            itemViewHolder.likeCnt.setText(Integer.toString(memo.getLikeCnt()));
-
-
             if (!uid.equals(memo.getUid())) {
                 itemViewHolder.deleteBtn.setVisibility(View.GONE);
                 itemViewHolder.updateBtn.setVisibility(View.GONE);
+//                itemViewHolder.town_menu.setVisibility(View.GONE);
             }
+
+            if(memo.getPush() == 1)
+                itemViewHolder.likeImg.setImageResource(R.drawable.ic_baseline_favorite_red);
 
             itemViewHolder.deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -308,7 +322,6 @@ public class FragmentCommunity extends Fragment {
                         public void onClick(DialogInterface dialog, int which) {
                             removeItem(position);
                             notifyItemRemoved(position);
-                            System.out.println("memo.getId() = " + memo.getId());
                             townCommunityService.deleteTown(memo.getId()).enqueue(new Callback<Void>() {
                                 @Override
                                 public void onResponse(Call<Void> call, Response<Void> response) {
@@ -348,7 +361,7 @@ public class FragmentCommunity extends Fragment {
                     byte[] byteArray = new byte[0];
                     if (listdata.get(position).getImg() != null) {
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        listdata.get(position).getImg().compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                        listdata.get(position).getImg().compress(Bitmap.CompressFormat.JPEG, 20, stream);
                         byteArray = stream.toByteArray();
                         intent.putExtra("img", byteArray);
                     } else
@@ -362,21 +375,34 @@ public class FragmentCommunity extends Fragment {
                 }
             });
 
-            itemViewHolder.chatbubble.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), TownCommentListActivity.class);
-                    intent.putExtra("id", listdata.get(position).getId());
-                    System.out.println(listdata.get(position).getId());
-                    startActivity(intent);
-                }
-            });
+            itemViewHolder.chatbubble.setVisibility(View.GONE);
+            itemViewHolder.linearLayout.setVisibility(View.GONE);
+            itemViewHolder.userImg.setVisibility(View.GONE);
+            itemViewHolder.likeImg.setVisibility(View.GONE);
+
+
+            if(addressExist == 1){
+
+                itemViewHolder.chatbubble.setVisibility(View.VISIBLE);
+                itemViewHolder.linearLayout.setVisibility(View.VISIBLE);
+                itemViewHolder.userImg.setVisibility(View.VISIBLE);
+                itemViewHolder.likeImg.setVisibility(View.VISIBLE);
+
+                itemViewHolder.chatbubble.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getActivity(), TownCommentListActivity.class);
+                        intent.putExtra("id", listdata.get(position).getId());
+                        System.out.println(listdata.get(position).getId());
+                        startActivity(intent);
+                    }
+                });
 
             /* 홈화면 말풍선에 댓글 리스트 연동 시키기
             itemViewHolder.mainchatbubble.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), MaincommentActivity.class);
+                    Intent intent = new Intent(getActivity(), BowlCommentActivity.class);
                     intent.putExtra("id",listdata.get(position).getId());
                     System.out.println(listdata.get(position).getId());
                     startActivity(intent);
@@ -384,19 +410,75 @@ public class FragmentCommunity extends Fragment {
             }); */
 
 
-            itemViewHolder.commentBtn.setOnClickListener(new View.OnClickListener() {
+                itemViewHolder.commentBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String content = itemViewHolder.commentContent.getText().toString();
+                        if (content.length() > 0) {
+                            itemViewHolder.commentContent.setText("");
+                            TownComment townComment = new TownComment(content);
+                            townCommentService.postTownComment(memo.getId(), uid, townComment).enqueue(new Callback<Void>() {
+                                @Override
+                                public void onResponse(Call<Void> call, Response<Void> response) {
+                                    if (response.isSuccessful()) {
+                                        //정상적으로 통신이 성공된 경우
+                                        System.out.println("댓글 쓰기 성공");
+                                    } else {
+                                        System.out.println("실패");
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Void> call, Throwable t) {
+                                    System.out.println("통신 실패 : " + t.getMessage());
+                                }
+                            });
+                        }
+                    }
+                });
+
+
+            townLikeService = RetrofitClient.getTownLikeService();
+
+            TownLike townLike = new TownLike();
+
+            itemViewHolder.likeImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String content = itemViewHolder.commentContent.getText().toString();
-                    if (content.length() > 0) {
-                        itemViewHolder.commentContent.setText("");
-                        TownComment townComment = new TownComment(content);
-                        townCommentService.postTownComment(memo.getId(), uid, townComment).enqueue(new Callback<Void>() {
+                    if(memo.getPush() == 0){
+                        itemViewHolder.likeImg.setImageResource(R.drawable.ic_baseline_favorite_red);
+                        memo.setPush(1);
+                        memo.setLikeCnt(memo.getLikeCnt() + 1);
+                        itemViewHolder.likeCnt.setText(Integer.toString(memo.getLikeCnt()));
+
+                        townLikeService.postTownLike(memo.getId(),uid,townLike).enqueue(new Callback<Void>() {
                             @Override
                             public void onResponse(Call<Void> call, Response<Void> response) {
-                                if (response.isSuccessful()) {
+                                if(response.isSuccessful()){
                                     //정상적으로 통신이 성공된 경우
-                                    System.out.println("댓글 쓰기 성공");
+                                    System.out.println("좋아요 성공");
+                                } else {
+                                    System.out.println("실패");
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                System.out.println("통신 실패 : " + t.getMessage());
+                            }
+                        });
+                    }else{
+                        itemViewHolder.likeImg.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+                        memo.setPush(0);
+                        memo.setLikeCnt(memo.getLikeCnt() - 1);
+                        itemViewHolder.likeCnt.setText(Integer.toString(memo.getLikeCnt()));
+
+                        townLikeService.deleteTownLike(memo.getId(),uid).enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if(response.isSuccessful()){
+                                    //정상적으로 통신이 성공된 경우
+                                    System.out.println("좋아요 취소 성공");
                                 } else {
                                     System.out.println("실패");
                                 }
@@ -412,60 +494,8 @@ public class FragmentCommunity extends Fragment {
             });
 
 
-//            townLikeService = RetrofitClient.getTownLikeService();
-//
-//            TownLike townLike = new TownLike();
-//
-//            itemViewHolder.likeImg.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    if(memo.isPush() == true){
-//                        itemViewHolder.likeImg.setImageResource(R.drawable.ic_baseline_favorite_24);
-//                        memo.setPush(false);
-//                        memo.setLikeCnt(memo.getLikeCnt() + 1);
-//                        itemViewHolder.likeCnt.setText(Integer.toString(memo.getLikeCnt()));
-//
-//                        townLikeService.postTownLike(memo.getId(),townLike).enqueue(new Callback<Void>() {
-//                            @Override
-//                            public void onResponse(Call<Void> call, Response<Void> response) {
-//                                if(response.isSuccessful()){
-//                                    //정상적으로 통신이 성공된 경우
-//                                    System.out.println("좋아요 성공");
-//                                } else {
-//                                    System.out.println("실패");
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onFailure(Call<Void> call, Throwable t) {
-//                                System.out.println("통신 실패 : " + t.getMessage());
-//                            }
-//                        });
-//                    }else{
-//                        itemViewHolder.likeImg.setImageResource(R.drawable.ic_baseline_favorite_border_24);
-//                        memo.setPush(true);
-//                        memo.setLikeCnt(memo.getLikeCnt() - 1);
-//                        itemViewHolder.likeCnt.setText(Integer.toString(memo.getLikeCnt()));
-//
-//                        townLikeService.deleteTownLike(memo.getId()).enqueue(new Callback<Void>() {
-//                            @Override
-//                            public void onResponse(Call<Void> call, Response<Void> response) {
-//                                if(response.isSuccessful()){
-//                                    //정상적으로 통신이 성공된 경우
-//                                    System.out.println("좋아요 취소 성공");
-//                                } else {
-//                                    System.out.println("실패");
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onFailure(Call<Void> call, Throwable t) {
-//                                System.out.println("통신 실패 : " + t.getMessage());
-//                            }
-//                        });
-//                    }
-//                }
-//            });
+            }
+
 
         }
 
@@ -499,11 +529,15 @@ public class FragmentCommunity extends Fragment {
 
             private Button town_menu;
 
-//            private TextView likeCnt;
-//            private ImageView likeImg;
+            private TextView likeCnt;
+            private ImageView likeImg;
 
             private ImageView chatbubble;
 //            private ImageView mainchatbubble;
+
+            private ImageView userImg;
+
+            private LinearLayout linearLayout;
 
             public ItemViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -521,8 +555,14 @@ public class FragmentCommunity extends Fragment {
                 commentBtn = itemView.findViewById(R.id.town_commentBtn);
                 commentContent = itemView.findViewById(R.id.town_comment_content);
 
-//                likeCnt = itemView.findViewById(R.id.likeCnt);
-//                likeImg = itemView.findViewById(R.id.town_likeBtn);
+                likeCnt = itemView.findViewById(R.id.likeCnt);
+                likeImg = itemView.findViewById(R.id.town_likeBtn);
+
+                userImg = itemView.findViewById(R.id.user_img);
+
+                linearLayout = itemView.findViewById(R.id.linearLayout);
+
+//                town_menu = itemView.findViewById(R.id.town_menu);
             }
         }
     }

@@ -1,10 +1,13 @@
 package com.hanium.catsby.bowl.controller;
 
 import com.hanium.catsby.bowl.domain.Bowl;
+import com.hanium.catsby.bowl.domain.BowlFeed;
+import com.hanium.catsby.bowl.domain.dto.BowlFeedDto;
 import com.hanium.catsby.bowl.service.BowlService;
 import com.hanium.catsby.notification.exception.DuplicateBowlInfoException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -45,7 +48,6 @@ public class BowlController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
         Bowl bowl = new Bowl();
         bowl.setInfo(info);
@@ -94,8 +96,34 @@ public class BowlController {
 
     @PostMapping("/bowl/{uid}")
     public ResponseEntity<CreateBowlResponse> addUser(@PathVariable("uid") String uid, @RequestBody AddUserRequest request) {
-        Long bowlId = bowlService.saveBowlUser(request.getBowlInfo(), uid);
+        Long bowlId = bowlService.saveBowlUser(uid, request.getBowlInfo(), request.getLatitude(), request.getLongitude());
         return ResponseEntity.ok(new CreateBowlResponse(bowlId));
+    }
+
+    @GetMapping("/bowl/location/{bowlId}")
+    public ResponseEntity<BowlLocationResponse> bowlLocation(@PathVariable("bowlId") Long id) {
+        Bowl bowl = bowlService.findOne(id);
+        return ResponseEntity.ok(new BowlLocationResponse(bowl));
+    }
+
+    @GetMapping("/bowl/feed/{bowlId}")
+    public ResponseEntity<BowlResult> bowlFeed(@PathVariable("bowlId") Long id) {
+        return ResponseEntity.ok(new BowlResult<List<BowlFeedDto>>(bowlService.findBowlFeed(id)));
+    }
+
+    @Data
+    static class BowlLocationResponse{
+        Long id;
+        String name;
+        Double latitude;
+        Double longitude;
+
+        public BowlLocationResponse(Bowl bowl) {
+            this.id = bowl.getId();
+            this.name = bowl.getName();
+            this.latitude = bowl.getLatitude();
+            this.longitude = bowl.getLongitude();
+        }
     }
 
     @Data
@@ -152,7 +180,9 @@ public class BowlController {
     }
 
     @Data
-    private class AddUserRequest {
+    static class AddUserRequest {
         private String bowlInfo;
+        private double latitude;
+        private double longitude;
     }
 }

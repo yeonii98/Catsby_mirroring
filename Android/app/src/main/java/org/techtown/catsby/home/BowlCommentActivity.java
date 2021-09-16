@@ -1,4 +1,4 @@
-package org.techtown.catsby.setting;
+package org.techtown.catsby.home;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -10,14 +10,12 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import org.techtown.catsby.R;
-import org.techtown.catsby.home.model.Bowl;
-import org.techtown.catsby.retrofit.dto.BowlComment;
 import org.techtown.catsby.retrofit.dto.BowlCommentUsingComment;
+import org.techtown.catsby.home.adapter.BowlCommentAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class MaincommentActivity extends AppCompatActivity {
+public class BowlCommentActivity extends AppCompatActivity {
     List<BowlCommentUsingComment> mainCommentList;
 
     @Override
@@ -39,7 +37,7 @@ public class MaincommentActivity extends AppCompatActivity {
         Intent intent = getIntent();
         mainCommentList = (List<BowlCommentUsingComment>) intent.getSerializableExtra("comment");
 
-        MainCommentAdapter mainCommentAdapter = new MainCommentAdapter(mainCommentList);
+        BowlCommentAdapter mainCommentAdapter = new BowlCommentAdapter(mainCommentList);
         RecyclerView BowlCommunityRecyclerView = findViewById(R.id.maincmt_recyclerview);
         BowlCommunityRecyclerView.setLayoutManager(new LinearLayoutManager(this)) ;
         BowlCommunityRecyclerView.setAdapter(mainCommentAdapter);

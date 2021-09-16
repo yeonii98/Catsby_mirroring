@@ -1,4 +1,4 @@
-package com.hanium.catsby.notification.domain;
+package com.hanium.catsby.notification.domain.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

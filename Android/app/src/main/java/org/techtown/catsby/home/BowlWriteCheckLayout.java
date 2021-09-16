@@ -9,9 +9,9 @@ import android.widget.LinearLayout;
 
 import org.techtown.catsby.R;
 
-public class BowlCheckableLayout extends LinearLayout implements Checkable {
+public class BowlWriteCheckLayout extends LinearLayout implements Checkable {
 
-    public BowlCheckableLayout(Context context, AttributeSet attrs) {
+    public BowlWriteCheckLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 

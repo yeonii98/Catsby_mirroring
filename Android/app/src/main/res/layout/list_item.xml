@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -11,24 +10,34 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:gravity="center_vertical">
+
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/user_img"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginLeft="7dp"
-            android:src="@mipmap/ic_launcher_round"
+            android:src="@drawable/catsby_logo_black"
             app:civ_border_color="#939597"
-            app:civ_border_width="2dp"
-            android:id="@+id/user_img"/>
+            app:civ_border_width="1dp" />
+
         <TextView
             android:id="@+id/user_nickname"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="7dp"
             android:text="User nickname" />
+
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="1" />
+
+<!--        <ImageView-->
+<!--            android:id="@+id/town_menu"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src = "@drawable/ic_baseline_menu_24"-->
+<!--            />-->
 
         <Button
             android:id="@+id/town_update"
@@ -37,6 +46,7 @@
             android:layout_margin="8dp"
             android:background="#ACDBE8"
             android:text="수정" />
+
         <Button
             android:id="@+id/town_delete"
             android:layout_width="50dp"
@@ -46,6 +56,7 @@
             android:background="#ACDBE8"
             android:text="삭제" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -53,14 +64,14 @@
 
         <TextView
             android:id="@+id/town_title"
-            android:textSize="22dp"
-            android:layout_marginLeft="7dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"
             android:text="Title~~~~~~~~"
-            android:textStyle="bold"
-            />
+            android:textSize="22dp"
+            android:textStyle="bold" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -68,24 +79,25 @@
 
         <TextView
             android:id="@+id/town_content"
-            android:textSize="18dp"
-            android:layout_marginLeft="7dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Content~~~~~~~~" />
+            android:layout_marginLeft="7dp"
+            android:text="Content~~~~~~~~"
+            android:textSize="18dp" />
     </LinearLayout>
+
     <ImageView
+        android:id="@+id/town_img"
         android:layout_width="match_parent"
         android:layout_height="250dp"
-        android:scaleType="fitXY"
-        android:id="@+id/town_img"
-        android:layout_marginBottom="10dp"/>
+        android:layout_marginBottom="10dp"
+        android:scaleType="fitXY" />
 
     <LinearLayout
-        android:paddingRight="10dp"
-        android:gravity="right"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="right"
+        android:paddingRight="10dp">
 
         <TextView
             android:id="@+id/town_date"
@@ -98,32 +110,33 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp">
-<!--        <ImageView-->
-<!--            android:layout_width="35dp"-->
-<!--            android:layout_height="35dp"-->
-<!--            android:layout_marginLeft="7.5dp"-->
-<!--            android:src="@drawable/ic_baseline_favorite_border_24"-->
-<!--            android:id="@+id/town_likeBtn"/>-->
-<!--        <TextView-->
-<!--            android:id="@+id/likeCnt"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="0"/>-->
+
         <ImageView
+            android:id="@+id/town_comment"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginLeft="7dp"
             android:layout_marginRight="7dp"
-            android:src="@drawable/ic_baseline_chat_bubble_24"
-            android:id="@+id/town_comment"/>
+            android:src="@drawable/ic_baseline_chat_bubble_24" />
 
+        <ImageView
+            android:id="@+id/town_likeBtn"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_baseline_favorite_border_24" />
+
+        <TextView
+            android:id="@+id/likeCnt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_marginBottom="15dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginBottom="15dp"
         android:layout_weight="1"
         android:orientation="horizontal">
 
@@ -137,14 +150,14 @@
             android:paddingLeft="5dp"
             android:textColor="@android:color/black"
             android:textSize="15sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/town_commentBtn"
             android:layout_width="67dp"
             android:layout_height="30dp"
-            android:text="게시"
             android:layout_marginRight="7dp"
-            android:background="#ACDBE8"/>
+            android:background="#ACDBE8"
+            android:text="게시" />
     </LinearLayout>
 </LinearLayout>

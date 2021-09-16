@@ -16,7 +16,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import org.techtown.catsby.qrcode.QrcodeCreateActivity;
 import org.techtown.catsby.community.FragmentCommunity;
 import org.techtown.catsby.cattown.FragmentCatTown;
-import org.techtown.catsby.home.FragmentHome;
+import org.techtown.catsby.home.FragmentBowl;
 import org.techtown.catsby.notification.NotificationActivity;
 import org.techtown.catsby.setting.FragmentSetting;
 
@@ -25,7 +25,7 @@ import com.pedro.library.AutoPermissionsListener;
 
 public class MainActivity extends AppCompatActivity implements AutoPermissionsListener {
     private final FragmentManager fragmentManager = getSupportFragmentManager();
-    private final FragmentHome fragmenthome = new FragmentHome();
+    private final FragmentBowl fragmenthome = new FragmentBowl();
     private final FragmentCatTown fragmentcattown = new FragmentCatTown();
     private final FragmentCommunity fragmentcommunity = new FragmentCommunity();
     private final FragmentSetting fragmentsetting = new FragmentSetting();
