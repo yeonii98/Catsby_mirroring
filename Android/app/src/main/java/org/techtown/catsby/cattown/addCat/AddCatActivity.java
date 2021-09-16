@@ -28,6 +28,7 @@ import androidx.fragment.app.FragmentManager;
 import org.techtown.catsby.R;
 import org.techtown.catsby.cattown.FragmentCatTown;
 import org.techtown.catsby.retrofit.dto.CatProfile;
+import org.techtown.catsby.retrofit.dto.User;
 import org.techtown.catsby.retrofit.service.CatService;
 
 import java.io.ByteArrayOutputStream;
@@ -40,6 +41,7 @@ import java.net.URL;
 import java.util.Base64;
 import java.util.List;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.pedro.library.AutoPermissions;
 import com.pedro.library.AutoPermissionsListener;
 
@@ -68,6 +70,8 @@ public class AddCatActivity extends AppCompatActivity{
     private RadioButton rbspayed;
     private RadioButton rbnospayed;
     private TextView imageuri;
+    private User user;
+    public String uid = FirebaseAuth.getInstance().getUid();
 
     byte imageArray [];
     Bitmap imgBitmap;
@@ -238,11 +242,11 @@ public class AddCatActivity extends AppCompatActivity{
                 String catcontent = edtcontent.getText().toString();
                 byte[] catimage = imageArray;
 
-                System.out.println("catimage ="+cimage);
+                System.out.println("uidd"+uid);
 
                 CatService retrofitService = retrofit.create(CatService.class);
                 Call<CatProfile> call = retrofitService.setPost(
-                        catname,cathealth,catloc, catgender, cimage, catcontent, catspayed);
+                        uid,catname,cathealth,catloc, catgender, cimage, catcontent, catspayed);
                 call.enqueue(new Callback<CatProfile>(){
 
                     @Override
