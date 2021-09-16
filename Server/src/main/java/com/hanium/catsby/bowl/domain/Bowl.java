@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,9 +31,10 @@ public class Bowl extends BaseTimeEntity {
     private String filename;
     private String path;
 
+    @Column(name = "last_feeding")
+    private LocalDateTime lastFeeding;
+
     @JsonIgnore
     @OneToMany(mappedBy = "bowl", cascade = CascadeType.ALL)
     private List<com.hanium.catsby.bowl.domain.BowlUser> bowlUsers = new ArrayList<>();
-
-
 }

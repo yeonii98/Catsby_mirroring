@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -85,6 +86,14 @@ public class BowlService {
         feed.setUser(user);
         feed.setBowl(bowl);
         bowlFeedRepository.save(feed);
+
+        updateLastFeeding(bowlId);
+    }
+
+    @Transactional
+    public void updateLastFeeding(Long bowlId) {
+        Bowl bowl = bowlRepository.findBowl(bowlId);
+        bowl.setLastFeeding(LocalDateTime.now());
     }
 
     public List<BowlFeedDto> findBowlFeed(Long bowlId) {
