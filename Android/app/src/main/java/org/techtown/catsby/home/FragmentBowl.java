@@ -44,7 +44,7 @@ import retrofit2.Call;
 
 import static java.time.LocalDateTime.now;
 
-public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterClickListener {
+public class FragmentBowl extends Fragment implements BowlAdapter.BowlAdapterClickListener {
     private Context mContext;
     private FragmentManager fragmentManager;
 
@@ -56,7 +56,7 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
     BowlAdapter bowlAdapter;
     ArrayList<byte[]> bowlImageArray = new ArrayList<>();
 
-    int[] bowlImg = {R.drawable.pic_001, R.drawable.cutecat, R.drawable.flowercat, R.drawable.pic_002, R.drawable.cutecat, R.drawable.cutecat, R.drawable.cutecat, R.drawable.cutecat, R.drawable.cutecat, R.drawable.cutecat, R.drawable.cutecat};
+    int[] bowlImg = {R.drawable.pic_001, R.drawable.cutecat, R.drawable.flowercat, R.drawable.pic_002, R.drawable.cutecat, R.drawable.cutecat, R.drawable.cutecat, R.drawable.cutecat, R.drawable.cutecat, R.drawable.cutecat, R.drawable.cutecat, R.drawable.cutecat, R.drawable.cutecat, R.drawable.cutecat};
 
     BowlService bowlService = RetrofitClient.getBowlService();
     BowlCommunityService bowlCommunityService = RetrofitClient.getBowlCommunityService();
@@ -109,7 +109,7 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
             }
 
             try {
-                Thread.sleep(1000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -117,12 +117,12 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
             BowlCommunityService bowlCommunityService = RetrofitClient.getBowlCommunityService();
             ArrayList<Feed> feedList= new ArrayList<>();
             for (int i =0; i < bowlList.size(); i++) {
-                Call<List<BowlCommunity>> call1 = bowlCommunityService.getCommunitiesByBowl(bowlList.get(i).getId());
+                Call<List<BowlCommunity>> callCommunity = bowlCommunityService.getCommunitiesByBowl(bowlList.get(i).getId());
                 Thread thread = new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
-                            List<BowlCommunity> BowlCommunityResult = call1.execute().body();
+                            List<BowlCommunity> BowlCommunityResult = callCommunity.execute().body();
 
                             for (int i = 0; i < BowlCommunityResult.size(); i++) {
                                 try{
@@ -154,7 +154,7 @@ public class FragmentHome extends Fragment implements BowlAdapter.BowlAdapterCli
             }
 
             try {
-                Thread.sleep(1000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

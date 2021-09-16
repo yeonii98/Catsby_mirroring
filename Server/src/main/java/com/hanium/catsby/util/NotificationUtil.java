@@ -1,10 +1,14 @@
 package com.hanium.catsby.util;
 
+import com.google.firebase.messaging.AndroidConfig;
+import com.google.firebase.messaging.AndroidNotification;
+import com.google.firebase.messaging.MulticastMessage;
 import com.hanium.catsby.notification.domain.NotificationType;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 public class NotificationUtil {
 
@@ -52,5 +56,23 @@ public class NotificationUtil {
 
 
         return notificationTime.toLocalDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+    }
+
+    public static MulticastMessage sendMulticastMessage(String title, String body, List<String> registrationTokens) {
+        MulticastMessage message = MulticastMessage.builder()
+                .setAndroidConfig(AndroidConfig.builder()
+                        .setTtl(3600 * 1000)
+                        .setPriority(AndroidConfig.Priority.NORMAL)
+                        .setNotification(AndroidNotification.builder()
+                                .setTitle(title)
+                                .setBody(body)
+                                .setIcon("stock_ticker_update")
+                                .setColor("#ffffff")
+                                .build())
+                        .build())
+                .addAllTokens(registrationTokens)
+                .build();
+
+        return message;
     }
 }

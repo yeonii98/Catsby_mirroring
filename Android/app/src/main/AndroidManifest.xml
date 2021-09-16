@@ -18,7 +18,7 @@
     <uses-permission android:name="org.techtown.catsby.permission.MAPS_RECEIVE" />
     <uses-permission android:name="com.example.my38_locationmap.permission.MAPS_RECEIVE" />
     <uses-permission android:name="READ_GSERVICES" />
-
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
     <uses-feature android:name="android.hardware.camera" />
 
     <meta-data
@@ -33,7 +33,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".setting.MaincommentActivity"></activity>
+        <activity android:name=".home.BowlCommentActivity"></activity>
         <activity android:name=".community.CommentlistActivity" />
         <activity android:name=".community.TownCommentListActivity" />
         <activity android:name=".community.AddActivity" />
@@ -56,10 +56,21 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDfszGSmo3tTGtk18MbCg9o_Vp3m2poD2A" />
 
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.appgrider.test_android.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths"/>
+        </provider>
+
+
+
         <activity android:name=".MainActivity" />
         <activity android:name=".login.LoginActivity" />
         <activity android:name=".home.BowlActivity" />
-        <activity android:name=".home.BowlInfoAndMapActivity" />
 
         <activity android:name=".qrcode.LoadingActivity" />
         <activity android:name=".qrcode.ScannerActivity" />

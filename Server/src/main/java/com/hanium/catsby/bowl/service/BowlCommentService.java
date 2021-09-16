@@ -66,10 +66,6 @@ public class BowlCommentService {
         return bowlCommentRepository.findBowlCommentByCommunityId(communityId);
     }
 
-
-
-
-
     @Transactional
     public void delete(Long id) {
         bowlCommentRepository.deleteById(id);
