@@ -5,24 +5,17 @@ import com.hanium.catsby.cat.mapper.CatProfileMapper;
 
 
 import com.hanium.catsby.cat.model.CatProfile;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.hanium.catsby.user.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PostConstruct;
-import java.awt.*;
-import java.sql.Blob;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class CatProfileController {
 
     private CatProfileMapper mapper;
 
-    public CatProfileController(CatProfileMapper mapper) {
+    public CatProfileController(UserService userService, CatProfileMapper mapper) {
         this.mapper = mapper;
     }
 
@@ -41,6 +34,7 @@ public class CatProfileController {
     //고양이 등록
     @PostMapping("/cat/register")
     public void putCatProfile(
+            @RequestParam(value = "uid", required = false) String uid,
             @RequestParam(value = "name") String name,
             @RequestParam(value = "health", required = false) String health,
             @RequestParam(value = "address", required = false) String address,
@@ -49,8 +43,8 @@ public class CatProfileController {
             @RequestParam(value = "content", required = false) String content,
             @RequestParam(value = "spayed", required = false) int spayed)
     {
-        CatProfile catProfile = new CatProfile(name, health, address, gender, image, content, spayed);
-        mapper.insertCatProfile(name,health,address,gender,image,content,spayed);
+        CatProfile catProfile = new CatProfile(uid, name, health, address, gender, image, content, spayed);
+        mapper.insertCatProfile(uid, name,health,address,gender,image,content,spayed);
 
     }
 

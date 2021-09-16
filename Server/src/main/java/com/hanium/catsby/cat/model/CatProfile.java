@@ -1,10 +1,12 @@
 package com.hanium.catsby.cat.model;
 
+import com.hanium.catsby.user.domain.Users;
 import lombok.Builder;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import java.awt.*;
 import java.sql.Blob;
 import java.text.SimpleDateFormat;
@@ -14,6 +16,15 @@ public class CatProfile {
     //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private int cat_id;
 
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    private String uid;
     private String name;
     private String health;
     private String address;
@@ -29,8 +40,9 @@ public class CatProfile {
 
     //0811
     @Builder
-    public CatProfile(String name, String health, String address,
+    public CatProfile(String uid, String name, String health, String address,
                       int gender, String image, String content, int spayed) {
+        this.uid = uid;
         this.cat_id = cat_id;
         this.name = name;
         this.health = health;
