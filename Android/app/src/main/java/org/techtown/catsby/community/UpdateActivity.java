@@ -75,6 +75,9 @@ public class UpdateActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String title = intent.getStringExtra("title");
         String content = intent.getStringExtra("content");
+        String date = intent.getStringExtra("date");
+        int likeCnt = intent.getIntExtra("likeCnt",0);
+        int push = intent.getIntExtra("push",0);
         int id = intent.getIntExtra("id",0);
 
         byte[] arr = getIntent().getByteArrayExtra("img");
@@ -84,7 +87,7 @@ public class UpdateActivity extends AppCompatActivity {
         if(arr.length != 0){
             img = BitmapFactory.decodeByteArray(arr, 0, arr.length);
             townImg.setImageBitmap(img);
-        }
+        }//이건 잘 된다.
 
         edtTitle.setText(title);
         edtContent.setText(content);
@@ -106,7 +109,6 @@ public class UpdateActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String title = edtTitle.getText().toString();
                 String content = edtContent.getText().toString();
-                System.out.println("checkBox.isChecked() = " + checkBox.isChecked());
                 if(title.length() > 0 && content.length() > 0) {
                     System.out.println("townImg = " + townImg.getDrawable());
                     if(townImg.getDrawable() == null){
@@ -153,7 +155,12 @@ public class UpdateActivity extends AppCompatActivity {
                     intent.putExtra("title", title);
                     intent.putExtra("content", content);
                     intent.putExtra("position",position);
+                    System.out.println("-------byteArray---------"+byteArray==null);
                     intent.putExtra("byteArray", byteArray);
+                    intent.putExtra("date", date);
+                    intent.putExtra("id", id);
+                    intent.putExtra("likeCnt", likeCnt);
+                    intent.putExtra("push", push);
 
                     int idx = user.getEmail().indexOf("@");
                     if(!checkBox.isChecked())
