@@ -62,7 +62,12 @@ public class Writemain extends AppCompatActivity{
     private static final String TAG = "blackjin";
     private Boolean isPermission = true;
 
+    //ImageView imageView;
+    //Button btnCamera;
+
     private static final int PICK_FROM_ALBUM = 1;
+
+    //String mCurrentPhotoPath;
     private static final int PICK_FROM_CAMERA = 2;
 
     BowlService bowlService = RetrofitClient.getBowlService();
@@ -292,6 +297,7 @@ public class Writemain extends AppCompatActivity{
             e.printStackTrace();
         }
         if (tempFile != null) {
+
             Uri photoUri = Uri.fromFile(tempFile);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
             startActivityForResult(intent, PICK_FROM_CAMERA);
@@ -323,8 +329,10 @@ public class Writemain extends AppCompatActivity{
      */
     private void setImage() {
 
+        //회전 방지
         ImageView imageView = findViewById(R.id.imageView);
         Glide.with(this).load(photoUri).into(imageView);
+
         BitmapFactory.Options options = new BitmapFactory.Options();
         Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
         Log.d(TAG, "setImage : " + tempFile.getAbsolutePath());

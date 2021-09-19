@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -47,6 +48,9 @@ public class BowlActivity extends AppCompatActivity implements OnMapReadyCallbac
     private ImageView imageView;
     private TextView bowlName, bowlLocation;
     private Button completedFeed;
+
+    private Boolean isPermission = true;
+    private static final int PICK_FROM_ALBUM = 1;
 
     RecyclerView recyclerView;
     BowlInfoTimeAdapter adapter;
@@ -90,6 +94,15 @@ public class BowlActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
+        findViewById(R.id.btn_bowlpic_change).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
+                if(isPermission) goToAlbum();
+                else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+            }
+        });
+
         bowlService = RetrofitClient.getBowlService();
         adapter = new BowlInfoTimeAdapter(new ArrayList<>());
         recyclerView = (RecyclerView) findViewById(R.id.bowlinfo_time_recycler_view);
@@ -117,6 +130,13 @@ public class BowlActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Log.e("FragmentBowlInfo", "error send notification from API");
             }
         });
+    }
+
+    private void goToAlbum() {
+
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
+        startActivityForResult(intent, PICK_FROM_ALBUM);
     }
 
     private void loadBowlFeedTime(Long bowlId) {

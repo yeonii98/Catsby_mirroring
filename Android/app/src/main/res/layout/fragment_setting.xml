@@ -26,8 +26,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_margin="10dp"
-                android:scaleType="centerInside"
-                tools:srcCompat="@tools:sample/avatars" />
+                android:scaleType="centerInside" />
 
 
             <LinearLayout
