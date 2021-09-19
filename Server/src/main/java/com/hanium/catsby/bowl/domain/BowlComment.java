@@ -28,4 +28,6 @@ public class BowlComment extends BaseTimeEntity {
     @Lob
     private String content;
 
+    private String uid;
+
 }

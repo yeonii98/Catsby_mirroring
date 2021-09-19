@@ -9,13 +9,15 @@ public class BowlCommentUsingComment implements Serializable {
     private String nickname;
     private String content;
     private String createDate;
+    private String uid;
 
-    public BowlCommentUsingComment(int id, String nickname, String content, String createDate, int userId) {
+    public BowlCommentUsingComment(int id, String nickname, String content, String createDate, int userId, String uid) {
         this.id = id;
         this.nickname = nickname;
         this.content = content;
         this.createDate = createDate;
         this.userId = userId;
+        this.uid = uid;
     }
 
     public int getId() {
@@ -36,5 +38,9 @@ public class BowlCommentUsingComment implements Serializable {
 
     public String getCreateDate() {
         return createDate;
+    }
+
+    public String getUid() {
+        return uid;
     }
 }

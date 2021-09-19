@@ -15,7 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import org.techtown.catsby.R;
-import org.techtown.catsby.Writemain;
+import org.techtown.catsby.home.WriteBowl;
 import org.techtown.catsby.home.model.BowlCheck;
 import org.techtown.catsby.home.model.Bowl;
 import org.techtown.catsby.retrofit.RetrofitClient;
@@ -59,7 +59,7 @@ public class BowlCheckListAdapter extends BaseAdapter {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 System.out.println("compoundButton = " + compoundButton);
-                Writemain.clickSave(position);
+                WriteBowl.clickSave(position);
 
             }
         });

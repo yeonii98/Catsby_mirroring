@@ -29,6 +29,14 @@ public class BowlLikeRepository {
                 .getResultList();
     }
 
+    public int findLikeByCommunityId(Long communityId){
+        List<BowlLike> resultList = em.createQuery("select bl from BowlLike bl" +
+                " where bl.bowlCommunity.id = :communityId", BowlLike.class)
+                .setParameter("communityId", communityId)
+                .getResultList();
+        return resultList.size();
+    }
+
     public BowlLike findBowlLike(Long id) {
         return em.find(BowlLike.class, id);
     }

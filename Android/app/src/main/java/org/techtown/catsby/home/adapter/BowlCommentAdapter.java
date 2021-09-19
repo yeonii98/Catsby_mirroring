@@ -29,6 +29,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
 public class BowlCommentAdapter extends RecyclerView.Adapter<BowlCommentAdapter.ViewHolder> {
@@ -55,7 +56,6 @@ public class BowlCommentAdapter extends RecyclerView.Adapter<BowlCommentAdapter.
         Button commentDelete1 = (Button)itemView.findViewById(R.id.mainCmtDeleteBtn);
         Button commentUpdate1= (Button)itemView.findViewById(R.id.mainCmtUpdateBtn);
         Button commentUpdateFinish1= (Button)itemView.findViewById(R.id.mainCmtUpdateFinishBtn);
-        //Button commentUpdateFinish1;
 
         ViewHolder(View itemView) {
             super(itemView) ;
@@ -63,29 +63,15 @@ public class BowlCommentAdapter extends RecyclerView.Adapter<BowlCommentAdapter.
             nickNameView = view.findViewById(R.id.maincmtNickName);
             editText = view.findViewById(R.id.editCmtContent);
 
-            for(int i=0; i < bowlCommentData.size(); i++){
-                UserService userService = RetrofitClient.getUser();
-                Call<User> call = userService.getUser(user.getUid());
-                int finalI = i;
-                Thread thread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            User result = call.execute().body();
-                            assert result != null;
-                            if (!bool[finalI]){
-                                if (result.getId() == bowlCommentData.get(finalI).getUserId()){
-                                    bool[finalI] = true;
-                                }else{
-                                    bool[finalI] = false;
-                                }
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+            for (int i =0; i < bowlCommentData.size(); i ++) {
+                if (bool[i] == false){
+                    if(bowlCommentData.get(i).getUid().equals(user.getUid())){
+                        bool[i] = true;
                     }
-                });
-                thread.start();
+                    else{
+                        bool[i] = false;
+                    }
+                }
             }
         }
     }
@@ -123,10 +109,6 @@ public class BowlCommentAdapter extends RecyclerView.Adapter<BowlCommentAdapter.
                 }
             });
 
-            for(int i =0; i< bowlCommentData.size(); i++){
-                System.out.println("comment = !!!!" + bool[i]);
-            }
-
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -136,6 +118,10 @@ public class BowlCommentAdapter extends RecyclerView.Adapter<BowlCommentAdapter.
             if (bool[position]) {
                 holder.commentDelete1.setVisibility(VISIBLE);
                 holder.commentUpdate1.setVisibility(VISIBLE);
+            }
+            else{
+                holder.commentDelete1.setVisibility(INVISIBLE);
+                holder.commentUpdate1.setVisibility(INVISIBLE);
             }
 
             commentUpdate.setOnClickListener(new View.OnClickListener() {

@@ -8,11 +8,16 @@ public class BowlCommunity {
     private User user;
     private String image;
     private String content;
+    private String uid;
     private String createdDate;
     private String updatedDate;
 
     public int getId() {
         return id;
+    }
+
+    public String getUid() {
+        return uid;
     }
 
     public User getUser() {
