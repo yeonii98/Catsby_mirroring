@@ -62,9 +62,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     boolean[] bool;
 
     ArrayList<Integer> likeCommunity = new ArrayList<>();
-    ArrayList<Integer> likeId = new ArrayList<>();
-
     HashMap<Integer, Integer> totalLike = new HashMap<>();
+    HashMap<Integer, Integer> likeByCommunity = new HashMap<>();
+
     public FeedAdapter(ArrayList<Feed> itemData) {
         this.itemData = itemData;
         bool = new boolean[itemData.size()];
@@ -139,8 +139,16 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                     ViewHolder.this.likeFullButton.setVisibility(View.GONE);
                     ViewHolder.this.totalCountLike.setText(Integer.toString(totalLike.get(itemData.get(getAdapterPosition()).getId())-1));
 
-                    int id = likeId.get(ViewHolder.this.getAdapterPosition());
-                    deleteLike(id, ViewHolder.this.getAdapterPosition());
+                    System.out.println("view = " + ViewHolder.this.getAdapterPosition());
+
+
+                    int lid = likeByCommunity.get(itemData.get(ViewHolder.this.getAdapterPosition()).getId());
+                    System.out.println("lid = " + lid);
+                    for(Integer i : likeByCommunity.keySet()){ //저장된 key값 확인
+                        System.out.println("[Key]:" + i + " [Value]:" + likeByCommunity.get(i));
+                    }
+
+                    deleteLike(lid, itemData.get(ViewHolder.this.getAdapterPosition()).getId());
 
                     totalLike.put(itemData.get(getAdapterPosition()).getId(), totalLike.get(itemData.get(getAdapterPosition()).getId())-1);
                 }
@@ -220,8 +228,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                         if(likeCommunity.size() == 0){
                             for (BowlLike bowlLike : bowlResult) {
                                 likeCommunity.add(bowlLike.getBowlCommunity().getId());
-
-                                likeId.add(bowlLike.getId());
+                                likeByCommunity.put(bowlLike.getBowlCommunity().getId(), bowlLike.getId());
 
                         }}
                         if (likeCommunity.contains(itemData.get(position).getId())){
@@ -309,11 +316,13 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         });
     }
 
-    private void deleteLike(int deleteLikeId, int idx){
+    private void deleteLike(int deleteLikeId, int communityId){
         bowlCommunityService.deleteLike(deleteLikeId).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
-                likeId.remove(idx);
+
+                likeByCommunity.remove(communityId);
+
             }
 
             @Override
@@ -368,7 +377,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             @Override
             public void onResponse(Call<BowlLikeResponse> call, Response<BowlLikeResponse> response) {
                 likeCommunity.add(communityId);
-                likeId.add(response.body().getId());
+                likeByCommunity.put(communityId, response.body().getId());
                 totalLike.put(communityId, totalLike.get(communityId)+1);
             }
 
