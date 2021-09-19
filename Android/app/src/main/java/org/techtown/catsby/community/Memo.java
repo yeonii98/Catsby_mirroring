@@ -58,6 +58,18 @@ public class Memo {
         this.img = img;
     }
 
+    public Memo(int id, String uid, String maintext, String subtext, String nickname, String date, Bitmap img, int likeCnt, int push) {
+        this.id = id;
+        this.uid = uid;
+        this.maintext = maintext;
+        this.subtext = subtext;
+        this.nickname = nickname;
+        this.date = date;
+        this.img = img;
+        this.push = push;
+        this.likeCnt = likeCnt;
+    }
+
     public Memo(String uid, String maintext, String subtext, String nickname, String date,Bitmap bm) {
         this.uid = uid;
         this.maintext = maintext;

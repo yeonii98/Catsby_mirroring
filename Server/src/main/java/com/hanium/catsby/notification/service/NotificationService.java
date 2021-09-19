@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,7 +28,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class NotificationService {
 
-    private static final String TITLE = "급여 완료";
+    private static final String TITLE = " 밥그릇에 급여 완료";
     private static final String BODY = "에 급여되었습니다.";
 
     private static final String MESSAGE1 = "님이";
@@ -62,21 +63,9 @@ public class NotificationService {
         }
 
         String title = bowl.getName() + TITLE;
-        String body = LocalDateTime.now() + BODY;
+        String body = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH시 mm분")) + BODY;
 
-        MulticastMessage message = MulticastMessage.builder()
-                .setAndroidConfig(AndroidConfig.builder()
-                        .setTtl(3600 * 1000)
-                        .setPriority(AndroidConfig.Priority.NORMAL)
-                        .setNotification(AndroidNotification.builder()
-                                .setTitle(title)
-                                .setBody(body)
-                                .setIcon("stock_ticker_update")
-                                .setColor("#ffffff")
-                                .build())
-                        .build())
-                .addAllTokens(registrationTokens)
-                .build();
+        MulticastMessage message = NotificationUtil.sendMulticastMessage(title, body, registrationTokens);
 
         BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
         System.out.println(response.getSuccessCount() + " messages were sent successfully");

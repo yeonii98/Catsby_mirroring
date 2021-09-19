@@ -52,7 +52,7 @@ public class FragmentCommunity extends Fragment {
     private TownCommunityService townCommunityService = RetrofitClient.getTownCommunityService();
     private TownCommentService townCommentService = RetrofitClient.getTownCommentService();
     private TownLikeService townLikeService = RetrofitClient.getTownLikeService();
-    private UserService userService = RetrofitClient.getUser();;
+    private UserService userService = RetrofitClient.getUser();
     private Bitmap bm = null;
     private String nickName;
     String uid = FirebaseAuth.getInstance().getUid();
@@ -79,8 +79,6 @@ public class FragmentCommunity extends Fragment {
 
         recyclerView = view.findViewById(R.id.recyclerview);
 
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-//        recyclerView.setLayoutManager(linearLayoutManager);
 
         recyclerAdapter = new RecyclerAdapter(memoList);
         recyclerView.setAdapter(recyclerAdapter);
@@ -221,19 +219,30 @@ public class FragmentCommunity extends Fragment {
             recyclerAdapter.addItem(memo);
             recyclerAdapter.notifyDataSetChanged();
 
-            recyclerView.smoothScrollToPosition(recyclerAdapter.getItemCount());
+            recyclerView.smoothScrollToPosition(recyclerAdapter.getItemCount());//특정 포지션으로 이동
         } else if (resultCode == 3) {
             String title = data.getStringExtra("title");
             String content = data.getStringExtra("content");
+            String date = data.getStringExtra("date");
             int position = data.getIntExtra("position", 0);
             String nickName = data.getStringExtra("nickName");
+            int likeCnt = data.getIntExtra("likeCnt",0);
+            int push = data.getIntExtra("push",0);
+            int id = data.getIntExtra("id",0);
+
             byte[] byteArray = data.getByteArrayExtra("byteArray");
             if (byteArray != null)
                 bm = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
             else
                 bm = null;
-            recyclerAdapter.updateItem(position, title, content, nickName, bm);
-            recyclerAdapter.notifyDataSetChanged();
+            System.out.println("---------bm--------"+bm);
+            System.out.println("true Or false"+bm==null);
+            Memo memo = new Memo(id,uid, title, content, nickName, date, bm, likeCnt, push);
+            recyclerAdapter.updateItem(memo, position);
+            recyclerAdapter.notifyItemChanged(position);
+            recyclerView.smoothScrollToPosition(position);
+//            recyclerAdapter.updateItem(position, title, content, nickName, bm);
+//            recyclerAdapter.notifyDataSetChanged();
         } else return;
 
     }
@@ -265,6 +274,11 @@ public class FragmentCommunity extends Fragment {
     }
 
     class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemViewHolder> {
+
+        @Override
+        public int getItemViewType(int position) {
+            return position;
+        }
 
         private List<Memo> listdata;
 
@@ -301,6 +315,7 @@ public class FragmentCommunity extends Fragment {
                 itemViewHolder.img.setVisibility(View.GONE);
             else
                 itemViewHolder.img.setImageBitmap(memo.getImg());
+
             if (!uid.equals(memo.getUid())) {
                 itemViewHolder.deleteBtn.setVisibility(View.GONE);
                 itemViewHolder.updateBtn.setVisibility(View.GONE);
@@ -357,6 +372,9 @@ public class FragmentCommunity extends Fragment {
                     intent.putExtra("title", listdata.get(position).getMaintext());
                     intent.putExtra("content", listdata.get(position).getSubtext());
                     intent.putExtra("id", listdata.get(position).getId());
+                    intent.putExtra("date", listdata.get(position).getDate());
+                    intent.putExtra("likeCnt", listdata.get(position).getLikeCnt());
+                    intent.putExtra("push", listdata.get(position).getPush());
 
                     byte[] byteArray = new byte[0];
                     if (listdata.get(position).getImg() != null) {
@@ -397,18 +415,6 @@ public class FragmentCommunity extends Fragment {
                         startActivity(intent);
                     }
                 });
-
-            /* 홈화면 말풍선에 댓글 리스트 연동 시키기
-            itemViewHolder.mainchatbubble.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), BowlCommentActivity.class);
-                    intent.putExtra("id",listdata.get(position).getId());
-                    System.out.println(listdata.get(position).getId());
-                    startActivity(intent);
-                }
-            }); */
-
 
                 itemViewHolder.commentBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -503,17 +509,21 @@ public class FragmentCommunity extends Fragment {
             listdata.add(memo);
         }
 
+        void updateItem(Memo memo,int position){
+            listdata.set(position, memo);
+        }
+
         void removeItem(int position) {
             listdata.remove(position);
         }
 
-        public void updateItem(int position, String title, String content, String nickName, Bitmap bm) {
-            listdata.get(position).setMaintext(title);
-            listdata.get(position).setSubtext(content);
-            listdata.get(position).setNickname(nickName);
-            if (bm != null)
-                listdata.get(position).setImg(bm);
-        }
+//        public void updateItem(int position, String title, String content, String nickName, Bitmap bm) {
+//            listdata.get(position).setMaintext(title);
+//            listdata.get(position).setSubtext(content);
+//            listdata.get(position).setNickname(nickName);
+//            if (bm != null)
+//                listdata.get(position).setImg(bm);
+//        }
 
         class ItemViewHolder extends RecyclerView.ViewHolder {
             private TextView nickname;

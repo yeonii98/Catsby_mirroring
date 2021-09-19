@@ -5,26 +5,20 @@ import com.hanium.catsby.cat.mapper.CatProfileMapper;
 
 
 import com.hanium.catsby.cat.model.CatProfile;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.hanium.catsby.user.domain.Users;
+import com.hanium.catsby.user.repository.UserRepository;
+import com.hanium.catsby.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PostConstruct;
-import java.awt.*;
-import java.sql.Blob;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
+@RequiredArgsConstructor
 public class CatProfileController {
 
-    private CatProfileMapper mapper;
-
-    public CatProfileController(CatProfileMapper mapper) {
-        this.mapper = mapper;
-    }
+    private final CatProfileMapper mapper;
+    private final UserRepository userRepository;
 
     //고양이 목록
     @GetMapping("/cat")
@@ -41,6 +35,7 @@ public class CatProfileController {
     //고양이 등록
     @PostMapping("/cat/register")
     public void putCatProfile(
+            @RequestParam(value = "uid", required = false) String uid,
             @RequestParam(value = "name") String name,
             @RequestParam(value = "health", required = false) String health,
             @RequestParam(value = "address", required = false) String address,
@@ -49,8 +44,10 @@ public class CatProfileController {
             @RequestParam(value = "content", required = false) String content,
             @RequestParam(value = "spayed", required = false) int spayed)
     {
-        CatProfile catProfile = new CatProfile(name, health, address, gender, image, content, spayed);
-        mapper.insertCatProfile(name,health,address,gender,image,content,spayed);
+        Users user = userRepository.findUserByUid(uid);
+
+        CatProfile catProfile = new CatProfile(user.getId(), name, health, address, gender, image, content, spayed);
+        mapper.insertCatProfile(user.getId(), name,health,address,gender,image,content,spayed);
 
     }
 

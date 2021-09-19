@@ -6,6 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TemporalType;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Repository
@@ -58,5 +62,17 @@ public class BowlRepository {
                         " where b.info = :info", Bowl.class)
                 .setParameter("info", info)
                 .getResultList();
+    }
+
+    public List<Bowl> findBowlsByLastFeeding() {
+        LocalDateTime beforeTime = LocalDateTime.now().minusDays(1);
+
+        return em.createQuery(
+                "select b" +
+                        " from Bowl b" +
+                        " where b.lastFeeding >= :before" +
+                        " or b.lastFeeding is null", Bowl.class)
+        .setParameter("before", beforeTime)
+        .getResultList();
     }
 }

@@ -1,6 +1,7 @@
 package org.techtown.catsby.setting
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -18,7 +19,9 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.setFragmentResultListener
 import com.example.catsbe.account
 import com.example.catsbe.alert
+import android.content.DialogInterface
 import kotlinx.android.synthetic.main.fragment_setting.*
+import kotlinx.android.synthetic.main.write_main_bowl.*
 import org.techtown.catsby.qrcode.LoadingActivity
 import org.techtown.catsby.R
 
@@ -102,10 +105,31 @@ class FragmentSetting : Fragment() {
             //inflater.inflate(R.layout.fragment_writing_list, container, false)
         }
 
-        //프로필 이미지 버튼 클릭 시 (프로필 사진 변경)
+        //프로필 이미지 버튼 클릭 시 (프로필 사진 변경 알림창)
         imageButton.setOnClickListener {
-            openGallery()
-        }
+            var builder = AlertDialog.Builder(activity)
+            builder.setTitle("알림")
+            builder.setMessage("프로필 사진을 변경하시겠습니까?")
+            builder.setIcon(R.mipmap.ic_launcher)
+
+            // 버튼 클릭시에 무슨 작업을 할 것인가!
+            var listener = object : DialogInterface.OnClickListener {
+                override fun onClick(p0: DialogInterface?, p1: Int) {
+                    when (p1) {
+                        DialogInterface.BUTTON_POSITIVE ->
+                            tv1.text = "BUTTON_POSITIVE"
+                        DialogInterface.BUTTON_NEGATIVE ->
+                            tv1.text = "BUTTON_NEGATIVE"
+                    }
+                }
+            }
+
+            builder.setPositiveButton("네", DialogInterface.OnClickListener { dialog, which ->
+                openGallery()
+            })
+                builder.setNegativeButton("아니오", listener)
+                builder.show()
+            }
 
         //닉네임 수정 버튼
         editButton.setOnClickListener {
