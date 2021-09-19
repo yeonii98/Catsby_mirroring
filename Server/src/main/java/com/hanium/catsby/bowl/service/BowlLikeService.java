@@ -35,6 +35,11 @@ public class BowlLikeService {
         return bowlLikeRepository.findLikeByUserId(userId);
     }
 
+    @Transactional(readOnly = true)
+    public int findLikesByCommunity(Long communityId){
+        return bowlLikeRepository.findLikeByCommunityId(communityId);
+    }
+
 
     @Transactional
     public void delete(Long id) {

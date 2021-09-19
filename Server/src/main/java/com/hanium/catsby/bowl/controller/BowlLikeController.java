@@ -1,13 +1,10 @@
 
 package com.hanium.catsby.bowl.controller;
 
-import com.hanium.catsby.bowl.domain.BowlCommunity;
 import com.hanium.catsby.bowl.domain.BowlLike;
 import com.hanium.catsby.bowl.service.BowlLikeService;
-import com.hanium.catsby.notification.domain.NotificationType;
-import com.hanium.catsby.notification.service.NotificationService;
 import com.hanium.catsby.user.service.UserService;
-import com.hanium.catsby.util.NotificationUtil;
+
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -35,11 +32,16 @@ public class BowlLikeController {
     @Data
     static class CreateBowlLikeResponse{
         private Long id;
-
         public CreateBowlLikeResponse(Long id){
             this.id = id;
         }
     }
+
+    @GetMapping("/bowl-like/community/{communityId}")
+    public int bowlLikeByCommunity(@PathVariable("communityId") Long communityId){
+        return bowlLikeService.findLikesByCommunity(communityId);
+    }
+
 
     @GetMapping("/bowl-likes/{uid}")
     public List<BowlLike> bowlLKikeByUid(@PathVariable("uid") String uid) {

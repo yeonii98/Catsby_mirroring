@@ -7,6 +7,7 @@ import org.techtown.catsby.community.data.service.TownLikeService;
 import org.techtown.catsby.qrcode.data.service.QRBowlService;
 import org.techtown.catsby.login.data.service.LoginService;
 import org.techtown.catsby.notification.data.service.NotificationService;
+import org.techtown.catsby.retrofit.dto.BowlCommunity;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
 import org.techtown.catsby.retrofit.service.BowlService;
 import org.techtown.catsby.retrofit.service.UserService;
@@ -23,9 +24,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class RetrofitClient {
-    private static final String BASE_URL =  "http://15.164.36.183:8080/";
+    private static final String BASE_URL =  "http://192.168.0.12:8080/";
 
-    private static Retrofit getInstacne() {
+    private static Retrofit getInstance() {
         Gson gson = new GsonBuilder().setLenient().create();
 
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
@@ -43,43 +44,43 @@ public class RetrofitClient {
     }
 
     public static NotificationService getNotificationService() {
-        return getInstacne().create(NotificationService.class);
+        return getInstance().create(NotificationService.class);
     }
 
     public static LoginService getLoginService() {
-        return getInstacne().create(LoginService.class);
+        return getInstance().create(LoginService.class);
     }
 
     public static BowlService getBowlService() {
-        return getInstacne().create(BowlService.class);
+        return getInstance().create(BowlService.class);
     }
 
     public static BowlCommunityService getBowlCommunityService() {
-        return getInstacne().create(BowlCommunityService.class);
+        return getInstance().create(BowlCommunityService.class);
     }
 
     public static UserService getUser() {
-        return getInstacne().create(UserService.class);
+        return getInstance().create(UserService.class);
     }
 
     public static TownCommunityService getTownCommunityService() {
-        return getInstacne().create(TownCommunityService.class);
+        return getInstance().create(TownCommunityService.class);
     }
 
     public static MyWritingService getMyWritingService() {
-        return getInstacne().create(MyWritingService.class);
+        return getInstance().create(MyWritingService.class);
     }
 
     public static TownCommentService getTownCommentService() {
-        return getInstacne().create(TownCommentService.class);
+        return getInstance().create(TownCommentService.class);
     }
 
     public static TownLikeService getTownLikeService() {
-        return getInstacne().create(TownLikeService.class);
+        return getInstance().create(TownLikeService.class);
     }
 
     public static QRBowlService getQrBowlService() {
-        return getInstacne().create(QRBowlService.class);
+        return getInstance().create(QRBowlService.class);
     }
 
 }

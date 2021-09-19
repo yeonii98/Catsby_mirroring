@@ -127,6 +127,12 @@
             android:id="@+id/likeFull"
             android:visibility="gone"/>
 
+        <TextView
+            android:id="@+id/countLikes"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:text="0" />
+
     </LinearLayout>
 
     <LinearLayout

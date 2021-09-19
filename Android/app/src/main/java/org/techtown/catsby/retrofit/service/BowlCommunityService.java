@@ -7,6 +7,7 @@ import org.techtown.catsby.retrofit.dto.BowlCommunity;
 import org.techtown.catsby.retrofit.dto.BowlCommunityPost;
 import org.techtown.catsby.retrofit.dto.BowlCommunityUpdatePost;
 import org.techtown.catsby.retrofit.dto.BowlLike;
+import org.techtown.catsby.retrofit.dto.BowlLikeResponse;
 
 import java.util.HashMap;
 import java.util.List;
@@ -40,8 +41,8 @@ public interface BowlCommunityService {
     @PUT("/bowl-community/{communityId}")
     Call<Void> updateCommunity(@Path("communityId") int communityId, @Body BowlCommunityUpdatePost bowlCommunityUpdatePost);
 
-    //@GET("/bowl-communities/like/{communityId}")
-    //Call<Long> getLikes(@Path("communityId") Long communityId);
+    @GET("/bowl-like/community/{communityId}")
+    Call<Integer> getTotalLikes(@Path("communityId") int communityId);
 
     @POST("/bowl-comment/{uid}/{communityId}")
     Call<List<BowlComment>> saveComment(@Path("uid") String uid, @Path("communityId") int communityId, @Body BowlCommentPost bowlCommentPost);
@@ -56,7 +57,7 @@ public interface BowlCommunityService {
     Call<Void> deleteComment(@Path("commentId") long commentId);
 
     @POST("/bowl-like/{uid}/{communityId}")
-    Call<List<BowlLike>> saveLike(@Path("uid") String uid, @Path("communityId") int communityId);
+    Call<BowlLikeResponse> saveLike(@Path("uid") String uid, @Path("communityId") int communityId);
 
     @GET("/bowl-likes/{uid}")
     Call<List<BowlLike>> getLikes(@Path("uid") String userId);

@@ -37,4 +37,6 @@ public class BowlCommunity extends BaseTimeEntity {
     @JoinColumn(name = "bowl_id")
     private Bowl bowl;
 
+    private String uid;
+
 }
