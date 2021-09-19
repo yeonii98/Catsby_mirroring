@@ -2,7 +2,6 @@ package org.techtown.catsby.home;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -31,7 +30,6 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -48,7 +46,7 @@ import retrofit2.Response;
 
 import static java.time.LocalDateTime.now;
 
-public class FragmentBowl extends Fragment implements BowlAdapter.BowlAdapterClickListener {
+public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterClickListener {
     private Context mContext;
     private FragmentManager fragmentManager;
 
@@ -89,7 +87,7 @@ public class FragmentBowl extends Fragment implements BowlAdapter.BowlAdapterCli
                     view = null;
                     bowlList = new ArrayList<>();
                     FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.detach(FragmentBowl.this).attach(FragmentBowl.this).commit();
+                    ft.detach(BowlFragment.this).attach(BowlFragment.this).commit();
                 }
             });
         }
@@ -174,7 +172,7 @@ public class FragmentBowl extends Fragment implements BowlAdapter.BowlAdapterCli
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_write:
-                Intent intent = new Intent(getActivity(), WriteBowl.class);
+                Intent intent = new Intent(getActivity(), BowlWrite.class);
                 startActivity(intent);
                 break;
 

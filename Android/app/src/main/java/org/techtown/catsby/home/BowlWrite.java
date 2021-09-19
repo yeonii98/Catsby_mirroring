@@ -6,7 +6,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
 import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -33,7 +32,6 @@ import com.gun0912.tedpermission.TedPermission;
 import android.Manifest;
 
 import org.techtown.catsby.R;
-import org.techtown.catsby.home.FragmentBowl;
 import org.techtown.catsby.home.adapter.BowlCheckListAdapter;
 import org.techtown.catsby.home.model.Bowl;
 import org.techtown.catsby.retrofit.RetrofitClient;
@@ -59,7 +57,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class WriteBowl extends AppCompatActivity{
+public class BowlWrite extends AppCompatActivity{
     ListView listview ;
 
     private static final String TAG = "blackjin";
