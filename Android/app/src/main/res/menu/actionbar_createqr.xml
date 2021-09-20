@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_createQr"
-        android:icon="@drawable/add"
+        android:icon="@drawable/ic_baseline_add_box_24"
         android:title="createQR"
         app:showAsAction="always"/>
 

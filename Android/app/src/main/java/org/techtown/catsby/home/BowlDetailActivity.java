@@ -2,6 +2,7 @@ package org.techtown.catsby.home;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -51,7 +52,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BowlActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyCallback {
     private FragmentManager fragmentManager;
     private MapFragment mapFragment;
     private GoogleMap mgoogleMap;
@@ -82,7 +83,12 @@ public class BowlActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bowl);
+        setContentView(R.layout.activity_bowl_detail);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("밥그릇 상세 정보");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         imageView = (ImageView) findViewById(R.id.imageView);
 //        imageView.setImageResource(R.drawable.ic_launcher_background);

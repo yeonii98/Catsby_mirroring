@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.techtown.catsby.R;
-import org.techtown.catsby.home.BowlActivity;
+import org.techtown.catsby.home.BowlDetailActivity;
 import org.techtown.catsby.home.model.Bowl;
 
 import java.util.ArrayList;
@@ -65,7 +65,7 @@ public class BowlAdapter extends RecyclerView.Adapter<BowlAdapter.ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     TextView name = v.findViewById(R.id.bowl_name);
-                    Intent intent = new Intent(v.getContext(), BowlActivity.class);
+                    Intent intent = new Intent(v.getContext(), BowlDetailActivity.class);
 
                     for (int i =0; i< itemData.size(); i++){
                         if (itemData.get(i).getName() == name.getText()){
