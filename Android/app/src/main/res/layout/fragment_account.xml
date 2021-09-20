@@ -46,7 +46,6 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="15dp"
-                android:text="catsbe@naver.com"
                 android:textSize="15dp" />
         </LinearLayout>
     </LinearLayout>
