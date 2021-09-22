@@ -85,7 +85,7 @@ public class BowlWrite extends AppCompatActivity{
     File image;
     ImageView contextView;
     EditText postContext;
-    int[] bowlImg = {R.drawable.ic_baseline_favorite_red, R.drawable.ic_baseline_star_border_24, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
+    //int[] bowlImg = {R.drawable.ic_baseline_favorite_red, R.drawable.ic_baseline_star_border_24, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -190,14 +190,14 @@ public class BowlWrite extends AppCompatActivity{
 
                     for(int i =0; i < result.size(); i++){
                         bowlNameArray.add(result.getBowls().get(i).getName());
-                        Bowl bowl = new Bowl(result.getBowls().get(i).getId(), bowlImg[i] , result.getBowls().get(i).getName(), result.getBowls().get(i).getInfo(), result.getBowls().get(i).getAddress(), result.getBowls().get(i).getUpdated_time());
+                        Bowl bowl = new Bowl(result.getBowls().get(i).getId(), R.drawable.bowl, result.getBowls().get(i).getName(), result.getBowls().get(i).getInfo(), result.getBowls().get(i).getAddress(), result.getBowls().get(i).getUpdated_time());
                         bowlList.add(bowl);
                     }
 
                     adapter = new BowlCheckListAdapter(bowlList, allContext);
                     // 첫 번째 아이템 추가.
                     for (int i =0; i < bowlNameArray.size(); i++){
-                        adapter.addItem(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_indicator_active), bowlNameArray.get(i), i) ;
+                        adapter.addItem(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bowl), bowlNameArray.get(i), i) ;
                     }
 
                     listview = findViewById(R.id.listview1);
