@@ -165,6 +165,7 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.actionbar_createqr, menu);
         inflater.inflate(R.menu.actionbar_write, menu);
         inflater.inflate(R.menu.actionbar_qrscan, menu);
     }
