@@ -25,6 +25,8 @@ import org.techtown.catsby.retrofit.service.BowlCommunityService;
 import org.techtown.catsby.retrofit.service.BowlService;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 
@@ -119,11 +121,9 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
 
             @Override
             public void onFailure(Call<BowlList> call, Throwable t) {
-                System.out.println("t.getMessage() loadBowls= " + t.getMessage());
+                System.out.println("t.getMessage() = " + t.getMessage());
             }
         });
-
-
     }
 
     private void loadCommunity(int bowlId) {
@@ -131,8 +131,10 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
             @Override
             public void onResponse(Call<List<BowlCommunity>> call, Response<List<BowlCommunity>> response) {
                 if(response.isSuccessful()) {
-                    List<BowlCommunity> BowlCommunityResult = response.body();
+                    ArrayList<BowlCommunity> BowlCommunityResult = (ArrayList<BowlCommunity>) response.body();
 
+                    DateDescending dateAscending = new DateDescending();
+                    Collections.sort(BowlCommunityResult, dateAscending);
                     ArrayList<Feed> feedList= new ArrayList<>();
 
                     for (int i=0; i < BowlCommunityResult.size(); i++) {
@@ -182,5 +184,15 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
                 startActivity(intent2);
         }
         return super.onOptionsItemSelected(item);
+    }
+}
+
+
+class DateDescending implements Comparator<BowlCommunity> {
+    @Override
+    public int compare(BowlCommunity bc1, BowlCommunity bc2) {
+        String temp1 = bc1.getCreatedDate();
+        String temp2 = bc2.getCreatedDate();
+        return temp2.compareTo(temp1);
     }
 }
