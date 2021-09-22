@@ -282,7 +282,6 @@ public class BowlActivity extends AppCompatActivity implements OnMapReadyCallbac
                     marker.title(response.body().getName());
 
                     mgoogleMap.addMarker(marker);
-
                     mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, 16));
 
                 }

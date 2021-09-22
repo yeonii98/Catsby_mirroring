@@ -33,6 +33,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
+
         <activity android:name=".home.BowlCommentActivity"></activity>
         <activity android:name=".community.CommentlistActivity" />
         <activity android:name=".community.TownCommentListActivity" />

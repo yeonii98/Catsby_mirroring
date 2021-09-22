@@ -63,7 +63,7 @@
     <ImageView
         android:id="@+id/feed_img"
         android:layout_width="match_parent"
-        android:layout_height="235dp"
+        android:layout_height="285dp"
         android:scaleType="fitXY" />
 
     <TextView
