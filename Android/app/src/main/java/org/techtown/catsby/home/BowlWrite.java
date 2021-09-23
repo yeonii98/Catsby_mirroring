@@ -85,7 +85,7 @@ public class BowlWrite extends AppCompatActivity{
     File image;
     ImageView contextView;
     EditText postContext;
-    //int[] bowlImg = {R.drawable.ic_baseline_favorite_red, R.drawable.ic_baseline_star_border_24, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
+    int[] bowlImg = {R.drawable.ic_baseline_favorite_red, R.drawable.ic_baseline_star_border_24, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -197,7 +197,7 @@ public class BowlWrite extends AppCompatActivity{
                     adapter = new BowlCheckListAdapter(bowlList, allContext);
                     // 첫 번째 아이템 추가.
                     for (int i =0; i < bowlNameArray.size(); i++){
-                        adapter.addItem(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bowl), bowlNameArray.get(i), i) ;
+                        adapter.addItem(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_indicator_active), bowlNameArray.get(i), i) ;
                     }
 
                     listview = findViewById(R.id.listview1);

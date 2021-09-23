@@ -4,12 +4,7 @@
 
     <item
         android:id="@+id/action_createQr"
-<<<<<<< HEAD:Android/app/src/main/res/menu/toolbar_createqr.xml
         android:icon="@drawable/bowl"
-=======
-        android:icon="@drawable/ic_baseline_add_box_24"
->>>>>>> b7c510476a3fd9b0b86377a876ceb41d67e51582:Android/app/src/main/res/menu/actionbar_createqr.xml
         android:title="createQR"
         app:showAsAction="always"/>
-
 </menu>
