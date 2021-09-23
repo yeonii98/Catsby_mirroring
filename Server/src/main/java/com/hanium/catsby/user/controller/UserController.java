@@ -54,9 +54,9 @@ public class UserController {
         return new UpdateUserAddressResponse(findUser.getId(), findUser.getAddress());
     }
 
-    @PutMapping("/user/nickname/{uid}")
-    public UpdateUserNicknameResponse updateUserNicknameResponse(@PathVariable("uid") String uid, @RequestBody UpdateUserNicknameRequest request) {
-        userService.updateNickname(uid, request.getNickname());
+    @PatchMapping("/user/nickname/{uid}")
+    public UpdateUserNicknameResponse updateUserNicknameResponse(@PathVariable("uid") String uid, @RequestParam String nickname) {
+        userService.updateNickname(uid, nickname);
         Users findUser = userService.findUsersByUid(uid);
         return new UpdateUserNicknameResponse(findUser.getId(), findUser.getNickname());
     }
@@ -72,12 +72,6 @@ public class UserController {
     static class UpdateUserAddressResponse{
         private Long id;
         private String address;
-    }
-
-    @Data
-    static class UpdateUserNicknameRequest{
-        private Long id;
-        private String nickname;
     }
 
     @Data
