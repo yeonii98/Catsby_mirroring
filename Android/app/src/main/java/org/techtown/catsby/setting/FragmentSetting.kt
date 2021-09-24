@@ -80,10 +80,7 @@ class FragmentSetting : Fragment() {
         editNickName = view.findViewById<EditText>(R.id.editNickName)
         nickName = view.findViewById<TextView>(R.id.nickName)
         local = view.findViewById<TextView>(R.id.local)
-//        personalNum = view.findViewById<TextView>(R.id.personalNum)
         editButton = view.findViewById<Button>(R.id.editButton)
-        //backButton = findViewById<Button>(R.id.backButton)
-
         alertManage = view.findViewById<TextView>(R.id.alertManage)
         accountManage = view.findViewById<TextView>(R.id.accountManage)
         writingList = view.findViewById<TextView>(R.id.writingList)

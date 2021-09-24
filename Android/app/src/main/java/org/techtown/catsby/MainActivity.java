@@ -18,7 +18,8 @@ import org.techtown.catsby.community.FragmentCommunity;
 import org.techtown.catsby.cattown.FragmentCatTown;
 import org.techtown.catsby.home.BowlFragment;
 import org.techtown.catsby.notification.NotificationActivity;
-import org.techtown.catsby.setting.FragmentSetting;
+//import org.techtown.catsby.setting.FragmentSetting;
+import org.techtown.catsby.setting.FragmentSetting_New;
 
 import com.pedro.library.AutoPermissions;
 import com.pedro.library.AutoPermissionsListener;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
     private final BowlFragment fragmenthome = new BowlFragment();
     private final FragmentCatTown fragmentcattown = new FragmentCatTown();
     private final FragmentCommunity fragmentcommunity = new FragmentCommunity();
-    private final FragmentSetting fragmentsetting = new FragmentSetting();
+    private final FragmentSetting_New fragmentsetting = new FragmentSetting_New();
     Menu menu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
