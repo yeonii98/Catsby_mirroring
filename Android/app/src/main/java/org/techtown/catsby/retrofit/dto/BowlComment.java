@@ -9,6 +9,7 @@ public class BowlComment implements Serializable, Parcelable {
     private int id;
     private User user;
     private BowlCommunity bowlCommunity;
+    private String uid;
     private String content;
     private String createDate;
     private String updateDate;
@@ -16,6 +17,7 @@ public class BowlComment implements Serializable, Parcelable {
     protected BowlComment(Parcel in) {
         id = in.readInt();
         content = in.readString();
+        uid = in.readString();
         createDate = in.readString();
         updateDate = in.readString();
     }
@@ -34,6 +36,10 @@ public class BowlComment implements Serializable, Parcelable {
 
     public int getId() {
         return id;
+    }
+
+    public String getUid() {
+        return uid;
     }
 
     public User getUser() {
@@ -65,6 +71,7 @@ public class BowlComment implements Serializable, Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeInt(id);
         parcel.writeString(content);
+        parcel.writeString(uid);
         parcel.writeString(createDate);
         parcel.writeString(updateDate);
     }

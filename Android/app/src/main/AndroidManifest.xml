@@ -29,16 +29,17 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true">
+
         <activity android:name=".home.BowlCommentActivity"></activity>
         <activity android:name=".community.CommentlistActivity" />
         <activity android:name=".community.TownCommentListActivity" />
         <activity android:name=".community.AddActivity" />
         <activity android:name=".community.UpdateActivity" />
-        <activity android:name=".Writemain" />
+        <activity android:name=".home.BowlWrite" />
         <activity android:name=".qrcode.QrcodeCreateActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
@@ -70,7 +71,9 @@
 
         <activity android:name=".MainActivity" />
         <activity android:name=".login.LoginActivity" />
-        <activity android:name=".home.BowlActivity" />
+        <activity
+            android:name=".home.BowlDetailActivity"
+            android:parentActivityName=".MainActivity" />
 
         <activity android:name=".qrcode.LoadingActivity" />
         <activity android:name=".qrcode.ScannerActivity" />

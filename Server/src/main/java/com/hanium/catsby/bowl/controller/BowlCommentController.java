@@ -33,6 +33,7 @@ public class BowlCommentController {
         Long userId = userService.findUserByUid(uid);
         BowlComment bowlComment = new BowlComment();
         bowlComment.setContent(request.getContent());
+        bowlComment.setUid(uid);
 
         Long id = bowlCommentService.savaComment(bowlComment, userId, communityId);
         String content = bowlComment.getBowlCommunity().getContent();

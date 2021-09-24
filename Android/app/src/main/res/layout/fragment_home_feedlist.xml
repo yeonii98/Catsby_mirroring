@@ -63,7 +63,7 @@
     <ImageView
         android:id="@+id/feed_img"
         android:layout_width="match_parent"
-        android:layout_height="235dp"
+        android:layout_height="285dp"
         android:scaleType="fitXY" />
 
     <TextView
@@ -126,6 +126,12 @@
             android:src="@drawable/ic_baseline_favorite_red"
             android:id="@+id/likeFull"
             android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/countLikes"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:text="0" />
 
     </LinearLayout>
 

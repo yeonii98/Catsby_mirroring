@@ -62,7 +62,6 @@
 
     </LinearLayout>
 
-
     <Button
         android:id="@+id/idBtnGenerateQR"
         android:layout_width="match_parent"

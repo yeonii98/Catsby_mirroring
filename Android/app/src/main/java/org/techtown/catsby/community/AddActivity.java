@@ -32,6 +32,7 @@ import org.techtown.catsby.R;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.community.data.model.TownCommunity;
 import org.techtown.catsby.community.data.service.TownCommunityService;
+import org.techtown.catsby.retrofit.service.UserService;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -55,6 +56,7 @@ public class AddActivity extends AppCompatActivity {
     private File tempFile;
     private TownCommunity townCommunity;
     private CheckBox checkBox;
+    private UserService userService = RetrofitClient.getUser();
 
     byte[] byteArray;
     EditText edtTitle, edtContent;
@@ -147,6 +149,7 @@ public class AddActivity extends AppCompatActivity {
                     int idx = user.getEmail().indexOf("@");
                     intent.putExtra("uid", uid);
                     intent.putExtra("byteArray", byteArray);
+
 
                     if(!checkBox.isChecked())
                         intent.putExtra("nickName", user.getEmail().substring(0, idx));

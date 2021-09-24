@@ -1,6 +1,7 @@
 package org.techtown.catsby.setting
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -9,18 +10,25 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.setFragmentResultListener
 import com.example.catsbe.account
 import com.example.catsbe.alert
+import android.content.DialogInterface
+import android.widget.*
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.fragment_setting.*
+import kotlinx.android.synthetic.main.write_main_bowl.*
 import org.techtown.catsby.qrcode.LoadingActivity
 import org.techtown.catsby.R
+import org.techtown.catsby.retrofit.RetrofitClient
+import org.techtown.catsby.retrofit.dto.NicknameResponse
+import org.techtown.catsby.retrofit.dto.User
+import org.techtown.catsby.retrofit.service.UserService
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -36,6 +44,8 @@ class FragmentSetting : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    private var userService = RetrofitClient.getUser()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +80,7 @@ class FragmentSetting : Fragment() {
         editNickName = view.findViewById<EditText>(R.id.editNickName)
         nickName = view.findViewById<TextView>(R.id.nickName)
         local = view.findViewById<TextView>(R.id.local)
-        personalNum = view.findViewById<TextView>(R.id.personalNum)
+//        personalNum = view.findViewById<TextView>(R.id.personalNum)
         editButton = view.findViewById<Button>(R.id.editButton)
         //backButton = findViewById<Button>(R.id.backButton)
 
@@ -102,13 +112,35 @@ class FragmentSetting : Fragment() {
             //inflater.inflate(R.layout.fragment_writing_list, container, false)
         }
 
-        //프로필 이미지 버튼 클릭 시 (프로필 사진 변경)
+        //프로필 이미지 버튼 클릭 시 (프로필 사진 변경 알림창)
         imageButton.setOnClickListener {
-            openGallery()
-        }
+            var builder = AlertDialog.Builder(activity)
+            builder.setTitle("알림")
+            builder.setMessage("프로필 사진을 변경하시겠습니까?")
+            builder.setIcon(R.mipmap.ic_launcher)
+
+            // 버튼 클릭시에 무슨 작업을 할 것인가!
+            var listener = object : DialogInterface.OnClickListener {
+                override fun onClick(p0: DialogInterface?, p1: Int) {
+                    when (p1) {
+                        DialogInterface.BUTTON_POSITIVE ->
+                            tv1.text = "BUTTON_POSITIVE"
+                        DialogInterface.BUTTON_NEGATIVE ->
+                            tv1.text = "BUTTON_NEGATIVE"
+                    }
+                }
+            }
+
+            builder.setPositiveButton("네", DialogInterface.OnClickListener { dialog, which ->
+                openGallery()
+            })
+                builder.setNegativeButton("아니오", listener)
+                builder.show()
+            }
 
         //닉네임 수정 버튼
         editButton.setOnClickListener {
+
             //수정 버튼 클릭 시
             if (editButton.text.equals("수정")) {
                 nickName.setVisibility(View.GONE)
@@ -122,10 +154,38 @@ class FragmentSetting : Fragment() {
                 nickName.setVisibility(View.VISIBLE)
                 editNickName.setVisibility(View.GONE)
                 editButton.setText("수정")
+
+                updateNickname(nickName.text as String)
+            }
+        }
+
+        loadUser();
+    }
+
+    private fun updateNickname(nickname: String) {
+        userService.updateNickname(FirebaseAuth.getInstance().uid, nickname).enqueue(object : Callback<NicknameResponse> {
+            override fun onResponse(call: Call<NicknameResponse>, response: Response<NicknameResponse>) {
+                Toast.makeText(activity, "닉네임이 변경 되었습니다.", Toast.LENGTH_SHORT).show()
             }
 
+            override fun onFailure(call: Call<NicknameResponse>, t: Throwable) {
+            }
+        })
 
-        }
+    }
+
+    private fun loadUser() {
+        userService.getUser(FirebaseAuth.getInstance().uid).enqueue(object : Callback<User> {
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+                nickName.setText(response.body()?.nickname)
+                local.setText(response.body()?.address ?: "동네를 설정하세요")
+
+            }
+
+            override fun onFailure(call: Call<User>, t: Throwable) {
+            }
+
+        })
 
     }
 

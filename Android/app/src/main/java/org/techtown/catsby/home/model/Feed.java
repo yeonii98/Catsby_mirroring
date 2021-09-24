@@ -12,39 +12,30 @@ public class Feed {
     private String nickName;
     private byte[] img;
     private String content;
-    private Long like;
-    //private List<BowlComment> bowlComments;
+    private String uid;
+    private String createDate;
 
-    //public List<BowlComment> getBowlComments() {
-    //    return this.bowlComments;
-    //}
+    public String getCreateDate() {
+        return createDate;
+    }
 
-    /*
-    public Feed(int id, int bowlImg, int userId, String nickName, byte[] img, String content, List<BowlComment> bowlComments) {
+    public Feed(int id, int bowlImg, int userId, String nickName, byte[] img, String content, String uid, String createDate) {
         this.id = id;
         this.userId = userId;
         this.bowlImg = bowlImg;
         this.nickName= nickName;
         this.img = img;
         this.content = content;
-        this.bowlComments = bowlComments;
-    }*/
+        this.uid = uid;
+        this.createDate=createDate;
+    }
 
-    public Feed(int id, int bowlImg, int userId, String nickName, byte[] img, String content) {
-        this.id = id;
-        this.userId = userId;
-        this.bowlImg = bowlImg;
-        this.nickName= nickName;
-        this.img = img;
-        this.content = content;
+    public String getUid() {
+        return uid;
     }
 
     public int getUserId() {
         return userId;
-    }
-
-    public long getLike(){
-        return like;
     }
 
     public int getId() {
