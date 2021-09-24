@@ -100,6 +100,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             putButton = (Button)itemView.findViewById(R.id.putButton);
             putFinishButton = (Button)itemView.findViewById(R.id.putFinishButton);
             textView = (TextView)itemView.findViewById(R.id.feed_content);
+            EditText commentEditTextPost = view.findViewById(R.id.post_title_edit);
 
             itemView.findViewById(R.id.putButton).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -174,6 +175,20 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 }
             });
 
+            itemView.findViewById(R.id.post_save_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    String contextMessage = commentEditTextPost.getText().toString();
+                    if (!contextMessage.equals("")) {
+                        postComment(user.getUid(), itemData.get(getAdapterPosition()).getId(), contextMessage);
+                        commentEditTextPost.setText("");
+                    }else{
+                        Toast.makeText(context.getApplicationContext(),"댓글을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
             for (int i =0; i < itemData.size(); i++){
                 loadTotalLike(itemData.get(i).getId());
             }
@@ -200,7 +215,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull FeedAdapter.ViewHolder holder, int position) {
 
-        EditText commentEditTextPost = view.findViewById(R.id.post_title_edit);
+
         Feed item = itemData.get(position);
         holder.bowlImg.setImageResource(item.getBowlImg());
         holder.userName.setText(item.getNickName());
@@ -263,20 +278,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             holder.putButton1.setVisibility(View.GONE);
             holder.deleteButton1.setVisibility(View.GONE);
         }
-
-
-        postButton.setOnClickListener(new Button.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                String contextMessage = commentEditTextPost.getText().toString();
-                if (!contextMessage.equals("")) {
-                    postComment(user.getUid(), itemData.get(position).getId(), contextMessage);
-                    commentEditTextPost.setText("");
-                }else{
-                    Toast.makeText(context.getApplicationContext(),"댓글을 입력해 주세요.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
     }
 
     private void loadTotalLike(int communityId){
