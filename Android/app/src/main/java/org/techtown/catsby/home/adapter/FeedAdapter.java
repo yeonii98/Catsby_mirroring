@@ -66,7 +66,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     HashMap<Integer, Integer> likeByCommunity = new HashMap<>();
 
     public FeedAdapter(ArrayList<Feed> itemData) {
-        this.itemData = new ArrayList<>();
         this.itemData = itemData;
         bool = new boolean[itemData.size()];
     }
@@ -142,6 +141,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 }
             });
 
+
             itemView.findViewById(R.id.deleteButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -167,9 +167,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 }
             });
 
-            feedCommentButton.setOnClickListener(new View.OnClickListener() {
+            itemView.findViewById(R.id.feed_comment).setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View view) {
                     loadComments(itemData.get(getAdapterPosition()).getId(), getAdapterPosition());
                 }
             });
