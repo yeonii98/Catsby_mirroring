@@ -80,7 +80,6 @@ public class FragmentCatTownAdapter extends RecyclerView.Adapter<FragmentCatTown
         //holder.townHelpPeople.setText(cat.getHelpPeople());
     }
 
-    //지연님 코드
     public Bitmap makeBitMap(String s){
         int idx = s.indexOf("=");
         byte[] b = binaryStringToByteArray(s.substring(idx+1));
@@ -123,15 +122,6 @@ public class FragmentCatTownAdapter extends RecyclerView.Adapter<FragmentCatTown
         return catdata.size();
     }
 
-    /*
-    public void addItem(int picture, String catName, int helper) {
-        Cat cat = new Cat(null,null,0);
-        //cat.setCatPicture(picture);
-        cat.setName(catName);
-        cat.setHelpPeople(helper);
-    }
-
-     */
 
     public void addItem(Cat cat) { catdata.add(cat); }
 

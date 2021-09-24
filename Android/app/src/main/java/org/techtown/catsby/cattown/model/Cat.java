@@ -14,9 +14,11 @@ public class Cat {
     private String catgen;
     private int helppeople;
     private int isdone;
+    private long userid;
     private User user;
 
-    public Cat(String name, Bitmap catpicture, String cat_id, String catloc, String catgen, int isdone) {
+    public Cat(long userid, String name, Bitmap catpicture, String cat_id, String catloc, String catgen, int isdone) {
+        this.userid = userid;
         this.name = name;
         this.catpicture = catpicture;
         this.cat_id = cat_id;
