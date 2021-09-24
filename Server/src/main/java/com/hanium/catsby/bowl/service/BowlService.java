@@ -3,6 +3,7 @@ package com.hanium.catsby.bowl.service;
 import com.hanium.catsby.bowl.domain.Bowl;
 import com.hanium.catsby.bowl.domain.BowlFeed;
 import com.hanium.catsby.bowl.domain.BowlUser;
+import com.hanium.catsby.bowl.domain.dto.BowlDetailDto;
 import com.hanium.catsby.bowl.domain.dto.BowlFeedDto;
 import com.hanium.catsby.bowl.repository.BowlFeedRepository;
 import com.hanium.catsby.bowl.repository.BowlRepository;
@@ -105,6 +106,24 @@ public class BowlService {
 
     public List<BowlFeedDto> findBowlFeed(Long bowlId) {
         return bowlFeedRepository.findByBowlId(bowlId, Sort.by(Sort.Direction.DESC, "id")).stream().map((bf) -> new BowlFeedDto(bf)).collect(Collectors.toList());
+    }
+
+    public BowlDetailDto getBowlDetail(Long bowlId, String uid) {
+        Bowl bowl = bowlRepository.findBowl(bowlId);
+        Users user = userRepository.findUserByUid(uid);
+        BowlUser bu = bowlUserRepository.findByBowlIdAndUserId(bowlId, user.getId());
+
+        List<BowlFeedDto> feeds = bowlFeedRepository.findByBowlId(bowlId, Sort.by(Sort.Direction.DESC, "id"))
+                .stream().map((bf) -> new BowlFeedDto(bf)).collect(Collectors.toList());
+
+        BowlDetailDto detail = new BowlDetailDto();
+        detail.setId(bowl.getId());
+        detail.setName(bowl.getName());
+        detail.setLatitude(bowl.getLatitude());
+        detail.setLongitude(bowl.getLongitude());
+        detail.setFeed(feeds);
+        detail.setImage(bu.getImage());
+        return detail;
     }
 
     public void isDuplicatedBowlInfo(String bowlIfo) throws DuplicateBowlInfoException {

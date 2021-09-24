@@ -1,6 +1,7 @@
 package com.hanium.catsby.bowl.controller;
 
 import com.hanium.catsby.bowl.domain.Bowl;
+import com.hanium.catsby.bowl.domain.dto.BowlDetailDto;
 import com.hanium.catsby.bowl.domain.dto.BowlFeedDto;
 import com.hanium.catsby.bowl.service.BowlService;
 import com.hanium.catsby.notification.exception.DuplicateBowlInfoException;
@@ -98,16 +99,16 @@ public class BowlController {
         return ResponseEntity.ok(new CreateBowlResponse(bowlId));
     }
 
-    @GetMapping("/bowl/location/{bowlId}")
-    public ResponseEntity<BowlLocationResponse> bowlLocation(@PathVariable("bowlId") Long id) {
-        Bowl bowl = bowlService.findOne(id);
-        return ResponseEntity.ok(new BowlLocationResponse(bowl));
-    }
-
     @GetMapping("/bowl/feed/{bowlId}")
     public ResponseEntity<BowlResult> bowlFeed(@PathVariable("bowlId") Long id) {
         return ResponseEntity.ok(new BowlResult<List<BowlFeedDto>>(bowlService.findBowlFeed(id)));
     }
+
+    @GetMapping("/bowl/detail/{bowlId}/{uid}")
+    public ResponseEntity<BowlDetailDto> bowlDetail(@PathVariable("bowlId") Long id, @PathVariable("uid") String uid) {
+        return ResponseEntity.ok(bowlService.getBowlDetail(id, uid));
+    }
+
 
     @PatchMapping("/bowl/image/{bowlId}/{uid}")
     public ResponseEntity<BowlResult<String>> updateImage(@PathVariable("bowlId") Long id, @PathVariable("uid") String uid, @RequestBody BowlImageResponse image) {

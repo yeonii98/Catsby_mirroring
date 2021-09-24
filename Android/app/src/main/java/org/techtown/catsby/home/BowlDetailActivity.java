@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -39,6 +40,7 @@ import org.techtown.catsby.home.adapter.BowlInfoTimeAdapter;
 import org.techtown.catsby.notification.data.service.NotificationService;
 import org.techtown.catsby.retrofit.ApiResponse;
 import org.techtown.catsby.retrofit.RetrofitClient;
+import org.techtown.catsby.retrofit.dto.BowlDetail;
 import org.techtown.catsby.retrofit.dto.BowlFeedList;
 import org.techtown.catsby.retrofit.dto.BowlImage;
 import org.techtown.catsby.retrofit.dto.BowlLocation;
@@ -62,6 +64,7 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
 
     private TextView bowlName, bowlLocation;
     private Button completedFeed;
+    private ImageView bowlimageView;
 
     private static final String TAG = "blackjin";
 
@@ -81,6 +84,7 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
 
     Long bowlId;
     String name, address;
+    Double latitude, longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,10 +95,12 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("밥그릇 상세 정보");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        
+
 //        imageView.setImageResource(R.drawable.ic_launcher_background);
         bowlName = (TextView) findViewById(R.id.txt_bowl_name);
         bowlLocation = (TextView) findViewById(R.id.txt_bowl_location);
+        bowlimageView = findViewById(R.id.bowlimageView);
+
 
         Intent intent = getIntent();
         bowlId = Long.valueOf(intent.getIntExtra("id", 0));
@@ -123,8 +129,9 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onClick(View view) {
                 // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
-                if(isPermission) goToAlbum();
-                else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+                if (isPermission) goToAlbum();
+                else
+                    Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -133,10 +140,10 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
         recyclerView = (RecyclerView) findViewById(R.id.bowlinfo_time_recycler_view);
 
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), new LinearLayoutManager(this).getOrientation()));
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false)) ;
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(adapter);
 
-        loadBowlFeedTime(bowlId);
+        loadBowlDetail(bowlId);
     }
 
     @Override
@@ -189,22 +196,9 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
         }
     }
 
-    private void sendNotification(Long bowlId, String uid) {
-        notificationService.sendNotification(bowlId, uid).enqueue(new Callback<ApiResponse>() {
-            @Override
-            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
-                if (response.isSuccessful()) {
-                    Log.d("FragmentBowlInfo", "send Notification " + response.body().getResponse());
-                    Toast.makeText(getApplicationContext(), "밥그릇에 급여 완료되었습니다.", Toast.LENGTH_SHORT).show();
-                    loadBowlFeedTime(bowlId);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ApiResponse> call, Throwable t) {
-                Log.e("FragmentBowlInfo", "error send notification from API");
-            }
-        });
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        mgoogleMap = googleMap;
     }
 
     private void goToAlbum() {
@@ -215,7 +209,7 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
     }
 
     /**
-     *  폴더 및 파일 만들기
+     * 폴더 및 파일 만들기
      */
     private File createImageFile() throws IOException {
 
@@ -235,12 +229,11 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
     }
 
     /**
-     *  tempFile 을 bitmap 으로 변환 후 ImageView 에 설정한다.
+     * tempFile 을 bitmap 으로 변환 후 ImageView 에 설정한다.
      */
     private void setImage() {
 
         //회전 방지
-        ImageView bowlimageView = findViewById(R.id.bowlimageView);
         Glide.with(this).load(photoUri).into(bowlimageView);
 
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -248,7 +241,7 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
         Log.d(TAG, "setImage : " + tempFile.getAbsolutePath());
         bowlimageView.setImageBitmap(originalBm);
 
-        Bitmap img = ((BitmapDrawable)bowlimageView.getDrawable()).getBitmap();
+        Bitmap img = ((BitmapDrawable) bowlimageView.getDrawable()).getBitmap();
         String image = "";
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -283,13 +276,32 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
         });
     }
 
+    private void sendNotification(Long bowlId, String uid) {
+        notificationService.sendNotification(bowlId, uid).enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                if (response.isSuccessful()) {
+                    Log.d("FragmentBowlInfo", "send Notification " + response.body().getResponse());
+                    Toast.makeText(getApplicationContext(), "밥그릇에 급여 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                    loadBowlFeedTime(bowlId);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                Log.e("FragmentBowlInfo", "error send notification from API");
+            }
+        });
+    }
+
     private void loadBowlFeedTime(Long bowlId) {
         bowlService.getBowlFeed(bowlId).enqueue(new Callback<BowlFeedList>() {
 
             @Override
             public void onResponse(Call<BowlFeedList> call, Response<BowlFeedList> response) {
-                if(response.isSuccessful()) {
+                if (response.isSuccessful()) {
                     adapter.loadBowlFeedTime(response.body().getData());
+
                 }
             }
 
@@ -301,40 +313,53 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
         });
     }
 
-    @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
-        bowlService.getBowlLocation(bowlId).enqueue(new Callback<BowlLocation>() {
+    private void loadBowlDetail(Long bowlId) {
+        bowlService.getBowlDetail(bowlId, FirebaseAuth.getInstance().getUid()).enqueue(new Callback<BowlDetail>() {
 
             @Override
-            public void onResponse(Call<BowlLocation> call, Response<BowlLocation> response) {
+            public void onResponse(Call<BowlDetail> call, Response<BowlDetail> response) {
                 if (response.isSuccessful()) {
-                    mgoogleMap = googleMap;
-                    LatLng place = new LatLng(response.body().getLatitude(), response.body().getLongitude());
+
+                    adapter.loadBowlFeedTime(response.body().getFeed());
+
+                    if (response.body().getImage() != null) {
+                        Bitmap bm = makeBitMap(response.body().getImage());
+                        bowlimageView.setImageBitmap(bm);
+                    }
+
+                    latitude = response.body().getLatitude();
+                    longitude = response.body().getLongitude();
+
+                    LatLng place = new LatLng(latitude, longitude);
                     MarkerOptions marker = new MarkerOptions();
                     marker.position(place); //좌표
-                    marker.title(response.body().getName());
+                    marker.title(name);
 
                     mgoogleMap.addMarker(marker);
                     mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, 16));
-
                 }
             }
 
             @Override
-            public void onFailure(Call<BowlLocation> call, Throwable t) {
+            public void onFailure(Call<BowlDetail> call, Throwable t) {
+                Log.e("BowlDetailActivity", "Response Fail" + t.getMessage());
 
             }
         });
     }
 
-    public static String byteArrayToBinaryString ( byte[] b){
+
+
+
+    public static String byteArrayToBinaryString(byte[] b) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < b.length; ++i) {
             sb.append(byteToBinaryString(b[i]));
         }
         return sb.toString();
     }
-    public static String byteToBinaryString ( byte n){
+
+    public static String byteToBinaryString(byte n) {
         StringBuilder sb = new StringBuilder("00000000");
         for (int bit = 0; bit < 8; bit++) {
             if (((n >> bit) & 1) > 0) {
@@ -343,4 +368,31 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
         }
         return sb.toString();
     }
+
+    public Bitmap makeBitMap(String s) {
+        int idx = s.indexOf("=");
+        byte[] b = binaryStringToByteArray(s.substring(idx + 1));
+        Bitmap bm = BitmapFactory.decodeByteArray(b, 0, b.length);
+        return bm;
+    }
+
+    public byte[] binaryStringToByteArray(String s) {
+        int count = s.length() / 8;
+        byte[] b = new byte[count];
+        for (int i = 1; i < count; ++i) {
+            String t = s.substring((i - 1) * 8, i * 8);
+            b[i - 1] = binaryStringToByte(t);
+        }
+        return b;
+    }
+
+    public byte binaryStringToByte(String s) {
+        byte ret = 0, total = 0;
+        for (int i = 0; i < 8; ++i) {
+            ret = (s.charAt(7 - i) == '1') ? (byte) (1 << i) : 0;
+            total = (byte) (ret | total);
+        }
+        return total;
+    }
+    
 }
