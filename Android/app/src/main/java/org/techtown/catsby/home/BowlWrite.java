@@ -139,6 +139,7 @@ public class BowlWrite extends AppCompatActivity{
                     contextView.setImageResource(0);
                     postContext.setText("");
                     image = null;
+
                 }else{
                     Toast.makeText(getApplicationContext(),"이미지를 첨부해 주세요.", Toast.LENGTH_SHORT).show();
                 }

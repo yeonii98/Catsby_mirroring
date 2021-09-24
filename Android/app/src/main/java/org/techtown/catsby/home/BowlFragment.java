@@ -27,6 +27,7 @@ import org.techtown.catsby.retrofit.service.BowlService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -52,50 +53,67 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
     private Context mContext;
     private FragmentManager fragmentManager;
 
+/*
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mContext = context;
     }
+*/
     BowlAdapter bowlAdapter;
     ArrayList<byte[]> bowlImageArray = new ArrayList<>();
     BowlService bowlService = RetrofitClient.getBowlService();
     BowlCommunityService bowlCommunityService = RetrofitClient.getBowlCommunityService();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
     View view;
     Intent intent;
-    ArrayList<Feed> feedDeepList;
     ArrayList<Bowl> bowlList;
+
+    //HashMap bowlMap = new HashMap();
+    ArrayList<Feed> feedList= new ArrayList<>();
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-        if (view == null) {
-            view = inflater.inflate(R.layout.fragment_home, container, false);
-            setHasOptionsMenu(true);
-            super.onCreate(savedInstanceState);
+        view = null;
+        view = inflater.inflate(R.layout.fragment_home, container, false);
+        setHasOptionsMenu(true);
 
-            if (user != null) {
-                loadBowls(user.getUid());
-                bowlList = new ArrayList<>();
-                bowlAdapter = new BowlAdapter(bowlList);
-            }
-            bowlAdapter.setOnClickListener(this);
-            LinearLayout reFeresh = view.findViewById(R.id.refreshView);
-            reFeresh.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    view = null;
-                    bowlList = new ArrayList<>();
-                    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                    ft.detach(BowlFragment.this).attach(BowlFragment.this).commit();
-                }
-            });
+        if (user != null) {
+            loadBowls(user.getUid());
+            bowlList = new ArrayList<>();
+            feedList= new ArrayList<>();
+            bowlAdapter = new BowlAdapter(bowlList);
         }
+
+        bowlAdapter.setOnClickListener(this);
+        LinearLayout reFresh = view.findViewById(R.id.refreshView);
+        reFresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                view = null;
+                feedList= new ArrayList<>();
+                bowlList = new ArrayList<>();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.detach(BowlFragment.this).attach(BowlFragment.this).commit();
+            }
+        });
 
     return view;
 }
+
+    public void fresh(){
+        view = null;
+        feedList= new ArrayList<>();
+        bowlList = new ArrayList<>();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(BowlFragment.this).attach(BowlFragment.this).commit();
+    }
+
     private void loadBowls(String uid) {
         bowlService.getBowls(uid).enqueue(new Callback<BowlList>() {
             @Override
@@ -135,11 +153,17 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
 
                     DateDescending dateAscending = new DateDescending();
                     Collections.sort(BowlCommunityResult, dateAscending);
-                    ArrayList<Feed> feedList= new ArrayList<>();
 
                     for (int i=0; i < BowlCommunityResult.size(); i++) {
-                        Feed feed = new Feed(BowlCommunityResult.get(i).getId(), R.drawable.pic_001, BowlCommunityResult.get(i).getUser().getId(), BowlCommunityResult.get(i).getUser().getNickname(), BowlCommunityResult.get(i).getImage().getBytes(), BowlCommunityResult.get(i).getContent(), BowlCommunityResult.get(i).getUid());
-                        feedList.add(feed);
+                        Feed feed = new Feed(BowlCommunityResult.get(i).getId(), R.drawable.pic_001, BowlCommunityResult.get(i).getUser().getId(), BowlCommunityResult.get(i).getUser().getNickname(), BowlCommunityResult.get(i).getImage().getBytes(), BowlCommunityResult.get(i).getContent(), BowlCommunityResult.get(i).getUid(), BowlCommunityResult.get(i).getCreatedDate());
+
+                        if (!feedList.contains(feed)){
+                            feedList.add(feed);
+                        }
+
+                        DateDescending2 dateAscending2 = new DateDescending2();
+                        Collections.sort(feedList, dateAscending2);
+
                     }
                     RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerview);
                     recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), 1));
@@ -155,8 +179,6 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
             }
         });
     }
-
-
 
     @Override
     public void onItemClicked(int position) {
@@ -193,6 +215,15 @@ class DateDescending implements Comparator<BowlCommunity> {
     public int compare(BowlCommunity bc1, BowlCommunity bc2) {
         String temp1 = bc1.getCreatedDate();
         String temp2 = bc2.getCreatedDate();
+        return temp2.compareTo(temp1);
+    }
+}
+
+class DateDescending2 implements Comparator<Feed> {
+    @Override
+    public int compare(Feed feed1, Feed feed2) {
+        String temp1 = feed1.getCreateDate();
+        String temp2 = feed2.getCreateDate();
         return temp2.compareTo(temp1);
     }
 }

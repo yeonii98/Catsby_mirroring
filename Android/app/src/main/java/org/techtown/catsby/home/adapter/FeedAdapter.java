@@ -28,7 +28,6 @@ import org.techtown.catsby.retrofit.service.BowlCommunityService;
 import org.techtown.catsby.retrofit.service.UserService;
 import org.techtown.catsby.home.BowlCommentActivity;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,13 +66,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     HashMap<Integer, Integer> likeByCommunity = new HashMap<>();
 
     public FeedAdapter(ArrayList<Feed> itemData) {
+        this.itemData = new ArrayList<>();
         this.itemData = itemData;
         bool = new boolean[itemData.size()];
-
-        /*
-        for (int i =0; i < itemData.size(); i++){
-            loadTotalLike(itemData.get(i).getId());
-        }*/
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
