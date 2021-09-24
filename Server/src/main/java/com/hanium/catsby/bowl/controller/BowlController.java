@@ -1,13 +1,11 @@
 package com.hanium.catsby.bowl.controller;
 
 import com.hanium.catsby.bowl.domain.Bowl;
-import com.hanium.catsby.bowl.domain.BowlFeed;
 import com.hanium.catsby.bowl.domain.dto.BowlFeedDto;
 import com.hanium.catsby.bowl.service.BowlService;
 import com.hanium.catsby.notification.exception.DuplicateBowlInfoException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -111,6 +109,17 @@ public class BowlController {
         return ResponseEntity.ok(new BowlResult<List<BowlFeedDto>>(bowlService.findBowlFeed(id)));
     }
 
+    @PatchMapping("/bowl/image/{bowlId}/{uid}")
+    public ResponseEntity<BowlResult<String>> updateImage(@PathVariable("bowlId") Long id, @PathVariable("uid") String uid, @RequestBody BowlImageResponse image) {
+        bowlService.updateBowlImage(id, uid, image.getImage());
+        return ResponseEntity.ok(new BowlResult<>("success"));
+    }
+
+    @Data
+    static class BowlImageResponse {
+        private String image;
+    }
+    
     @Data
     static class BowlLocationResponse{
         Long id;
