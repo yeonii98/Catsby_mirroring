@@ -106,7 +106,7 @@ public class FragmentCatTown extends Fragment {
 
                                     for(int i=0; i<result.size(); i++) {
                                         //if(!userAddress.equals(result.get(i).getUser().getAddress())) continue;
-                                        System.out.println(result.get(i).getUser().getUid());
+                                        //System.out.println(result.get(i).getUser().getUid());
                                         //int a = result.get(5).getUser().getId();
                                         //System.out.println("캣유저테스트"+a);
                                         //리스트에 표시될 이미지
