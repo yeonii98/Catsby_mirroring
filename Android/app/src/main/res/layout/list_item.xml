@@ -41,7 +41,7 @@
 
         <Button
             android:id="@+id/town_update"
-            android:layout_width="50dp"
+            android:layout_width="55dp"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:background="#ACDBE8"

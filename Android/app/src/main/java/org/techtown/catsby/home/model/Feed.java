@@ -13,8 +13,13 @@ public class Feed {
     private byte[] img;
     private String content;
     private String uid;
+    private String createDate;
 
-    public Feed(int id, int bowlImg, int userId, String nickName, byte[] img, String content, String uid) {
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public Feed(int id, int bowlImg, int userId, String nickName, byte[] img, String content, String uid, String createDate) {
         this.id = id;
         this.userId = userId;
         this.bowlImg = bowlImg;
@@ -22,6 +27,7 @@ public class Feed {
         this.img = img;
         this.content = content;
         this.uid = uid;
+        this.createDate=createDate;
     }
 
     public String getUid() {

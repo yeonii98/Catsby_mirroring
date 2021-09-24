@@ -28,7 +28,6 @@ import org.techtown.catsby.retrofit.service.BowlCommunityService;
 import org.techtown.catsby.retrofit.service.UserService;
 import org.techtown.catsby.home.BowlCommentActivity;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,11 +68,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     public FeedAdapter(ArrayList<Feed> itemData) {
         this.itemData = itemData;
         bool = new boolean[itemData.size()];
-
-        /*
-        for (int i =0; i < itemData.size(); i++){
-            loadTotalLike(itemData.get(i).getId());
-        }*/
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -106,6 +100,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             putButton = (Button)itemView.findViewById(R.id.putButton);
             putFinishButton = (Button)itemView.findViewById(R.id.putFinishButton);
             textView = (TextView)itemView.findViewById(R.id.feed_content);
+            EditText commentEditTextPost = view.findViewById(R.id.post_title_edit);
 
             itemView.findViewById(R.id.putButton).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -147,6 +142,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 }
             });
 
+
             itemView.findViewById(R.id.deleteButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -172,10 +168,24 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 }
             });
 
-            feedCommentButton.setOnClickListener(new View.OnClickListener() {
+            itemView.findViewById(R.id.feed_comment).setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View view) {
                     loadComments(itemData.get(getAdapterPosition()).getId(), getAdapterPosition());
+                }
+            });
+
+            itemView.findViewById(R.id.post_save_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    String contextMessage = commentEditTextPost.getText().toString();
+                    if (!contextMessage.equals("")) {
+                        postComment(user.getUid(), itemData.get(getAdapterPosition()).getId(), contextMessage);
+                        commentEditTextPost.setText("");
+                    }else{
+                        Toast.makeText(context.getApplicationContext(),"댓글을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
 
@@ -205,7 +215,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull FeedAdapter.ViewHolder holder, int position) {
 
-        EditText commentEditTextPost = view.findViewById(R.id.post_title_edit);
+
         Feed item = itemData.get(position);
         holder.bowlImg.setImageResource(item.getBowlImg());
         holder.userName.setText(item.getNickName());
@@ -268,20 +278,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             holder.putButton1.setVisibility(View.GONE);
             holder.deleteButton1.setVisibility(View.GONE);
         }
-
-
-        postButton.setOnClickListener(new Button.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                String contextMessage = commentEditTextPost.getText().toString();
-                if (!contextMessage.equals("")) {
-                    postComment(user.getUid(), itemData.get(position).getId(), contextMessage);
-                    commentEditTextPost.setText("");
-                }else{
-                    Toast.makeText(context.getApplicationContext(),"댓글을 입력해 주세요.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
     }
 
     private void loadTotalLike(int communityId){
