@@ -96,6 +96,13 @@ public class BowlService {
         bowl.setLastFeeding(LocalDateTime.now());
     }
 
+    @Transactional
+    public void updateBowlImage(Long bowlId, String uid, String image) {
+        Users user = userRepository.findUserByUid(uid);
+        BowlUser bu = bowlUserRepository.findByBowlIdAndUserId(bowlId, user.getId());
+        bu.setImage(image);
+    }
+
     public List<BowlFeedDto> findBowlFeed(Long bowlId) {
         return bowlFeedRepository.findByBowlId(bowlId, Sort.by(Sort.Direction.DESC, "id")).stream().map((bf) -> new BowlFeedDto(bf)).collect(Collectors.toList());
     }

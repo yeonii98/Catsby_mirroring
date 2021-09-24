@@ -1,18 +1,17 @@
 package org.techtown.catsby.retrofit.service;
 
-import org.techtown.catsby.community.data.model.TownCommunity;
-import org.techtown.catsby.retrofit.dto.BowlCommentUpdate;
+import org.techtown.catsby.retrofit.dto.NicknameResponse;
 import org.techtown.catsby.retrofit.dto.User;
 import org.techtown.catsby.retrofit.dto.UserAddressUpdate;
 
 
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.PATCH;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface UserService {
 
@@ -23,5 +22,8 @@ public interface UserService {
     Call<Void> putUser(
             @Path("uid") String uid,
             @Body UserAddressUpdate userAddressUpdate);
+
+    @PATCH("/user/nickname/{uid}")
+    Call<NicknameResponse> updateNickname(@Path("uid") String uid, @Query("nickname") String nickname);
 
 }

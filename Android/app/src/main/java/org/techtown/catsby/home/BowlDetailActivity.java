@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -39,9 +40,11 @@ import org.techtown.catsby.notification.data.service.NotificationService;
 import org.techtown.catsby.retrofit.ApiResponse;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.BowlFeedList;
+import org.techtown.catsby.retrofit.dto.BowlImage;
 import org.techtown.catsby.retrofit.dto.BowlLocation;
 import org.techtown.catsby.retrofit.service.BowlService;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -57,7 +60,6 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
     private MapFragment mapFragment;
     private GoogleMap mgoogleMap;
 
-    private ImageView imageView;
     private TextView bowlName, bowlLocation;
     private Button completedFeed;
 
@@ -89,8 +91,7 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("밥그릇 상세 정보");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        imageView = (ImageView) findViewById(R.id.imageView);
+        
 //        imageView.setImageResource(R.drawable.ic_launcher_background);
         bowlName = (TextView) findViewById(R.id.txt_bowl_name);
         bowlLocation = (TextView) findViewById(R.id.txt_bowl_location);
@@ -247,6 +248,15 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
         Log.d(TAG, "setImage : " + tempFile.getAbsolutePath());
         bowlimageView.setImageBitmap(originalBm);
 
+        Bitmap img = ((BitmapDrawable)bowlimageView.getDrawable()).getBitmap();
+        String image = "";
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        img.compress(Bitmap.CompressFormat.JPEG, 20, stream);
+        byte[] byteArray = stream.toByteArray();
+        image = byteArrayToBinaryString(byteArray);
+        updateImage(image);
+
         /**
          *  tempFile 사용 후 null 처리를 해줘야 합니다.
          *  (resultCode != RESULT_OK) 일 때 tempFile 을 삭제하기 때문에
@@ -254,6 +264,23 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
          */
         tempFile = null;
 
+    }
+
+
+    private void updateImage(String image) {
+        bowlService.updateImage(bowlId, FirebaseAuth.getInstance().getUid(), new BowlImage(image)).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Log.v("BowlDetailActivity", "success update image");
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("BowlDetailActivity", "Update Image Fail" + t.getMessage());
+
+            }
+        });
     }
 
     private void loadBowlFeedTime(Long bowlId) {
@@ -268,7 +295,7 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
 
             @Override
             public void onFailure(Call<BowlFeedList> call, Throwable t) {
-                Log.e("FragmentBowlInfo", "Response Fail" + t.getMessage());
+                Log.e("BowlDetailActivity", "Response Fail" + t.getMessage());
 
             }
         });
@@ -298,5 +325,22 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
 
             }
         });
+    }
+
+    public static String byteArrayToBinaryString ( byte[] b){
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < b.length; ++i) {
+            sb.append(byteToBinaryString(b[i]));
+        }
+        return sb.toString();
+    }
+    public static String byteToBinaryString ( byte n){
+        StringBuilder sb = new StringBuilder("00000000");
+        for (int bit = 0; bit < 8; bit++) {
+            if (((n >> bit) & 1) > 0) {
+                sb.setCharAt(7 - bit, '1');
+            }
+        }
+        return sb.toString();
     }
 }
