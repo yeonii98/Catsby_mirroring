@@ -137,7 +137,6 @@ public class BowlService {
         detail.setLatitude(bowl.getLatitude());
         detail.setLongitude(bowl.getLongitude());
         detail.setFeed(feeds);
-        detail.setAddress(bowl.getAddress());
         return detail;
     }
 
