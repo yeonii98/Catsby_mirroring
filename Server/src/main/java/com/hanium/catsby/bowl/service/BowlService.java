@@ -123,6 +123,7 @@ public class BowlService {
         detail.setLongitude(bowl.getLongitude());
         detail.setFeed(feeds);
         detail.setImage(bu.getImage());
+        detail.setAddress(bowl.getAddress());
         return detail;
     }
 
