@@ -50,8 +50,6 @@ public class NotificationService {
         List<TokenDto> users = bowlRepository.findUsersByBowlId(bowlId);
         List<String> registrationTokens = new ArrayList<>();
 
-        String saveMessage = user.getNickname() + NotificationUtil.makeNotification(bowl.getName(), NotificationType.BOWL_USER);
-
         for (TokenDto tokenDto : users) {
             String token = tokenDto.getToken();
             if (token.equals(userToken)) continue;
@@ -59,7 +57,7 @@ public class NotificationService {
             registrationTokens.add(tokenDto.getToken());
 
             Users sendUser = userRepository.findUser(tokenDto.getUserId());
-            saveNotification(sendUser, saveMessage);
+            saveNotification(sendUser, bowl.getName(), NotificationType.BOWL_USER);
         }
 
         String title = bowl.getName() + TITLE;
@@ -72,7 +70,10 @@ public class NotificationService {
     }
 
     @Transactional
-    public void saveNotification(Users user, String message) {
+    public void saveNotification(Users user, String content, NotificationType type) {
+
+        String message = user.getNickname() + NotificationUtil.makeNotification(content, type);
+
         Notification notification = new Notification();
         notification.setUser(user);
         notification.setMessage(message);

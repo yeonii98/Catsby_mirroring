@@ -4,7 +4,10 @@ import com.hanium.catsby.town.domain.TownLike;
 import com.hanium.catsby.town.service.TownLikeService;
 import com.hanium.catsby.notification.domain.NotificationType;
 import com.hanium.catsby.notification.service.NotificationService;
+import com.hanium.catsby.user.domain.Users;
+import com.hanium.catsby.user.service.UserService;
 import com.hanium.catsby.util.NotificationUtil;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,13 +20,16 @@ public class TownLikeController {
     @Autowired
     NotificationService notificationService;
 
+    @Autowired
+    UserService userService;
+
     @PostMapping("townCommunity/{id}/like/{uid}")
     public String createTownLike(@PathVariable int id, @PathVariable String uid, @RequestBody TownLike townLike){
         townLikeService.createTownLike(id, uid, townLike);
 
+        Users user = userService.findUsersByUid(uid);
         String content = townLike.getTownCommunity().getTitle();
-        String message = id + NotificationUtil.makeNotification(content, NotificationType.LIKE);
-        notificationService.saveNotification(townLike.getTownCommunity().getUser(), message);
+        notificationService.saveNotification(user, content, NotificationType.LIKE);
 
         return "좋아요 완료";
     }
