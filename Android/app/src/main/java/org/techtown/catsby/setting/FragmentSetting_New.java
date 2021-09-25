@@ -27,14 +27,23 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.catsbe.account;
 import com.example.catsbe.alert;
 import com.example.catsby.writingList;
+import com.google.firebase.auth.FirebaseAuth;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
 import org.jetbrains.annotations.NotNull;
 import org.techtown.catsby.R;
+import org.techtown.catsby.retrofit.RetrofitClient;
+import org.techtown.catsby.retrofit.dto.NicknameResponse;
+import org.techtown.catsby.retrofit.dto.User;
+import org.techtown.catsby.retrofit.service.UserService;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FragmentSetting_New extends Fragment {
 
@@ -59,6 +68,8 @@ public class FragmentSetting_New extends Fragment {
     private int OPEN_GALLERY=1;
     private String txtadd = null;
 
+    private UserService userService;
+
     @Nullable
     @org.jetbrains.annotations.Nullable
     @Override
@@ -79,6 +90,8 @@ public class FragmentSetting_New extends Fragment {
         alertManage = (TextView)view.findViewById(R.id.alertManage);
         accountManage = (TextView)view.findViewById(R.id.accountManage);
         writingList = (TextView)view.findViewById(R.id.writingList);
+
+        userService = RetrofitClient.getUser();
 
         //        setFragmentResultListener("myaddkey") { key, bundle ->
 //                bundle.getString("myaddkey")?.let {
@@ -146,14 +159,49 @@ public class FragmentSetting_New extends Fragment {
                     editNickName.setVisibility(View.GONE);
                     editButton.setText("수정");
 
-                    //updateNickname(nickName.text as String)
+                    updateNickname(editNickName.getText().toString());
                 }
             }
         });
 
+        loadUser();
+
         return view;
     }
+    
+    private void updateNickname(String nickname) {
+        userService.updateNickname(FirebaseAuth.getInstance().getUid(), nickname).enqueue(new Callback<NicknameResponse>() {
+            @Override
+            public void onResponse(Call<NicknameResponse> call, Response<NicknameResponse> response) {
+                nickName.setText(nickname);
+                Toast.makeText(getContext(), "닉네임이 변경 되었습니다.", Toast.LENGTH_SHORT).show();
+            }
 
+            @Override
+            public void onFailure(Call<NicknameResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void loadUser() {
+        userService.getUser(FirebaseAuth.getInstance().getUid()).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                nickName.setText(response.body().getNickname());
+                String address = response.body().getAddress();
+                if (address != null)
+                    local.setText(address);
+                else
+                    local.setText("동네를 설정하세요");
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+            }
+        });
+    }
     //[이미지 설정] 1.앨범에서 이미지 가져오기
     private void goToAlbum() {
         Intent intent = new Intent(Intent.ACTION_PICK);
