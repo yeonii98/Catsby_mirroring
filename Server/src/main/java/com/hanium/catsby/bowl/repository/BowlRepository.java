@@ -70,7 +70,7 @@ public class BowlRepository {
         return em.createQuery(
                 "select b" +
                         " from Bowl b" +
-                        " where b.lastFeeding >= :before" +
+                        " where b.lastFeeding <= :before" +
                         " or b.lastFeeding is null", Bowl.class)
         .setParameter("before", beforeTime)
         .getResultList();

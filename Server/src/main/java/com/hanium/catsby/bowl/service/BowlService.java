@@ -13,6 +13,7 @@ import com.hanium.catsby.notification.exception.DuplicateBowlInfoException;
 import com.hanium.catsby.user.domain.Users;
 import com.hanium.catsby.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -106,7 +107,8 @@ public class BowlService {
     }
 
     public List<BowlFeedDto> findBowlFeed(Long bowlId) {
-        return bowlFeedRepository.findByBowlId(bowlId, Sort.by(Sort.Direction.DESC, "id")).stream().map((bf) -> new BowlFeedDto(bf)).collect(Collectors.toList());
+        return bowlFeedRepository.findByBowlId(bowlId, PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "id")))
+                .stream().map((bf) -> new BowlFeedDto(bf)).collect(Collectors.toList());
     }
 
     public BowlDto getBowl(Long bowlId, String uid){
@@ -128,8 +130,7 @@ public class BowlService {
         Users user = userRepository.findUserByUid(uid);
         BowlUser bu = bowlUserRepository.findByBowlIdAndUserId(bowlId, user.getId());
 
-        List<BowlFeedDto> feeds = bowlFeedRepository.findByBowlId(bowlId, Sort.by(Sort.Direction.DESC, "id"))
-                .stream().map((bf) -> new BowlFeedDto(bf)).collect(Collectors.toList());
+        List<BowlFeedDto> feeds = findBowlFeed(bowlId);
 
         BowlDetailDto detail = new BowlDetailDto();
         detail.setId(bowl.getId());

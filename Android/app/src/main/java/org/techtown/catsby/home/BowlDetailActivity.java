@@ -13,7 +13,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -45,6 +50,7 @@ import org.techtown.catsby.retrofit.dto.BowlFeedList;
 import org.techtown.catsby.retrofit.dto.BowlImage;
 import org.techtown.catsby.retrofit.dto.BowlLocation;
 import org.techtown.catsby.retrofit.service.BowlService;
+import org.techtown.catsby.util.ImageUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -96,11 +102,9 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
         getSupportActionBar().setTitle("밥그릇 상세 정보");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-//        imageView.setImageResource(R.drawable.ic_launcher_background);
         bowlName = (TextView) findViewById(R.id.txt_bowl_name);
         bowlLocation = (TextView) findViewById(R.id.txt_bowl_location);
         bowlimageView = findViewById(R.id.bowlimageView);
-
 
         Intent intent = getIntent();
         bowlId = Long.valueOf(intent.getIntExtra("id", 0));
@@ -234,7 +238,7 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
     private void setImage() {
 
         //회전 방지
-        Glide.with(this).load(photoUri).into(bowlimageView);
+        Glide.with(this).load(photoUri).circleCrop().into(bowlimageView);
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
@@ -247,7 +251,7 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         img.compress(Bitmap.CompressFormat.JPEG, 20, stream);
         byte[] byteArray = stream.toByteArray();
-        image = byteArrayToBinaryString(byteArray);
+        image = ImageUtils.byteArrayToBinaryString(byteArray);
         updateImage(image);
 
         /**
@@ -313,6 +317,7 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
         });
     }
 
+    int mDegree =0;
     private void loadBowlDetail(Long bowlId) {
         bowlService.getBowlDetail(bowlId, FirebaseAuth.getInstance().getUid()).enqueue(new Callback<BowlDetail>() {
 
@@ -323,8 +328,13 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
                     adapter.loadBowlFeedTime(response.body().getFeed());
 
                     if (response.body().getImage() != null) {
-                        Bitmap bm = makeBitMap(response.body().getImage());
-                        bowlimageView.setImageBitmap(bm);
+                        Bitmap bm = ImageUtils.makeBitMap(response.body().getImage());
+                        mDegree = mDegree + 90;
+
+                        bowlimageView.setImageBitmap(ImageUtils.rotate(bm, mDegree));
+                        bowlimageView.setBackground(new ShapeDrawable(new OvalShape()));
+                        bowlimageView.setClipToOutline(true);
+
                     }
 
                     latitude = response.body().getLatitude();
@@ -347,52 +357,4 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
             }
         });
     }
-
-
-
-
-    public static String byteArrayToBinaryString(byte[] b) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < b.length; ++i) {
-            sb.append(byteToBinaryString(b[i]));
-        }
-        return sb.toString();
-    }
-
-    public static String byteToBinaryString(byte n) {
-        StringBuilder sb = new StringBuilder("00000000");
-        for (int bit = 0; bit < 8; bit++) {
-            if (((n >> bit) & 1) > 0) {
-                sb.setCharAt(7 - bit, '1');
-            }
-        }
-        return sb.toString();
-    }
-
-    public Bitmap makeBitMap(String s) {
-        int idx = s.indexOf("=");
-        byte[] b = binaryStringToByteArray(s.substring(idx + 1));
-        Bitmap bm = BitmapFactory.decodeByteArray(b, 0, b.length);
-        return bm;
-    }
-
-    public byte[] binaryStringToByteArray(String s) {
-        int count = s.length() / 8;
-        byte[] b = new byte[count];
-        for (int i = 1; i < count; ++i) {
-            String t = s.substring((i - 1) * 8, i * 8);
-            b[i - 1] = binaryStringToByte(t);
-        }
-        return b;
-    }
-
-    public byte binaryStringToByte(String s) {
-        byte ret = 0, total = 0;
-        for (int i = 0; i < 8; ++i) {
-            ret = (s.charAt(7 - i) == '1') ? (byte) (1 << i) : 0;
-            total = (byte) (ret | total);
-        }
-        return total;
-    }
-    
 }
