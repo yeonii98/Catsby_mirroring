@@ -39,9 +39,11 @@
 
                 <ImageView
                     android:id="@+id/bowlimageView"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="5dp"
                     android:layout_gravity="center"
+                    android:scaleType="fitXY"
                     android:layout_marginRight="30px"
                     android:src="@drawable/catsby_logo_black" />
 
@@ -119,9 +121,9 @@
                 android:id="@+id/bowlinfo_time_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="200px"
+                android:layout_marginLeft="180px"
                 android:layout_marginTop="50px"
-                android:layout_marginRight="200px" />
+                android:layout_marginRight="180px" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
