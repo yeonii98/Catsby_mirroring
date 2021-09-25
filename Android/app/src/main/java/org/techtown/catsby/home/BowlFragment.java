@@ -18,8 +18,10 @@ import org.techtown.catsby.home.adapter.FeedAdapter;
 import org.techtown.catsby.home.model.Bowl;
 import org.techtown.catsby.home.model.Feed;
 import org.techtown.catsby.qrcode.LoadingActivity;
+import org.techtown.catsby.qrcode.data.service.QRBowlService;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.BowlCommunity;
+import org.techtown.catsby.retrofit.dto.BowlDetail;
 import org.techtown.catsby.retrofit.dto.BowlList;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
 import org.techtown.catsby.retrofit.service.BowlService;
@@ -27,7 +29,6 @@ import org.techtown.catsby.retrofit.service.BowlService;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -68,9 +69,8 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
 
     View view;
     Intent intent;
-    ArrayList<Bowl> bowlList;
-
-    //HashMap bowlMap = new HashMap();
+    //ArrayList<Bowl> bowlList;
+    ArrayList<BowlDetail> bowlList;
     ArrayList<Feed> feedList= new ArrayList<>();
 
 
@@ -106,12 +106,24 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
     return view;
 }
 
-    public void fresh(){
-        view = null;
-        feedList= new ArrayList<>();
-        bowlList = new ArrayList<>();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.detach(BowlFragment.this).attach(BowlFragment.this).commit();
+    private void loadBowlDetail(Long bowlId, String uid){
+        bowlService.getBowlDetail(bowlId, uid).enqueue(new Callback<BowlDetail>() {
+            @Override
+            public void onResponse(Call<BowlDetail> call, Response<BowlDetail> response) {
+                BowlDetail bowlDetails = response.body();
+                bowlList.add(bowlDetails);
+
+                RecyclerView bowlRecyclerView = (RecyclerView)view.findViewById(R.id.horizontal_recyclerview);
+                RecyclerView.LayoutManager bowlLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+                bowlRecyclerView.setLayoutManager(bowlLayoutManager);
+                bowlRecyclerView.setAdapter(bowlAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<BowlDetail> call, Throwable t) {
+
+            }
+        });
     }
 
     private void loadBowls(String uid) {
@@ -123,16 +135,15 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
                     HashSet<Integer> bowlUniId = new HashSet<Integer>();
 
                     for(int i =0; i < result.size(); i++){
-                        Bowl bowl = new Bowl(result.getBowls().get(i).getBowl_id(), R.drawable.pic_001, result.getBowls().get(i).getName(), result.getBowls().get(i).getInfo(), result.getBowls().get(i).getAddress(), result.getBowls().get(i).getUpdated_time());
+                        //Bowl bowl = new Bowl(result.getBowls().get(i).getBowl_id(), R.drawable.pic_001, result.getBowls().get(i).getName(), result.getBowls().get(i).getInfo(), result.getBowls().get(i).getAddress(), result.getBowls().get(i).getUpdated_time());
                         loadCommunity(result.getBowls().get(i).getBowl_id());
-                        bowlList.add(bowl);
+
+                        loadBowlDetail((long) result.getBowls().get(i).getBowl_id(), uid);
+                        //bowlList.add(bowl);
                         bowlUniId.add(result.getBowls().get(i).getBowl_id());
                     }
 
-                    RecyclerView bowlRecyclerView = (RecyclerView)view.findViewById(R.id.horizontal_recyclerview);
-                    RecyclerView.LayoutManager bowlLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-                    bowlRecyclerView.setLayoutManager(bowlLayoutManager);
-                    bowlRecyclerView.setAdapter(bowlAdapter);
+
                 }
 
             }

@@ -217,12 +217,13 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
 
 
         Feed item = itemData.get(position);
-        holder.bowlImg.setImageResource(item.getBowlImg());
-        holder.userName.setText(item.getNickName());
+        //holder.bowlImg.setImageResource(item.getBowlImg());
 
+        holder.userName.setText(item.getNickName());
         byte[] blob = Base64.decode(item.getImg(), Base64.DEFAULT);
         Bitmap bmp = BitmapFactory.decodeByteArray(blob,0, blob.length);
         holder.feedImg.setImageBitmap(bmp);
+
         holder.content.setText(item.getContent());
 
         if (likeCommunity.size() == 0){
