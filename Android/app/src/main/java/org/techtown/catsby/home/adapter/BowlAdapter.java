@@ -14,6 +14,7 @@ import org.techtown.catsby.R;
 import org.techtown.catsby.home.BowlDetailActivity;
 import org.techtown.catsby.home.model.Bowl;
 import org.techtown.catsby.retrofit.dto.BowlDetail;
+import org.techtown.catsby.retrofit.dto.BowlInfo;
 
 import java.util.ArrayList;
 
@@ -22,11 +23,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class BowlAdapter extends RecyclerView.Adapter<BowlAdapter.ViewHolder> {
 
-    private ArrayList<BowlDetail> itemData;
+    private ArrayList<BowlInfo> itemData;
     int idx;
     private Bitmap bm = null;
 
-    public BowlAdapter(ArrayList<BowlDetail> itemData){
+    public BowlAdapter(ArrayList<BowlInfo> itemData){
         this.itemData = itemData;
     }
 
@@ -87,7 +88,7 @@ public class BowlAdapter extends RecyclerView.Adapter<BowlAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull BowlAdapter.ViewHolder holder, int position) {
-        BowlDetail item = itemData.get(position);
+        BowlInfo item = itemData.get(position);
         holder.text.setText(item.getName());
 
 
@@ -108,20 +109,15 @@ public class BowlAdapter extends RecyclerView.Adapter<BowlAdapter.ViewHolder> {
                     Intent intent = new Intent(v.getContext(), BowlDetailActivity.class);
 
                     for (int i =0; i< itemData.size(); i++){
-                        System.out.println("itemData.get(i).getName() = " + itemData.get(i).getName());
-                        System.out.println("i = !!!!!!!!!!!!!!!!!!!!!!!");
-
                         if (itemData.get(i).getName() == name.getText()){
                             idx = i;
                         }
                     }
 
-                    BowlDetail item = itemData.get(idx);
+                    BowlInfo item = itemData.get(idx);
                     intent.putExtra("id", item.getId());
                     intent.putExtra("name", item.getName());
                     intent.putExtra("address", item.getAddress());
-                    //intent.putExtra("info", item.getInfo());
-
                     v.getContext().startActivity(intent);
                 }
             });
