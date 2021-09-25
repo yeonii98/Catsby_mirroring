@@ -22,6 +22,7 @@ import org.techtown.catsby.qrcode.data.service.QRBowlService;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.BowlCommunity;
 import org.techtown.catsby.retrofit.dto.BowlDetail;
+import org.techtown.catsby.retrofit.dto.BowlInfo;
 import org.techtown.catsby.retrofit.dto.BowlList;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
 import org.techtown.catsby.retrofit.service.BowlService;
@@ -69,8 +70,7 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
 
     View view;
     Intent intent;
-    //ArrayList<Bowl> bowlList;
-    ArrayList<BowlDetail> bowlList;
+    ArrayList<BowlInfo> bowlList;
     ArrayList<Feed> feedList= new ArrayList<>();
 
 
@@ -107,12 +107,11 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
 }
 
     private void loadBowlDetail(Long bowlId, String uid){
-        bowlService.getBowlDetail(bowlId, uid).enqueue(new Callback<BowlDetail>() {
+        bowlService.getBowlInfo(bowlId, uid).enqueue(new Callback<BowlInfo>() {
             @Override
-            public void onResponse(Call<BowlDetail> call, Response<BowlDetail> response) {
-                BowlDetail bowlDetails = response.body();
-                bowlList.add(bowlDetails);
-
+            public void onResponse(Call<BowlInfo> call, Response<BowlInfo> response) {
+                BowlInfo bowlInfo = response.body();
+                bowlList.add(bowlInfo);
                 RecyclerView bowlRecyclerView = (RecyclerView)view.findViewById(R.id.horizontal_recyclerview);
                 RecyclerView.LayoutManager bowlLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
                 bowlRecyclerView.setLayoutManager(bowlLayoutManager);
@@ -120,7 +119,7 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
             }
 
             @Override
-            public void onFailure(Call<BowlDetail> call, Throwable t) {
+            public void onFailure(Call<BowlInfo> call, Throwable t) {
 
             }
         });
@@ -135,11 +134,8 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
                     HashSet<Integer> bowlUniId = new HashSet<Integer>();
 
                     for(int i =0; i < result.size(); i++){
-                        //Bowl bowl = new Bowl(result.getBowls().get(i).getBowl_id(), R.drawable.pic_001, result.getBowls().get(i).getName(), result.getBowls().get(i).getInfo(), result.getBowls().get(i).getAddress(), result.getBowls().get(i).getUpdated_time());
                         loadCommunity(result.getBowls().get(i).getBowl_id());
-
                         loadBowlDetail((long) result.getBowls().get(i).getBowl_id(), uid);
-                        //bowlList.add(bowl);
                         bowlUniId.add(result.getBowls().get(i).getBowl_id());
                     }
 

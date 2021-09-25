@@ -1,5 +1,4 @@
 package org.techtown.catsby.retrofit.dto;
-
 import java.util.List;
 
 public class BowlDetail {
@@ -9,16 +8,14 @@ public class BowlDetail {
     private Double longitude;
     private List<BowlFeed> feed;
     private String image;
-    private String address;
 
-    public BowlDetail(Long id, String name, Double latitude, Double longitude, List<BowlFeed> feed, String image, String address) {
+    public BowlDetail(Long id, String name, Double latitude, Double longitude, List<BowlFeed> feed, String image) {
         this.id = id;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.feed = feed;
         this.image = image;
-        this.address = address;
     }
 
     public Long getId() {
@@ -67,13 +64,5 @@ public class BowlDetail {
 
     public void setImage(String image) {
         this.image = image;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 }

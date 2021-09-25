@@ -12,5 +12,4 @@ public class BowlDetailDto {
     private Double longitude;
     private List<BowlFeedDto> feed;
     private String image;
-    private String address;
 }

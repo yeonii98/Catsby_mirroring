@@ -4,6 +4,7 @@ import com.hanium.catsby.bowl.domain.Bowl;
 import com.hanium.catsby.bowl.domain.BowlFeed;
 import com.hanium.catsby.bowl.domain.BowlUser;
 import com.hanium.catsby.bowl.domain.dto.BowlDetailDto;
+import com.hanium.catsby.bowl.domain.dto.BowlDto;
 import com.hanium.catsby.bowl.domain.dto.BowlFeedDto;
 import com.hanium.catsby.bowl.repository.BowlFeedRepository;
 import com.hanium.catsby.bowl.repository.BowlRepository;
@@ -108,6 +109,20 @@ public class BowlService {
         return bowlFeedRepository.findByBowlId(bowlId, Sort.by(Sort.Direction.DESC, "id")).stream().map((bf) -> new BowlFeedDto(bf)).collect(Collectors.toList());
     }
 
+    public BowlDto getBowl(Long bowlId, String uid){
+        Bowl bowl = bowlRepository.findBowl(bowlId);
+        Users user = userRepository.findUserByUid(uid);
+        BowlUser bu = bowlUserRepository.findByBowlIdAndUserId(bowlId, user.getId());
+
+        BowlDto bowlDto = new BowlDto();
+        bowlDto.setId(bowl.getId());
+        bowlDto.setName(bowl.getName());
+        bowlDto.setImage(bu.getImage());
+        bowlDto.setAddress(bowl.getAddress());
+
+        return bowlDto;
+    }
+
     public BowlDetailDto getBowlDetail(Long bowlId, String uid) {
         Bowl bowl = bowlRepository.findBowl(bowlId);
         Users user = userRepository.findUserByUid(uid);
@@ -122,7 +137,6 @@ public class BowlService {
         detail.setLatitude(bowl.getLatitude());
         detail.setLongitude(bowl.getLongitude());
         detail.setFeed(feeds);
-        detail.setImage(bu.getImage());
         detail.setAddress(bowl.getAddress());
         return detail;
     }
