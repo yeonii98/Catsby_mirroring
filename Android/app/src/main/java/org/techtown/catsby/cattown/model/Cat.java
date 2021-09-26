@@ -14,17 +14,36 @@ public class Cat {
     private String catgen;
     private int helppeople;
     private int isdone;
-    private long userid;
+    private long user_id;
     private User user;
+    private String user_add;
 
-    public Cat(long userid, String name, Bitmap catpicture, String cat_id, String catloc, String catgen, int isdone) {
-        this.userid = userid;
+
+    public Cat(long user_id, String user_add, String name, Bitmap catpicture, String cat_id, String catloc, String catgen, int isdone) {
+        this.user_id = user_id;
+        this.user_add = user_add;
         this.name = name;
         this.catpicture = catpicture;
         this.cat_id = cat_id;
         this.catloc = catloc;
         this.catgen = catgen;
         this.isdone = isdone;
+    }
+
+    public String getUser_add() {
+        return user_add;
+    }
+
+    public void setUser_add(String user_add) {
+        this.user_add = user_add;
+    }
+
+    public long getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(long user_id) {
+        this.user_id = user_id;
     }
 
     public User getUser() {

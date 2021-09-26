@@ -25,8 +25,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 
+import org.techtown.catsby.MainActivity;
 import org.techtown.catsby.R;
 import org.techtown.catsby.cattown.FragmentCatTown;
+import org.techtown.catsby.cattown.adapter.FragmentCatTownAdapter;
 import org.techtown.catsby.community.data.service.TownLikeService;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.CatProfile;
@@ -76,6 +78,8 @@ public class AddCatActivity extends AppCompatActivity{
     private User user;
     public String uid = FirebaseAuth.getInstance().getUid();
     private CatService catService = RetrofitClient.catService();
+
+    FragmentCatTownAdapter adapter;
 
     byte imageArray [];
     Bitmap imgBitmap;
@@ -175,6 +179,13 @@ public class AddCatActivity extends AppCompatActivity{
             }
         });
 
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -216,6 +227,7 @@ public class AddCatActivity extends AppCompatActivity{
                         if(response.isSuccessful()) {
                             System.out.println("성공");
                             CatProfile cat = response.body();
+                            adapter.notifyDataSetChanged();
                         }
                         else {
                             //System.out.println("실패");
@@ -227,6 +239,7 @@ public class AddCatActivity extends AppCompatActivity{
                         //System.out.println("통신 실패");
                     }
                 });
+                finish();
             }
 
         });

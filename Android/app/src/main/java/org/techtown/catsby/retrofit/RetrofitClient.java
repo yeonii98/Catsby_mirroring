@@ -3,7 +3,6 @@ package org.techtown.catsby.retrofit;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.techtown.catsby.cattown.model.Cat;
 import org.techtown.catsby.community.data.service.TownLikeService;
 import org.techtown.catsby.qrcode.data.service.QRBowlService;
 import org.techtown.catsby.login.data.service.LoginService;

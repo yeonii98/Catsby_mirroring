@@ -93,98 +93,98 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
+
         userService.getUser(uid).enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                User result = response.body();
-                String nickName = result.getNickname();
-                String userImg = result.getImage();
+                public void onResponse(Call<User> call, Response<User> response) {
+                    User result = response.body();
+                    String nickName = result.getNickname();
+                    String userImg = result.getImage();
 
-                findViewById(R.id.btnDone).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        String title = edtTitle.getText().toString();
-                        String content = edtContent.getText().toString();
+                    findViewById(R.id.btnDone).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String title = edtTitle.getText().toString();
+                            String content = edtContent.getText().toString();
 
-                        if (title.length() > 0 && content.length() > 0) {
-                            if (townImg.getDrawable() == null) {
-                                townCommunity = new TownCommunity(title, content, checkBox.isChecked());
-                            } else {
-                                Bitmap img = ((BitmapDrawable) townImg.getDrawable()).getBitmap();
+                            if (title.length() > 0 && content.length() > 0) {
+                                if (townImg.getDrawable() == null) {
+                                    townCommunity = new TownCommunity(title, content, checkBox.isChecked());
+                                } else {
+                                    Bitmap img = ((BitmapDrawable) townImg.getDrawable()).getBitmap();
 
-                                String image = "";
+                                    String image = "";
 
-                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                                img.compress(Bitmap.CompressFormat.JPEG, 20, stream);
-                                byteArray = stream.toByteArray();
-                                image = "&image=" + ImageUtils.byteArrayToBinaryString(byteArray);
-                                townCommunity = new TownCommunity(title, content, image, checkBox.isChecked());
+                                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                    img.compress(Bitmap.CompressFormat.JPEG, 20, stream);
+                                    byteArray = stream.toByteArray();
+                                    image = "&image=" + ImageUtils.byteArrayToBinaryString(byteArray);
+                                    townCommunity = new TownCommunity(title, content, image, checkBox.isChecked());
+                                }
+
+
+                                townCommunityService = RetrofitClient.getTownCommunityService();
+                                townCommunityService.postTown(townCommunity, uid).enqueue(new Callback<Void>() {
+                                    @Override
+                                    public void onResponse(Call<Void> call, Response<Void> response) {
+                                        if (response.isSuccessful()) {
+                                            //정상적으로 통신이 성공된 경우
+                                            System.out.println("성공");
+                                        } else {
+                                            System.out.println("실패");
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Void> call, Throwable t) {
+                                        System.out.println("통신 실패 : " + t.getMessage());
+                                    }
+                                });
+
+                                Date date = new Date();
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+                                String datestr = sdf.format(date);
+
+
+                                Intent intent = new Intent(AddActivity.this, FragmentCommunity.class);
+                                intent.putExtra("id", townCommunity.getId());
+                                intent.putExtra("title", title);
+                                intent.putExtra("content", content);
+                                intent.putExtra("date", datestr);
+
+                                int idx = user.getEmail().indexOf("@");
+                                intent.putExtra("uid", uid);
+                                intent.putExtra("byteArray", byteArray);
+                                intent.putExtra("userImg", userImg);
+
+
+                                if (!checkBox.isChecked())
+                                    intent.putExtra("nickName", nickName);
+                                else
+                                    intent.putExtra("nickName", "익명");
+
+
+                                setResult(2, intent);
+
+                                finish();
                             }
 
+                            else{
+                                Toast.makeText(getApplicationContext(), "제목과 내용을 입력해주세요", Toast.LENGTH_SHORT).show();
 
-                            townCommunityService = RetrofitClient.getTownCommunityService();
-                            townCommunityService.postTown(townCommunity, uid).enqueue(new Callback<Void>() {
-                                @Override
-                                public void onResponse(Call<Void> call, Response<Void> response) {
-                                    if (response.isSuccessful()) {
-                                        //정상적으로 통신이 성공된 경우
-                                        System.out.println("성공");
-                                    } else {
-                                        System.out.println("실패");
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<Void> call, Throwable t) {
-                                    System.out.println("통신 실패 : " + t.getMessage());
-                                }
-                            });
-
-                            Date date = new Date();
-                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-                            String datestr = sdf.format(date);
-
-
-                            Intent intent = new Intent(AddActivity.this, FragmentCommunity.class);
-                            intent.putExtra("id", townCommunity.getId());
-                            intent.putExtra("title", title);
-                            intent.putExtra("content", content);
-                            intent.putExtra("date", datestr);
-
-                            int idx = user.getEmail().indexOf("@");
-                            intent.putExtra("uid", uid);
-                            intent.putExtra("byteArray", byteArray);
-                            intent.putExtra("userImg", userImg);
-
-
-                            if (!checkBox.isChecked())
-                                intent.putExtra("nickName", nickName);
-                            else
-                                intent.putExtra("nickName", "익명");
-
-
-                            setResult(2, intent);
-
-                            finish();
-                        }
-
-                        else{
-                            Toast.makeText(getApplicationContext(), "제목과 내용을 입력해주세요", Toast.LENGTH_SHORT).show();
+                            }
 
                         }
+                    });
+                }
 
-                    }
-                });
-            }
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
 
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
+                }
+            });
 
-            }
-        });
-
-    }
+        }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
