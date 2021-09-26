@@ -21,4 +21,6 @@ public class Users extends BaseTimeEntity {
     @Column(name = "fcm_token")
     private String fcmToken;
 
+    private String image;
+
 }

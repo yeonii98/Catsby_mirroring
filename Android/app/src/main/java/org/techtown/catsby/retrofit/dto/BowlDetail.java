@@ -1,5 +1,4 @@
 package org.techtown.catsby.retrofit.dto;
-
 import java.util.List;
 
 public class BowlDetail {

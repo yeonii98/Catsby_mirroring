@@ -4,6 +4,7 @@ import com.hanium.catsby.bowl.domain.Bowl;
 import com.hanium.catsby.bowl.domain.BowlFeed;
 import com.hanium.catsby.bowl.domain.BowlUser;
 import com.hanium.catsby.bowl.domain.dto.BowlDetailDto;
+import com.hanium.catsby.bowl.domain.dto.BowlDto;
 import com.hanium.catsby.bowl.domain.dto.BowlFeedDto;
 import com.hanium.catsby.bowl.repository.BowlFeedRepository;
 import com.hanium.catsby.bowl.repository.BowlRepository;
@@ -12,6 +13,7 @@ import com.hanium.catsby.notification.exception.DuplicateBowlInfoException;
 import com.hanium.catsby.user.domain.Users;
 import com.hanium.catsby.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -105,7 +107,22 @@ public class BowlService {
     }
 
     public List<BowlFeedDto> findBowlFeed(Long bowlId) {
-        return bowlFeedRepository.findByBowlId(bowlId, Sort.by(Sort.Direction.DESC, "id")).stream().map((bf) -> new BowlFeedDto(bf)).collect(Collectors.toList());
+        return bowlFeedRepository.findByBowlId(bowlId, PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "id")))
+                .stream().map((bf) -> new BowlFeedDto(bf)).collect(Collectors.toList());
+    }
+
+    public BowlDto getBowl(Long bowlId, String uid){
+        Bowl bowl = bowlRepository.findBowl(bowlId);
+        Users user = userRepository.findUserByUid(uid);
+        BowlUser bu = bowlUserRepository.findByBowlIdAndUserId(bowlId, user.getId());
+
+        BowlDto bowlDto = new BowlDto();
+        bowlDto.setId(bowl.getId());
+        bowlDto.setName(bowl.getName());
+        bowlDto.setImage(bu.getImage());
+        bowlDto.setAddress(bowl.getAddress());
+
+        return bowlDto;
     }
 
     public BowlDetailDto getBowlDetail(Long bowlId, String uid) {
@@ -113,8 +130,7 @@ public class BowlService {
         Users user = userRepository.findUserByUid(uid);
         BowlUser bu = bowlUserRepository.findByBowlIdAndUserId(bowlId, user.getId());
 
-        List<BowlFeedDto> feeds = bowlFeedRepository.findByBowlId(bowlId, Sort.by(Sort.Direction.DESC, "id"))
-                .stream().map((bf) -> new BowlFeedDto(bf)).collect(Collectors.toList());
+        List<BowlFeedDto> feeds = findBowlFeed(bowlId);
 
         BowlDetailDto detail = new BowlDetailDto();
         detail.setId(bowl.getId());
@@ -122,7 +138,6 @@ public class BowlService {
         detail.setLatitude(bowl.getLatitude());
         detail.setLongitude(bowl.getLongitude());
         detail.setFeed(feeds);
-        detail.setImage(bu.getImage());
         return detail;
     }
 

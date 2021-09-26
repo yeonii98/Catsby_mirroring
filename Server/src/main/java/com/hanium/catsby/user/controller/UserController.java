@@ -61,6 +61,13 @@ public class UserController {
         return new UpdateUserNicknameResponse(findUser.getId(), findUser.getNickname());
     }
 
+    @PutMapping("/user/image/{uid}")
+    public UpdateUserImageResponse UpdateUserImageResponse(@PathVariable("uid") String uid, @RequestBody UpdateUserImageRequest request) {
+        userService.updateImage(uid, request.getImage());
+        Users findUser = userService.findUsersByUid(uid);
+        return new UpdateUserImageResponse(findUser.getId(), findUser.getAddress());
+    }
+
     @Data
     static class UpdateUserAddressRequest{
         private Long id;
@@ -79,6 +86,19 @@ public class UserController {
     static class UpdateUserNicknameResponse{
         private Long id;
         private String nickname;
+    }
+
+    @Data
+    static class UpdateUserImageRequest{
+        private Long id;
+        private String image;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class UpdateUserImageResponse{
+        private Long id;
+        private String image;
     }
 
     @PatchMapping("/user/token/{uid}")
