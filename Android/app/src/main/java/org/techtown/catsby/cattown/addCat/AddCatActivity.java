@@ -242,8 +242,7 @@ public class AddCatActivity extends AppCompatActivity{
                 String catcontent = edtcontent.getText().toString();
                 byte[] catimage = imageArray;
 
-                System.out.println("uidd"+uid);
-
+                System.out.println("uid: "+uid);
                 CatService retrofitService = retrofit.create(CatService.class);
                 Call<CatProfile> call = retrofitService.setPost(
                         uid,catname,cathealth,catloc, catgender, cimage, catcontent, catspayed);
@@ -256,7 +255,7 @@ public class AddCatActivity extends AppCompatActivity{
                             CatProfile cat = response.body();
                         }
                         else {
-                            //System.out.println("실패");
+                            System.out.println("실패");
                         }
                     }
 
