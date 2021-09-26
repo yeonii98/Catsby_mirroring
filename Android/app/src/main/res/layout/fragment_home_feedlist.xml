@@ -11,9 +11,8 @@
         android:layout_height="40dp"
         android:gravity="center_vertical">
 
-
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/feed_bowlImg"
+            android:id="@+id/feed_userImg"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginLeft="7dp"
@@ -35,28 +34,25 @@
 
         <Button
             android:id="@+id/putButton"
-            android:layout_width="60dp"
+            android:layout_width="55dp"
             android:layout_height="35dp"
-            android:layout_marginTop="7dp"
-            android:layout_marginBottom="10dp"
-            android:text="수정"
-            android:textSize="10sp"
-            android:layout_marginRight="3dp"
+
+            android:layout_margin="8dp"
+
             android:background="#FFACDBE8"
-            android:visibility="gone" />
+            android:text="수정"
+            android:textSize="14sp"
+ />
 
         <Button
             android:id="@+id/deleteButton"
-            android:layout_width="60dp"
+            android:layout_width="55dp"
             android:layout_height="35dp"
-            android:layout_gravity="right"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_margin="8dp"
             android:layout_marginRight="7dp"
-            android:text="삭제"
-            android:textSize="10sp"
             android:background="#FFACDBE8"
-            android:visibility="gone" />
+            android:text="삭제"
+            android:textSize="14sp" />
 
     </LinearLayout>
 
@@ -115,14 +111,14 @@
         <ImageView
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_marginLeft="7.5dp"
+            android:layout_marginLeft="7dp"
             android:src="@drawable/ic_baseline_favorite_border_24"
             android:id="@+id/likeButton"/>
 
         <ImageView
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_marginLeft="7.5dp"
+            android:layout_marginLeft="7dp"
             android:src="@drawable/ic_baseline_favorite_red"
             android:id="@+id/likeFull"
             android:visibility="gone"/>
@@ -132,6 +128,18 @@
             android:layout_width="30dp"
             android:layout_height="wrap_content"
             android:text="0" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="7dp"
+            android:text="" />
 
     </LinearLayout>
 

@@ -78,7 +78,7 @@ public class BowlWrite extends AppCompatActivity{
     static ArrayList<Bowl> bowlList = new ArrayList<>();
     String allContext;
     BowlCheckListAdapter adapter;
-    static int cPosition;
+    static int cPosition = -1;
 
     Uri photoUri;
     File tempFile;
@@ -134,15 +134,19 @@ public class BowlWrite extends AppCompatActivity{
             public void onClick(View view) {
                 postContext = findViewById(R.id.context);
                 if (image != null) {
-                    allContext = postContext.getText().toString();
-                    savePost(image, bowlList.get(cPosition).getId(), user.getUid(), allContext);
-                    contextView.setImageResource(0);
-                    postContext.setText("");
-                    image = null;
-
+                    if (cPosition != -1) {
+                        allContext = postContext.getText().toString();
+                        savePost(image, bowlList.get(cPosition).getId(), user.getUid(), allContext);
+                        contextView.setImageResource(0);
+                        postContext.setText("");
+                        image = null;
+                    }else{
+                        Toast.makeText(getApplicationContext(),"글을 업로드할 밥그릇을 선택해 주세요.", Toast.LENGTH_SHORT).show();
+                        }
                 }else{
                     Toast.makeText(getApplicationContext(),"이미지를 첨부해 주세요.", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
     }

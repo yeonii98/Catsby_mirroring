@@ -49,6 +49,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     UserService userService = RetrofitClient.getUser();
     View view;
+    private Bitmap bm = null;
 
     Button postButton;
     EditText commentEditText;
@@ -71,7 +72,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private ImageView bowlImg;
+        private ImageView userImg;
         private TextView userName;
         private ImageView feedImg;
         private TextView content;
@@ -81,6 +82,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         private EditText itemViewPutText = (EditText)itemView.findViewById(R.id.feed_content_EditText);
         private TextView itemViewTextView = (TextView)itemView.findViewById(R.id.feed_content );
         private Button itemViewPutFinishButton = (Button)itemView.findViewById(R.id.putFinishButton);
+        private TextView dateView = (TextView)itemView.findViewById(R.id.date);
 
         private ImageView likeButton= (ImageView)itemView.findViewById(R.id.likeButton);
         private ImageView likeFullButton= (ImageView)itemView.findViewById(R.id.likeFull);
@@ -89,7 +91,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             context = view.getContext();
-            bowlImg = itemView.findViewById(R.id.feed_bowlImg);
+            userImg = itemView.findViewById(R.id.feed_userImg);
             userName = itemView.findViewById(R.id.feed_username);
             feedImg = itemView.findViewById(R.id.feed_img);
             content = itemView.findViewById(R.id.feed_content);
@@ -100,6 +102,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             putButton = (Button)itemView.findViewById(R.id.putButton);
             putFinishButton = (Button)itemView.findViewById(R.id.putFinishButton);
             textView = (TextView)itemView.findViewById(R.id.feed_content);
+            dateView = (TextView) itemView.findViewById(R.id.date);
+
             EditText commentEditTextPost = view.findViewById(R.id.post_title_edit);
 
             itemView.findViewById(R.id.putButton).setOnClickListener(new View.OnClickListener() {
@@ -214,14 +218,26 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull FeedAdapter.ViewHolder holder, int position) {
 
-
         Feed item = itemData.get(position);
+
         holder.userName.setText(item.getNickName());
         byte[] blob = Base64.decode(item.getImg(), Base64.DEFAULT);
         Bitmap bmp = BitmapFactory.decodeByteArray(blob,0, blob.length);
         holder.feedImg.setImageBitmap(bmp);
-        holder.content.setText(item.getContent());
 
+        String date = item.getCreateDate();
+        date = date.substring(0, 10);
+        holder.dateView.setText(date);
+
+        if (item.getUserImg() == null){
+            holder.userImg.setImageResource(R.drawable.catsby_logo);
+        }
+        else{
+            bm = makeBitMap(item.getUserImg());
+            holder.userImg.setImageBitmap(bm);
+        }
+
+        holder.content.setText(item.getContent());
         if (likeCommunity.size() == 0){
             bowlCommunityService.getLikes(user.getUid()).enqueue(new Callback<List<BowlLike>>() {
                 @Override
@@ -324,6 +340,34 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             }
         });
     }
+
+
+    public byte binaryStringToByte(String s) {
+        byte ret = 0, total = 0;
+        for (int i = 0; i < 8; ++i) {
+            ret = (s.charAt(7 - i) == '1') ? (byte) (1 << i) : 0;
+            total = (byte) (ret | total);
+        }
+        return total;
+    }
+
+    public byte[] binaryStringToByteArray(String s) {
+        int count = s.length() / 8;
+        byte[] b = new byte[count];
+        for (int i = 1; i < count; ++i) {
+            String t = s.substring((i - 1) * 8, i * 8);
+            b[i - 1] = binaryStringToByte(t);
+        }
+        return b;
+    }
+
+    public Bitmap makeBitMap(String s) {
+        int idx = s.indexOf("=");
+        byte[] b = binaryStringToByteArray(s.substring(idx + 1));
+        Bitmap bm = BitmapFactory.decodeByteArray(b, 0, b.length);
+        return bm;
+    }
+
 
     private void deleteCommunity(int position, int deleteId){
         bowlCommunityService.deleteCommunity(deleteId).enqueue(new Callback<Void>() {

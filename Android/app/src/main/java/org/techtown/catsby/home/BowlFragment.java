@@ -15,9 +15,9 @@ import android.widget.Toast;
 import org.techtown.catsby.R;
 import org.techtown.catsby.home.adapter.BowlAdapter;
 import org.techtown.catsby.home.adapter.FeedAdapter;
-import org.techtown.catsby.home.model.Bowl;
 import org.techtown.catsby.home.model.Feed;
 import org.techtown.catsby.qrcode.LoadingActivity;
+import org.techtown.catsby.qrcode.data.model.Bowl;
 import org.techtown.catsby.qrcode.data.service.QRBowlService;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.BowlCommunity;
@@ -159,7 +159,7 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
                     Collections.sort(BowlCommunityResult, dateAscending);
 
                     for (int i=0; i < BowlCommunityResult.size(); i++) {
-                        Feed feed = new Feed(BowlCommunityResult.get(i).getId(), R.drawable.pic_001, BowlCommunityResult.get(i).getUser().getId(), BowlCommunityResult.get(i).getUser().getNickname(), BowlCommunityResult.get(i).getImage().getBytes(), BowlCommunityResult.get(i).getContent(), BowlCommunityResult.get(i).getUid(), BowlCommunityResult.get(i).getCreatedDate());
+                        Feed feed = new Feed(BowlCommunityResult.get(i).getId(), BowlCommunityResult.get(i).getUser().getId(), BowlCommunityResult.get(i).getUser().getImage(), BowlCommunityResult.get(i).getUser().getNickname(), BowlCommunityResult.get(i).getImage().getBytes(), BowlCommunityResult.get(i).getContent(), BowlCommunityResult.get(i).getUid(), BowlCommunityResult.get(i).getCreatedDate());
 
                         if (!feedList.contains(feed)){
                             feedList.add(feed);
