@@ -27,6 +27,8 @@ import androidx.fragment.app.FragmentManager;
 
 import org.techtown.catsby.R;
 import org.techtown.catsby.cattown.FragmentCatTown;
+import org.techtown.catsby.community.data.service.TownLikeService;
+import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.CatProfile;
 import org.techtown.catsby.retrofit.dto.User;
 import org.techtown.catsby.retrofit.service.CatService;
@@ -73,6 +75,7 @@ public class AddCatActivity extends AppCompatActivity{
     private TextView imageuri;
     private User user;
     public String uid = FirebaseAuth.getInstance().getUid();
+    private CatService catService = RetrofitClient.catService();
 
     byte imageArray [];
     Bitmap imgBitmap;
@@ -173,19 +176,6 @@ public class AddCatActivity extends AppCompatActivity{
         });
 
 
-        //레트로핏
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://15.164.36.183:8080/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -217,8 +207,7 @@ public class AddCatActivity extends AppCompatActivity{
 
                 System.out.println("uidd"+uid);
 
-                CatService retrofitService = retrofit.create(CatService.class);
-                Call<CatProfile> call = retrofitService.setPost(
+                Call<CatProfile> call = catService.setPost(
                         uid,catname,cathealth,catloc, catgender, cimage, catcontent, catspayed);
                 call.enqueue(new Callback<CatProfile>(){
 
