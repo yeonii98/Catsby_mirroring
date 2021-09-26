@@ -14,6 +14,7 @@ public class User {
     private String updateDate;
     private String uid;
     private String fcmToken;
+    private String image;
 
     @SerializedName("bowlComments")
     private List<BowlComment> bowlComment;
@@ -28,6 +29,10 @@ public class User {
 
     public String getNickname() {
         return nickname;
+    }
+
+    public String getImage() {
+        return image;
     }
 
     public String getEmail() {

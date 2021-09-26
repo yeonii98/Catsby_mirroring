@@ -3,6 +3,7 @@ package org.techtown.catsby.retrofit.service;
 import org.techtown.catsby.retrofit.dto.NicknameResponse;
 import org.techtown.catsby.retrofit.dto.User;
 import org.techtown.catsby.retrofit.dto.UserAddressUpdate;
+import org.techtown.catsby.retrofit.dto.UserImageUpdate;
 
 
 import retrofit2.Call;
@@ -25,5 +26,10 @@ public interface UserService {
 
     @PATCH("/user/nickname/{uid}")
     Call<NicknameResponse> updateNickname(@Path("uid") String uid, @Query("nickname") String nickname);
+
+    @PUT("/user/image/{uid}")
+    Call<Void> updateUserImage(
+            @Path("uid") String uid,
+            @Body UserImageUpdate userImageUpdate);
 
 }

@@ -36,8 +36,12 @@ import org.techtown.catsby.R;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.NicknameResponse;
 import org.techtown.catsby.retrofit.dto.User;
+import org.techtown.catsby.retrofit.dto.UserAddressUpdate;
+import org.techtown.catsby.retrofit.dto.UserImageUpdate;
 import org.techtown.catsby.retrofit.service.UserService;
+import org.techtown.catsby.util.ImageUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -69,6 +73,8 @@ public class FragmentSetting_New extends Fragment {
     private String txtadd = null;
 
     private UserService userService;
+
+    String uid = FirebaseAuth.getInstance().getUid();
 
     @Nullable
     @org.jetbrains.annotations.Nullable
@@ -184,6 +190,7 @@ public class FragmentSetting_New extends Fragment {
         });
     }
 
+    //유저 로드
     private void loadUser() {
         userService.getUser(FirebaseAuth.getInstance().getUid()).enqueue(new Callback<User>() {
             @Override
@@ -194,6 +201,12 @@ public class FragmentSetting_New extends Fragment {
                     local.setText(address);
                 else
                     local.setText("동네를 설정하세요");
+
+                String img = response.body().getImage();
+                if(img !=null){
+                    Bitmap bm = ImageUtils.makeBitMap(img);
+                    imageButton.setImageBitmap(bm);
+                }
             }
 
             @Override
@@ -273,6 +286,14 @@ public class FragmentSetting_New extends Fragment {
         Log.d(TAG, "setImage : " + tempFile.getAbsolutePath());
 
         imageButton.setImageBitmap(originalBm);
+        String image = "";
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        originalBm.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+        byte[] byteArray = stream.toByteArray();
+        image = ImageUtils.byteArrayToBinaryString(byteArray);
+
+        updateImage(image);
 
         /**
          *  tempFile 사용 후 null 처리를 해줘야 합니다.
@@ -281,6 +302,22 @@ public class FragmentSetting_New extends Fragment {
          */
         tempFile = null;
 
+    }
+
+
+    private void updateImage(String image) {
+        UserImageUpdate userImageUpdate = new UserImageUpdate(image);
+        userService.updateUserImage(uid,userImageUpdate).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Toast.makeText(getContext(), "프로필 사진이 변경 되었습니다.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
     }
 
     //[이미지 설정] 4. 권한 설정
