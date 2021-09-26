@@ -45,6 +45,12 @@ public class UserService {
         user.setNickname(nickname);
     }
 
+    @Transactional
+    public void updateImage(String uid, String image) {
+        Users user = userRepository.findUserByUid(uid);
+        user.setImage(image);
+    }
+
     @Transactional(readOnly = true)
     public Long findUserByUid(String uid){
         Users user = userRepository.findUserByUid(uid);

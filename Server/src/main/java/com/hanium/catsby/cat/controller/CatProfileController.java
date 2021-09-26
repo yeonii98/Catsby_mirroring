@@ -46,8 +46,8 @@ public class CatProfileController {
     {
         Users user = userRepository.findUserByUid(uid);
 
-        CatProfile catProfile = new CatProfile(user.getId(), name, health, address, gender, image, content, spayed);
-        mapper.insertCatProfile(user.getId(), name,health,address,gender,image,content,spayed);
+        CatProfile catProfile = new CatProfile(user.getId(), user.getAddress(), name, health, address, gender, image, content, spayed);
+        mapper.insertCatProfile(user.getId(), user.getAddress(), name,health,address,gender,image,content,spayed);
 
     }
 

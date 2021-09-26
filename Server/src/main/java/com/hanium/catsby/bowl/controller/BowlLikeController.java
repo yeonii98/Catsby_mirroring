@@ -42,7 +42,6 @@ public class BowlLikeController {
         return bowlLikeService.findLikesByCommunity(communityId);
     }
 
-
     @GetMapping("/bowl-likes/{uid}")
     public List<BowlLike> bowlLKikeByUid(@PathVariable("uid") String uid) {
         Long userId = userService.findUserByUid(uid);
