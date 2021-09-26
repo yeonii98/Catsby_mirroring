@@ -5,6 +5,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -90,6 +91,7 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
+
         findViewById(R.id.btnDone).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -99,19 +101,17 @@ public class AddActivity extends AppCompatActivity {
                 //db에 저장된 image값을 BinaryStringTobyteArray로 변환하고, byteArray를 bitmap으로 바꿔서 저장한다.
 
                 if (title.length() > 0 && content.length() > 0) {
-                    if(townImg.getDrawable() == null){
+                    if (townImg.getDrawable() == null) {
                         townCommunity = new TownCommunity(title, content, checkBox.isChecked());
-                    }
-
-                    else{
-                        Bitmap img = ((BitmapDrawable)townImg.getDrawable()).getBitmap();
+                    } else {
+                        Bitmap img = ((BitmapDrawable) townImg.getDrawable()).getBitmap();
 
                         String image = "";
 
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         img.compress(Bitmap.CompressFormat.JPEG, 20, stream);
                         byteArray = stream.toByteArray();
-                        image = "&image=" + byteArrayToBinaryString(byteArray) ;
+                        image = "&image=" + byteArrayToBinaryString(byteArray);
                         townCommunity = new TownCommunity(title, content, image, checkBox.isChecked());
                     }
 
@@ -151,7 +151,7 @@ public class AddActivity extends AppCompatActivity {
                     intent.putExtra("byteArray", byteArray);
 
 
-                    if(!checkBox.isChecked())
+                    if (!checkBox.isChecked())
                         intent.putExtra("nickName", user.getEmail().substring(0, idx));
                     else
                         intent.putExtra("nickName", "익명");
@@ -162,14 +162,19 @@ public class AddActivity extends AppCompatActivity {
                     finish();
                 }
 
+                else{
+                    Toast.makeText(getApplicationContext(), "제목과 내용을 입력해주세요", Toast.LENGTH_SHORT).show();
+
+                }
+
             }
         });
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:{ //toolbar의 back키 눌렀을 때 동작
+        switch (item.getItemId()) {
+            case android.R.id.home: { //toolbar의 back키 눌렀을 때 동작
                 finish();
                 return true;
             }
@@ -178,14 +183,15 @@ public class AddActivity extends AppCompatActivity {
     }
 
     // 바이너리 바이트 배열을 스트링으로
-    public static String byteArrayToBinaryString ( byte[] b){
+    public static String byteArrayToBinaryString(byte[] b) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < b.length; ++i) {
             sb.append(byteToBinaryString(b[i]));
         }
         return sb.toString();
     } // 바이너리 바이트를 스트링으로
-    public static String byteToBinaryString ( byte n){
+
+    public static String byteToBinaryString(byte n) {
         StringBuilder sb = new StringBuilder("00000000");
         for (int bit = 0; bit < 8; bit++) {
             if (((n >> bit) & 1) > 0) {

@@ -56,6 +56,7 @@ public class FragmentCatTown extends Fragment {
     private String text1;
     private String text2;
     private UserService userService = RetrofitClient.getUser();
+    private CatService catService = RetrofitClient.catService();
     String uid = FirebaseAuth.getInstance().getUid();
     int addressExist = 1;
     List<Cat> catlist;
@@ -81,12 +82,6 @@ public class FragmentCatTown extends Fragment {
 
         catlist = new ArrayList<>();
 
-        Retrofit retrofit = new Retrofit.Builder()
-
-                .baseUrl("http://15.164.36.183:8080/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
         userService.getUser(uid).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -96,8 +91,7 @@ public class FragmentCatTown extends Fragment {
 
                      if (userAddress != null) {
                         addressExist = 1;
-                        CatService catService1 = retrofit.create(CatService.class);
-                        Call<List<CatProfile>> call2 = catService1.getCatProfileList();
+                        Call<List<CatProfile>> call2 = catService.getCatProfileList();
                         call2.enqueue(new Callback<List<CatProfile>>() {
                             @Override
                             public void onResponse(Call<List<CatProfile>> call2, Response<List<CatProfile>> response) {

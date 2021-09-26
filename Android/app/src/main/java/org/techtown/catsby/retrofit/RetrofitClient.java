@@ -3,6 +3,7 @@ package org.techtown.catsby.retrofit;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.techtown.catsby.cattown.model.Cat;
 import org.techtown.catsby.community.data.service.TownLikeService;
 import org.techtown.catsby.qrcode.data.service.QRBowlService;
 import org.techtown.catsby.login.data.service.LoginService;
@@ -10,6 +11,7 @@ import org.techtown.catsby.notification.data.service.NotificationService;
 import org.techtown.catsby.retrofit.dto.BowlCommunity;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
 import org.techtown.catsby.retrofit.service.BowlService;
+import org.techtown.catsby.retrofit.service.CatService;
 import org.techtown.catsby.retrofit.service.UserService;
 import org.techtown.catsby.setting.FragmentsetMyLoc;
 import org.techtown.catsby.setting.data.service.MyWritingService;
@@ -25,7 +27,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
     private static final String BASE_URL =  "http://172.30.1.30:8080/";
-
+//private static final String BASE_URL = "http://10.0.2.2:8080/";
 
     private static Retrofit getInstance() {
         Gson gson = new GsonBuilder().setLenient().create();
@@ -82,6 +84,10 @@ public class RetrofitClient {
 
     public static QRBowlService getQrBowlService() {
         return getInstance().create(QRBowlService.class);
+    }
+
+    public static CatService catService() {
+        return getInstance().create(CatService.class);
     }
 
 }

@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import org.techtown.catsby.R;
+import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.CatProfile;
 import org.techtown.catsby.retrofit.service.CatService;
 import org.techtown.catsby.util.ImageUtils;
@@ -44,6 +45,7 @@ public class CatTownDetailActivity extends AppCompatActivity  {
     private CheckBox noNeuter;
     private CheckBox unknownNeuter;
     private Bitmap bm;
+    private CatService catService = RetrofitClient.catService();
 
     List<CatProfile> catList;
 
@@ -62,15 +64,7 @@ public class CatTownDetailActivity extends AppCompatActivity  {
         System.out.println(linkedid);
         int linkedid1 = Integer.parseInt(linkedid);
 
-        Retrofit retrofit = new Retrofit.Builder()
-
-                .baseUrl("http://15.164.36.183:8080/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-
-        CatService retrofitService = retrofit.create(CatService.class);
-        Call<CatProfile> call = retrofitService.getCatProfile(linkedid1);
+        Call<CatProfile> call = catService.getCatProfile(linkedid1);
         call.enqueue(new Callback<CatProfile>() {
 
 
