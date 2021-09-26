@@ -138,10 +138,7 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
                         loadBowlDetail((long) result.getBowls().get(i).getBowl_id(), uid);
                         bowlUniId.add(result.getBowls().get(i).getBowl_id());
                     }
-
-
                 }
-
             }
 
             @Override

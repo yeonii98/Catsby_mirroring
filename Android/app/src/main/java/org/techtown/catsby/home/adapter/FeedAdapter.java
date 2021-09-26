@@ -76,11 +76,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         private ImageView feedImg;
         private TextView content;
 
-        private Button putButton1 = (Button)itemView.findViewById(R.id.putButton);
-        private Button deleteButton1 = (Button)itemView.findViewById(R.id.deleteButton);
-        private EditText putText1 = (EditText)itemView.findViewById(R.id.feed_content_EditText);
-        private TextView textView1 = (TextView)itemView.findViewById(R.id.feed_content );
-        private Button putFinishButton1 = (Button)itemView.findViewById(R.id.putFinishButton);
+        private Button itemViewPutButton = (Button)itemView.findViewById(R.id.putButton);
+        private Button itemViewDeleteButton = (Button)itemView.findViewById(R.id.deleteButton);
+        private EditText itemViewPutText = (EditText)itemView.findViewById(R.id.feed_content_EditText);
+        private TextView itemViewTextView = (TextView)itemView.findViewById(R.id.feed_content );
+        private Button itemViewPutFinishButton = (Button)itemView.findViewById(R.id.putFinishButton);
 
         private ImageView likeButton= (ImageView)itemView.findViewById(R.id.likeButton);
         private ImageView likeFullButton= (ImageView)itemView.findViewById(R.id.likeFull);
@@ -108,11 +108,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                     if (bool[getAdapterPosition()]) {
                         int pos = getAdapterPosition();
                         if (pos != RecyclerView.NO_POSITION) {
-                            ViewHolder.this.putButton1.setVisibility(View.INVISIBLE);
-                            ViewHolder.this.putFinishButton1.setVisibility(View.VISIBLE);
-                            ViewHolder.this.textView1.setVisibility(View.GONE);
-                            ViewHolder.this.putText1.setVisibility(View.VISIBLE);
-                            ViewHolder.this.putText1.setCursorVisible(true);
+                            ViewHolder.this.itemViewPutButton.setVisibility(View.INVISIBLE);
+                            ViewHolder.this.itemViewPutFinishButton.setVisibility(View.VISIBLE);
+                            ViewHolder.this.itemViewTextView.setVisibility(View.GONE);
+                            ViewHolder.this.itemViewPutText.setVisibility(View.VISIBLE);
+                            ViewHolder.this.itemViewPutText.setCursorVisible(true);
                         }
                     }
                 }
@@ -153,18 +153,17 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             itemView.findViewById(R.id.putFinishButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String putMessage1 = ViewHolder.this.putText1.getText().toString();
-                    System.out.println("putMessage = " + putMessage1);
+                    String putMessage1 = ViewHolder.this.itemViewPutText.getText().toString();
 
                     if (!putMessage1.equals("클릭하여 글을 작성해주세요")){
                         updateCommunity(itemData.get(getAdapterPosition()).getId(), putMessage1);
-                        ViewHolder.this.textView1.setText(putMessage1);
+                        ViewHolder.this.itemViewTextView.setText(putMessage1);
                     }
 
-                    ViewHolder.this.putButton1.setVisibility(View.VISIBLE);
-                    ViewHolder.this.putFinishButton1.setVisibility(View.INVISIBLE);
-                    ViewHolder.this.putText1.setVisibility(View.GONE);
-                    ViewHolder.this.textView1.setVisibility(View.VISIBLE);
+                    ViewHolder.this.itemViewPutButton.setVisibility(View.VISIBLE);
+                    ViewHolder.this.itemViewPutFinishButton.setVisibility(View.INVISIBLE);
+                    ViewHolder.this.itemViewPutText.setVisibility(View.GONE);
+                    ViewHolder.this.itemViewTextView.setVisibility(View.VISIBLE);
                 }
             });
 
@@ -217,13 +216,10 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
 
 
         Feed item = itemData.get(position);
-        //holder.bowlImg.setImageResource(item.getBowlImg());
-
         holder.userName.setText(item.getNickName());
         byte[] blob = Base64.decode(item.getImg(), Base64.DEFAULT);
         Bitmap bmp = BitmapFactory.decodeByteArray(blob,0, blob.length);
         holder.feedImg.setImageBitmap(bmp);
-
         holder.content.setText(item.getContent());
 
         if (likeCommunity.size() == 0){
@@ -273,11 +269,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         }
 
         if (bool[position]) {
-            holder.putButton1.setVisibility(View.VISIBLE);
-            holder.deleteButton1.setVisibility(View.VISIBLE);
+            holder.itemViewPutButton.setVisibility(View.VISIBLE);
+            holder.itemViewDeleteButton.setVisibility(View.VISIBLE);
         } else{
-            holder.putButton1.setVisibility(View.GONE);
-            holder.deleteButton1.setVisibility(View.GONE);
+            holder.itemViewPutButton.setVisibility(View.GONE);
+            holder.itemViewDeleteButton.setVisibility(View.GONE);
         }
     }
 
