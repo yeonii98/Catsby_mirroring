@@ -30,6 +30,7 @@ import org.techtown.catsby.cattown.FragmentCatTown;
 import org.techtown.catsby.retrofit.dto.CatProfile;
 import org.techtown.catsby.retrofit.dto.User;
 import org.techtown.catsby.retrofit.service.CatService;
+import org.techtown.catsby.util.ImageUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -102,7 +103,7 @@ public class AddCatActivity extends AppCompatActivity{
                     byte[] bytes = baos.toByteArray();
 
                     //3. byteArray to BinaryString
-                    cimage = byteArrayToBinaryString(bytes);
+                    cimage = ImageUtils.byteArrayToBinaryString(bytes);
                     //cimage = "&image=" + byteArrayToBinaryString(bytes);
 
                     //System.out.println("@imgBitmap = " + imgBitmap);
@@ -116,7 +117,6 @@ public class AddCatActivity extends AppCompatActivity{
         }
     }
 
-
     //이미지 업로드
     public void imageUpload(View view) {
         Intent intent = new Intent();
@@ -124,33 +124,6 @@ public class AddCatActivity extends AppCompatActivity{
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, 101);
     }
-
-    public byte[] bitmapToByteArray( Bitmap bitmap ) {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream() ;
-        bitmap.compress( Bitmap.CompressFormat.JPEG, 100, stream) ;
-        byte[] byteArray = stream.toByteArray() ;
-        return byteArray ;
-    }
-
-    // 바이너리 바이트 배열을 스트링으로
-    public static String byteArrayToBinaryString(byte[] b) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < b.length; ++i) {
-            sb.append(byteToBinaryString(b[i]));
-        }
-        return sb.toString();
-    }
-
-    // 바이너리 바이트를 스트링으로
-    public static String byteToBinaryString(byte n) {
-        StringBuilder sb = new StringBuilder("00000000");
-        for (int bit = 0; bit < 8; bit++) {
-            if (((n >> bit) & 1) > 0) {
-            sb.setCharAt(7 - bit, '1');
-            }
-        }
-        return sb.toString(); }
-
 
     public void saveBitmapToJpeg(Bitmap bitmap) {   // 선택한 이미지 내부 저장소에 저장
         File tempFile = new File(getCacheDir(), imgName);    // 파일 경로와 이름

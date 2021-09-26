@@ -4,6 +4,8 @@ import com.hanium.catsby.town.service.TownCommentService;
 import com.hanium.catsby.town.domain.TownComment;
 import com.hanium.catsby.notification.domain.NotificationType;
 import com.hanium.catsby.notification.service.NotificationService;
+import com.hanium.catsby.user.domain.Users;
+import com.hanium.catsby.user.service.UserService;
 import com.hanium.catsby.util.NotificationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,9 @@ public class TownCommentController {
     @Autowired
     NotificationService notificationService;
 
+    @Autowired
+    UserService userService;
+
     @GetMapping("townCommunity/{id}/comment")
     public List townCommunity(@PathVariable int id){
         return townCommentService.listTownComment(id);
@@ -26,11 +31,12 @@ public class TownCommentController {
     //댓글 쓰기
     @PostMapping("townCommunity/{id}/comment/{uid}")
     public String writeTownComment(@PathVariable int id, @PathVariable String uid, @RequestBody TownComment townComment){//현재 유저의 정보도 넣어야 함
+        Users user = userService.findUsersByUid(uid);
+
         townCommentService.writeTownComment(id, uid, townComment);
 
         String content = townComment.getTownCommunity().getTitle();
-        String message = id + NotificationUtil.makeNotification(content, NotificationType.COMMENT);
-        notificationService.saveNotification(townComment.getTownCommunity().getUser(), message);
+        notificationService.saveNotification(user, content, NotificationType.COMMENT);
 
         return "댓글 쓰기";
     }

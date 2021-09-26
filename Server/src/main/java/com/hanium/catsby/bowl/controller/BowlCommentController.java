@@ -30,15 +30,15 @@ public class BowlCommentController {
 
     @PostMapping("/bowl-comment/{uid}/{communityId}")
     public CreateBowlCommentResponse saveBowlComment(@PathVariable("uid") String uid, @PathVariable("communityId") Long communityId, @RequestBody CreateBowlCommentRequest request){
-        Long userId = userService.findUserByUid(uid);
+        Users user = userService.findUsersByUid(uid);
         BowlComment bowlComment = new BowlComment();
         bowlComment.setContent(request.getContent());
         bowlComment.setUid(uid);
 
-        Long id = bowlCommentService.savaComment(bowlComment, userId, communityId);
+        Long id = bowlCommentService.savaComment(bowlComment, user.getId(), communityId);
+
         String content = bowlComment.getBowlCommunity().getContent();
-        String message = userId + NotificationUtil.makeNotification(content, NotificationType.COMMENT);
-        notificationService.saveNotification(bowlComment.getBowlCommunity().getUser(), message);
+        notificationService.saveNotification(user, content, NotificationType.COMMENT);
 
         return new CreateBowlCommentResponse(id);
     }

@@ -34,6 +34,7 @@ import org.techtown.catsby.community.data.service.TownCommentService;
 import org.techtown.catsby.community.data.service.TownCommunityService;
 import org.techtown.catsby.retrofit.dto.User;
 import org.techtown.catsby.retrofit.service.UserService;
+import org.techtown.catsby.util.ImageUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -105,7 +106,7 @@ public class FragmentCommunity extends Fragment {
                                         if(!userAddress.equals(result.get(i).getUser().getAddress())) continue;
                                         
                                         if (result.get(i).getImage() != null)
-                                            bm = makeBitMap(result.get(i).getImage());
+                                            bm = ImageUtils.makeBitMap(result.get(i).getImage());
                                         else
                                             bm = null;
 
@@ -245,32 +246,6 @@ public class FragmentCommunity extends Fragment {
 //            recyclerAdapter.notifyDataSetChanged();
         } else return;
 
-    }
-
-    public Bitmap makeBitMap(String s) {
-        int idx = s.indexOf("=");
-        byte[] b = binaryStringToByteArray(s.substring(idx + 1));
-        Bitmap bm = BitmapFactory.decodeByteArray(b, 0, b.length);
-        return bm;
-    }
-
-    public byte[] binaryStringToByteArray(String s) {
-        int count = s.length() / 8;
-        byte[] b = new byte[count];
-        for (int i = 1; i < count; ++i) {
-            String t = s.substring((i - 1) * 8, i * 8);
-            b[i - 1] = binaryStringToByte(t);
-        }
-        return b;
-    }
-
-    public byte binaryStringToByte(String s) {
-        byte ret = 0, total = 0;
-        for (int i = 0; i < 8; ++i) {
-            ret = (s.charAt(7 - i) == '1') ? (byte) (1 << i) : 0;
-            total = (byte) (ret | total);
-        }
-        return total;
     }
 
     class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemViewHolder> {

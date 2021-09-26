@@ -3,6 +3,7 @@ package org.techtown.catsby.cattown;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import org.techtown.catsby.R;
 import org.techtown.catsby.retrofit.dto.CatProfile;
 import org.techtown.catsby.retrofit.service.CatService;
+import org.techtown.catsby.util.ImageUtils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -108,7 +110,7 @@ public class CatTownDetailActivity extends AppCompatActivity  {
                     feature.setText(result.getContent());
                     //고양이 사진
                     if(result.getImage() != null){
-                        bm = makeBitMap(result.getImage());
+                        bm = ImageUtils.makeBitMap(result.getImage());
                         catimgview.setImageBitmap(bm);}
                     else{
                         bm = null;}
@@ -140,32 +142,6 @@ public class CatTownDetailActivity extends AppCompatActivity  {
 
 
 
-    }
-
-    public Bitmap makeBitMap(String s){
-        int idx = s.indexOf("=");
-        byte[] b = binaryStringToByteArray(s.substring(idx+1));
-        Bitmap bm = BitmapFactory.decodeByteArray(b,0,b.length);
-        return bm;
-    }
-
-    public byte[] binaryStringToByteArray(String s){
-        int count=s.length()/8;
-        byte[] b=new byte[count];
-        for(int i=1; i<count; ++i){
-            String t=s.substring((i-1)*8, i*8);
-            b[i-1]=binaryStringToByte(t);
-        }
-        return b;
-    }
-
-    public byte binaryStringToByte(String s){
-        byte ret=0, total=0;
-        for(int i=0; i<8; ++i){
-            ret = (s.charAt(7-i)=='1') ? (byte)(1 << i) : 0;
-            total = (byte) (ret|total);
-        }
-        return total;
     }
 
     @Override
