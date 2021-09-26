@@ -25,9 +25,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 
+import org.techtown.catsby.MainActivity;
 import org.techtown.catsby.R;
 import org.techtown.catsby.cattown.FragmentCatTown;
 import org.techtown.catsby.cattown.adapter.FragmentCatTownAdapter;
+import org.techtown.catsby.community.data.service.TownLikeService;
+import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.CatProfile;
 import org.techtown.catsby.retrofit.dto.User;
 import org.techtown.catsby.retrofit.service.CatService;
@@ -74,6 +77,8 @@ public class AddCatActivity extends AppCompatActivity{
     private TextView imageuri;
     private User user;
     public String uid = FirebaseAuth.getInstance().getUid();
+    private CatService catService = RetrofitClient.catService();
+
     FragmentCatTownAdapter adapter;
 
     byte imageArray [];
@@ -174,19 +179,13 @@ public class AddCatActivity extends AppCompatActivity{
             }
         });
 
-
-        //레트로핏
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://15.164.36.183:8080/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                finish();
             }
         });
+
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -217,9 +216,9 @@ public class AddCatActivity extends AppCompatActivity{
                 String catcontent = edtcontent.getText().toString();
                 byte[] catimage = imageArray;
 
-                System.out.println("uid: "+uid);
-                CatService retrofitService = retrofit.create(CatService.class);
-                Call<CatProfile> call = retrofitService.setPost(
+                System.out.println("uidd"+uid);
+
+                Call<CatProfile> call = catService.setPost(
                         uid,catname,cathealth,catloc, catgender, cimage, catcontent, catspayed);
                 call.enqueue(new Callback<CatProfile>(){
 
@@ -231,7 +230,7 @@ public class AddCatActivity extends AppCompatActivity{
                             adapter.notifyDataSetChanged();
                         }
                         else {
-                            System.out.println("실패");
+                            //System.out.println("실패");
                         }
                     }
 
@@ -240,6 +239,7 @@ public class AddCatActivity extends AppCompatActivity{
                         //System.out.println("통신 실패");
                     }
                 });
+                finish();
             }
 
         });

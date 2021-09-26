@@ -56,6 +56,7 @@ public class FragmentCatTown extends Fragment {
     private String text1;
     private String text2;
     private UserService userService = RetrofitClient.getUser();
+    private CatService catService = RetrofitClient.catService();
     String uid = FirebaseAuth.getInstance().getUid();
     int addressExist = 1;
     List<Cat> catlist;
@@ -81,12 +82,6 @@ public class FragmentCatTown extends Fragment {
 
         catlist = new ArrayList<>();
 
-        Retrofit retrofit = new Retrofit.Builder()
-
-                .baseUrl("http://15.164.36.183:8080/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
         userService.getUser(uid).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
@@ -96,8 +91,7 @@ public class FragmentCatTown extends Fragment {
 
                      if (userAddress != null) {
                         addressExist = 1;
-                        CatService catService1 = retrofit.create(CatService.class);
-                        Call<List<CatProfile>> call2 = catService1.getCatProfileList();
+                        Call<List<CatProfile>> call2 = catService.getCatProfileList();
                         call2.enqueue(new Callback<List<CatProfile>>() {
                             @Override
                             public void onResponse(Call<List<CatProfile>> call2, Response<List<CatProfile>> response) {
@@ -106,23 +100,11 @@ public class FragmentCatTown extends Fragment {
 
                                     for(int i=0; i<result.size(); i++) {
 
-
-//                                        userService.getUser(result.get(i).getUID()).enqueue(new Callback<User>() {
-//                                            @Override
-//                                            public void onResponse(Call<User> call, Response<User> response) {
-//                                                String address_for = response.body().getAddress();
-//                                            }
-//
-//                                            @Override
-//                                            public void onFailure(Call<User> call, Throwable t) {
-//
-//                                            }
-//                                        });
-//
-
-                                        //if(!userAddress.equals(address_for)) continue;
-                                        long a = result.get(i).getUserid();
-                                        System.out.println("캣유저테스트"+a);
+                                        String address_for = result.get(i).getUser_add();
+                                        System.out.println(address_for);
+                                        if(!userAddress.equals(address_for)) continue;
+//                                        long a = result.get(i).getUserid();
+//                                        System.out.println("캣유저테스트"+a);
 
                                         //System.out.println("캣유저테스트"+a);
                                         //리스트에 표시될 이미지
@@ -150,7 +132,7 @@ public class FragmentCatTown extends Fragment {
                                         //매핑을 위한 고양이 아이디
                                         linkid = Integer.toString(result.get(i).getCatId());
 
-                                        Cat cat = new Cat(result.get(i).getUserid(), result.get(i).getCatName(), bm, linkid,text2, text1,0);
+                                        Cat cat = new Cat(result.get(i).getUserid(), result.get(i).getUser_add(),result.get(i).getCatName(), bm, linkid,text2, text1,0);
 
                                         System.out.println(linkid);
                                         adapter.addItem(cat);
