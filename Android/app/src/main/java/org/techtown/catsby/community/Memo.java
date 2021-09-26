@@ -25,6 +25,14 @@ public class Memo {
 
     }
 
+    public Bitmap getUserImg() {
+        return userImg;
+    }
+
+    public void setUserImg(Bitmap userImg) {
+        this.userImg = userImg;
+    }
+
     public int getPush() {
         return push;
     }
@@ -50,7 +58,7 @@ public class Memo {
         this.userImg = userImg;
     }
 
-    public Memo(int id, String uid, String maintext, String subtext, String nickname, String date, Bitmap img) {
+    public Memo(int id, String uid, String maintext, String subtext, String nickname, String date, Bitmap img, Bitmap userBm) {
         this.id = id;
         this.uid = uid;
         this.maintext = maintext;
@@ -58,9 +66,10 @@ public class Memo {
         this.nickname = nickname;
         this.date = date;
         this.img = img;
+        this.userImg = userBm;
     }
 
-    public Memo(int id, String uid, String maintext, String subtext, String nickname, String date, Bitmap img, int likeCnt, int push) {
+    public Memo(int id, String uid, String maintext, String subtext, String nickname, String date, Bitmap img, int likeCnt, int push, Bitmap userImg) {
         this.id = id;
         this.uid = uid;
         this.maintext = maintext;
@@ -70,6 +79,7 @@ public class Memo {
         this.img = img;
         this.push = push;
         this.likeCnt = likeCnt;
+        this.userImg = userImg;
     }
 
     public Memo(String uid, String maintext, String subtext, String nickname, String date,Bitmap bm) {

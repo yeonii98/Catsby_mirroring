@@ -289,7 +289,7 @@ public class FragmentSetting_New extends Fragment {
         String image = "";
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        originalBm.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+        originalBm.compress(Bitmap.CompressFormat.JPEG, 20, stream);
         byte[] byteArray = stream.toByteArray();
         image = ImageUtils.byteArrayToBinaryString(byteArray);
 
