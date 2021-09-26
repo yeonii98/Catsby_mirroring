@@ -49,6 +49,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     UserService userService = RetrofitClient.getUser();
     View view;
+    private Bitmap bm = null;
 
     Button postButton;
     EditText commentEditText;
@@ -71,16 +72,17 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private ImageView bowlImg;
+        private ImageView userImg;
         private TextView userName;
         private ImageView feedImg;
         private TextView content;
 
-        private Button putButton1 = (Button)itemView.findViewById(R.id.putButton);
-        private Button deleteButton1 = (Button)itemView.findViewById(R.id.deleteButton);
-        private EditText putText1 = (EditText)itemView.findViewById(R.id.feed_content_EditText);
-        private TextView textView1 = (TextView)itemView.findViewById(R.id.feed_content );
-        private Button putFinishButton1 = (Button)itemView.findViewById(R.id.putFinishButton);
+        private Button itemViewPutButton = (Button)itemView.findViewById(R.id.putButton);
+        private Button itemViewDeleteButton = (Button)itemView.findViewById(R.id.deleteButton);
+        private EditText itemViewPutText = (EditText)itemView.findViewById(R.id.feed_content_EditText);
+        private TextView itemViewTextView = (TextView)itemView.findViewById(R.id.feed_content );
+        private Button itemViewPutFinishButton = (Button)itemView.findViewById(R.id.putFinishButton);
+        private TextView dateView = (TextView)itemView.findViewById(R.id.date);
 
         private ImageView likeButton= (ImageView)itemView.findViewById(R.id.likeButton);
         private ImageView likeFullButton= (ImageView)itemView.findViewById(R.id.likeFull);
@@ -89,7 +91,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             context = view.getContext();
-            bowlImg = itemView.findViewById(R.id.feed_bowlImg);
+            userImg = itemView.findViewById(R.id.feed_userImg);
             userName = itemView.findViewById(R.id.feed_username);
             feedImg = itemView.findViewById(R.id.feed_img);
             content = itemView.findViewById(R.id.feed_content);
@@ -100,6 +102,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             putButton = (Button)itemView.findViewById(R.id.putButton);
             putFinishButton = (Button)itemView.findViewById(R.id.putFinishButton);
             textView = (TextView)itemView.findViewById(R.id.feed_content);
+            dateView = (TextView) itemView.findViewById(R.id.date);
+
             EditText commentEditTextPost = view.findViewById(R.id.post_title_edit);
 
             itemView.findViewById(R.id.putButton).setOnClickListener(new View.OnClickListener() {
@@ -108,11 +112,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                     if (bool[getAdapterPosition()]) {
                         int pos = getAdapterPosition();
                         if (pos != RecyclerView.NO_POSITION) {
-                            ViewHolder.this.putButton1.setVisibility(View.INVISIBLE);
-                            ViewHolder.this.putFinishButton1.setVisibility(View.VISIBLE);
-                            ViewHolder.this.textView1.setVisibility(View.GONE);
-                            ViewHolder.this.putText1.setVisibility(View.VISIBLE);
-                            ViewHolder.this.putText1.setCursorVisible(true);
+                            ViewHolder.this.itemViewPutButton.setVisibility(View.INVISIBLE);
+                            ViewHolder.this.itemViewPutFinishButton.setVisibility(View.VISIBLE);
+                            ViewHolder.this.itemViewTextView.setVisibility(View.GONE);
+                            ViewHolder.this.itemViewPutText.setVisibility(View.VISIBLE);
+                            ViewHolder.this.itemViewPutText.setCursorVisible(true);
                         }
                     }
                 }
@@ -153,18 +157,17 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             itemView.findViewById(R.id.putFinishButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String putMessage1 = ViewHolder.this.putText1.getText().toString();
-                    System.out.println("putMessage = " + putMessage1);
+                    String putMessage1 = ViewHolder.this.itemViewPutText.getText().toString();
 
                     if (!putMessage1.equals("클릭하여 글을 작성해주세요")){
                         updateCommunity(itemData.get(getAdapterPosition()).getId(), putMessage1);
-                        ViewHolder.this.textView1.setText(putMessage1);
+                        ViewHolder.this.itemViewTextView.setText(putMessage1);
                     }
 
-                    ViewHolder.this.putButton1.setVisibility(View.VISIBLE);
-                    ViewHolder.this.putFinishButton1.setVisibility(View.INVISIBLE);
-                    ViewHolder.this.putText1.setVisibility(View.GONE);
-                    ViewHolder.this.textView1.setVisibility(View.VISIBLE);
+                    ViewHolder.this.itemViewPutButton.setVisibility(View.VISIBLE);
+                    ViewHolder.this.itemViewPutFinishButton.setVisibility(View.INVISIBLE);
+                    ViewHolder.this.itemViewPutText.setVisibility(View.GONE);
+                    ViewHolder.this.itemViewTextView.setVisibility(View.VISIBLE);
                 }
             });
 
@@ -215,17 +218,26 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull FeedAdapter.ViewHolder holder, int position) {
 
-
         Feed item = itemData.get(position);
-        //holder.bowlImg.setImageResource(item.getBowlImg());
 
         holder.userName.setText(item.getNickName());
         byte[] blob = Base64.decode(item.getImg(), Base64.DEFAULT);
         Bitmap bmp = BitmapFactory.decodeByteArray(blob,0, blob.length);
         holder.feedImg.setImageBitmap(bmp);
 
-        holder.content.setText(item.getContent());
+        String date = item.getCreateDate();
+        date = date.substring(0, 10);
+        holder.dateView.setText(date);
 
+        if (item.getUserImg() == null){
+            holder.userImg.setImageResource(R.drawable.catsby_logo);
+        }
+        else{
+            bm = makeBitMap(item.getUserImg());
+            holder.userImg.setImageBitmap(bm);
+        }
+
+        holder.content.setText(item.getContent());
         if (likeCommunity.size() == 0){
             bowlCommunityService.getLikes(user.getUid()).enqueue(new Callback<List<BowlLike>>() {
                 @Override
@@ -273,11 +285,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         }
 
         if (bool[position]) {
-            holder.putButton1.setVisibility(View.VISIBLE);
-            holder.deleteButton1.setVisibility(View.VISIBLE);
+            holder.itemViewPutButton.setVisibility(View.VISIBLE);
+            holder.itemViewDeleteButton.setVisibility(View.VISIBLE);
         } else{
-            holder.putButton1.setVisibility(View.GONE);
-            holder.deleteButton1.setVisibility(View.GONE);
+            holder.itemViewPutButton.setVisibility(View.GONE);
+            holder.itemViewDeleteButton.setVisibility(View.GONE);
         }
     }
 
@@ -328,6 +340,34 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             }
         });
     }
+
+
+    public byte binaryStringToByte(String s) {
+        byte ret = 0, total = 0;
+        for (int i = 0; i < 8; ++i) {
+            ret = (s.charAt(7 - i) == '1') ? (byte) (1 << i) : 0;
+            total = (byte) (ret | total);
+        }
+        return total;
+    }
+
+    public byte[] binaryStringToByteArray(String s) {
+        int count = s.length() / 8;
+        byte[] b = new byte[count];
+        for (int i = 1; i < count; ++i) {
+            String t = s.substring((i - 1) * 8, i * 8);
+            b[i - 1] = binaryStringToByte(t);
+        }
+        return b;
+    }
+
+    public Bitmap makeBitMap(String s) {
+        int idx = s.indexOf("=");
+        byte[] b = binaryStringToByteArray(s.substring(idx + 1));
+        Bitmap bm = BitmapFactory.decodeByteArray(b, 0, b.length);
+        return bm;
+    }
+
 
     private void deleteCommunity(int position, int deleteId){
         bowlCommunityService.deleteCommunity(deleteId).enqueue(new Callback<Void>() {

@@ -91,7 +91,6 @@ public class BowlAdapter extends RecyclerView.Adapter<BowlAdapter.ViewHolder> {
         BowlInfo item = itemData.get(position);
         holder.text.setText(item.getName());
 
-
         if (item.getImage() == null){
             holder.image.setImageResource(R.drawable.catsby_logo);
         }

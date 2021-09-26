@@ -72,7 +72,6 @@ public class FragmentCommunity extends Fragment {
         super.onCreate(savedInstanceState);
 
         view = inflater.inflate(R.layout.fragment_community, container, false);
-
         memoList = new ArrayList<>();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setReverseLayout(true);

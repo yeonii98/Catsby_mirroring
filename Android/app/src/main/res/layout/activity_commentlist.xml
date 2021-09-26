@@ -57,7 +57,7 @@
 
         <TextView
             android:id="@+id/commentlist_text"
-            android:layout_width="146dp"
+            android:layout_width="151dp"
             android:layout_height="40dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="25dp"
@@ -67,23 +67,25 @@
         <Button
             android:id="@+id/commentlist_update"
             android:layout_marginTop="10dp"
-            android:layout_width="15dp"
+            android:layout_width="50dp"
             android:layout_height="34dp"
+            android:layout_margin="4dp"
             android:layout_weight="1"
             android:background="#FFACDBE8"
             android:text="수정"
-            android:textSize="11sp" />
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/commentlist_delete"
             android:layout_marginTop="10dp"
-            android:layout_width="15dp"
+            android:layout_width="50dp"
             android:layout_height="34dp"
+            android:layout_margin="4dp"
             android:layout_weight="1"
             android:background="#FFACDBE8"
             android:text="삭제"
             android:layout_marginRight="10dp"
-            android:textSize="11sp" />
+            android:textSize="14sp" />
 
     </LinearLayout>
 
