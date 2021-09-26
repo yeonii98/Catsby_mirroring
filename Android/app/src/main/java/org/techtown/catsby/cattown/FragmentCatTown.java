@@ -105,9 +105,25 @@ public class FragmentCatTown extends Fragment {
                                     List<CatProfile> result = response.body();
 
                                     for(int i=0; i<result.size(); i++) {
-                                        //if(!userAddress.equals(result.get(i).getUser().getAddress())) continue;
-                                        //System.out.println(result.get(i).getUser().getUid());
-                                        //int a = result.get(5).getUser().getId();
+
+
+//                                        userService.getUser(result.get(i).getUID()).enqueue(new Callback<User>() {
+//                                            @Override
+//                                            public void onResponse(Call<User> call, Response<User> response) {
+//                                                String address_for = response.body().getAddress();
+//                                            }
+//
+//                                            @Override
+//                                            public void onFailure(Call<User> call, Throwable t) {
+//
+//                                            }
+//                                        });
+//
+
+                                        //if(!userAddress.equals(address_for)) continue;
+                                        long a = result.get(i).getUserid();
+                                        System.out.println("캣유저테스트"+a);
+
                                         //System.out.println("캣유저테스트"+a);
                                         //리스트에 표시될 이미지
                                         if(result.get(i).getImage() != null){
