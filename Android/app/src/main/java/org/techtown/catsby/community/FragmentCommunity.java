@@ -55,6 +55,7 @@ public class FragmentCommunity extends Fragment {
     private TownLikeService townLikeService = RetrofitClient.getTownLikeService();
     private UserService userService = RetrofitClient.getUser();
     private Bitmap bm = null;
+    private Bitmap userBm = null;
     private String nickName;
     String uid = FirebaseAuth.getInstance().getUid();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -91,6 +92,7 @@ public class FragmentCommunity extends Fragment {
                 if(response.isSuccessful()){
                     User result = response.body();
                     String userAddress = result.getAddress();
+                    String userImg = result.getImage();
 
                     if(userAddress != null){
                         addressExist = 1;
@@ -114,11 +116,14 @@ public class FragmentCommunity extends Fragment {
                                         else
                                             nickName = result.get(i).getUser().getNickname();
 
+                                        if(result.get(i).getUser().getImage() != null)
+                                            userBm = ImageUtils.makeBitMap(result.get(i).getUser().getImage());
+
                                         push = push(result.get(i).getTownLike().size(),result.get(i).getTownLike());
 
                                         Memo memo = new Memo(result.get(i).getId(), result.get(i).getUser().getUid(),
                                                 result.get(i).getTitle(), result.get(i).getContent(),result.get(i).getTownLike().size(),
-                                                nickName, result.get(i).getDate(), bm, push);
+                                                nickName, result.get(i).getDate(), bm, push, userBm);
                                         recyclerAdapter.addItem(memo);
                                     }
                                     recyclerAdapter.notifyDataSetChanged();
@@ -377,7 +382,10 @@ public class FragmentCommunity extends Fragment {
 
                 itemViewHolder.chatbubble.setVisibility(View.VISIBLE);
                 itemViewHolder.linearLayout.setVisibility(View.VISIBLE);
+
                 itemViewHolder.userImg.setVisibility(View.VISIBLE);
+//                itemViewHolder.userImg.setImageBitmap(userBm);
+
                 itemViewHolder.likeImg.setVisibility(View.VISIBLE);
 
                 itemViewHolder.chatbubble.setOnClickListener(new View.OnClickListener() {
