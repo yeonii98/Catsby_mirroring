@@ -19,6 +19,7 @@ public class Memo {
     private int push;
     private Bitmap img;
     private int likeCnt = 0; //좋아요 개수
+    private Bitmap userImg;
 
     public Memo(){
 
@@ -36,7 +37,7 @@ public class Memo {
         this.id = id;
     }
 
-    public Memo(int id, String uid, String maintext, String subtext, int likeCnt, String nickname, String date, Bitmap img, int push) {
+    public Memo(int id, String uid, String maintext, String subtext, int likeCnt, String nickname, String date, Bitmap img, int push, Bitmap userImg) {
         this.id = id;
         this.uid = uid;
         this.maintext = maintext;
@@ -46,6 +47,7 @@ public class Memo {
         this.date = date;
         this.img = img;
         this.push = push;
+        this.userImg = userImg;
     }
 
     public Memo(int id, String uid, String maintext, String subtext, String nickname, String date, Bitmap img) {
