@@ -170,7 +170,6 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
 
                     }
                     RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerview);
-                    recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), 1));
                     RecyclerView.LayoutManager feedLayoutManager = new LinearLayoutManager(getActivity());
                     recyclerView.setLayoutManager(feedLayoutManager);
                     FeedAdapter feedAdapter = new FeedAdapter(feedList);
