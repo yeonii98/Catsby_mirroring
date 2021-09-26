@@ -27,6 +27,7 @@ import androidx.fragment.app.FragmentManager;
 
 import org.techtown.catsby.R;
 import org.techtown.catsby.cattown.FragmentCatTown;
+import org.techtown.catsby.cattown.adapter.FragmentCatTownAdapter;
 import org.techtown.catsby.retrofit.dto.CatProfile;
 import org.techtown.catsby.retrofit.dto.User;
 import org.techtown.catsby.retrofit.service.CatService;
@@ -72,6 +73,7 @@ public class AddCatActivity extends AppCompatActivity{
     private TextView imageuri;
     private User user;
     public String uid = FirebaseAuth.getInstance().getUid();
+    FragmentCatTownAdapter adapter;
 
     byte imageArray [];
     Bitmap imgBitmap;
@@ -253,6 +255,7 @@ public class AddCatActivity extends AppCompatActivity{
                         if(response.isSuccessful()) {
                             System.out.println("성공");
                             CatProfile cat = response.body();
+                            adapter.notifyDataSetChanged();
                         }
                         else {
                             System.out.println("실패");
