@@ -24,7 +24,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-
 public class RetrofitClient {
     private static final String BASE_URL =  "http://15.164.36.183:8080/";
     

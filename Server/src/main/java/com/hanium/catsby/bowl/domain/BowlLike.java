@@ -19,13 +19,15 @@ public class BowlLike extends BaseTimeEntity {
     @Column(name = "bowlLike_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private Users user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @JoinColumn(name = "bowlCommunity_id")
     private BowlCommunity bowlCommunity;
+
+    private String uid;
 
 }

@@ -117,6 +117,8 @@ public class BowlAdapter extends RecyclerView.Adapter<BowlAdapter.ViewHolder> {
                     intent.putExtra("id", item.getId());
                     intent.putExtra("name", item.getName());
                     intent.putExtra("address", item.getAddress());
+                    intent.putExtra("image", bm);
+
                     v.getContext().startActivity(intent);
                 }
             });

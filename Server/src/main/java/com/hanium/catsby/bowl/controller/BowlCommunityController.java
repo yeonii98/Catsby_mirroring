@@ -36,7 +36,6 @@ public class BowlCommunityController {
 
     @Data
     static class CreateBowlCommunityRequest{
-        //private Blob image;
         private String content;
         private String path;
     }
@@ -48,13 +47,6 @@ public class BowlCommunityController {
             this.id = id;
         }
     }
-
-    /*
-    @GetMapping("/bowl-communities/{uid}")
-    public List<BowlCommunity> bowlCommunities(@PathVariable("uid") String uid) {
-        List<BowlCommunity> findCommunities = bowlCommunityService.findCommunitiesByUser(uid);
-        return findCommunities;
-    }*/
 
     @GetMapping("/bowl-communities/{bowlId}")
     public List<BowlCommunity> bowlCommunitiesByBowl(@PathVariable("bowlId") Long bowlId) {

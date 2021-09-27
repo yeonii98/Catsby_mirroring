@@ -17,11 +17,11 @@ import com.google.firebase.auth.FirebaseUser;
 import org.jetbrains.annotations.NotNull;
 import org.techtown.catsby.R;
 import org.techtown.catsby.retrofit.RetrofitClient;
+import org.techtown.catsby.retrofit.dto.BowlComment;
+import org.techtown.catsby.retrofit.dto.BowlCommentPost;
 import org.techtown.catsby.retrofit.dto.BowlCommentUpdate;
 import org.techtown.catsby.retrofit.dto.BowlCommentUsingComment;
-import org.techtown.catsby.retrofit.dto.User;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
-import org.techtown.catsby.retrofit.service.UserService;
 
 import java.util.List;
 
@@ -31,25 +31,29 @@ import retrofit2.Response;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
+import static android.view.View.inflate;
 
 public class BowlCommentAdapter extends RecyclerView.Adapter<BowlCommentAdapter.ViewHolder> {
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     List<BowlCommentUsingComment> bowlCommentData;
     BowlCommunityService bowlCommunityService = RetrofitClient.getBowlCommunityService();
+
     Button commentDelete;
     Button commentUpdate;
     Button commentUpdateFinish;
+    EditText textPost;
+
     View view;
     boolean[] bool;
 
-    public BowlCommentAdapter(List<BowlCommentUsingComment> list) {
-        this.bowlCommentData = list ;
+    public BowlCommentAdapter(List<BowlCommentUsingComment> bowlCommentData) {
+        this.bowlCommentData = bowlCommentData ;
+
         bool = new boolean[bowlCommentData.size()];
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
         EditText editText;
         TextView textView ;
         TextView nickNameView;
@@ -57,8 +61,12 @@ public class BowlCommentAdapter extends RecyclerView.Adapter<BowlCommentAdapter.
         Button commentUpdate1= (Button)itemView.findViewById(R.id.mainCmtUpdateBtn);
         Button commentUpdateFinish1= (Button)itemView.findViewById(R.id.mainCmtUpdateFinishBtn);
 
+
+        EditText textPost = view.findViewById(R.id.post_text);
+
         ViewHolder(View itemView) {
             super(itemView) ;
+
             textView = view.findViewById(R.id.maincmtContent) ;
             nickNameView = view.findViewById(R.id.maincmtNickName);
             editText = view.findViewById(R.id.editCmtContent);
@@ -84,7 +92,7 @@ public class BowlCommentAdapter extends RecyclerView.Adapter<BowlCommentAdapter.
         Context context = parent.getContext() ;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ;
 
-        view = inflater.inflate(R.layout.main_comment_list_item, parent, false) ;
+        view = inflater.inflate(R.layout.main_comment_list_item1, parent, false);
         commentDelete = (Button)view.findViewById(R.id.mainCmtDeleteBtn);
         commentUpdate = (Button)view.findViewById(R.id.mainCmtUpdateBtn);
         commentUpdateFinish = (Button)view.findViewById(R.id.mainCmtUpdateFinishBtn);
@@ -127,7 +135,6 @@ public class BowlCommentAdapter extends RecyclerView.Adapter<BowlCommentAdapter.
             commentUpdate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     holder.commentDelete1.setVisibility(View.GONE);
                     holder.commentUpdate1.setVisibility(View.GONE);
                     holder.commentUpdateFinish1.setVisibility(VISIBLE);
@@ -151,6 +158,21 @@ public class BowlCommentAdapter extends RecyclerView.Adapter<BowlCommentAdapter.
                 }
             });
         }
+    }
+
+    private void postComment(String uid, int id, String context) {
+        BowlCommentPost bowlCommentPost = new BowlCommentPost(uid, id, context);
+        bowlCommunityService.saveComment(uid, id, bowlCommentPost).enqueue(new Callback<List<BowlComment>>() {
+            @Override
+            public void onResponse(Call<List<BowlComment>> call, Response<List<BowlComment>> response) {
+                System.out.println("save success");
+            }
+
+            @Override
+            public void onFailure(Call<List<BowlComment>> call, Throwable t) {
+                System.out.println("t.getMessage() = " + t.getMessage());
+            }
+        });
     }
 
     private void deleteComment(int position, int id) {

@@ -44,12 +44,12 @@ class CommentlistActivity extends AppCompatActivity {
         EditText commentlist_add;
         ImageView image_profile;
         Button commentlist_postbtn;
-        commentDelete = (Button)findViewById(R.id.commentlist_delete);
+        commentDelete = (Button)findViewById(R.id.comment_list_delete);
 
         ImageView commentlist_image;
         TextView commentlist_date;
 
-        commentUpdate = (Button)findViewById(R.id.commentlist_update);
+        commentUpdate = (Button)findViewById(R.id.comment_list_update);
         commentText = (TextView)findViewById(R.id.commentlist_text);;
         userName = (TextView)findViewById(R.id.commentlist_username);;
 
@@ -70,7 +70,6 @@ class CommentlistActivity extends AppCompatActivity {
         commentUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String putMessage = commentText.getText().toString();
                 putComment(item.get(0).getId(), putMessage);
 
