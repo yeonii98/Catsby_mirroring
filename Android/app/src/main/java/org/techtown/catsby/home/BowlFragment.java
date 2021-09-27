@@ -83,7 +83,6 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         tedPermission();
 
         view = null;
@@ -166,7 +165,7 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
                     Collections.sort(BowlCommunityResult, dateAscending);
 
                     for (int i=0; i < BowlCommunityResult.size(); i++) {
-                        Feed feed = new Feed(BowlCommunityResult.get(i).getId(), BowlCommunityResult.get(i).getUser().getId(), BowlCommunityResult.get(i).getUser().getImage(), BowlCommunityResult.get(i).getUser().getNickname(), BowlCommunityResult.get(i).getImage().getBytes(), BowlCommunityResult.get(i).getContent(), BowlCommunityResult.get(i).getUid(), BowlCommunityResult.get(i).getCreatedDate());
+                        Feed feed = new Feed(BowlCommunityResult.get(i).getId(), BowlCommunityResult.get(i).getUser().getId(), BowlCommunityResult.get(i).getUser().getImage(), BowlCommunityResult.get(i).getUser().getNickname(), BowlCommunityResult.get(i).getImage().getBytes(), BowlCommunityResult.get(i).getContent(), BowlCommunityResult.get(i).getUid(), BowlCommunityResult.get(i).getCreatedDate(), BowlCommunityResult.get(i).getLikeCount());
 
                         if (!feedList.contains(feed)){
                             feedList.add(feed);

@@ -91,6 +91,7 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
     Long bowlId;
     String name, address;
     Double latitude, longitude;
+    String bm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +111,8 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
         bowlId = Long.valueOf(intent.getIntExtra("id", 0));
         name = intent.getStringExtra("name");
         address = intent.getStringExtra("address");
-
+        //bm = intent.getStringExtra("image");
+        
         bowlName.setText(name);
         bowlLocation.setText(address);
 
@@ -228,7 +230,6 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
         // 파일 생성
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
         Log.d(TAG, "createImageFile : " + image.getAbsolutePath());
-        System.out.println("image = !!!!" + image);
         return image;
     }
 
