@@ -83,12 +83,8 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-<<<<<<< HEAD
-=======
-
         tedPermission();
 
->>>>>>> a7a85c24fa9c91bbd0a42e0b288600568013279e
         view = null;
         view = inflater.inflate(R.layout.fragment_home, container, false);
         setHasOptionsMenu(true);
