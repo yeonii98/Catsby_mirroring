@@ -19,9 +19,18 @@ public class Memo {
     private int push;
     private Bitmap img;
     private int likeCnt = 0; //좋아요 개수
+    private Bitmap userImg;
 
     public Memo(){
 
+    }
+
+    public Bitmap getUserImg() {
+        return userImg;
+    }
+
+    public void setUserImg(Bitmap userImg) {
+        this.userImg = userImg;
     }
 
     public int getPush() {
@@ -36,7 +45,7 @@ public class Memo {
         this.id = id;
     }
 
-    public Memo(int id, String uid, String maintext, String subtext, int likeCnt, String nickname, String date, Bitmap img, int push) {
+    public Memo(int id, String uid, String maintext, String subtext, int likeCnt, String nickname, String date, Bitmap img, int push, Bitmap userImg) {
         this.id = id;
         this.uid = uid;
         this.maintext = maintext;
@@ -46,9 +55,10 @@ public class Memo {
         this.date = date;
         this.img = img;
         this.push = push;
+        this.userImg = userImg;
     }
 
-    public Memo(int id, String uid, String maintext, String subtext, String nickname, String date, Bitmap img) {
+    public Memo(int id, String uid, String maintext, String subtext, String nickname, String date, Bitmap img, Bitmap userBm) {
         this.id = id;
         this.uid = uid;
         this.maintext = maintext;
@@ -56,9 +66,10 @@ public class Memo {
         this.nickname = nickname;
         this.date = date;
         this.img = img;
+        this.userImg = userBm;
     }
 
-    public Memo(int id, String uid, String maintext, String subtext, String nickname, String date, Bitmap img, int likeCnt, int push) {
+    public Memo(int id, String uid, String maintext, String subtext, String nickname, String date, Bitmap img, int likeCnt, int push, Bitmap userImg) {
         this.id = id;
         this.uid = uid;
         this.maintext = maintext;
@@ -68,6 +79,7 @@ public class Memo {
         this.img = img;
         this.push = push;
         this.likeCnt = likeCnt;
+        this.userImg = userImg;
     }
 
     public Memo(String uid, String maintext, String subtext, String nickname, String date,Bitmap bm) {

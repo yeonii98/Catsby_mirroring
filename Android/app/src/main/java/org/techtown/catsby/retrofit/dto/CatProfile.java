@@ -20,15 +20,24 @@ public class CatProfile {
     private SimpleDateFormat created_time;
     private SimpleDateFormat updated_time;
     private List<ClipData.Item> profile;
-    private long userid;
+    private long user_id;
     private User user;
+    private String user_add;
 
-    public long getUserid() {
-        return userid;
+    public String getUser_add() {
+        return user_add;
     }
 
-    public void setUserid(long userid) {
-        this.userid = userid;
+    public void setUser_add(String user_add) {
+        this.user_add = user_add;
+    }
+
+    public long getUserid() {
+        return user_id;
+    }
+
+    public void setUserid(long user_id) {
+        this.user_id = user_id;
     }
 
     public User getUser() {
@@ -61,8 +70,9 @@ public class CatProfile {
 
     public SimpleDateFormat getUpdated_time() {return updated_time; }
 
-    public CatProfile(long userid, String name, String health, String address, int gender, String image, String content, int spayed) {
-        this.userid = userid;
+    public CatProfile(long user_id, String user_add, String name, String health, String address, int gender, String image, String content, int spayed) {
+        this.user_id = user_id;
+        this.user_add = user_add;
         this.name = name;
         this.health = health;
         this.address = address;

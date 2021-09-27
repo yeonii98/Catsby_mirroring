@@ -2,6 +2,8 @@ package org.techtown.catsby.setting;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -24,6 +26,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
 import com.example.catsbe.account;
 import com.example.catsbe.alert;
 import com.example.catsby.writingList;
@@ -48,6 +51,8 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class FragmentSetting_New extends Fragment {
 
@@ -74,6 +79,8 @@ public class FragmentSetting_New extends Fragment {
 
     private UserService userService;
 
+    Uri photoUri;
+
     String uid = FirebaseAuth.getInstance().getUid();
 
     @Nullable
@@ -83,10 +90,12 @@ public class FragmentSetting_New extends Fragment {
                              @Nullable @org.jetbrains.annotations.Nullable ViewGroup container,
                              @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
 
+        tedPermission();
+
         //inflater.inflate(R.layout.fragment_setting, container, false);
-        
+
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
-        
+
         //변수 매칭
         imageButton = (ImageButton)view.findViewById(R.id.imageButton);
         editNickName = (EditText)view.findViewById(R.id.editNickName);
@@ -142,9 +151,10 @@ public class FragmentSetting_New extends Fragment {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isPermission) goToAlbum();
-                else
-                    Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
+                if(isPermission)
+                    DialogClick(view);
+                else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -174,7 +184,7 @@ public class FragmentSetting_New extends Fragment {
 
         return view;
     }
-    
+
     private void updateNickname(String nickname) {
         userService.updateNickname(FirebaseAuth.getInstance().getUid(), nickname).enqueue(new Callback<NicknameResponse>() {
             @Override
@@ -215,6 +225,27 @@ public class FragmentSetting_New extends Fragment {
             }
         });
     }
+
+    public void DialogClick(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("알림").setMessage("프로필 사진을 변경하시겠습니까?");
+        builder.setPositiveButton("네", new DialogInterface.OnClickListener()
+        {
+            @Override public void onClick(DialogInterface dialog, int which) {
+                goToAlbum();
+            }
+        });
+        builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+            @Override public void onClick(DialogInterface dialog, int which)
+            {
+                Toast.makeText(getApplicationContext(),"취소되었습니다.", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
     //[이미지 설정] 1.앨범에서 이미지 가져오기
     private void goToAlbum() {
         Intent intent = new Intent(Intent.ACTION_PICK);
@@ -281,6 +312,10 @@ public class FragmentSetting_New extends Fragment {
     //[이미지 설정] 3.tempFile을 bitmap으로 변환 후 ImageView에 설정한다.
     private void setImage() {
 
+        /* 이미지 회전 방지 적용이 안 됨..
+        ImageButton imageButton = (ImageButton) getView().findViewById(R.id.imageButton);
+        Glide.with(this).load(photoUri).into(imageButton); */
+
         BitmapFactory.Options options = new BitmapFactory.Options();
         Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
         Log.d(TAG, "setImage : " + tempFile.getAbsolutePath());
@@ -289,7 +324,7 @@ public class FragmentSetting_New extends Fragment {
         String image = "";
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        originalBm.compress(Bitmap.CompressFormat.JPEG, 50, stream);
+        originalBm.compress(Bitmap.CompressFormat.JPEG, 20, stream);
         byte[] byteArray = stream.toByteArray();
         image = ImageUtils.byteArrayToBinaryString(byteArray);
 

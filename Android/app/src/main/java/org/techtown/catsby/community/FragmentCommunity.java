@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -47,7 +48,6 @@ import retrofit2.Response;
 public class FragmentCommunity extends Fragment {
     private View view;
     private Button btnAdd;
-    private String result;
     private RecyclerView recyclerView;
     public RecyclerAdapter recyclerAdapter;
     private TownCommunityService townCommunityService = RetrofitClient.getTownCommunityService();
@@ -55,6 +55,7 @@ public class FragmentCommunity extends Fragment {
     private TownLikeService townLikeService = RetrofitClient.getTownLikeService();
     private UserService userService = RetrofitClient.getUser();
     private Bitmap bm = null;
+    private Bitmap userBm = null;
     private String nickName;
     String uid = FirebaseAuth.getInstance().getUid();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -91,6 +92,7 @@ public class FragmentCommunity extends Fragment {
                 if(response.isSuccessful()){
                     User result = response.body();
                     String userAddress = result.getAddress();
+                    String userImg = result.getImage();
 
                     if(userAddress != null){
                         addressExist = 1;
@@ -102,7 +104,7 @@ public class FragmentCommunity extends Fragment {
                                     List<TownCommunity> result = response.body();
 
                                     for (int i = 0; i < result.size(); i++) {
-                                        if(!userAddress.equals(result.get(i).getUser().getAddress())) continue;
+                                        if(!userAddress.equals(result.get(i).getUser().getAddress().trim())) continue;
                                         
                                         if (result.get(i).getImage() != null)
                                             bm = ImageUtils.makeBitMap(result.get(i).getImage());
@@ -114,11 +116,15 @@ public class FragmentCommunity extends Fragment {
                                         else
                                             nickName = result.get(i).getUser().getNickname();
 
+                                        if(result.get(i).getUser().getImage() != null)
+                                            userBm = ImageUtils.makeBitMap(result.get(i).getUser().getImage());
+                                        else userBm = null;
+
                                         push = push(result.get(i).getTownLike().size(),result.get(i).getTownLike());
 
                                         Memo memo = new Memo(result.get(i).getId(), result.get(i).getUser().getUid(),
                                                 result.get(i).getTitle(), result.get(i).getContent(),result.get(i).getTownLike().size(),
-                                                nickName, result.get(i).getDate(), bm, push);
+                                                nickName, result.get(i).getDate(), bm, push, userBm);
                                         recyclerAdapter.addItem(memo);
                                     }
                                     recyclerAdapter.notifyDataSetChanged();
@@ -201,6 +207,8 @@ public class FragmentCommunity extends Fragment {
             String date = data.getStringExtra("date");
             String nickName = data.getStringExtra("nickName");
             String uid = data.getStringExtra("uid");
+            Bitmap userBm = ImageUtils.makeBitMap(data.getStringExtra("userImg"));
+
             int id = 0;
             if (memoList.size() != 0) {
                 id = memoList.get(memoList.size() - 1).getId() + 1;
@@ -215,7 +223,7 @@ public class FragmentCommunity extends Fragment {
             if (byteArray != null)
                 bm = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
 
-            Memo memo = new Memo(id, uid, title, content, nickName, date, bm);
+            Memo memo = new Memo(id, uid, title, content, nickName, date, bm, userBm);
             recyclerAdapter.addItem(memo);
             recyclerAdapter.notifyDataSetChanged();
 
@@ -235,9 +243,14 @@ public class FragmentCommunity extends Fragment {
                 bm = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
             else
                 bm = null;
-            System.out.println("---------bm--------"+bm);
-            System.out.println("true Or false"+bm==null);
-            Memo memo = new Memo(id,uid, title, content, nickName, date, bm, likeCnt, push);
+
+            byte[] userImgBytes = data.getByteArrayExtra("userImgByte");
+            if(userImgBytes != null)
+                userBm = BitmapFactory.decodeByteArray(userImgBytes,0,userImgBytes.length);
+            else
+                userBm = null;
+
+            Memo memo = new Memo(id,uid, title, content, nickName, date, bm, likeCnt, push, userBm);
             recyclerAdapter.updateItem(memo, position);
             recyclerAdapter.notifyItemChanged(position);
             recyclerView.smoothScrollToPosition(position);
@@ -288,7 +301,7 @@ public class FragmentCommunity extends Fragment {
             if (memo.getImg() == null)
                 itemViewHolder.img.setVisibility(View.GONE);
             else
-                itemViewHolder.img.setImageBitmap(memo.getImg());
+                Glide.with(itemViewHolder.itemView.getContext()).load(memo.getImg()).into(itemViewHolder.img);
 
             if (!uid.equals(memo.getUid())) {
                 itemViewHolder.deleteBtn.setVisibility(View.GONE);
@@ -351,6 +364,18 @@ public class FragmentCommunity extends Fragment {
                     intent.putExtra("push", listdata.get(position).getPush());
 
                     byte[] byteArray = new byte[0];
+
+                    if(listdata.get(position).getUserImg() != null){
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        listdata.get(position).getUserImg().compress(Bitmap.CompressFormat.JPEG, 20, stream);
+                        byteArray = stream.toByteArray();
+                        intent.putExtra("userImg",byteArray);
+                    }
+                    else
+                        intent.putExtra("userImg",byteArray);
+
+                    byteArray = new byte[0];
+
                     if (listdata.get(position).getImg() != null) {
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         listdata.get(position).getImg().compress(Bitmap.CompressFormat.JPEG, 20, stream);
@@ -358,8 +383,6 @@ public class FragmentCommunity extends Fragment {
                         intent.putExtra("img", byteArray);
                     } else
                         intent.putExtra("img", byteArray);
-
-                    System.out.println(byteArray.length);
 
                     intent.putExtra("nickName", listdata.get(position).getNickname());
                     intent.putExtra("position", position);
@@ -377,7 +400,14 @@ public class FragmentCommunity extends Fragment {
 
                 itemViewHolder.chatbubble.setVisibility(View.VISIBLE);
                 itemViewHolder.linearLayout.setVisibility(View.VISIBLE);
+
                 itemViewHolder.userImg.setVisibility(View.VISIBLE);
+
+                if(memo.getUserImg() == null)
+                    Glide.with(itemViewHolder.itemView.getContext()).load(R.drawable.catsby_logo).into(itemViewHolder.userImg);
+                else
+                    Glide.with(itemViewHolder.itemView.getContext()).load(memo.getUserImg()).into(itemViewHolder.userImg);
+
                 itemViewHolder.likeImg.setVisibility(View.VISIBLE);
 
                 itemViewHolder.chatbubble.setOnClickListener(new View.OnClickListener() {
@@ -385,7 +415,6 @@ public class FragmentCommunity extends Fragment {
                     public void onClick(View v) {
                         Intent intent = new Intent(getActivity(), TownCommentListActivity.class);
                         intent.putExtra("id", listdata.get(position).getId());
-                        System.out.println(listdata.get(position).getId());
                         startActivity(intent);
                     }
                 });

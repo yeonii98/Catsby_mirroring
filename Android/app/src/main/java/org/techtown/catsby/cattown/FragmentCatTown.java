@@ -99,9 +99,13 @@ public class FragmentCatTown extends Fragment {
                                     List<CatProfile> result = response.body();
 
                                     for(int i=0; i<result.size(); i++) {
-                                        //if(!userAddress.equals(result.get(i).getUser().getAddress())) continue;
-                                        //System.out.println(result.get(i).getUser().getUid());
-                                        //int a = result.get(5).getUser().getId();
+
+                                        String address_for = result.get(i).getUser_add();
+                                        System.out.println(address_for);
+                                        if(!userAddress.equals(address_for)) continue;
+//                                        long a = result.get(i).getUserid();
+//                                        System.out.println("캣유저테스트"+a);
+
                                         //System.out.println("캣유저테스트"+a);
                                         //리스트에 표시될 이미지
                                         if(result.get(i).getImage() != null){
@@ -128,7 +132,7 @@ public class FragmentCatTown extends Fragment {
                                         //매핑을 위한 고양이 아이디
                                         linkid = Integer.toString(result.get(i).getCatId());
 
-                                        Cat cat = new Cat(result.get(i).getUserid(), result.get(i).getCatName(), bm, linkid,text2, text1,0);
+                                        Cat cat = new Cat(result.get(i).getUserid(), result.get(i).getUser_add(),result.get(i).getCatName(), bm, linkid,text2, text1,0);
 
                                         System.out.println(linkid);
                                         adapter.addItem(cat);
