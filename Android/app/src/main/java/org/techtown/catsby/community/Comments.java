@@ -1,11 +1,24 @@
 package org.techtown.catsby.community;
 
+import android.graphics.Bitmap;
+
 public class Comments {
     private int id;
+    private int postId;
     private String content;
     private String nickName;
     private String date;
     private String uid;
+
+    public int getPostId() {
+        return postId;
+    }
+
+    public void setPostId(int postId) {
+        this.postId = postId;
+    }
+
+    private Bitmap userImg;
 
     public int getId() {
         return id;
@@ -29,6 +42,14 @@ public class Comments {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Bitmap getUserImg() {
+        return userImg;
+    }
+
+    public void setUserImg(Bitmap userImg) {
+        this.userImg = userImg;
     }
 
     public Comments(){

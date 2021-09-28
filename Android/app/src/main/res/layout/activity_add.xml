@@ -45,7 +45,7 @@
     <ImageView
         android:id="@+id/townImgView"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="300dp"
         android:layout_marginBottom="92dp"
         android:background="@color/browser_actions_bg_grey"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
