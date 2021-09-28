@@ -214,6 +214,7 @@ public class BowlWrite extends AppCompatActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        
 
         if (resultCode != RESULT_OK) {
             Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
@@ -337,11 +338,24 @@ public class BowlWrite extends AppCompatActivity{
                 e.printStackTrace();
             }
         }
+        else{
+            //크롭에 후 저장할 Uri
+            System.out.println("tempFile = " + tempFile);
 
-        //크롭에 후 저장할 Uri
-        Uri savingUri = Uri.fromFile(tempFile);
+            try {
+                tempFile = createImageFile();
+                Uri savingUri = Uri.fromFile(tempFile);
+                Crop.of(photoUri, savingUri).asSquare().start(this);
 
-        Crop.of(photoUri, savingUri).asSquare().start(this);
+            } catch (IOException e) {
+                Toast.makeText(this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                finish();
+                e.printStackTrace();
+            }
+
+        }
+
+        
     }
 
     /**
@@ -358,7 +372,14 @@ public class BowlWrite extends AppCompatActivity{
         if (!storageDir.exists()) storageDir.mkdirs();
 
         // 빈 파일 생성
-        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+        System.out.println("storageDir = " + storageDir);
+        try{
+            System.out.println("image = " + image);
+            System.out.println("imageFileName = " + imageFileName);
+            File image = File.createTempFile(imageFileName, ".jpg", storageDir);}
+        catch (IOException e){
+            System.out.println("e.getMessage() = " + e.getMessage());
+        }
         Log.d(TAG, "createImageFile : " + image.getAbsolutePath());
         return image;
     }

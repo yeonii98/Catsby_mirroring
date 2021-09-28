@@ -23,6 +23,7 @@ import org.techtown.catsby.R;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.BowlComment;
 import org.techtown.catsby.retrofit.dto.BowlCommentPost;
+import org.techtown.catsby.retrofit.dto.BowlCommentResponse;
 import org.techtown.catsby.retrofit.dto.BowlCommentUsingComment;
 import org.techtown.catsby.home.adapter.BowlCommentAdapter;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
@@ -39,6 +40,7 @@ public class BowlCommentActivity extends AppCompatActivity {
     List<BowlCommentUsingComment> mainCommentList;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     BowlCommunityService bowlCommunityService = RetrofitClient.getBowlCommunityService();
+    BowlCommentAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,70 +61,50 @@ public class BowlCommentActivity extends AppCompatActivity {
         //mainCommentList = (List<BowlCommentUsingComment>) intent.getSerializableExtra("comment");
         mainCommentList = MComment;
 
-        int communityId = intent.getExtras().getInt("communityId");
+        adapter = new BowlCommentAdapter(mainCommentList);
 
+        int communityId = intent.getExtras().getInt("communityId");
         findViewById(R.id.post_save_button1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String contextMessage = textPost.getText().toString();
                 if (!contextMessage.equals("")) {
                     postComment(user.getUid(), communityId, contextMessage);
+
                     textPost.setText("");
+                    Toast.makeText(getApplicationContext().getApplicationContext(),"댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show();
+                    RecyclerView BowlCommunityRecyclerView = findViewById(R.id.maincmt_recyclerview);
+                    adapter.notifyDataSetChanged();
                 }else{
                     Toast.makeText(getApplicationContext().getApplicationContext(),"댓글을 입력해 주세요.", Toast.LENGTH_SHORT).show();
                 }
-                loadComments(communityId);
             }
         });
 
-        BowlCommentAdapter mainCommentAdapter = new BowlCommentAdapter(mainCommentList);
+
         RecyclerView BowlCommunityRecyclerView = findViewById(R.id.maincmt_recyclerview);
         BowlCommunityRecyclerView.setLayoutManager(new LinearLayoutManager(this)) ;
-        BowlCommunityRecyclerView.setAdapter(mainCommentAdapter);
+        BowlCommunityRecyclerView.setAdapter(adapter);
     }
 
     private void postComment(String uid, int id, String context) {
         BowlCommentPost bowlCommentPost = new BowlCommentPost(uid, id, context);
-        bowlCommunityService.saveComment(uid, id, bowlCommentPost).enqueue(new Callback<List<BowlComment>>() {
+        bowlCommunityService.saveComment(uid, id, bowlCommentPost).enqueue(new Callback<BowlCommentResponse>() {
             @Override
-            public void onResponse(Call<List<BowlComment>> call, Response<List<BowlComment>> response) {
-                System.out.println("save success");
+            public void onResponse(Call<BowlCommentResponse> call, Response<BowlCommentResponse> response) {
+                BowlCommentResponse bowlCommentResponse = (BowlCommentResponse) response.body();
+
+                System.out.println("bowlCommentResponse = " + bowlCommentResponse.getNickname());
+
+                BowlCommentUsingComment bowlCommentUsingComment = new BowlCommentUsingComment(bowlCommentResponse.getId(), bowlCommentResponse.getNickname(), context, bowlCommentResponse.getDate(), bowlCommentResponse.getUserId(), user.getUid(), id);
+                adapter.addItem((BowlCommentUsingComment) bowlCommentUsingComment);
+                adapter.notifyDataSetChanged();
+
             }
 
             @Override
-            public void onFailure(Call<List<BowlComment>> call, Throwable t) {
+            public void onFailure(Call<BowlCommentResponse> call, Throwable t) {
                 System.out.println("t.getMessage() = " + t.getMessage());
-            }
-        });
-    }
-
-    private void loadComments(long communityId) {
-        bowlCommunityService.getComments(communityId).enqueue(new Callback<List<BowlComment>>() {
-            @Override
-            public void onResponse(Call<List<BowlComment>> call, Response<List<BowlComment>> response) {
-                if(response.isSuccessful()){
-                    List<BowlComment> bowlComments = response.body();
-
-                    List<BowlComment> tempComment = bowlComments;
-                    List<BowlCommentUsingComment> parameterBowlCommentList= new ArrayList<>();
-                    for (int i =0; i < tempComment.size(); i++){
-                        BowlCommentUsingComment bowlCommentUsingComment = new BowlCommentUsingComment(tempComment.get(i).getId(), tempComment.get(i).getUser().getNickname(), tempComment.get(i).getContent(), tempComment.get(i).getCreateDate(), tempComment.get(i).getUser().getId(), tempComment.get(i).getUid(), (int) communityId);
-                        parameterBowlCommentList.add(bowlCommentUsingComment);
-                    }
-
-                    mainCommentList = parameterBowlCommentList;
-                    MComment = parameterBowlCommentList;
-                    BowlCommentAdapter bowlCommentAdapter = new BowlCommentAdapter(mainCommentList);
-                    bowlCommentAdapter.notifyDataSetChanged();
-                    bowlCommentAdapter.notifyItemInserted(getCurrentFocus().getVerticalScrollbarPosition());
-                    recreate();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<BowlComment>> call, Throwable t) {
-                System.out.println("t.getMessage() = " + t.getMessage());
-
             }
         });
     }
