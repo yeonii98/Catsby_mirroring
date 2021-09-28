@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -79,7 +80,6 @@ public class FragmentCommunity extends Fragment {
         layoutManager.setStackFromEnd(true);
 
         recyclerView = view.findViewById(R.id.recyclerview);
-
 
         recyclerAdapter = new RecyclerAdapter(memoList);
         recyclerView.setAdapter(recyclerAdapter);
@@ -220,8 +220,11 @@ public class FragmentCommunity extends Fragment {
                 idList.add(id);
             }
             byte[] byteArray = data.getByteArrayExtra("byteArray");
+            System.out.println("byteArray==null = " + (byteArray==null));
             if (byteArray != null)
                 bm = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+            else
+                bm = null;
 
             Memo memo = new Memo(id, uid, title, content, nickName, date, bm, userBm);
             recyclerAdapter.addItem(memo);
@@ -391,7 +394,7 @@ public class FragmentCommunity extends Fragment {
             });
 
             itemViewHolder.chatbubble.setVisibility(View.GONE);
-            itemViewHolder.linearLayout.setVisibility(View.GONE);
+//            itemViewHolder.linearLayout.setVisibility(View.GONE);
             itemViewHolder.userImg.setVisibility(View.GONE);
             itemViewHolder.likeImg.setVisibility(View.GONE);
 
@@ -399,7 +402,7 @@ public class FragmentCommunity extends Fragment {
             if(addressExist == 1){
 
                 itemViewHolder.chatbubble.setVisibility(View.VISIBLE);
-                itemViewHolder.linearLayout.setVisibility(View.VISIBLE);
+//                itemViewHolder.linearLayout.setVisibility(View.VISIBLE);
 
                 itemViewHolder.userImg.setVisibility(View.VISIBLE);
 
@@ -419,32 +422,33 @@ public class FragmentCommunity extends Fragment {
                     }
                 });
 
-                itemViewHolder.commentBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String content = itemViewHolder.commentContent.getText().toString();
-                        if (content.length() > 0) {
-                            itemViewHolder.commentContent.setText("");
-                            TownComment townComment = new TownComment(content);
-                            townCommentService.postTownComment(memo.getId(), uid, townComment).enqueue(new Callback<Void>() {
-                                @Override
-                                public void onResponse(Call<Void> call, Response<Void> response) {
-                                    if (response.isSuccessful()) {
-                                        //정상적으로 통신이 성공된 경우
-                                        System.out.println("댓글 쓰기 성공");
-                                    } else {
-                                        System.out.println("실패");
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<Void> call, Throwable t) {
-                                    System.out.println("통신 실패 : " + t.getMessage());
-                                }
-                            });
-                        }
-                    }
-                });
+//                itemViewHolder.commentBtn.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        String content = itemViewHolder.commentContent.getText().toString();
+//                        if (content.length() > 0) {
+//                            itemViewHolder.commentContent.setText("");
+//                            TownComment townComment = new TownComment(content);
+//                            townCommentService.postTownComment(memo.getId(), uid, townComment).enqueue(new Callback<Void>() {
+//                                @Override
+//                                public void onResponse(Call<Void> call, Response<Void> response) {
+//                                    if (response.isSuccessful()) {
+//                                        //정상적으로 통신이 성공된 경우
+//                                        System.out.println("댓글 쓰기 성공");
+//                                        Toast.makeText(getContext(), "댓글이 등록 되었습니다.", Toast.LENGTH_SHORT).show();
+//                                    } else {
+//                                        System.out.println("실패");
+//                                    }
+//                                }
+//
+//                                @Override
+//                                public void onFailure(Call<Void> call, Throwable t) {
+//                                    System.out.println("통신 실패 : " + t.getMessage());
+//                                }
+//                            });
+//                        }
+//                    }
+//                });
 
 
             townLikeService = RetrofitClient.getTownLikeService();
@@ -537,8 +541,8 @@ public class FragmentCommunity extends Fragment {
             private Button updateBtn;
             private TextView date;
 
-            private Button commentBtn;
-            private EditText commentContent;
+//            private Button commentBtn;
+//            private EditText commentContent;
 
             private Button town_menu;
 
@@ -550,7 +554,7 @@ public class FragmentCommunity extends Fragment {
 
             private ImageView userImg;
 
-            private LinearLayout linearLayout;
+//            private LinearLayout linearLayout;
 
             public ItemViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -565,15 +569,15 @@ public class FragmentCommunity extends Fragment {
                 chatbubble = itemView.findViewById(R.id.town_comment);
                 // mainchatbubble = itemView.findViewById(R.id.feed_comment);
 
-                commentBtn = itemView.findViewById(R.id.town_commentBtn);
-                commentContent = itemView.findViewById(R.id.town_comment_content);
+//                commentBtn = itemView.findViewById(R.id.town_commentBtn);
+//                commentContent = itemView.findViewById(R.id.town_comment_content);
 
                 likeCnt = itemView.findViewById(R.id.likeCnt);
                 likeImg = itemView.findViewById(R.id.town_likeBtn);
 
                 userImg = itemView.findViewById(R.id.user_img);
 
-                linearLayout = itemView.findViewById(R.id.linearLayout);
+//                linearLayout = itemView.findViewById(R.id.linearLayout);
 
 //                town_menu = itemView.findViewById(R.id.town_menu);
             }

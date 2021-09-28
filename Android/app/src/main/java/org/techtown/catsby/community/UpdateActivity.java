@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.gun0912.tedpermission.PermissionListener;
@@ -35,6 +37,7 @@ import org.techtown.catsby.util.ImageUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -130,7 +133,7 @@ public class UpdateActivity extends AppCompatActivity {
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         img.compress(Bitmap.CompressFormat.JPEG, 20, stream);
                         byteArray = stream.toByteArray();
-                        image = "&image=" + ImageUtils.byteArrayToBinaryString(byteArray) ;
+                        image = ImageUtils.byteArrayToBinaryString(byteArray) ;
                         townCommunity = new TownCommunity(title, content, image, checkBox.isChecked());
                     }
 
@@ -262,10 +265,20 @@ public class UpdateActivity extends AppCompatActivity {
         ImageView imageView = findViewById(R.id.townImgView);
 
         BitmapFactory.Options options = new BitmapFactory.Options();
-        Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
-        Log.d(TAG, "setImage : " + tempFile.getAbsolutePath());
 
-        imageView.setImageBitmap(originalBm);
+        //이미지 회전 방지
+        ExifInterface exifInterface = null;
+        try {
+            exifInterface = new ExifInterface(tempFile.getAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_UNDEFINED);
+
+        Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
+
+        Glide.with(this).load(ImageUtils.rotateBitmap(originalBm, orientation)).into(imageView);
 
         tempFile = null;
 

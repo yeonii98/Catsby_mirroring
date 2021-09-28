@@ -3,7 +3,7 @@ package org.techtown.catsby.home.adapter;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +12,8 @@ import android.widget.TextView;
 
 import org.techtown.catsby.R;
 import org.techtown.catsby.home.BowlDetailActivity;
-import org.techtown.catsby.home.model.Bowl;
-import org.techtown.catsby.retrofit.dto.BowlDetail;
 import org.techtown.catsby.retrofit.dto.BowlInfo;
+import org.techtown.catsby.util.ImageUtils;
 
 import java.util.ArrayList;
 
@@ -117,7 +116,9 @@ public class BowlAdapter extends RecyclerView.Adapter<BowlAdapter.ViewHolder> {
                     intent.putExtra("id", item.getId());
                     intent.putExtra("name", item.getName());
                     intent.putExtra("address", item.getAddress());
-                    intent.putExtra("image", bm);
+                    intent.putExtra("image", ImageUtils.binaryStringToByteArray(item.getImage()));
+                    intent.putExtra("latitude", item.getLatitude());
+                    intent.putExtra("longitude", item.getLongitude());
 
                     v.getContext().startActivity(intent);
                 }

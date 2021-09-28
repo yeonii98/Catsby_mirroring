@@ -18,11 +18,19 @@ import org.techtown.catsby.community.FragmentCommunity;
 import org.techtown.catsby.cattown.FragmentCatTown;
 import org.techtown.catsby.home.BowlFragment;
 import org.techtown.catsby.notification.NotificationActivity;
-//import org.techtown.catsby.setting.FragmentSetting;
+import org.techtown.catsby.retrofit.RetrofitClient;
+import org.techtown.catsby.retrofit.dto.User;
+import org.techtown.catsby.retrofit.service.UserService;
 import org.techtown.catsby.setting.FragmentSetting_New;
+import org.techtown.catsby.util.ImageUtils;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.pedro.library.AutoPermissions;
 import com.pedro.library.AutoPermissionsListener;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements AutoPermissionsListener {
     private final FragmentManager fragmentManager = getSupportFragmentManager();
@@ -30,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
     private final FragmentCatTown fragmentcattown = new FragmentCatTown();
     private final FragmentCommunity fragmentcommunity = new FragmentCommunity();
     private final FragmentSetting_New fragmentsetting = new FragmentSetting_New();
+    private UserService userService;
+
     Menu menu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +58,28 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
         bottomNavigationView.setOnNavigationItemSelectedListener(new ItemSelectedListener());
         menu = bottomNavigationView.getMenu();
         menu.findItem(R.id.iconHome).setIcon(R.drawable.ic_baseline_home_24);
+
+        userService = RetrofitClient.getUser();
+        userService.getUser(FirebaseAuth.getInstance().getUid()).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+
+                Bundle bundle = new Bundle();
+                bundle.putString("nickname", response.body().getNickname());
+                bundle.putString("address", response.body().getAddress());
+                if (response.body().getImage() != null) {
+                    bundle.putByteArray("image", ImageUtils.binaryStringToByteArray(response.body().getImage()));
+                } else {
+                    bundle.putByteArray("image", null);
+                }
+                fragmentsetting.setArguments(bundle);
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override

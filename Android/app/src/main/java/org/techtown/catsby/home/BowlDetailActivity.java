@@ -8,22 +8,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -45,10 +44,8 @@ import org.techtown.catsby.home.adapter.BowlInfoTimeAdapter;
 import org.techtown.catsby.notification.data.service.NotificationService;
 import org.techtown.catsby.retrofit.ApiResponse;
 import org.techtown.catsby.retrofit.RetrofitClient;
-import org.techtown.catsby.retrofit.dto.BowlDetail;
 import org.techtown.catsby.retrofit.dto.BowlFeedList;
 import org.techtown.catsby.retrofit.dto.BowlImage;
-import org.techtown.catsby.retrofit.dto.BowlLocation;
 import org.techtown.catsby.retrofit.service.BowlService;
 import org.techtown.catsby.util.ImageUtils;
 
@@ -89,9 +86,8 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
     File image;
 
     Long bowlId;
-    String name, address;
+    String name, address, bowlImage;
     Double latitude, longitude;
-    String bm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,13 +104,20 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
         bowlimageView = findViewById(R.id.bowlimageView);
 
         Intent intent = getIntent();
-        bowlId = Long.valueOf(intent.getIntExtra("id", 0));
+        bowlId = intent.getLongExtra("id",0);
         name = intent.getStringExtra("name");
         address = intent.getStringExtra("address");
-        //bm = intent.getStringExtra("image");
-        
+        bowlImage = ImageUtils.byteArrayToBinaryString(intent.getByteArrayExtra("image"));
+        latitude = intent.getDoubleExtra("latitude", 0);
+        longitude = intent.getDoubleExtra("longitude", 0);
+
         bowlName.setText(name);
         bowlLocation.setText(address);
+
+        bowlimageView.setImageBitmap(ImageUtils.makeBitMap(bowlImage));
+        bowlimageView.setBackground(new ShapeDrawable(new OvalShape()));
+        bowlimageView.setClipToOutline(true);
+
 
         fragmentManager = getFragmentManager();
         mapFragment = (MapFragment) fragmentManager.findFragmentById(R.id.googleMap);
@@ -126,18 +129,47 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onClick(View view) {
                 String uid = FirebaseAuth.getInstance().getUid();
-                Log.e("FragmentInfo", uid);
-                sendNotification(bowlId, uid);
+
+                new AlertDialog.Builder(BowlDetailActivity.this)
+                        .setMessage("사료 급여를 완료했습니까?")
+                        .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                sendNotification(bowlId, uid);
+                            }
+                        })
+                        .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        }).create().show();
+
             }
         });
 
         findViewById(R.id.btn_bowlpic_change).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
-                if (isPermission) goToAlbum();
-                else
-                    Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+
+                new AlertDialog.Builder(BowlDetailActivity.this)
+                        .setMessage("사진을 변경하시겠습니까?")
+                        .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
+                                if (isPermission) goToAlbum();
+                                else
+                                    Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+                            }
+                        })
+                        .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        }).create().show();
+
             }
         });
 
@@ -149,7 +181,7 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
         recyclerView.setAdapter(adapter);
 
-        loadBowlDetail(bowlId);
+        loadBowlFeedTime(bowlId);
     }
 
     @Override
@@ -205,6 +237,14 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mgoogleMap = googleMap;
+
+        LatLng place = new LatLng(latitude, longitude);
+        MarkerOptions marker = new MarkerOptions();
+        marker.position(place); //좌표
+        marker.title(name);
+
+        mgoogleMap.addMarker(marker);
+        mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, 16));
     }
 
     private void goToAlbum() {
@@ -270,7 +310,7 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 Log.v("BowlDetailActivity", "success update image");
-
+                Toast.makeText(getApplicationContext(), "사진이 변경되었습니다.", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -306,53 +346,11 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
             public void onResponse(Call<BowlFeedList> call, Response<BowlFeedList> response) {
                 if (response.isSuccessful()) {
                     adapter.loadBowlFeedTime(response.body().getData());
-
                 }
             }
 
             @Override
             public void onFailure(Call<BowlFeedList> call, Throwable t) {
-                Log.e("BowlDetailActivity", "Response Fail" + t.getMessage());
-
-            }
-        });
-    }
-
-    int mDegree =0;
-    private void loadBowlDetail(Long bowlId) {
-        bowlService.getBowlDetail(bowlId, FirebaseAuth.getInstance().getUid()).enqueue(new Callback<BowlDetail>() {
-
-            @Override
-            public void onResponse(Call<BowlDetail> call, Response<BowlDetail> response) {
-                if (response.isSuccessful()) {
-
-                    adapter.loadBowlFeedTime(response.body().getFeed());
-
-                    if (response.body().getImage() != null) {
-                        Bitmap bm = ImageUtils.makeBitMap(response.body().getImage());
-                        mDegree = mDegree + 90;
-
-                        bowlimageView.setImageBitmap(ImageUtils.rotate(bm, mDegree));
-                        bowlimageView.setBackground(new ShapeDrawable(new OvalShape()));
-                        bowlimageView.setClipToOutline(true);
-
-                    }
-
-                    latitude = response.body().getLatitude();
-                    longitude = response.body().getLongitude();
-
-                    LatLng place = new LatLng(latitude, longitude);
-                    MarkerOptions marker = new MarkerOptions();
-                    marker.position(place); //좌표
-                    marker.title(name);
-
-                    mgoogleMap.addMarker(marker);
-                    mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, 16));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<BowlDetail> call, Throwable t) {
                 Log.e("BowlDetailActivity", "Response Fail" + t.getMessage());
 
             }
