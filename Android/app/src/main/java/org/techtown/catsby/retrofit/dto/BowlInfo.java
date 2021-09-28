@@ -5,12 +5,16 @@ public class BowlInfo {
     private String name;
     private String address;
     private String image;
+    private Double latitude;
+    private Double longitude;
 
-    public BowlInfo(Long id, String name,String address,String image) {
+    public BowlInfo(Long id, String name, String address, String image, Double latitude, Double longitude) {
         this.id = id;
         this.name = name;
-        this.image = image;
         this.address = address;
+        this.image = image;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public Long getId() {
@@ -43,5 +47,21 @@ public class BowlInfo {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 }

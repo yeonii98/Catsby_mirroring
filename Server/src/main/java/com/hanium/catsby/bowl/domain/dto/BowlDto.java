@@ -7,4 +7,6 @@ public class BowlDto {
     private String name;
     private String address;
     private String image;
+    private Double latitude;
+    private Double longitude;
 }

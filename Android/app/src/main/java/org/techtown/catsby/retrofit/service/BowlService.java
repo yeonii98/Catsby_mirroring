@@ -1,11 +1,9 @@
 package org.techtown.catsby.retrofit.service;
 
-import org.techtown.catsby.retrofit.dto.BowlDetail;
 import org.techtown.catsby.retrofit.dto.BowlFeedList;
 import org.techtown.catsby.retrofit.dto.BowlImage;
 import org.techtown.catsby.retrofit.dto.BowlInfo;
 import org.techtown.catsby.retrofit.dto.BowlList;
-import org.techtown.catsby.retrofit.dto.BowlLocation;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -24,9 +22,6 @@ public interface BowlService {
 
     @PATCH("/bowl/image/{bowlId}/{uid}")
     Call<Void> updateImage(@Path("bowlId") Long id, @Path("uid") String uid, @Body BowlImage image);
-
-    @GET("/bowl/detail/{bowlId}/{uid}")
-    Call<BowlDetail> getBowlDetail(@Path("bowlId") Long id, @Path("uid") String uid);
 
     @GET("/bowl/info/{bowlId}/{uid}")
     Call<BowlInfo> getBowlInfo(@Path("bowlId") Long id, @Path("uid") String uid);
