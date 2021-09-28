@@ -36,6 +36,7 @@ import com.gun0912.tedpermission.TedPermission;
 
 import org.jetbrains.annotations.NotNull;
 import org.techtown.catsby.R;
+import org.techtown.catsby.home.BowlDetailActivity;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.NicknameResponse;
 import org.techtown.catsby.retrofit.dto.User;
@@ -108,6 +109,22 @@ public class FragmentSetting_New extends Fragment {
 
         userService = RetrofitClient.getUser();
 
+
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            String nickname = bundle.getString("nickname");
+            String address = bundle.getString("address");
+            byte[] image = bundle.getByteArray("image");
+            nickName.setText(nickname);
+            if (address == null)
+                local.setText("동네를 설정하세요");
+            else
+                local.setText(address);
+            if (image != null) {
+                imageButton.setImageBitmap(ImageUtils.makeBitMap(ImageUtils.byteArrayToBinaryString(image)));
+            }
+        }
+
         //        setFragmentResultListener("myaddkey") { key, bundle ->
 //                bundle.getString("myaddkey")?.let {
 //            //프로필에 주소 등록
@@ -162,6 +179,7 @@ public class FragmentSetting_New extends Fragment {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 //수정 버튼 클릭 시
                 if (editButton.getText().equals("수정")){
                     nickName.setVisibility(View.GONE);
@@ -170,17 +188,35 @@ public class FragmentSetting_New extends Fragment {
                 }
 
                 //(수정)완료 버튼 클릭 시
-                else if(editButton.getText().equals("완료")){
+                else if(editButton.getText().equals("완료")) {
                     nickName.setVisibility(View.VISIBLE);
                     editNickName.setVisibility(View.GONE);
                     editButton.setText("수정");
 
-                    updateNickname(editNickName.getText().toString());
+                    new AlertDialog.Builder(getContext())
+                            .setMessage("닉네임을 수정하시겠습니까?")
+                            .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    String newNickname = editNickName.getText().toString();
+                                    if (newNickname.trim().equals("")) {
+                                        Toast.makeText(getContext(), "닉네임을 입력헤주세요", Toast.LENGTH_SHORT).show();
+                                    } else {
+                                        updateNickname(editNickName.getText().toString());
+                                    }
+                                    editNickName.setText("");
+                                }
+                            })
+                            .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            }).create().show();
+
                 }
             }
         });
-
-        loadUser();
 
         return view;
     }
@@ -200,31 +236,6 @@ public class FragmentSetting_New extends Fragment {
         });
     }
 
-    //유저 로드
-    private void loadUser() {
-        userService.getUser(FirebaseAuth.getInstance().getUid()).enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                nickName.setText(response.body().getNickname());
-                String address = response.body().getAddress();
-                if (address != null)
-                    local.setText(address);
-                else
-                    local.setText("동네를 설정하세요");
-
-                String img = response.body().getImage();
-                if(img !=null){
-                    Bitmap bm = ImageUtils.makeBitMap(img);
-                    imageButton.setImageBitmap(bm);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-
-            }
-        });
-    }
 
     public void DialogClick(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());

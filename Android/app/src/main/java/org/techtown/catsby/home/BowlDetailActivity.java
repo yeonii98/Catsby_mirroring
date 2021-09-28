@@ -8,7 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -126,18 +129,47 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onClick(View view) {
                 String uid = FirebaseAuth.getInstance().getUid();
-                Log.e("FragmentInfo", uid);
-                sendNotification(bowlId, uid);
+
+                new AlertDialog.Builder(BowlDetailActivity.this)
+                        .setMessage("사료 급여를 완료했습니까?")
+                        .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                sendNotification(bowlId, uid);
+                            }
+                        })
+                        .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        }).create().show();
+
             }
         });
 
         findViewById(R.id.btn_bowlpic_change).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
-                if (isPermission) goToAlbum();
-                else
-                    Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+
+                new AlertDialog.Builder(BowlDetailActivity.this)
+                        .setMessage("사진을 변경하시겠습니까?")
+                        .setPositiveButton("네", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
+                                if (isPermission) goToAlbum();
+                                else
+                                    Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+                            }
+                        })
+                        .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                            }
+                        }).create().show();
+
             }
         });
 
@@ -278,7 +310,7 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 Log.v("BowlDetailActivity", "success update image");
-
+                Toast.makeText(getApplicationContext(), "사진이 변경되었습니다.", Toast.LENGTH_SHORT).show();
             }
 
             @Override
