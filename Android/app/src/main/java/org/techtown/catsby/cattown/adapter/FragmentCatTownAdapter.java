@@ -1,5 +1,6 @@
 package org.techtown.catsby.cattown.adapter;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,8 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.techtown.catsby.R;
 import org.techtown.catsby.cattown.CatTownDetailActivity;
 import org.techtown.catsby.cattown.model.Cat;
+import org.techtown.catsby.retrofit.dto.CatProfile;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class FragmentCatTownAdapter extends RecyclerView.Adapter<FragmentCatTownAdapter.ViewHolder> {
     private ArrayList<Cat> catdata;
@@ -78,6 +81,7 @@ public class FragmentCatTownAdapter extends RecyclerView.Adapter<FragmentCatTown
         holder.townCatLoc.setText(cat.getCatloc());
         /*   error   */
         //holder.townHelpPeople.setText(cat.getHelpPeople());
+
     }
 
     public Bitmap makeBitMap(String s){
@@ -116,6 +120,13 @@ public class FragmentCatTownAdapter extends RecyclerView.Adapter<FragmentCatTown
             return null;
         }
     }
+
+//    public void refresh(List<CatProfile> catdata)
+//    {
+//        this.catdata = catdata;
+//        notifyDataSetChanged();
+//    }
+
 
     @Override
     public int getItemCount() {

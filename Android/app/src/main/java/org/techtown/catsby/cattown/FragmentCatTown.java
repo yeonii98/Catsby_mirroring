@@ -17,6 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -61,6 +62,8 @@ public class FragmentCatTown extends Fragment {
     int addressExist = 1;
     List<Cat> catlist;
 
+
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -68,6 +71,7 @@ public class FragmentCatTown extends Fragment {
         super.onCreate(savedInstanceState);
 
         View view = inflater.inflate(R.layout.fragment_cattown, container, false);
+
         setHasOptionsMenu(true);
 
         recyclerView = (RecyclerView)view.findViewById(R.id.recyceler_view);
@@ -138,6 +142,7 @@ public class FragmentCatTown extends Fragment {
                                         adapter.addItem(cat);
                                     }
                                     adapter.notifyDataSetChanged();
+                                    //adapter.refresh(result);
                                 }
                                 else {
                                     System.out.println("실패");
@@ -209,7 +214,10 @@ public class FragmentCatTown extends Fragment {
         }
     }
 
-
-
-
+//    @Override
+//    public void onResume()
+//    {
+//        super.onResume();
+//        adapter.notifyDataSetChanged();
+//    }
 }

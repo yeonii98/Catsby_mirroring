@@ -106,7 +106,7 @@ public class AddCatActivity extends AppCompatActivity{
 
                     //2. Bitmap to byteArray
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    imgBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    imgBitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
                     byte[] bytes = baos.toByteArray();
 
                     //3. byteArray to BinaryString
@@ -218,28 +218,34 @@ public class AddCatActivity extends AppCompatActivity{
 
                 System.out.println("uidd"+uid);
 
-                Call<CatProfile> call = catService.setPost(
-                        uid,catname,cathealth,catloc, catgender, cimage, catcontent, catspayed);
-                call.enqueue(new Callback<CatProfile>(){
+                if (imageuri.getText().equals("사진이 선택되었습니다.")) {
+                    Call<CatProfile> call = catService.setPost(
+                            uid,catname,cathealth,catloc, catgender, cimage, catcontent, catspayed);
+                    call.enqueue(new Callback<CatProfile>(){
 
-                    @Override
-                    public void onResponse(Call<CatProfile> call, Response<CatProfile> response) {
-                        if(response.isSuccessful()) {
-                            System.out.println("성공");
-                            CatProfile cat = response.body();
-                            adapter.notifyDataSetChanged();
-                        }
-                        else {
-                            //System.out.println("실패");
-                        }
-                    }
+                        @Override
+                        public void onResponse(Call<CatProfile> call, Response<CatProfile> response) {
+                            if(response.isSuccessful()) {
+                                System.out.println("성공");
 
-                    @Override
-                    public void onFailure(Call<CatProfile> call, Throwable t) {
-                        //System.out.println("통신 실패");
-                    }
-                });
-                finish();
+                                CatProfile cat = response.body();
+                                adapter.notifyDataSetChanged();
+                            }
+                            else {
+                                //System.out.println("실패");
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<CatProfile> call, Throwable t) {
+                            //System.out.println("통신 실패");
+                        }
+                    });
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), "고양이의 사진을 등록해주세요", Toast.LENGTH_SHORT).show();
+                }
+
             }
 
         });
