@@ -1,7 +1,5 @@
 package org.techtown.catsby.retrofit.dto;
 
-import java.time.LocalDateTime;
-
 public class BowlCommentResponse {
 
     private int id;
