@@ -34,13 +34,11 @@ public class BowlCommentController {
         BowlComment bowlComment = new BowlComment();
         bowlComment.setContent(request.getContent());
         bowlComment.setUid(uid);
-
         Long id = bowlCommentService.savaComment(bowlComment, user.getId(), communityId);
 
         String content = bowlComment.getBowlCommunity().getContent();
         notificationService.saveNotification(user, content, NotificationType.COMMENT);
-
-        return new CreateBowlCommentResponse(id);
+        return new CreateBowlCommentResponse(id, user.getNickname(), bowlComment.getCreatedDate(), user.getId());
     }
 
     @Data
@@ -51,9 +49,15 @@ public class BowlCommentController {
     @Data
     static class CreateBowlCommentResponse{
         private Long id;
+        private String nickname;
+        private LocalDateTime date;
+        private Long userId;
 
-        public CreateBowlCommentResponse(Long id){
+        public CreateBowlCommentResponse(Long id, String nickname, LocalDateTime date, Long userId){
             this.id = id;
+            this.nickname = nickname;
+            this.date = date;
+            this.userId = userId;
         }
     }
 

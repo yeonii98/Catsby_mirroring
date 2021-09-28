@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,6 +24,7 @@ import org.techtown.catsby.retrofit.dto.BowlCommentUpdate;
 import org.techtown.catsby.retrofit.dto.BowlCommentUsingComment;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -32,11 +34,12 @@ import retrofit2.Response;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 import static android.view.View.inflate;
+import static org.techtown.catsby.home.adapter.FeedAdapter.MComment;
 
 public class BowlCommentAdapter extends RecyclerView.Adapter<BowlCommentAdapter.ViewHolder> {
 
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    List<BowlCommentUsingComment> bowlCommentData;
+    private List<BowlCommentUsingComment> bowlCommentData;
     BowlCommunityService bowlCommunityService = RetrofitClient.getBowlCommunityService();
 
     Button commentDelete;
@@ -49,8 +52,11 @@ public class BowlCommentAdapter extends RecyclerView.Adapter<BowlCommentAdapter.
 
     public BowlCommentAdapter(List<BowlCommentUsingComment> bowlCommentData) {
         this.bowlCommentData = bowlCommentData ;
-
         bool = new boolean[bowlCommentData.size()];
+    }
+
+    public void addItem(BowlCommentUsingComment comment){
+        bowlCommentData.add((BowlCommentUsingComment) comment);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -60,8 +66,6 @@ public class BowlCommentAdapter extends RecyclerView.Adapter<BowlCommentAdapter.
         Button commentDelete1 = (Button)itemView.findViewById(R.id.mainCmtDeleteBtn);
         Button commentUpdate1= (Button)itemView.findViewById(R.id.mainCmtUpdateBtn);
         Button commentUpdateFinish1= (Button)itemView.findViewById(R.id.mainCmtUpdateFinishBtn);
-
-
         EditText textPost = view.findViewById(R.id.post_text);
 
         ViewHolder(View itemView) {
@@ -158,21 +162,6 @@ public class BowlCommentAdapter extends RecyclerView.Adapter<BowlCommentAdapter.
                 }
             });
         }
-    }
-
-    private void postComment(String uid, int id, String context) {
-        BowlCommentPost bowlCommentPost = new BowlCommentPost(uid, id, context);
-        bowlCommunityService.saveComment(uid, id, bowlCommentPost).enqueue(new Callback<List<BowlComment>>() {
-            @Override
-            public void onResponse(Call<List<BowlComment>> call, Response<List<BowlComment>> response) {
-                System.out.println("save success");
-            }
-
-            @Override
-            public void onFailure(Call<List<BowlComment>> call, Throwable t) {
-                System.out.println("t.getMessage() = " + t.getMessage());
-            }
-        });
     }
 
     private void deleteComment(int position, int id) {

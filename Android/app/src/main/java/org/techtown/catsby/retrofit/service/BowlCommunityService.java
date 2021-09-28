@@ -2,6 +2,7 @@ package org.techtown.catsby.retrofit.service;
 
 import org.techtown.catsby.retrofit.dto.BowlComment;
 import org.techtown.catsby.retrofit.dto.BowlCommentPost;
+import org.techtown.catsby.retrofit.dto.BowlCommentResponse;
 import org.techtown.catsby.retrofit.dto.BowlCommentUpdate;
 import org.techtown.catsby.retrofit.dto.BowlCommunity;
 import org.techtown.catsby.retrofit.dto.BowlCommunityPost;
@@ -45,7 +46,7 @@ public interface BowlCommunityService {
     //Call<Integer> getTotalLikes(@Path("communityId") int communityId);
 
     @POST("/bowl-comment/{uid}/{communityId}")
-    Call<List<BowlComment>> saveComment(@Path("uid") String uid, @Path("communityId") int communityId, @Body BowlCommentPost bowlCommentPost);
+    Call<BowlCommentResponse> saveComment(@Path("uid") String uid, @Path("communityId") int communityId, @Body BowlCommentPost bowlCommentPost);
 
     @GET("bowl-comments/{communityId}")
     Call<List<BowlComment>> getComments(@Path("communityId") long communityId);

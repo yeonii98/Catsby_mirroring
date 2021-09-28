@@ -169,8 +169,8 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
 
                         DateDescending2 dateAscending2 = new DateDescending2();
                         Collections.sort(feedList, dateAscending2);
-
                     }
+
                     RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerview);
                     RecyclerView.LayoutManager feedLayoutManager = new LinearLayoutManager(getActivity());
                     recyclerView.setLayoutManager(feedLayoutManager);
