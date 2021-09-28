@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.gun0912.tedpermission.PermissionListener;
@@ -30,9 +32,12 @@ import org.techtown.catsby.R;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.community.data.model.TownCommunity;
 import org.techtown.catsby.community.data.service.TownCommunityService;
+import org.techtown.catsby.retrofit.service.UserService;
+import org.techtown.catsby.util.ImageUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -49,6 +54,7 @@ public class UpdateActivity extends AppCompatActivity {
     private static final int PICK_FROM_CAMERA = 2;
     private File tempFile;
     byte[] byteArray;
+    private UserService userService = RetrofitClient.getUser();
     EditText edtTitle,edtContent;
     CheckBox checkBox;
     ImageView townImg;
@@ -81,6 +87,9 @@ public class UpdateActivity extends AppCompatActivity {
         int id = intent.getIntExtra("id",0);
 
         byte[] arr = getIntent().getByteArrayExtra("img");
+        byte[] userImgByte = getIntent().getByteArrayExtra("userImg");
+
+
         String nickName = intent.getStringExtra("nickName");
         int position = intent.getIntExtra("position",0);
 
@@ -124,7 +133,7 @@ public class UpdateActivity extends AppCompatActivity {
                         ByteArrayOutputStream stream = new ByteArrayOutputStream();
                         img.compress(Bitmap.CompressFormat.JPEG, 20, stream);
                         byteArray = stream.toByteArray();
-                        image = "&image=" + byteArrayToBinaryString(byteArray) ;
+                        image = ImageUtils.byteArrayToBinaryString(byteArray) ;
                         townCommunity = new TownCommunity(title, content, image, checkBox.isChecked());
                     }
 
@@ -155,12 +164,12 @@ public class UpdateActivity extends AppCompatActivity {
                     intent.putExtra("title", title);
                     intent.putExtra("content", content);
                     intent.putExtra("position",position);
-                    System.out.println("-------byteArray---------"+byteArray==null);
                     intent.putExtra("byteArray", byteArray);
                     intent.putExtra("date", date);
                     intent.putExtra("id", id);
                     intent.putExtra("likeCnt", likeCnt);
                     intent.putExtra("push", push);
+                    intent.putExtra("userImgByte",userImgByte);
 
                     int idx = user.getEmail().indexOf("@");
                     if(!checkBox.isChecked())
@@ -185,24 +194,6 @@ public class UpdateActivity extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    // 바이너리 바이트 배열을 스트링으로
-    public static String byteArrayToBinaryString ( byte[] b){
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < b.length; ++i) {
-            sb.append(byteToBinaryString(b[i]));
-        }
-        return sb.toString();
-    } // 바이너리 바이트를 스트링으로
-    public static String byteToBinaryString ( byte n){
-        StringBuilder sb = new StringBuilder("00000000");
-        for (int bit = 0; bit < 8; bit++) {
-            if (((n >> bit) & 1) > 0) {
-                sb.setCharAt(7 - bit, '1');
-            }
-        }
-        return sb.toString();
     }
 
     @Override
@@ -274,10 +265,20 @@ public class UpdateActivity extends AppCompatActivity {
         ImageView imageView = findViewById(R.id.townImgView);
 
         BitmapFactory.Options options = new BitmapFactory.Options();
-        Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
-        Log.d(TAG, "setImage : " + tempFile.getAbsolutePath());
 
-        imageView.setImageBitmap(originalBm);
+        //이미지 회전 방지
+        ExifInterface exifInterface = null;
+        try {
+            exifInterface = new ExifInterface(tempFile.getAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_UNDEFINED);
+
+        Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
+
+        Glide.with(this).load(ImageUtils.rotateBitmap(originalBm, orientation)).into(imageView);
 
         tempFile = null;
 

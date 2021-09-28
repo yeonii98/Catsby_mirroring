@@ -39,4 +39,5 @@ public class BowlCommunity extends BaseTimeEntity {
 
     private String uid;
 
+    private int likeCount;
 }

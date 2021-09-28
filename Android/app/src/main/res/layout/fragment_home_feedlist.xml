@@ -150,25 +150,6 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/post_title_edit"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"
-            android:hint="댓글 달기..."
-            android:paddingLeft="5dp"
-            android:textColor="@android:color/black"
-            android:textSize="15sp"
-            android:textStyle="bold"/>
-
-        <Button
-            android:id="@+id/post_save_button"
-            android:layout_width="67dp"
-            android:layout_height="29dp"
-            android:layout_marginRight="7dp"
-            android:background="#FFACDBE8"
-            android:text="게시" />
 
     </LinearLayout>
 </LinearLayout>

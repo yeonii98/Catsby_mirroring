@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -23,11 +24,11 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
+import com.soundcloud.android.crop.Crop;
 
 import android.Manifest;
 
@@ -63,12 +64,7 @@ public class BowlWrite extends AppCompatActivity{
     private static final String TAG = "blackjin";
     private Boolean isPermission = true;
 
-    //ImageView imageView;
-    //Button btnCamera;
-
     private static final int PICK_FROM_ALBUM = 1;
-
-    //String mCurrentPhotoPath;
     private static final int PICK_FROM_CAMERA = 2;
 
     BowlService bowlService = RetrofitClient.getBowlService();
@@ -78,14 +74,16 @@ public class BowlWrite extends AppCompatActivity{
     static ArrayList<Bowl> bowlList = new ArrayList<>();
     String allContext;
     BowlCheckListAdapter adapter;
-    static int cPosition = -1;
+    static int cPosition;
 
+    private Boolean isCamera = false;
     Uri photoUri;
-    File tempFile;
+    private File tempFile;
     File image;
     ImageView contextView;
     EditText postContext;
     int[] bowlImg = {R.drawable.ic_baseline_favorite_red, R.drawable.ic_baseline_star_border_24, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -110,21 +108,14 @@ public class BowlWrite extends AppCompatActivity{
         findViewById(R.id.btnGallery).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // 권한 허용에 동의하지 않았을 경우 토스트를 띄웁니다.
-                if(isPermission) goToAlbum();
-                else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+                goToAlbum();
             }
         });
 
         findViewById(R.id.btnCamera).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    case R.id.btnCamera:
-                        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivityForResult(cameraIntent, PICK_FROM_CAMERA);
-                        break;
-                }
+            public void onClick(View view) {
+                takePhoto();
             }
         });
 
@@ -134,23 +125,19 @@ public class BowlWrite extends AppCompatActivity{
             public void onClick(View view) {
                 postContext = findViewById(R.id.context);
                 if (image != null) {
-                    if (cPosition != -1) {
-                        allContext = postContext.getText().toString();
-                        savePost(image, bowlList.get(cPosition).getId(), user.getUid(), allContext);
-                        contextView.setImageResource(0);
-                        postContext.setText("");
-                        image = null;
-                    }else{
-                        Toast.makeText(getApplicationContext(),"글을 업로드할 밥그릇을 선택해 주세요.", Toast.LENGTH_SHORT).show();
-                        }
+                    allContext = postContext.getText().toString();
+                    savePost(image, bowlList.get(cPosition).getId(), user.getUid(), allContext);
+                    contextView.setImageResource(0);
+                    postContext.setText("");
+                    image = null;
+
                 }else{
                     Toast.makeText(getApplicationContext(),"이미지를 첨부해 주세요.", Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
-    }
 
+    }
 
     private void savePost(File file, int id, String uid, String context) {
 
@@ -185,6 +172,7 @@ public class BowlWrite extends AppCompatActivity{
             }
         });
     }
+
 
     private void loadBowls(String uid) {
         bowlService.getBowls(uid).enqueue(new Callback<BowlList>() {
@@ -226,52 +214,55 @@ public class BowlWrite extends AppCompatActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        
 
-        if (resultCode != Activity.RESULT_OK) {
+        if (resultCode != RESULT_OK) {
             Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
 
-            if (tempFile != null) {
-                if (tempFile.exists()) {
-                    if (tempFile.delete()) {
+            if(tempFile != null) {
+                if(tempFile.exists()) {
+
+                    if(tempFile.delete()) {
                         Log.e(TAG, tempFile.getAbsolutePath() + " 삭제 성공");
                         tempFile = null;
+                    } else {
+                        Log.e(TAG, "tempFile 삭제 실패");
                     }
+
+                } else {
+                    Log.e(TAG, "tempFile 존재하지 않음");
                 }
+            } else {
+                Log.e(TAG, "tempFile is null");
             }
 
             return;
         }
 
-        if (requestCode == PICK_FROM_ALBUM) {
-            photoUri = data.getData();
-            Log.d(TAG, "PICK_FROM_ALBUM photoUri : " + photoUri);
+        switch (requestCode) {
+            case PICK_FROM_ALBUM: {
 
-            Cursor cursor = null;
-            try {
+                Uri photoUri = data.getData();
+                Log.d(TAG, "PICK_FROM_ALBUM photoUri : " + photoUri);
 
-                String[] proj = {MediaStore.Images.Media.DATA};
-                assert photoUri != null;
-                cursor = getContentResolver().query(photoUri, proj, null, null, null);
-                assert cursor != null;
-                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                cursor.moveToFirst();
+                cropImage(photoUri);
 
-                image = new File(cursor.getString(column_index));
-                tempFile = new File(cursor.getString(column_index));
-                Log.d(TAG, "tempFile Uri : " + Uri.fromFile(tempFile));
-
-            } finally {
-                if (cursor != null) {
-                    cursor.close();
-                }
+                break;
             }
+            case PICK_FROM_CAMERA: {
 
-            setImage();
+                // 앨범에 있지만 카메라 에서는 data.getData()가 없음
+                Uri photoUri = Uri.fromFile(tempFile);
+                Log.d(TAG, "takePhoto photoUri : " + photoUri);
 
-        } else if (requestCode == PICK_FROM_CAMERA) {
+                cropImage(photoUri);
 
-            setImage();
-
+                break;
+            }
+            case Crop.REQUEST_CROP: {
+                //File cropFile = new File(Crop.getOutput(data).getPath());
+                setImage();
+            }
         }
     }
 
@@ -279,35 +270,92 @@ public class BowlWrite extends AppCompatActivity{
      *  앨범에서 이미지 가져오기
      */
     private void goToAlbum() {
+        isCamera = false;
 
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
         startActivityForResult(intent, PICK_FROM_ALBUM);
     }
 
-
     /**
      *  카메라에서 이미지 가져오기
      */
     private void takePhoto() {
+        isCamera = true;
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         try {
             tempFile = createImageFile();
-
         } catch (IOException e) {
-            System.out.println("e.getMessage() " + e.getMessage());
             Toast.makeText(this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
             finish();
             e.printStackTrace();
         }
         if (tempFile != null) {
 
-            Uri photoUri = Uri.fromFile(tempFile);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-            startActivityForResult(intent, PICK_FROM_CAMERA);
+            /**
+             *  안드로이드 OS 누가 버전 이후부터는 file:// URI 의 노출을 금지로 FileUriExposedException 발생
+             *  Uri 를 FileProvider 도 감싸 주어야 합니다.
+             *
+             *  참고 자료 http://programmar.tistory.com/4 , http://programmar.tistory.com/5
+             */
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+
+                Uri photoUri = FileProvider.getUriForFile(this,
+                        "com.tistory.black_jin0427.myimagesample.provider", tempFile);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                startActivityForResult(intent, PICK_FROM_CAMERA);
+
+            } else {
+
+                Uri photoUri = Uri.fromFile(tempFile);
+                Log.d(TAG, "takePhoto photoUri : " + photoUri);
+
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                startActivityForResult(intent, PICK_FROM_CAMERA);
+
+            }
         }
+    }
+
+    /**
+     *  Crop 기능
+     */
+    private void cropImage(Uri photoUri) {
+
+        Log.d(TAG, "tempFile : " + tempFile);
+
+        /**
+         *  갤러리에서 선택한 경우에는 tempFile이 없으므로 새로 생성해줍니다.
+         */
+        if(tempFile == null) {
+            try {
+                tempFile = createImageFile();
+            } catch (IOException e) {
+                Toast.makeText(this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                finish();
+                e.printStackTrace();
+            }
+        }
+        else{
+            //크롭에 후 저장할 Uri
+            System.out.println("tempFile = " + tempFile);
+
+            try {
+                tempFile = createImageFile();
+                Uri savingUri = Uri.fromFile(tempFile);
+                Crop.of(photoUri, savingUri).asSquare().start(this);
+
+            } catch (IOException e) {
+                Toast.makeText(this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                finish();
+                e.printStackTrace();
+            }
+
+        }
+
+        
     }
 
     /**
@@ -319,14 +367,20 @@ public class BowlWrite extends AppCompatActivity{
         String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
         String imageFileName = "blackJin_" + timeStamp + "_";
 
-        // 이미지가 저장될 폴더 이름 ( blackJin )
+        // 이미지가 저장될 파일 이름 ( blackJin )
         File storageDir = new File(Environment.getExternalStorageDirectory() + "/blackJin/");
         if (!storageDir.exists()) storageDir.mkdirs();
 
-        // 파일 생성
-        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+        // 빈 파일 생성
+        System.out.println("storageDir = " + storageDir);
+        try{
+            System.out.println("image = " + image);
+            System.out.println("imageFileName = " + imageFileName);
+            File image = File.createTempFile(imageFileName, ".jpg", storageDir);}
+        catch (IOException e){
+            System.out.println("e.getMessage() = " + e.getMessage());
+        }
         Log.d(TAG, "createImageFile : " + image.getAbsolutePath());
-        System.out.println("image = !!!!" + image);
         return image;
     }
 
@@ -334,27 +388,25 @@ public class BowlWrite extends AppCompatActivity{
      *  tempFile 을 bitmap 으로 변환 후 ImageView 에 설정한다.
      */
     private void setImage() {
-        contextView = findViewById(R.id.imageView);
-        Glide.with(this).load(photoUri).into(contextView);
 
-        //회전 방지
         ImageView imageView = findViewById(R.id.imageView);
-        Glide.with(this).load(photoUri).into(imageView);
+
+        com.tistory.black_jin0427.myimagesample.util.ImageResizeUtils.resizeFile(tempFile, tempFile, 1280, isCamera);
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
         Log.d(TAG, "setImage : " + tempFile.getAbsolutePath());
-        contextView.setImageBitmap(originalBm);
+
+        imageView.setImageBitmap(originalBm);
 
         /**
          *  tempFile 사용 후 null 처리를 해줘야 합니다.
-         *  (resultCode != RESULT_OK) 일 때 tempFile 을 삭제하기 때문에
+         *  (resultCode != RESULT_OK) 일 때 (tempFile != null)이면 해당 파일을 삭제하기 때문에
          *  기존에 데이터가 남아 있게 되면 원치 않은 삭제가 이뤄집니다.
          */
         tempFile = null;
 
     }
-
     /**
      *  권한 설정
      */
@@ -381,7 +433,6 @@ public class BowlWrite extends AppCompatActivity{
                 .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
                 .check();
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){

@@ -22,6 +22,7 @@
             android:orientation="horizontal">
 
             <ImageButton
+                android:background="@color/white"
                 android:id="@+id/imageButton"
                 android:layout_width="100dp"
                 android:layout_height="100dp"

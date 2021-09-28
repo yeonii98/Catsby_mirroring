@@ -12,6 +12,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -23,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,7 +35,9 @@ import org.techtown.catsby.R;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.community.data.model.TownCommunity;
 import org.techtown.catsby.community.data.service.TownCommunityService;
+import org.techtown.catsby.retrofit.dto.User;
 import org.techtown.catsby.retrofit.service.UserService;
+import org.techtown.catsby.util.ImageUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -91,84 +95,98 @@ public class AddActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.btnDone).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String title = edtTitle.getText().toString();
-                String content = edtContent.getText().toString();
 
-                //db에 저장된 image값을 BinaryStringTobyteArray로 변환하고, byteArray를 bitmap으로 바꿔서 저장한다.
+        userService.getUser(uid).enqueue(new Callback<User>() {
+                public void onResponse(Call<User> call, Response<User> response) {
+                    User result = response.body();
+                    String nickName = result.getNickname();
+                    String userImg = result.getImage();
 
-                if (title.length() > 0 && content.length() > 0) {
-                    if (townImg.getDrawable() == null) {
-                        townCommunity = new TownCommunity(title, content, checkBox.isChecked());
-                    } else {
-                        Bitmap img = ((BitmapDrawable) townImg.getDrawable()).getBitmap();
-
-                        String image = "";
-
-                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        img.compress(Bitmap.CompressFormat.JPEG, 20, stream);
-                        byteArray = stream.toByteArray();
-                        image = "&image=" + byteArrayToBinaryString(byteArray);
-                        townCommunity = new TownCommunity(title, content, image, checkBox.isChecked());
-                    }
-
-
-                    townCommunityService = RetrofitClient.getTownCommunityService();
-                    townCommunityService.postTown(townCommunity, uid).enqueue(new Callback<Void>() {
+                    findViewById(R.id.btnDone).setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onResponse(Call<Void> call, Response<Void> response) {
-                            if (response.isSuccessful()) {
-                                //정상적으로 통신이 성공된 경우
-                                System.out.println("성공");
-                            } else {
-                                System.out.println("실패");
+                        public void onClick(View view) {
+                            String title = edtTitle.getText().toString();
+                            String content = edtContent.getText().toString();
+
+                            if (title.length() > 0 && content.length() > 0) {
+                                if (townImg.getDrawable() == null) {
+                                    townCommunity = new TownCommunity(title, content, checkBox.isChecked());
+                                } else {
+                                    Bitmap img = ((BitmapDrawable) townImg.getDrawable()).getBitmap();
+
+                                    String image = "";
+
+                                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                                    img.compress(Bitmap.CompressFormat.JPEG, 20, stream);
+                                    byteArray = stream.toByteArray();
+                                    image = ImageUtils.byteArrayToBinaryString(byteArray);
+                                    townCommunity = new TownCommunity(title, content, image, checkBox.isChecked());
+                                }
+
+
+                                townCommunityService = RetrofitClient.getTownCommunityService();
+                                townCommunityService.postTown(townCommunity, uid).enqueue(new Callback<Void>() {
+                                    @Override
+                                    public void onResponse(Call<Void> call, Response<Void> response) {
+                                        if (response.isSuccessful()) {
+                                            //정상적으로 통신이 성공된 경우
+                                            System.out.println("성공");
+                                        } else {
+                                            System.out.println("실패");
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Void> call, Throwable t) {
+                                        System.out.println("통신 실패 : " + t.getMessage());
+                                    }
+                                });
+
+                                Date date = new Date();
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+                                String datestr = sdf.format(date);
+
+
+                                Intent intent = new Intent(AddActivity.this, FragmentCommunity.class);
+                                intent.putExtra("id", townCommunity.getId());
+                                intent.putExtra("title", title);
+                                intent.putExtra("content", content);
+                                intent.putExtra("date", datestr);
+
+                                int idx = user.getEmail().indexOf("@");
+                                intent.putExtra("uid", uid);
+                                intent.putExtra("byteArray", byteArray);
+                                intent.putExtra("userImg", userImg);
+
+
+                                if (!checkBox.isChecked())
+                                    intent.putExtra("nickName", nickName);
+                                else
+                                    intent.putExtra("nickName", "익명");
+
+
+                                setResult(2, intent);
+
+                                finish();
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Call<Void> call, Throwable t) {
-                            System.out.println("통신 실패 : " + t.getMessage());
+                            else{
+                                Toast.makeText(getApplicationContext(), "제목과 내용을 입력해주세요", Toast.LENGTH_SHORT).show();
+
+                            }
+
                         }
                     });
-
-                    Date date = new Date();
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-                    String datestr = sdf.format(date);
-
-
-                    Intent intent = new Intent(AddActivity.this, FragmentCommunity.class);
-                    intent.putExtra("id", townCommunity.getId());
-                    intent.putExtra("title", title);
-                    intent.putExtra("content", content);
-                    intent.putExtra("date", datestr);
-
-                    int idx = user.getEmail().indexOf("@");
-                    intent.putExtra("uid", uid);
-                    intent.putExtra("byteArray", byteArray);
-
-
-                    if (!checkBox.isChecked())
-                        intent.putExtra("nickName", user.getEmail().substring(0, idx));
-                    else
-                        intent.putExtra("nickName", "익명");
-
-
-                    setResult(2, intent);
-
-                    finish();
                 }
 
-                else{
-                    Toast.makeText(getApplicationContext(), "제목과 내용을 입력해주세요", Toast.LENGTH_SHORT).show();
+                @Override
+                public void onFailure(Call<User> call, Throwable t) {
 
                 }
+            });
 
-            }
-        });
-    }
+        }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -179,25 +197,6 @@ public class AddActivity extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    // 바이너리 바이트 배열을 스트링으로
-    public static String byteArrayToBinaryString(byte[] b) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < b.length; ++i) {
-            sb.append(byteToBinaryString(b[i]));
-        }
-        return sb.toString();
-    } // 바이너리 바이트를 스트링으로
-
-    public static String byteToBinaryString(byte n) {
-        StringBuilder sb = new StringBuilder("00000000");
-        for (int bit = 0; bit < 8; bit++) {
-            if (((n >> bit) & 1) > 0) {
-                sb.setCharAt(7 - bit, '1');
-            }
-        }
-        return sb.toString();
     }
 
     @Override
@@ -263,16 +262,25 @@ public class AddActivity extends AppCompatActivity {
         startActivityForResult(intent, PICK_FROM_ALBUM);
     }
 
-    //tempFile을 bitmap으로 변환 후 ImageView에 설정한다.
     private void setImage() {
 
         ImageView imageView = findViewById(R.id.townImgView);
 
         BitmapFactory.Options options = new BitmapFactory.Options();
-        Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
-        Log.d(TAG, "setImage : " + tempFile.getAbsolutePath());
 
-        imageView.setImageBitmap(originalBm);
+        //이미지 회전 방지
+        ExifInterface exifInterface = null;
+        try {
+            exifInterface = new ExifInterface(tempFile.getAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_UNDEFINED);
+
+        Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
+
+        Glide.with(this).load(ImageUtils.rotateBitmap(originalBm, orientation)).into(imageView);
 
         /**
          *  tempFile 사용 후 null 처리를 해줘야 합니다.

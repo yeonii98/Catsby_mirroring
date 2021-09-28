@@ -62,6 +62,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     boolean[] bool;
     boolean repeat = false;
 
+    public static List<BowlCommentUsingComment> MComment;
+
     ArrayList<Integer> likeCommunity = new ArrayList<>();
     HashMap<Integer, Integer> totalLike = new HashMap<>();
     HashMap<Integer, Integer> likeByCommunity = new HashMap<>();
@@ -105,7 +107,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             dateView = (TextView) itemView.findViewById(R.id.date);
 
             EditText commentEditTextPost = view.findViewById(R.id.post_title_edit);
-
             itemView.findViewById(R.id.putButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -178,22 +179,10 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 }
             });
 
-            itemView.findViewById(R.id.post_save_button).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    String contextMessage = commentEditTextPost.getText().toString();
-                    if (!contextMessage.equals("")) {
-                        postComment(user.getUid(), itemData.get(getAdapterPosition()).getId(), contextMessage);
-                        commentEditTextPost.setText("");
-                    }else{
-                        Toast.makeText(context.getApplicationContext(),"댓글을 입력해 주세요.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-
             for (int i =0; i < itemData.size(); i++){
-                loadTotalLike(itemData.get(i).getId());
+                if (!totalLike.containsKey(itemData.get(i).getId())){
+                    totalLike.put(itemData.get(i).getId(), itemData.get(i).getLikeCount());
+                }
             }
 
             for (int i =0; i < itemData.size(); i ++) {
@@ -218,8 +207,17 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull FeedAdapter.ViewHolder holder, int position) {
 
-        Feed item = itemData.get(position);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ;
+        View otherView = inflater.inflate(R.layout.activity_maincomment, null, false);
 
+        otherView.findViewById(R.id.post_save_button1).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println(" = !!!! " );
+            }
+        });
+
+        Feed item = itemData.get(position);
         holder.userName.setText(item.getNickName());
         byte[] blob = Base64.decode(item.getImg(), Base64.DEFAULT);
         Bitmap bmp = BitmapFactory.decodeByteArray(blob,0, blob.length);
@@ -245,6 +243,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                     if(response.isSuccessful()) {
                         List<BowlLike> bowlResult = response.body();
                         assert bowlResult != null;
+
                         if(likeCommunity.size() == 0){
                             for (BowlLike bowlLike : bowlResult) {
                                 likeCommunity.add(bowlLike.getBowlCommunity().getId());
@@ -291,26 +290,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             holder.itemViewPutButton.setVisibility(View.GONE);
             holder.itemViewDeleteButton.setVisibility(View.GONE);
         }
-    }
-
-    private void loadTotalLike(int communityId){
-        bowlCommunityService.getTotalLikes(communityId).enqueue(new Callback<Integer>() {
-            @Override
-            public void onResponse(Call<Integer> call, Response<Integer> response) {
-                if(response.isSuccessful()) {
-                    Integer count = response.body();
-                    if (!totalLike.containsKey(communityId)){
-                        totalLike.put(communityId, count);
-
-                    }
-                }
-            }
-            @Override
-            public void onFailure(Call<Integer> call, Throwable t) {
-                System.out.println("t.getMessage() = " + t.getMessage());
-            }
-        });
-
     }
 
     private void updateCommunity(int communityId, String changeTest) {
@@ -426,21 +405,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         });
     }
 
-    private void postComment(String uid, int id, String context) {
-        BowlCommentPost bowlCommentPost = new BowlCommentPost(uid, id, context);
-        bowlCommunityService.saveComment(uid, id, bowlCommentPost).enqueue(new Callback<List<BowlComment>>() {
-            @Override
-            public void onResponse(Call<List<BowlComment>> call, Response<List<BowlComment>> response) {
-                System.out.println("save success");
-            }
-
-            @Override
-            public void onFailure(Call<List<BowlComment>> call, Throwable t) {
-                System.out.println("t.getMessage() = " + t.getMessage());
-            }
-        });
-    }
-
     private void loadComments(long communityId, int position) {
         bowlCommunityService.getComments(communityId).enqueue(new Callback<List<BowlComment>>() {
             @Override
@@ -454,10 +418,15 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                     List<BowlComment> tempComment = bowlComments;
                     List<BowlCommentUsingComment> parameterBowlCommentList= new ArrayList<>();
                     for (int i =0; i < tempComment.size(); i++){
-                        BowlCommentUsingComment bowlCommentUsingComment = new BowlCommentUsingComment(tempComment.get(i).getId(), tempComment.get(i).getUser().getNickname(), tempComment.get(i).getContent(), tempComment.get(i).getCreateDate(), tempComment.get(i).getUser().getId(), tempComment.get(i).getUid());
+                        BowlCommentUsingComment bowlCommentUsingComment = new BowlCommentUsingComment(tempComment.get(i).getId(), tempComment.get(i).getUser().getNickname(), tempComment.get(i).getContent(), tempComment.get(i).getCreateDate(), tempComment.get(i).getUser().getId(), tempComment.get(i).getUid(), (int) communityId);
                         parameterBowlCommentList.add(bowlCommentUsingComment);
                     }
+
+                    MComment = parameterBowlCommentList;
                     intent.putExtra("comment", (Serializable) parameterBowlCommentList);
+
+                    int cId = (int) communityId;
+                    intent.putExtra("communityId", cId);
                     context.startActivity(intent);
                 }
             }

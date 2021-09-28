@@ -1,16 +1,19 @@
 
 package com.hanium.catsby.bowl.controller;
 
+import com.hanium.catsby.bowl.domain.BowlCommunity;
 import com.hanium.catsby.bowl.domain.BowlLike;
 import com.hanium.catsby.bowl.service.BowlLikeService;
 import com.hanium.catsby.user.service.UserService;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -25,7 +28,7 @@ public class BowlLikeController {
     public CreateBowlLikeResponse saveBowlLike(@PathVariable("uid") String uid, @PathVariable("communityId") Long communityId){
         Long userId = userService.findUserByUid(uid);
         BowlLike bowlLike = new BowlLike();
-        Long id = bowlLikeService.saveBowlLike(bowlLike, userId, communityId);
+        Long id = bowlLikeService.saveBowlLike(bowlLike, uid, userId, communityId);
         return new CreateBowlLikeResponse(id);
     }
 
@@ -52,6 +55,21 @@ public class BowlLikeController {
     @DeleteMapping("/bowl-like/{id}")
     public void DeleteBowlLike(@PathVariable("id") Long id){
         bowlLikeService.delete(id);
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class BowlLikeDto{
+        private Long id;
+        private BowlCommunity bowlCommunity;
+        private LocalDateTime createdDate;
+        private String uid;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class BowlLikeResult<T> {
+        private T data;
     }
 
 }

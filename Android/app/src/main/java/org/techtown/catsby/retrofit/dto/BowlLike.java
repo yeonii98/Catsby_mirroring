@@ -5,6 +5,8 @@ public class BowlLike {
     private int id;
     private User user;
     private BowlCommunity bowlCommunity;
+    private String uid;
+    private String createdDate;
 
     public int getId() {
         return id;
@@ -18,4 +20,11 @@ public class BowlLike {
         return bowlCommunity;
     }
 
+    public String getUid() {
+        return uid;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
 }

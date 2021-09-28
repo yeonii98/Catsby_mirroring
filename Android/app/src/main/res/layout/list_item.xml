@@ -16,7 +16,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginLeft="7dp"
-            android:src="@drawable/catsby_logo_black"
+            android:src="@mipmap/ic_launcher_round"
             app:civ_border_color="#939597"
             app:civ_border_width="1dp" />
 
@@ -42,19 +42,21 @@
         <Button
             android:id="@+id/town_update"
             android:layout_width="55dp"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:layout_margin="8dp"
             android:background="#ACDBE8"
-            android:text="수정" />
+            android:text="수정"
+            android:textSize="14sp"/>
 
         <Button
             android:id="@+id/town_delete"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
+            android:layout_width="55dp"
+            android:layout_height="35dp"
             android:layout_margin="8dp"
             android:layout_marginRight="7dp"
             android:background="#ACDBE8"
-            android:text="삭제" />
+            android:text="삭제"
+            android:textSize="14sp"/>
     </LinearLayout>
 
     <LinearLayout
@@ -132,32 +134,32 @@
             android:text="0" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="15dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+<!--    <LinearLayout-->
+<!--        android:id="@+id/linearLayout"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_marginBottom="15dp"-->
+<!--        android:layout_weight="1"-->
+<!--        android:orientation="horizontal">-->
 
-        <EditText
-            android:id="@+id/town_comment_content"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="7dp"
-            android:layout_weight="1"
-            android:hint="댓글 달기..."
-            android:paddingLeft="5dp"
-            android:textColor="@android:color/black"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+<!--        <EditText-->
+<!--            android:id="@+id/town_comment_content"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginLeft="7dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:hint="댓글 달기..."-->
+<!--            android:paddingLeft="5dp"-->
+<!--            android:textColor="@android:color/black"-->
+<!--            android:textSize="15sp"-->
+<!--            android:textStyle="bold" />-->
 
-        <Button
-            android:id="@+id/town_commentBtn"
-            android:layout_width="67dp"
-            android:layout_height="30dp"
-            android:layout_marginRight="7dp"
-            android:background="#ACDBE8"
-            android:text="게시" />
-    </LinearLayout>
+<!--        <Button-->
+<!--            android:id="@+id/town_commentBtn"-->
+<!--            android:layout_width="67dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_marginRight="7dp"-->
+<!--            android:background="#ACDBE8"-->
+<!--            android:text="게시" />-->
+<!--    </LinearLayout>-->
 </LinearLayout>

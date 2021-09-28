@@ -18,15 +18,16 @@ import org.techtown.catsby.community.data.service.TownCommentService;
 import org.techtown.catsby.community.data.service.TownCommunityService;
 
 
+import java.util.concurrent.TimeUnit;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-
 public class RetrofitClient {
     private static final String BASE_URL =  "http://15.164.36.183:8080/";
-    
+
     private static Retrofit getInstance() {
         Gson gson = new GsonBuilder().setLenient().create();
 
@@ -34,6 +35,9 @@ public class RetrofitClient {
         httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
 
         OkHttpClient client = new OkHttpClient.Builder()
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .writeTimeout(20, TimeUnit.SECONDS)
                 .addInterceptor(httpLoggingInterceptor)
                 .build();
 

@@ -1,5 +1,6 @@
 package org.techtown.catsby.home;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,11 +18,8 @@ import org.techtown.catsby.home.adapter.BowlAdapter;
 import org.techtown.catsby.home.adapter.FeedAdapter;
 import org.techtown.catsby.home.model.Feed;
 import org.techtown.catsby.qrcode.LoadingActivity;
-import org.techtown.catsby.qrcode.data.model.Bowl;
-import org.techtown.catsby.qrcode.data.service.QRBowlService;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.BowlCommunity;
-import org.techtown.catsby.retrofit.dto.BowlDetail;
 import org.techtown.catsby.retrofit.dto.BowlInfo;
 import org.techtown.catsby.retrofit.dto.BowlList;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
@@ -38,12 +36,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -55,13 +54,15 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
     private Context mContext;
     private FragmentManager fragmentManager;
 
-/*
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        mContext = context;
-    }
-*/
+    private Boolean isPermission = true;
+
+    /*
+        @Override
+        public void onAttach(@NonNull Context context) {
+            super.onAttach(context);
+            mContext = context;
+        }
+    */
     BowlAdapter bowlAdapter;
     ArrayList<byte[]> bowlImageArray = new ArrayList<>();
     BowlService bowlService = RetrofitClient.getBowlService();
@@ -78,6 +79,7 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        tedPermission();
 
         view = null;
         view = inflater.inflate(R.layout.fragment_home, container, false);
@@ -103,8 +105,8 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
             }
         });
 
-    return view;
-}
+        return view;
+    }
 
     private void loadBowlDetail(Long bowlId, String uid){
         bowlService.getBowlInfo(bowlId, uid).enqueue(new Callback<BowlInfo>() {
@@ -159,7 +161,7 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
                     Collections.sort(BowlCommunityResult, dateAscending);
 
                     for (int i=0; i < BowlCommunityResult.size(); i++) {
-                        Feed feed = new Feed(BowlCommunityResult.get(i).getId(), BowlCommunityResult.get(i).getUser().getId(), BowlCommunityResult.get(i).getUser().getImage(), BowlCommunityResult.get(i).getUser().getNickname(), BowlCommunityResult.get(i).getImage().getBytes(), BowlCommunityResult.get(i).getContent(), BowlCommunityResult.get(i).getUid(), BowlCommunityResult.get(i).getCreatedDate());
+                        Feed feed = new Feed(BowlCommunityResult.get(i).getId(), BowlCommunityResult.get(i).getUser().getId(), BowlCommunityResult.get(i).getUser().getImage(), BowlCommunityResult.get(i).getUser().getNickname(), BowlCommunityResult.get(i).getImage().getBytes(), BowlCommunityResult.get(i).getContent(), BowlCommunityResult.get(i).getUid(), BowlCommunityResult.get(i).getCreatedDate(), BowlCommunityResult.get(i).getLikeCount());
 
                         if (!feedList.contains(feed)){
                             feedList.add(feed);
@@ -167,8 +169,8 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
 
                         DateDescending2 dateAscending2 = new DateDescending2();
                         Collections.sort(feedList, dateAscending2);
-
                     }
+
                     RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerview);
                     RecyclerView.LayoutManager feedLayoutManager = new LinearLayoutManager(getActivity());
                     recyclerView.setLayoutManager(feedLayoutManager);
@@ -205,10 +207,44 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
                 break;
 
             case R.id.action_qrscan:
-                Intent intent2 = new Intent(getActivity(), LoadingActivity.class);
-                startActivity(intent2);
+
+                if(isPermission) {
+                    Intent intent2 = new Intent(getActivity(), LoadingActivity.class);
+                    startActivity(intent2);
+                }
+                else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
+
+
+
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     *  권한 설정
+     */
+    private void tedPermission() {
+
+        PermissionListener permissionListener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                // 권한 요청 성공
+                isPermission = true;
+            }
+
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                // 권한 요청 실패
+                isPermission = false;
+            }
+        };
+
+        TedPermission.with(getContext())
+                .setPermissionListener(permissionListener)
+                .setRationaleMessage(getResources().getString(R.string.permission_2))
+                .setDeniedMessage(getResources().getString(R.string.permission_1))
+                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+                .check();
     }
 }
 

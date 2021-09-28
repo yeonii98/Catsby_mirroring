@@ -10,18 +10,17 @@ public class Feed {
     private int userId;
     private String nickName;
     private byte[] img;
-
     private String userImg;
-
     private String content;
     private String uid;
     private String createDate;
+    private int likeCount;
 
     public String getCreateDate() {
         return createDate;
     }
 
-    public Feed(int id, int userId, String userImg, String nickName, byte[] img, String content, String uid, String createDate) {
+    public Feed(int id, int userId, String userImg, String nickName, byte[] img, String content, String uid, String createDate, int likeCount) {
         this.id = id;
         this.userId = userId;
         this.userImg = userImg;
@@ -30,6 +29,11 @@ public class Feed {
         this.content = content;
         this.uid = uid;
         this.createDate=createDate;
+        this.likeCount = likeCount;
+    }
+
+    public int getLikeCount() {
+        return likeCount;
     }
 
     public String getUid() {
