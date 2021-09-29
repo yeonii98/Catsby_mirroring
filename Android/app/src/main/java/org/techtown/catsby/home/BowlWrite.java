@@ -1,6 +1,7 @@
 package org.techtown.catsby.home;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -11,7 +12,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -58,6 +61,9 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static org.techtown.catsby.home.ImageResizeUtils.exifOrientationToDegrees;
+import static org.techtown.catsby.home.ImageResizeUtils.rotate;
 
 public class BowlWrite extends AppCompatActivity{
     ListView listview ;
@@ -347,7 +353,6 @@ public class BowlWrite extends AppCompatActivity{
 
         //크롭에 후 저장할 Uri
         Uri savingUri = Uri.fromFile(tempFile);
-
         Crop.of(photoUri, savingUri).asSquare().start(this);
     }
 
@@ -369,6 +374,8 @@ public class BowlWrite extends AppCompatActivity{
 
         return image;
     }
+
+
 
     /**
      *  tempFile 을 bitmap 으로 변환 후 ImageView 에 설정한다.
@@ -433,4 +440,7 @@ public class BowlWrite extends AppCompatActivity{
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }
+

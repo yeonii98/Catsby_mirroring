@@ -38,6 +38,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.soundcloud.android.crop.Crop;
 
 import org.techtown.catsby.R;
 import org.techtown.catsby.home.adapter.BowlInfoTimeAdapter;
@@ -79,6 +80,8 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
 
     private NotificationService notificationService;
     private BowlService bowlService;
+
+    private Boolean isCamera = false;
 
     Uri photoUri;
 
@@ -191,46 +194,41 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
         if (resultCode != Activity.RESULT_OK) {
             Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
 
-            if (tempFile != null) {
-                if (tempFile.exists()) {
-                    if (tempFile.delete()) {
+            if(tempFile != null) {
+                if(tempFile.exists()) {
+
+                    if(tempFile.delete()) {
                         Log.e(TAG, tempFile.getAbsolutePath() + " 삭제 성공");
                         tempFile = null;
+                    } else {
+                        Log.e(TAG, "tempFile 삭제 실패");
                     }
+
+                } else {
+                    Log.e(TAG, "tempFile 존재하지 않음");
                 }
+            } else {
+                Log.e(TAG, "tempFile is null");
             }
 
             return;
         }
 
-        if (requestCode == PICK_FROM_ALBUM) {
-            photoUri = data.getData();
-            Log.d(TAG, "PICK_FROM_ALBUM photoUri : " + photoUri);
+        switch (requestCode) {
+            case PICK_FROM_ALBUM: {
 
-            Cursor cursor = null;
-            try {
+                Uri photoUri = data.getData();
+                Log.d(TAG, "PICK_FROM_ALBUM photoUri : " + photoUri);
 
-                String[] proj = {MediaStore.Images.Media.DATA};
-                assert photoUri != null;
-                cursor = getContentResolver().query(photoUri, proj, null, null, null);
-                assert cursor != null;
-                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                cursor.moveToFirst();
+                cropImage(photoUri);
 
-                image = new File(cursor.getString(column_index));
-                tempFile = new File(cursor.getString(column_index));
-                //System.out.println("tempFile = " + tempFile);
-
-                Log.d(TAG, "tempFile Uri : " + Uri.fromFile(tempFile));
-
-            } finally {
-                if (cursor != null) {
-                    cursor.close();
-                }
+                break;
             }
 
-            setImage();
-
+            case Crop.REQUEST_CROP: {
+                //File cropFile = new File(Crop.getOutput(data).getPath());
+                setImage();
+            }
         }
     }
 
@@ -248,6 +246,7 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
     }
 
     private void goToAlbum() {
+        isCamera = false;
 
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
@@ -255,29 +254,57 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
     }
 
     /**
+     *  Crop 기능
+     */
+    private void cropImage(Uri photoUri) {
+
+        Log.d(TAG, "tempFile : " + tempFile);
+
+        /**
+         *  갤러리에서 선택한 경우에는 tempFile이 없으므로 새로 생성해줍니다.
+         */
+        if(tempFile == null) {
+            try {
+                tempFile = createImageFile();
+            } catch (IOException e) {
+                Toast.makeText(this, "이미지 처리 오류! 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+                finish();
+                e.printStackTrace();
+            }
+        }
+
+        //크롭에 후 저장할 Uri
+        Uri savingUri = Uri.fromFile(tempFile);
+        Crop.of(photoUri, savingUri).asSquare().start(this);
+    }
+
+
+    /**
      * 폴더 및 파일 만들기
      */
     private File createImageFile() throws IOException {
 
         // 이미지 파일 이름 ( blackJin_{시간}_ )
-        String timeStamp = new SimpleDateFormat("HHmmss").format(new Date());
-        String imageFileName = "blackJin_" + timeStamp + "_";
+        String timeStamp = new SimpleDateFormat("yyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
 
-        // 이미지가 저장될 폴더 이름 ( blackJin )
-        File storageDir = new File(Environment.getExternalStorageDirectory() + "/blackJin/");
-        if (!storageDir.exists()) storageDir.mkdirs();
+        // 이미지가 저장될 폴더 이름
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
-        // 파일 생성
+        // 빈 파일 생성
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
         Log.d(TAG, "createImageFile : " + image.getAbsolutePath());
+
         return image;
     }
+
 
     /**
      * tempFile 을 bitmap 으로 변환 후 ImageView 에 설정한다.
      */
     private void setImage() {
 
+        bowlimageView = findViewById(R.id.bowlimageView);
         //회전 방지
         Glide.with(this).load(photoUri).circleCrop().into(bowlimageView);
 

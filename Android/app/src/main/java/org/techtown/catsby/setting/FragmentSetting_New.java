@@ -327,10 +327,6 @@ public class FragmentSetting_New extends Fragment {
     //[이미지 설정] 3.tempFile을 bitmap으로 변환 후 ImageView에 설정한다.
     private void setImage() {
 
-        /* 이미지 회전 방지 적용이 안 됨..
-        ImageButton imageButton = (ImageButton) getView().findViewById(R.id.imageButton);
-        Glide.with(this).load(photoUri).into(imageButton); */
-
         BitmapFactory.Options options = new BitmapFactory.Options();
 
         //이미지 회전 방지
