@@ -23,8 +23,9 @@ public class BowlCommunity extends BaseTimeEntity {
     @Column(name = "bowlCommunity_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Users user;
 
     @Lob
@@ -33,8 +34,9 @@ public class BowlCommunity extends BaseTimeEntity {
     @Lob
     private String content;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bowl_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Bowl bowl;
 
     private String uid;

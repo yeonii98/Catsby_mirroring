@@ -1,5 +1,6 @@
 package com.hanium.catsby.bowl.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hanium.catsby.util.BaseTimeEntity;
 import com.hanium.catsby.user.domain.Users;
 import lombok.Getter;
@@ -17,17 +18,18 @@ public class BowlComment extends BaseTimeEntity {
     @Column(name = "bowlComment_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Users user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "bowlCommunity_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private BowlCommunity bowlCommunity;
 
     @Lob
     private String content;
-
     private String uid;
 
 }
