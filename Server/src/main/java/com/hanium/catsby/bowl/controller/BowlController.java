@@ -74,15 +74,6 @@ public class BowlController {
         bowlService.delete(id);
     }
 
-    @GetMapping("/bowls")
-    public BowlResult bowls() {
-        List<Bowl> findBowls = bowlService.findAllBowls();
-        List<BowlDto> collect = findBowls.stream()
-                .map(b -> new BowlDto(b.getId(), b.getInfo(), b.getName(), b.getAddress(), b.getImage(), b.getCreatedDate()))
-                .collect(Collectors.toList());
-        return new BowlResult(collect);
-    }
-
     @GetMapping("/bowls/{uid}")
     public BowlResult userBowlList(@PathVariable("uid") String uid) {
         List<Bowl> findBowls = bowlService.findUserBowls(uid);
