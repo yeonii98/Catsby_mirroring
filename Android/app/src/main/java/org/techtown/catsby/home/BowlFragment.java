@@ -55,14 +55,6 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
     private FragmentManager fragmentManager;
 
     private Boolean isPermission = true;
-
-    /*
-        @Override
-        public void onAttach(@NonNull Context context) {
-            super.onAttach(context);
-            mContext = context;
-        }
-    */
     BowlAdapter bowlAdapter;
     ArrayList<byte[]> bowlImageArray = new ArrayList<>();
     BowlService bowlService = RetrofitClient.getBowlService();
@@ -80,7 +72,6 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
                              @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         tedPermission();
-
         view = null;
         view = inflater.inflate(R.layout.fragment_home, container, false);
         setHasOptionsMenu(true);

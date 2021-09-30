@@ -36,11 +36,6 @@ public class UserController {
         private String fcmToken;
     }
 
-    @GetMapping("/users")
-    public List<Users> users() {
-        return userService.findUsers();
-    }
-
     @GetMapping("/user/{uid}")
     public Users findUser(@PathVariable("uid") String uid) {
         Users user = userService.findUsersByUid(uid);

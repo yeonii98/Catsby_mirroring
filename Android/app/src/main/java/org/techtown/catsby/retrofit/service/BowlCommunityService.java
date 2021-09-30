@@ -42,9 +42,6 @@ public interface BowlCommunityService {
     @PUT("/bowl-community/{communityId}")
     Call<Void> updateCommunity(@Path("communityId") int communityId, @Body BowlCommunityUpdatePost bowlCommunityUpdatePost);
 
-    //@GET("/bowl-like/community/{communityId}")
-    //Call<Integer> getTotalLikes(@Path("communityId") int communityId);
-
     @POST("/bowl-comment/{uid}/{communityId}")
     Call<BowlCommentResponse> saveComment(@Path("uid") String uid, @Path("communityId") int communityId, @Body BowlCommentPost bowlCommentPost);
 
