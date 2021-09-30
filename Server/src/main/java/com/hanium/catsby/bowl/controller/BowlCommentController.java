@@ -1,5 +1,6 @@
 package com.hanium.catsby.bowl.controller;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hanium.catsby.bowl.service.BowlCommentService;
 import com.hanium.catsby.bowl.domain.BowlCommunity;
 import com.hanium.catsby.user.domain.Users;
@@ -9,7 +10,6 @@ import com.hanium.catsby.bowl.domain.BowlComment;
 import com.hanium.catsby.notification.domain.NotificationType;
 import com.hanium.catsby.notification.service.NotificationService;
 import com.hanium.catsby.user.service.UserService;
-import com.hanium.catsby.util.NotificationUtil;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -86,7 +86,10 @@ public class BowlCommentController {
     static class BowlCommentDto{
         private String content;
         private LocalDateTime createDate;
+        @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
         private Users user;
+
+        @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
         private BowlCommunity bowlCommunity;
     }
 
