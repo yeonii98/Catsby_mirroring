@@ -61,7 +61,7 @@ public class BowlCommentController {
         }
     }
 
-    @GetMapping("/bowl/community/{communityId}")
+    @GetMapping("/bowl/community/comments/{communityId}")
     public List<BowlComment> bowlComment(@PathVariable("communityId") Long communityId) {
         List<BowlComment> findComment = bowlCommentService.findCommentByCommunityId(communityId);
         return findComment;
@@ -84,7 +84,7 @@ public class BowlCommentController {
         private BowlCommunity bowlCommunity;
     }
 
-    @PutMapping("/bowl/community/{commentId}")
+    @PutMapping("/bowl/community/comment/{commentId}")
     public UpdateBowlCommentResponse updateBowlComment(@PathVariable("commentId") Long commentId, @RequestBody UpdateBowlCommentRequest request){
         bowlCommentService.update(commentId, request.getContent());
         BowlComment findBowlComment = bowlCommentService.findBowlComment(commentId);
@@ -92,7 +92,7 @@ public class BowlCommentController {
 
     }
 
-    @DeleteMapping("/bowl/community/{commentId}")
+    @DeleteMapping("/bowl/community/comment/{commentId}")
     public void DeleteBowlComment(@PathVariable("commentId") Long id){
         bowlCommentService.delete(id);
     }

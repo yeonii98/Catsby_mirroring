@@ -51,7 +51,7 @@ public class BowlLikeController {
         return new BowlLikeResult(collect);
     }
 
-    @DeleteMapping("/bowl/community/{communityId}/{id}")
+    @DeleteMapping("/bowl/community/like/{communityId}/{id}")
     public void DeleteBowlLike(@PathVariable("communityId") Long communityId, @PathVariable("id") Long id){
         bowlLikeService.delete(communityId, id);
     }

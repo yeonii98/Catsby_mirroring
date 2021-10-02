@@ -47,13 +47,13 @@ public interface BowlCommunityService {
     @POST("/bowl/community/comment/{uid}/{communityId}")
     Call<BowlCommentResponse> saveComment(@Path("uid") String uid, @Path("communityId") int communityId, @Body BowlCommentPost bowlCommentPost);
 
-    @GET("/bowl/community/{communityId}")
+    @GET("/bowl/community/comments/{communityId}")
     Call<List<BowlComment>> getComments(@Path("communityId") long communityId);
 
-    @PUT("/bowl/community/{commentId}")
+    @PUT("/bowl/community/comment/{commentId}")
     Call<Void> putComment(@Path("commentId") long commentId, @Body BowlCommentUpdate bowlCommentUpdate);
 
-    @DELETE("/bowl/community/{commentId}")
+    @DELETE("/bowl/community/comment/{commentId}")
     Call<Void> deleteComment(@Path("commentId") long commentId);
 
     @POST("/bowl/community/like/{uid}/{communityId}")
@@ -62,7 +62,7 @@ public interface BowlCommunityService {
     @GET("/bowl/community/likes/{uid}")
     Call<BowlLikeList> getLikes(@Path("uid") String userId);
 
-    @DELETE("/bowl/community/{communityId}/{id}")
+    @DELETE("/bowl/community/like/{communityId}/{id}")
     Call<Void> deleteLike(@Path("communityId") long communityId, @Path("likeId") long likeId);
 
 }
