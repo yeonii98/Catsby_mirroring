@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,7 +25,7 @@ public class BowlLikeController {
     private final BowlLikeService bowlLikeService;
     private final UserService userService;
 
-    @PostMapping("/bowl-like/{uid}/{communityId}")
+    @PostMapping("/bowl/community/like/{uid}/{communityId}")
     public CreateBowlLikeResponse saveBowlLike(@PathVariable("uid") String uid, @PathVariable("communityId") Long communityId){
         Long userId = userService.findUserByUid(uid);
         BowlLike bowlLike = new BowlLike();
@@ -40,30 +41,28 @@ public class BowlLikeController {
         }
     }
 
-    @GetMapping("/bowl-like/community/{communityId}")
-    public int bowlLikeByCommunity(@PathVariable("communityId") Long communityId){
-        return bowlLikeService.findLikesByCommunity(communityId);
-    }
-
-    @GetMapping("/bowl-likes/{uid}")
-    public List<BowlLike> bowlLKikeByUid(@PathVariable("uid") String uid) {
+    @GetMapping("/bowl/community/likes/{uid}")
+    public BowlLikeResult bowlLKikeByUid(@PathVariable("uid") String uid) {
         Long userId = userService.findUserByUid(uid);
         List<BowlLike> findBowlLike = bowlLikeService.findLikes(userId);
-        return findBowlLike;
+        List<BowlLikeDto> collect = findBowlLike.stream()
+                .map(bl -> new BowlLikeDto(bl.getId(), bl.getBowlCommunity().getId(), bl.getUid(), bl.getCreatedDate()))
+                .collect(Collectors.toList());
+        return new BowlLikeResult(collect);
     }
 
-    @DeleteMapping("/bowl-like/{id}")
-    public void DeleteBowlLike(@PathVariable("id") Long id){
-        bowlLikeService.delete(id);
+    @DeleteMapping("/bowl/community/{communityId}/{id}")
+    public void DeleteBowlLike(@PathVariable("communityId") Long communityId, @PathVariable("id") Long id){
+        bowlLikeService.delete(communityId, id);
     }
 
     @Data
     @AllArgsConstructor
     static class BowlLikeDto{
         private Long id;
-        private BowlCommunity bowlCommunity;
-        private LocalDateTime createdDate;
+        private Long bowlCommunityId;
         private String uid;
+        private LocalDateTime createdDate;
     }
 
     @Data
