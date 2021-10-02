@@ -44,7 +44,9 @@ public class BowlLikeService {
 
 
     @Transactional
-    public void delete(Long id) {
+    public void delete(Long communityId, Long id) {
+        BowlCommunity bowlCommunity = bowlCommunityRepository.findBowlCommunity(communityId);
+        bowlCommunity.setLikeCount(bowlCommunity.getLikeCount()-1);
         bowlLikeRepository.deleteById(id);
     }
 }

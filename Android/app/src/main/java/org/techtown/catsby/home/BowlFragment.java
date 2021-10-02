@@ -20,7 +20,9 @@ import org.techtown.catsby.home.model.Feed;
 import org.techtown.catsby.qrcode.LoadingActivity;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.BowlCommunity;
+import org.techtown.catsby.retrofit.dto.BowlCommunityList;
 import org.techtown.catsby.retrofit.dto.BowlInfo;
+import org.techtown.catsby.retrofit.dto.BowlLike;
 import org.techtown.catsby.retrofit.dto.BowlList;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
 import org.techtown.catsby.retrofit.service.BowlService;
@@ -53,6 +55,7 @@ import static java.time.LocalDateTime.now;
 public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterClickListener {
     private Context mContext;
     private FragmentManager fragmentManager;
+
 
     private Boolean isPermission = true;
     BowlAdapter bowlAdapter;
@@ -113,7 +116,6 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
 
             @Override
             public void onFailure(Call<BowlInfo> call, Throwable t) {
-
             }
         });
     }
@@ -142,26 +144,20 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
     }
 
     private void loadCommunity(int bowlId) {
-        bowlCommunityService.getCommunitiesByBowl(bowlId).enqueue(new Callback<List<BowlCommunity>>() {
+        bowlCommunityService.getCommunitiesByBowl(bowlId).enqueue(new Callback<BowlCommunityList>() {
             @Override
-            public void onResponse(Call<List<BowlCommunity>> call, Response<List<BowlCommunity>> response) {
+            public void onResponse(Call<BowlCommunityList> call, Response<BowlCommunityList> response) {
                 if(response.isSuccessful()) {
-                    ArrayList<BowlCommunity> BowlCommunityResult = (ArrayList<BowlCommunity>) response.body();
+                    BowlCommunityList BowlCommunityResult = (BowlCommunityList) response.body();
 
-                    DateDescending dateAscending = new DateDescending();
-                    Collections.sort(BowlCommunityResult, dateAscending);
-
-                    for (int i=0; i < BowlCommunityResult.size(); i++) {
-                        Feed feed = new Feed(BowlCommunityResult.get(i).getId(), BowlCommunityResult.get(i).getUser().getId(), BowlCommunityResult.get(i).getUser().getImage(), BowlCommunityResult.get(i).getUser().getNickname(), BowlCommunityResult.get(i).getImage().getBytes(), BowlCommunityResult.get(i).getContent(), BowlCommunityResult.get(i).getUid(), BowlCommunityResult.get(i).getCreatedDate(), BowlCommunityResult.get(i).getLikeCount());
-
+                    for (int i=0; i < BowlCommunityResult.getBowlCommunities().size(); i++) {
+                        Feed feed = new Feed(BowlCommunityResult.getBowlCommunities().get(i).getId(), BowlCommunityResult.getBowlCommunities().get(i).getUser().getId(), BowlCommunityResult.getBowlCommunities().get(i).getUser().getImage(), BowlCommunityResult.getBowlCommunities().get(i).getUser().getNickname(), BowlCommunityResult.getBowlCommunities().get(i).getImage().getBytes(), BowlCommunityResult.getBowlCommunities().get(i).getContent(), BowlCommunityResult.getBowlCommunities().get(i).getUid(), BowlCommunityResult.getBowlCommunities().get(i).getCreatedDate(), BowlCommunityResult.getBowlCommunities().get(i).getLikeCount());
                         if (!feedList.contains(feed)){
                             feedList.add(feed);
                         }
-
-                        DateDescending2 dateAscending2 = new DateDescending2();
-                        Collections.sort(feedList, dateAscending2);
                     }
-
+                    DateDescending dateAscending = new DateDescending();
+                    Collections.sort(feedList, dateAscending);
                     RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recyclerview);
                     RecyclerView.LayoutManager feedLayoutManager = new LinearLayoutManager(getActivity());
                     recyclerView.setLayoutManager(feedLayoutManager);
@@ -169,10 +165,12 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
                     recyclerView.setAdapter(feedAdapter);
                 }
             }
+
             @Override
-            public void onFailure(Call<List<BowlCommunity>> call, Throwable t) {
-                System.out.println("t.getMessage() loadCommunity = " + t.getMessage());
+            public void onFailure(Call<BowlCommunityList> call, Throwable t) {
+                System.out.println("t.getMessage() = " + t.getMessage());
             }
+
         });
     }
 
@@ -240,16 +238,7 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
 }
 
 
-class DateDescending implements Comparator<BowlCommunity> {
-    @Override
-    public int compare(BowlCommunity bc1, BowlCommunity bc2) {
-        String temp1 = bc1.getCreatedDate();
-        String temp2 = bc2.getCreatedDate();
-        return temp2.compareTo(temp1);
-    }
-}
-
-class DateDescending2 implements Comparator<Feed> {
+class DateDescending implements Comparator<Feed> {
     @Override
     public int compare(Feed feed1, Feed feed2) {
         String temp1 = feed1.getCreateDate();
