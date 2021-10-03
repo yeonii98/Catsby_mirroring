@@ -1,8 +1,10 @@
 package com.hanium.catsby.bowl.controller;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hanium.catsby.bowl.domain.BowlCommunity;
 import com.hanium.catsby.bowl.service.BowlCommunityService;
 import com.hanium.catsby.bowl.service.BowlService;
+import com.hanium.catsby.user.domain.Users;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import java.sql.Blob;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,7 +25,7 @@ public class BowlCommunityController {
     private final BowlCommunityService bowlCommunityService;
     private final BowlService bowlService;
 
-    @PostMapping("/bowl-community/write/{bowlId}/{uid}")
+    @PostMapping("/bowl/community/write/{bowlId}/{uid}")
     public CreateBowlCommunityResponse savaBowlCommunity(@RequestParam(value = "file") MultipartFile file, @PathVariable("bowlId") long bowlId, @PathVariable("uid") String uid, @RequestParam HashMap<String, RequestBody> request ) throws IOException {
         BowlCommunity bowlCommunity = new BowlCommunity();
         bowlCommunity.setUid(uid);
@@ -48,16 +51,13 @@ public class BowlCommunityController {
         }
     }
 
-    @GetMapping("/bowl-communities/{bowlId}")
-    public List<BowlCommunity> bowlCommunitiesByBowl(@PathVariable("bowlId") Long bowlId) {
+    @GetMapping("/bowl/communities/{bowlId}")
+    public BowlCommunityResult bowlCommunitiesByBowl(@PathVariable("bowlId") Long bowlId) {
         List<BowlCommunity> community = bowlCommunityService.findCommunityByBowl(bowlId);
-        return community;
-    }
-
-    @GetMapping("/bowl-communities/like/{communityId}")
-    public Long bowlCommunityLikes(@PathVariable("communityId") Long communityId) {
-        Long cnt = bowlCommunityService.findLikesByCommunity(communityId);
-        return cnt;
+        List<BowlCommunityDto> collect = community.stream()
+                .map(bc -> new BowlCommunityDto(bc.getId(), bc.getUser(), bc.getImage(), bc.getContent(), bc.getUid(), bc.getCreatedDate(), (long) bc.getLikeCount()))
+                .collect(Collectors.toList());
+        return new BowlCommunityResult(collect);
     }
 
     @Data
@@ -69,12 +69,17 @@ public class BowlCommunityController {
     @Data
     @AllArgsConstructor
     static class BowlCommunityDto{
-        private Blob image;
+        private Long id;
+        @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+        private Users user;
+        private byte[] image;
         private String content;
-        private LocalDateTime createDate;
+        private String uid;
+        private LocalDateTime createdDate;
+        private Long likeCount;
     }
 
-    @PutMapping("/bowl-community/{communityId}")
+    @PutMapping("/bowl/community/{communityId}")
     public UpdateBowlCommunityResponse updateBowlCommunity(@PathVariable("communityId") Long communityId, @RequestBody UpdateBowlCommunityRequest request){
         bowlCommunityService.update(communityId, request.getContent());
         BowlCommunity findBowlCommunity = bowlCommunityService.findCommunity(communityId);
@@ -82,7 +87,7 @@ public class BowlCommunityController {
     }
 
 
-    @DeleteMapping("/bowl-community/{communityId}")
+    @DeleteMapping("/bowl/community/{communityId}")
     public void DeleteBowlCommunity(@PathVariable("communityId") Long id){
         bowlCommunityService.delete(id);
     }

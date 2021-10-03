@@ -10,7 +10,6 @@ public class BowlCommunity {
     private String content;
     private String uid;
     private String createdDate;
-    private String updatedDate;
     private int likeCount;
 
     public int getId() {
@@ -35,10 +34,6 @@ public class BowlCommunity {
 
     public String getCreatedDate() {
         return createdDate;
-    }
-
-    public String getUpdatedDate() {
-        return updatedDate;
     }
 
     public int getLikeCount() {
