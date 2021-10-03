@@ -13,7 +13,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Blob;
 import java.util.List;
 
 @Data
@@ -29,8 +28,9 @@ public class TownCommunity extends BaseTimeEntity {
     @Column(name = "townCommunity_id")
     private int id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")//use_id라는 컬럼이 만들어짐
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Users user;
 
     //    @Lob//대용량 데이터
@@ -43,13 +43,12 @@ public class TownCommunity extends BaseTimeEntity {
     //    @CreationTimestamp//insert시 시간 자동 저장
     private String date;
 
-    //하나의 게시글에 여러개의 댓글이 존재한다. 1:N 관계 -> OneToMany
-    @OneToMany(mappedBy = "townCommunity", fetch = FetchType.EAGER)//연관관계의 주인이 아니다.
+    // OneToMany의 fetchType default값 -> LAZY
+    @OneToMany(mappedBy = "townCommunity")//연관관계의 주인이 아니다.
     @JsonIgnoreProperties({"townCommunity"}) //무한참조 방지
-    //@OrderBy("id desc")
     private List<TownComment> townComment;
 
-    @OneToMany(mappedBy = "townCommunity", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "townCommunity")
     @JsonIgnoreProperties({"townCommunity"}) //무한참조 방지
     private List<TownLike> townLike;
 

@@ -46,17 +46,18 @@ public class TownCommunityService {
     }
 
     @Transactional(readOnly = true)
-    public List listTownCommunity(){//글 목록
-        return townCommunityRepository.findAll();
+    public List<TownCommunity> listTownCommunity(String uid){//글 목록
+        String address = userRepository.findUserByUid(uid).getAddress();
+        return townCommunityRepository.findByUser_AddressOrderById(address.trim());
     }
 
-    @Transactional(readOnly = true)
-    public TownCommunity retrieveTownCommunity(int id) {//글 조회
-        return townCommunityRepository.findById(id)
-                .orElseThrow(()->{
-                    return new IllegalArgumentException("글 상세보기 실패 : 게시글 id를 찾을 수 없습니다.");
-                });
-    }
+//    @Transactional(readOnly = true)
+//    public TownCommunity retrieveTownCommunity(int id) {//글 조회
+//        return townCommunityRepository.findById(id)
+//                .orElseThrow(()->{
+//                    return new IllegalArgumentException("글 상세보기 실패 : 게시글 id를 찾을 수 없습니다.");
+//                });
+//    }
 
     @Transactional
     public void deleteTownCommunity(int id) {//글 삭제
@@ -74,7 +75,7 @@ public class TownCommunityService {
         townCommunity.setTitle(requestTownCommunity.getTitle());
         townCommunity.setContent(requestTownCommunity.getContent());
         townCommunity.setAnonymous(requestTownCommunity.isAnonymous());
-        townCommunity.setImage(requestTownCommunity.getImage());
+//        townCommunity.setImage(requestTownCommunity.getImage());
         //해당 함수로 종료시(Service가 종료될 때) 트랜잭션이 종료된다. 이때 더티체킹이 일어남 - 자동 업데이트됨. db쪽으로 flush
     }
 }

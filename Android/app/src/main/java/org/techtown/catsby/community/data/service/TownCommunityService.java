@@ -14,11 +14,8 @@ import retrofit2.http.Path;
 
 public interface TownCommunityService {
 
-    @GET("townCommunity")
-    Call<List<TownCommunity>> getTownList();
-
-    @GET("townCommunity/{id}")
-    Call<TownCommunity> getTown(@Path("id") int id);
+    @GET("townCommunity/{uid}")
+    Call<List<TownCommunity>> getTownList(@Path("uid") String uid);
 
     @POST("townCommunity/write/{uid}")
     Call<Void> postTown(@Body TownCommunity townCommunity, @Path("uid") String uid);

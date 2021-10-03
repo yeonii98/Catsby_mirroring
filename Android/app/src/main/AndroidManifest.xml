@@ -39,7 +39,10 @@
         <activity android:name=".community.TownCommentListActivity" />
         <activity android:name=".community.AddActivity" />
         <activity android:name=".community.UpdateActivity" />
-        <activity android:name=".home.BowlWrite" />
+
+        <activity
+            android:name=".home.BowlWrite"/>
+
         <activity android:name=".qrcode.QrcodeCreateActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
