@@ -74,7 +74,6 @@ public class BowlCommentActivity extends AppCompatActivity {
                 }
             }
         });
-
         RecyclerView BowlCommunityRecyclerView = findViewById(R.id.maincmt_recyclerview);
         BowlCommunityRecyclerView.setLayoutManager(new LinearLayoutManager(this)) ;
         BowlCommunityRecyclerView.setAdapter(adapter);
@@ -89,7 +88,6 @@ public class BowlCommentActivity extends AppCompatActivity {
                 BowlCommentUsingComment bowlCommentUsingComment = new BowlCommentUsingComment(bowlCommentResponse.getId(), bowlCommentResponse.getNickname(), context, bowlCommentResponse.getDate(), bowlCommentResponse.getUserId(), user.getUid(), id);
                 adapter.addItem((BowlCommentUsingComment) bowlCommentUsingComment);
                 adapter.notifyDataSetChanged();
-
             }
 
             @Override
