@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -48,9 +50,17 @@ import org.techtown.catsby.util.ImageUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -83,6 +93,7 @@ public class FragmentSetting_New extends Fragment {
     private UserService userService;
 
     Uri photoUri;
+    Bitmap bitmap;
 
     String uid = FirebaseAuth.getInstance().getUid();
 
@@ -116,14 +127,23 @@ public class FragmentSetting_New extends Fragment {
         if (bundle != null) {
             String nickname = bundle.getString("nickname");
             String address = bundle.getString("address");
-            byte[] image = bundle.getByteArray("image");
+            String image = bundle.getString("image");
             nickName.setText(nickname);
             if (address == null)
                 local.setText("동네를 설정하세요");
             else
                 local.setText(address);
             if (image != null) {
-                imageButton.setImageBitmap(ImageUtils.makeBitMap(ImageUtils.byteArrayToBinaryString(image)));
+                try {
+                    URL url = new URL(image);
+                    InputStream inputStream = url.openConnection().getInputStream();
+                    bitmap = BitmapFactory.decodeStream(inputStream);
+                    imageButton.setImageBitmap(bitmap);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             else
                 imageButton.setImageResource(R.drawable.catsby_logo);
@@ -344,14 +364,15 @@ public class FragmentSetting_New extends Fragment {
         originalBm = ImageUtils.rotateBitmap(originalBm,orientation);
 
         imageButton.setImageBitmap(originalBm);
-        String image = "";
 
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        originalBm.compress(Bitmap.CompressFormat.JPEG, 20, stream);
-        byte[] byteArray = stream.toByteArray();
-        image = ImageUtils.byteArrayToBinaryString(byteArray);
+        File temp = getApplicationContext().getCacheDir();
+        String fileName = uid + ".jpg";
+        File image = new File(temp, fileName);
+        image = bitmapConvertFile(image, originalBm);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), image);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", image.getName(), requestFile);
 
-        updateImage(image);
+        updateImage(body);
 
         /**
          *  tempFile 사용 후 null 처리를 해줘야 합니다.
@@ -363,9 +384,8 @@ public class FragmentSetting_New extends Fragment {
     }
 
 
-    private void updateImage(String image) {
-        UserImageUpdate userImageUpdate = new UserImageUpdate(image);
-        userService.updateUserImage(uid,userImageUpdate).enqueue(new Callback<Void>() {
+    private void updateImage(MultipartBody.Part body) {
+        userService.updateUserImage(uid, body).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 Toast.makeText(getContext(), "프로필 사진이 변경 되었습니다.", Toast.LENGTH_SHORT).show();
@@ -403,5 +423,18 @@ public class FragmentSetting_New extends Fragment {
                 .setDeniedMessage(getResources().getString(R.string.permission_1))
                 .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
                 .check();
+    }
+
+    private File bitmapConvertFile(File file, Bitmap bitmap) {
+
+        OutputStream out = null;
+        try {
+            file.createNewFile();
+            out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
     }
 }

@@ -1,15 +1,10 @@
 package org.techtown.catsby.home.model;
 
-import org.techtown.catsby.retrofit.dto.BowlComment;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class Feed {
     private int id;
     private int userId;
     private String nickName;
-    private byte[] img;
+    private String img;
     private String userImg;
     private String content;
     private String uid;
@@ -20,7 +15,7 @@ public class Feed {
         return createDate;
     }
 
-    public Feed(int id, int userId, String userImg, String nickName, byte[] img, String content, String uid, String createDate, int likeCount) {
+    public Feed(int id, int userId, String userImg, String nickName, String img, String content, String uid, String createDate, int likeCount) {
         this.id = id;
         this.userId = userId;
         this.userImg = userImg;
@@ -68,11 +63,11 @@ public class Feed {
         this.nickName = nickName;
     }
 
-    public byte[] getImg() {
+    public String getImg() {
         return img;
     }
 
-    public void setImg(byte[] img) {
+    public void setImg(String img) {
         this.img = img;
     }
 

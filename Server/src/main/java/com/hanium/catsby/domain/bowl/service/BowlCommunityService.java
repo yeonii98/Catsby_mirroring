@@ -4,6 +4,7 @@ import com.hanium.catsby.domain.bowl.model.BowlCommunity;
 import com.hanium.catsby.domain.bowl.model.Bowl;
 import com.hanium.catsby.domain.bowl.repository.BowlRepository;
 import com.hanium.catsby.domain.bowl.repository.BowlCommunityRepository;
+import com.hanium.catsby.domain.common.sevice.S3Service;
 import com.hanium.catsby.domain.user.model.Users;
 import com.hanium.catsby.domain.user.repository.UserRepository;
 import com.hanium.catsby.domain.user.model.MyPost;
@@ -22,17 +23,14 @@ public class BowlCommunityService {
     private final BowlCommunityRepository bowlCommunityRepository;
     private final UserRepository userRepository;
     private final BowlRepository bowlRepository;
-
-    @Autowired
-    MyPostRepository myPostRepository;
+    private final MyPostRepository myPostRepository;
 
     @Transactional
     public Long savaCommunity(BowlCommunity bowlCommunity, String userId, Long bowlId) {
         Users user = userRepository.findUserByUid(userId);
-        Users users = userRepository.findUser(user.getId());
         Bowl bowl = bowlRepository.findBowl(bowlId);
 
-        bowlCommunity.setUser(users);
+        bowlCommunity.setUser(user);
         bowlCommunity.setBowl(bowl);
         bowlCommunityRepository.save(bowlCommunity);
 

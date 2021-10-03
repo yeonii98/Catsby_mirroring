@@ -10,10 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -22,6 +20,7 @@ import android.graphics.drawable.shapes.OvalShape;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -46,17 +45,22 @@ import org.techtown.catsby.notification.data.service.NotificationService;
 import org.techtown.catsby.retrofit.ApiResponse;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.BowlFeedList;
-import org.techtown.catsby.retrofit.dto.BowlImage;
 import org.techtown.catsby.retrofit.service.BowlService;
-import org.techtown.catsby.util.ImageUtils;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -84,18 +88,21 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
     private Boolean isCamera = false;
 
     Uri photoUri;
-
     File tempFile;
-    File image;
-
     Long bowlId;
     String name, address, bowlImage;
     Double latitude, longitude;
+    Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bowl_detail);
+
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -110,17 +117,28 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
         bowlId = intent.getLongExtra("id",0);
         name = intent.getStringExtra("name");
         address = intent.getStringExtra("address");
-        bowlImage = ImageUtils.byteArrayToBinaryString(intent.getByteArrayExtra("image"));
+        bowlImage= intent.getStringExtra("image");
+
+        if (bowlImage != null) {
+            try {
+                URL url = new URL(bowlImage);
+                InputStream inputStream = url.openConnection().getInputStream();
+                bitmap = BitmapFactory.decodeStream(inputStream);
+                bowlimageView.setImageBitmap(bitmap);
+                bowlimageView.setBackground(new ShapeDrawable(new OvalShape()));
+                bowlimageView.setClipToOutline(true);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         latitude = intent.getDoubleExtra("latitude", 0);
         longitude = intent.getDoubleExtra("longitude", 0);
 
         bowlName.setText(name);
         bowlLocation.setText(address);
-
-        bowlimageView.setImageBitmap(ImageUtils.makeBitMap(bowlImage));
-        bowlimageView.setBackground(new ShapeDrawable(new OvalShape()));
-        bowlimageView.setClipToOutline(true);
-
 
         fragmentManager = getFragmentManager();
         mapFragment = (MapFragment) fragmentManager.findFragmentById(R.id.googleMap);
@@ -313,14 +331,14 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
         Log.d(TAG, "setImage : " + tempFile.getAbsolutePath());
         bowlimageView.setImageBitmap(originalBm);
 
-        Bitmap img = ((BitmapDrawable) bowlimageView.getDrawable()).getBitmap();
-        String image = "";
+        File temp = getApplication().getCacheDir();
+        String fileName = name + ".jpg";
+        File image = new File(temp, fileName);
+        image = bitmapConvertFile(image, originalBm);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), image);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", image.getName(), requestFile);
 
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        img.compress(Bitmap.CompressFormat.JPEG, 20, stream);
-        byte[] byteArray = stream.toByteArray();
-        image = ImageUtils.byteArrayToBinaryString(byteArray);
-        updateImage(image);
+        updateImage(body);
 
         /**
          *  tempFile 사용 후 null 처리를 해줘야 합니다.
@@ -332,8 +350,8 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
     }
 
 
-    private void updateImage(String image) {
-        bowlService.updateImage(bowlId, FirebaseAuth.getInstance().getUid(), new BowlImage(image)).enqueue(new Callback<Void>() {
+    private void updateImage(MultipartBody.Part body) {
+        bowlService.updateImage(bowlId, FirebaseAuth.getInstance().getUid(), body).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 Log.v("BowlDetailActivity", "success update image");
@@ -382,5 +400,18 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
 
             }
         });
+    }
+
+    private File bitmapConvertFile(File file, Bitmap bitmap) {
+
+        OutputStream out = null;
+        try {
+            file.createNewFile();
+            out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
     }
 }

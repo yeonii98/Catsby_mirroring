@@ -23,8 +23,7 @@ public class BowlCommunity extends BaseTimeEntity {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Users user;
 
-    @Lob
-    private byte[] image;
+    private String image;
 
     @Lob
     private String content;

@@ -3,18 +3,15 @@ package com.hanium.catsby.domain.bowl.controller;
 import com.hanium.catsby.domain.bowl.model.Bowl;
 import com.hanium.catsby.domain.bowl.dto.BowlFeedDto;
 import com.hanium.catsby.domain.bowl.service.BowlService;
+import com.hanium.catsby.domain.common.sevice.S3Service;
 import com.hanium.catsby.domain.notification.exception.DuplicateBowlInfoException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,36 +20,22 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BowlController {
 
+    private final static String BOWL_QR_DIR_NAME = "image/bowl/qr/";
+    private final static String BOWL_USER_DIR_NAME = "image/bowl/user/";
+
     private final BowlService bowlService;
+    private final S3Service s3Service;
 
     @PostMapping("/bowl")
-        public ResponseEntity<CreateBowlResponse> savaBowl(@RequestParam("info") String info, @RequestParam("name") String name, @RequestParam("address") String address, @RequestPart MultipartFile files){
+        public ResponseEntity<CreateBowlResponse> savaBowl(@RequestParam("info") String info, @RequestParam("name") String name, @RequestParam("address") String address, @RequestPart MultipartFile file){
 
-        String fileName = files.getOriginalFilename();
-        String fileNameExtension = FilenameUtils.getExtension(fileName).toLowerCase();
-
-        File destinationFile;
-        String destinationFileName;
-        String filePath = "/";
-
-        do {
-            destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + fileNameExtension;
-            destinationFile = new File(filePath + destinationFileName);
-        } while (destinationFile.exists());
-
-        destinationFile.getParentFile().mkdir();
-        try {
-            files.transferTo(destinationFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String qrUrl = s3Service.upload(file, BOWL_QR_DIR_NAME);
 
         Bowl bowl = new Bowl();
         bowl.setInfo(info);
         bowl.setName(name);
         bowl.setAddress(address);
-        bowl.setFilename(destinationFileName);
-        bowl.setPath(filePath);
+        bowl.setQrImage(qrUrl);
 
         try {
             Long id = bowlService.enroll(bowl);
@@ -64,9 +47,9 @@ public class BowlController {
 
     @PutMapping("/bowl/{id}")
     public UpdateBowlResponse updateBowl(@PathVariable("id") Long id, @RequestBody UpdateBowlRequest request){
-        bowlService.update(id, request.getName(), request.getInfo(), request.getAddress(), request.getImage());
+        bowlService.update(id, request.getName(), request.getInfo(), request.getAddress());
         Bowl findBowl = bowlService.findOne(id);
-        return new UpdateBowlResponse(findBowl.getId(), findBowl.getInfo(), findBowl.getName(), findBowl.getAddress(), findBowl.getImage());
+        return new UpdateBowlResponse(findBowl.getId(), findBowl.getInfo(), findBowl.getName(), findBowl.getAddress());
     }
 
     @DeleteMapping("/bowl/{id}")
@@ -78,7 +61,7 @@ public class BowlController {
     public BowlResult userBowlList(@PathVariable("uid") String uid) {
         List<Bowl> findBowls = bowlService.findUserBowls(uid);
         List<BowlDto> collect = findBowls.stream()
-                .map(b -> new BowlDto(b.getId(), b.getInfo(), b.getName(), b.getAddress(), b.getImage(), b.getCreatedDate()))
+                .map(b -> new BowlDto(b.getId(), b.getInfo(), b.getName(), b.getAddress(), b.getCreatedDate()))
                 .collect(Collectors.toList());
         return new BowlResult(collect);
     }
@@ -100,16 +83,12 @@ public class BowlController {
     }
 
     @PatchMapping("/bowl/image/{bowlId}/{uid}")
-    public ResponseEntity<BowlResult<String>> updateImage(@PathVariable("bowlId") Long id, @PathVariable("uid") String uid, @RequestBody BowlImageResponse image) {
-        bowlService.updateBowlImage(id, uid, image.getImage());
+    public ResponseEntity<BowlResult<String>> updateImage(@PathVariable("bowlId") Long id, @PathVariable("uid") String uid, @RequestPart MultipartFile file) {
+        String imgUrl = s3Service.upload(file, BOWL_USER_DIR_NAME, uid);
+        bowlService.updateBowlImage(id, uid, imgUrl);
         return ResponseEntity.ok(new BowlResult<>("success"));
     }
 
-    @Data
-    static class BowlImageResponse {
-        private String image;
-    }
-    
     @Data
     static class BowlLocationResponse{
         Long id;
@@ -138,7 +117,6 @@ public class BowlController {
         private String info;
         private String name;
         private String address;
-        private byte[] image;
         private LocalDateTime createDate;
     }
 
@@ -165,7 +143,6 @@ public class BowlController {
         private String info;
         private String name;
         private String address;
-        private byte[] image;
     }
 
     @Data
@@ -175,7 +152,6 @@ public class BowlController {
         private String info;
         private String name;
         private String address;
-        private byte[] image;
     }
 
     @Data

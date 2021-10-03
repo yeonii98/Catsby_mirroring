@@ -68,9 +68,9 @@ public class MainActivity extends AppCompatActivity implements AutoPermissionsLi
                 bundle.putString("nickname", response.body().getNickname());
                 bundle.putString("address", response.body().getAddress());
                 if (response.body().getImage() != null) {
-                    bundle.putByteArray("image", ImageUtils.binaryStringToByteArray(response.body().getImage()));
+                    bundle.putString("image", response.body().getImage());
                 } else {
-                    bundle.putByteArray("image", null);
+                    bundle.putString("image", null);
                 }
                 fragmentsetting.setArguments(bundle);
             }

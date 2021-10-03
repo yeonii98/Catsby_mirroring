@@ -54,12 +54,11 @@ public class BowlService {
     }
 
     @Transactional
-    public void update(Long id, String name, String info, String address, byte[] image) {
+    public void update(Long id, String name, String info, String address) {
         Bowl bowl = bowlRepository.findBowl(id);
         bowl.setName(name);
         bowl.setInfo(info);
         bowl.setAddress(address);
-        bowl.setImage(image);
     }
 
     @Transactional

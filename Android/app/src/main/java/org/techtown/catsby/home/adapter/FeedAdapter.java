@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.StrictMode;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +28,11 @@ import org.techtown.catsby.retrofit.service.BowlCommunityService;
 import org.techtown.catsby.retrofit.service.UserService;
 import org.techtown.catsby.home.BowlCommentActivity;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -198,7 +203,12 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     @NonNull
     @Override
     public FeedAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_home_feedlist, parent, false);
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
+       view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_home_feedlist, parent, false);
         return new ViewHolder(view);
     }
 
@@ -216,9 +226,17 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
 
         Feed item = itemData.get(position);
         holder.userName.setText(item.getNickName());
-        byte[] blob = Base64.decode(item.getImg(), Base64.DEFAULT);
-        Bitmap bmp = BitmapFactory.decodeByteArray(blob,0, blob.length);
-        holder.feedImg.setImageBitmap(bmp);
+
+        try {
+            URL url = new URL(item.getImg());
+            InputStream inputStream = url.openConnection().getInputStream();
+            bm = BitmapFactory.decodeStream(inputStream);
+            holder.feedImg.setImageBitmap(bm);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         String date = item.getCreateDate();
         date = date.substring(0, 10);
@@ -227,8 +245,16 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         if (item.getUserImg() == null){
             holder.userImg.setImageResource(R.drawable.catsby_logo);
         } else{
-            bm = makeBitMap(item.getUserImg());
-            holder.userImg.setImageBitmap(bm);
+            try {
+                URL url = new URL(item.getUserImg());
+                InputStream inputStream = url.openConnection().getInputStream();
+                bm = BitmapFactory.decodeStream(inputStream);
+                holder.userImg.setImageBitmap(bm);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         holder.content.setText(item.getContent());
@@ -316,34 +342,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             }
         });
     }
-
-
-    public byte binaryStringToByte(String s) {
-        byte ret = 0, total = 0;
-        for (int i = 0; i < 8; ++i) {
-            ret = (s.charAt(7 - i) == '1') ? (byte) (1 << i) : 0;
-            total = (byte) (ret | total);
-        }
-        return total;
-    }
-
-    public byte[] binaryStringToByteArray(String s) {
-        int count = s.length() / 8;
-        byte[] b = new byte[count];
-        for (int i = 1; i < count; ++i) {
-            String t = s.substring((i - 1) * 8, i * 8);
-            b[i - 1] = binaryStringToByte(t);
-        }
-        return b;
-    }
-
-    public Bitmap makeBitMap(String s) {
-        int idx = s.indexOf("=");
-        byte[] b = binaryStringToByteArray(s.substring(idx + 1));
-        Bitmap bm = BitmapFactory.decodeByteArray(b, 0, b.length);
-        return bm;
-    }
-
 
     private void deleteCommunity(int position, int deleteId){
         bowlCommunityService.deleteCommunity(deleteId).enqueue(new Callback<Void>() {

@@ -3,6 +3,7 @@ package com.hanium.catsby.domain.bowl.controller;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hanium.catsby.domain.bowl.model.BowlCommunity;
 import com.hanium.catsby.domain.bowl.service.BowlCommunityService;
+import com.hanium.catsby.domain.common.sevice.S3Service;
 import com.hanium.catsby.domain.user.model.Users;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,13 +21,19 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BowlCommunityController {
 
+    private final static String BOWL_COMMUNITY_DIR_NAME = "image/bowl/community/";
+
     private final BowlCommunityService bowlCommunityService;
+    private final S3Service s3Service;
 
     @PostMapping("/bowl/community/write/{bowlId}/{uid}")
     public CreateBowlCommunityResponse savaBowlCommunity(@RequestParam(value = "file") MultipartFile file, @PathVariable("bowlId") long bowlId, @PathVariable("uid") String uid, @RequestParam HashMap<String, RequestBody> request ) throws IOException {
+
+        String imgUrl = s3Service.upload(file, BOWL_COMMUNITY_DIR_NAME, uid);
+
         BowlCommunity bowlCommunity = new BowlCommunity();
         bowlCommunity.setUid(uid);
-        bowlCommunity.setImage(file.getBytes());
+        bowlCommunity.setImage(imgUrl);
         String con = String.valueOf(request.get("content"));
         bowlCommunity.setContent(con);
 
@@ -69,7 +76,7 @@ public class BowlCommunityController {
         private Long id;
         @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
         private Users user;
-        private byte[] image;
+        private String image;
         private String content;
         private String uid;
         private LocalDateTime createdDate;

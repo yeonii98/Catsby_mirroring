@@ -25,11 +25,8 @@ public class Bowl extends BaseTimeEntity {
     private Double latitude;
     private Double longitude;
 
-    @Lob
-    private byte[] image;
-
-    private String filename;
-    private String path;
+    @Column(name = "qr_image")
+    private String qrImage;
 
     @Column(name = "last_feeding")
     private LocalDateTime lastFeeding;

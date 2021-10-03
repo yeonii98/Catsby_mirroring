@@ -151,7 +151,7 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
                     BowlCommunityList BowlCommunityResult = (BowlCommunityList) response.body();
 
                     for (int i=0; i < BowlCommunityResult.getBowlCommunities().size(); i++) {
-                        Feed feed = new Feed(BowlCommunityResult.getBowlCommunities().get(i).getId(), BowlCommunityResult.getBowlCommunities().get(i).getUser().getId(), BowlCommunityResult.getBowlCommunities().get(i).getUser().getImage(), BowlCommunityResult.getBowlCommunities().get(i).getUser().getNickname(), BowlCommunityResult.getBowlCommunities().get(i).getImage().getBytes(), BowlCommunityResult.getBowlCommunities().get(i).getContent(), BowlCommunityResult.getBowlCommunities().get(i).getUid(), BowlCommunityResult.getBowlCommunities().get(i).getCreatedDate(), BowlCommunityResult.getBowlCommunities().get(i).getLikeCount());
+                        Feed feed = new Feed(BowlCommunityResult.getBowlCommunities().get(i).getId(), BowlCommunityResult.getBowlCommunities().get(i).getUser().getId(), BowlCommunityResult.getBowlCommunities().get(i).getUser().getImage(), BowlCommunityResult.getBowlCommunities().get(i).getUser().getNickname(), BowlCommunityResult.getBowlCommunities().get(i).getImage(), BowlCommunityResult.getBowlCommunities().get(i).getContent(), BowlCommunityResult.getBowlCommunities().get(i).getUid(), BowlCommunityResult.getBowlCommunities().get(i).getCreatedDate(), BowlCommunityResult.getBowlCommunities().get(i).getLikeCount());
                         if (!feedList.contains(feed)){
                             feedList.add(feed);
                         }

@@ -29,7 +29,6 @@ public class TownCommunity extends BaseTimeEntity {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Users user;
 
-    //    @Lob//대용량 데이터
     private String image;
 
     private String content;

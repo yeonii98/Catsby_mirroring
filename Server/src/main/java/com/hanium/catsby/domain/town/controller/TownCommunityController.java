@@ -1,17 +1,19 @@
 package com.hanium.catsby.domain.town.controller;
 
+import com.hanium.catsby.domain.common.sevice.S3Service;
 import com.hanium.catsby.domain.town.model.TownCommunity;
 import com.hanium.catsby.domain.town.service.TownCommunityService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 public class TownCommunityController {
 
-    @Autowired
-    TownCommunityService townCommunityService;
+    private final TownCommunityService townCommunityService;
+    private final S3Service s3Service;
 
     //글목록
     @GetMapping("/townCommunity/{uid}")//커뮤니티 메인
