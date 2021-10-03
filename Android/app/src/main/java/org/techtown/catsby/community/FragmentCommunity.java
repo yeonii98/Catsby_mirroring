@@ -187,7 +187,12 @@ public class FragmentCommunity extends Fragment {
             String date = data.getStringExtra("date");
             String nickName = data.getStringExtra("nickName");
             String uid = data.getStringExtra("uid");
-            Bitmap userBm = ImageUtils.makeBitMap(data.getStringExtra("userImg"));
+
+            String userImg = data.getStringExtra("userImg");
+            if (userImg != null)
+                userBm = ImageUtils.makeBitMap(userImg);
+            else
+                userBm = null;
 
             int id = 0;
             if (memoList.size() != 0) {
@@ -200,7 +205,7 @@ public class FragmentCommunity extends Fragment {
                 idList.add(id);
             }
             byte[] byteArray = data.getByteArrayExtra("byteArray");
-            System.out.println("byteArray==null = " + (byteArray == null));
+
             if (byteArray != null)
                 bm = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
             else
@@ -441,6 +446,7 @@ class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemViewHolde
                         memo.setPush(1);
                         memo.setLikeCnt(memo.getLikeCnt() + 1);
                         itemViewHolder.likeCnt.setText(Integer.toString(memo.getLikeCnt()));
+                        recyclerView.smoothScrollToPosition(position);
 
                         townLikeService.postTownLike(memo.getId(), uid, townLike).enqueue(new Callback<Void>() {
                             @Override
@@ -463,6 +469,7 @@ class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ItemViewHolde
                         memo.setPush(0);
                         memo.setLikeCnt(memo.getLikeCnt() - 1);
                         itemViewHolder.likeCnt.setText(Integer.toString(memo.getLikeCnt()));
+                        recyclerView.smoothScrollToPosition(position);
 
                         townLikeService.deleteTownLike(memo.getId(), uid).enqueue(new Callback<Void>() {
                             @Override
