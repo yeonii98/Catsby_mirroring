@@ -1,5 +1,6 @@
 package com.hanium.catsby.town.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.hanium.catsby.util.BaseTimeEntity;
 import com.hanium.catsby.user.domain.Users;
 import lombok.AllArgsConstructor;
@@ -22,12 +23,14 @@ public class TownLike extends BaseTimeEntity {
     @Column(name = "townLike_id")
     private int id;
 
-    @ManyToOne	(fetch = FetchType.EAGER)
+    @ManyToOne	(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")//user_id라는 컬럼이 만들어짐
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Users user;
 
-    @ManyToOne	(fetch = FetchType.EAGER)
+    @ManyToOne	(fetch = FetchType.LAZY)
     @JoinColumn(name = "townCommunity_id")//town_community_id_Id라는 컬럼이 만들어짐
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private TownCommunity townCommunity;
 }
 

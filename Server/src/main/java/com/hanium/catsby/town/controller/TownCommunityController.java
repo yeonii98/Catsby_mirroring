@@ -14,16 +14,16 @@ public class TownCommunityController {
     TownCommunityService townCommunityService;
 
     //글목록
-    @GetMapping("/townCommunity")//커뮤니티 메인
-    public List town() {
-        return townCommunityService.listTownCommunity();
+    @GetMapping("/townCommunity/{uid}")//커뮤니티 메인
+    public List<TownCommunity> town(@PathVariable String uid) {
+        return townCommunityService.listTownCommunity(uid);
     }
 
-    //글 조회
-    @GetMapping("/townCommunity/{id}")
-    public TownCommunity retrieveTown(@PathVariable int id) {
-        return townCommunityService.retrieveTownCommunity(id);
-    }
+//    //글 조회
+//    @GetMapping("/townCommunity/{id}")
+//    public TownCommunity retrieveTown(@PathVariable int id) {
+//        return townCommunityService.retrieveTownCommunity(id);
+//    }
 
     //글 쓰기
     @PostMapping("townCommunity/write/{uid}")
