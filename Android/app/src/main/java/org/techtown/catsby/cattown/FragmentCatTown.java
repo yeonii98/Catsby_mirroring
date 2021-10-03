@@ -78,6 +78,7 @@ public class FragmentCatTown extends Fragment {
         catList = new ArrayList<>();
 
         adapter = new FragmentCatTownAdapter(catList);
+        adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext(), RecyclerView.VERTICAL, false));
 
@@ -215,9 +216,10 @@ public class FragmentCatTown extends Fragment {
     }
 
 //    @Override
-//    public void onResume()
-//    {
+//    public void onResume() {
 //        super.onResume();
+//        adapter = new FragmentCatTownAdapter(catList);
 //        adapter.notifyDataSetChanged();
+//        recyclerView.setAdapter(adapter);
 //    }
 }
