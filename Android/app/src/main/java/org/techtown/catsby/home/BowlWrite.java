@@ -382,7 +382,7 @@ public class BowlWrite extends AppCompatActivity{
      */
     private void setImage() {
         imageView = findViewById(R.id.imageView);
-        //Glide.with(this).load(photoUri).into(imageView);
+
 
         ImageResizeUtils.resizeFile(tempFile, tempFile, 1280, isCamera);
 
@@ -391,6 +391,7 @@ public class BowlWrite extends AppCompatActivity{
         Log.d(TAG, "setImage : " + tempFile.getAbsolutePath());
 
         imageView.setImageBitmap(originalBm);
+        //Glide.with(this).load(photoUri).into(imageView);
 
         /**
          *  tempFile 사용 후 null 처리를 해줘야 합니다.

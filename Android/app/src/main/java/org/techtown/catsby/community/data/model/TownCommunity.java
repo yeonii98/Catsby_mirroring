@@ -63,6 +63,14 @@ public class TownCommunity {
         this.id = id;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public User getUser() {
         return user;
     }
@@ -71,13 +79,6 @@ public class TownCommunity {
         this.user = user;
     }
 
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
 
     public String getContent() {
         return content;

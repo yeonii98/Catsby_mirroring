@@ -18,6 +18,7 @@ import org.techtown.catsby.R;
 import org.techtown.catsby.home.model.Feed;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.BowlComment;
+import org.techtown.catsby.retrofit.dto.BowlCommentList;
 import org.techtown.catsby.retrofit.dto.BowlCommentUsingComment;
 import org.techtown.catsby.retrofit.dto.BowlCommunityUpdatePost;
 import org.techtown.catsby.retrofit.dto.BowlLike;
@@ -399,22 +400,21 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     }
 
     private void loadComments(long communityId, int position) {
-        bowlCommunityService.getComments(communityId).enqueue(new Callback<List<BowlComment>>() {
+        bowlCommunityService.getComments(communityId).enqueue(new Callback<BowlCommentList>() {
             @Override
-            public void onResponse(Call<List<BowlComment>> call, Response<List<BowlComment>> response) {
+            public void onResponse(Call<BowlCommentList> call, Response<BowlCommentList> response) {
                 if(response.isSuccessful()){
-                    List<BowlComment> bowlComments = response.body();
+                    BowlCommentList bowlComments = response.body();
 
                     Context context = view.getContext();
                     Intent intent = new Intent(context, BowlCommentActivity.class);
 
-                    List<BowlComment> tempComment = bowlComments;
+                    BowlCommentList tempComment = bowlComments;
                     List<BowlCommentUsingComment> parameterBowlCommentList= new ArrayList<>();
-                    for (int i =0; i < tempComment.size(); i++){
-                        BowlCommentUsingComment bowlCommentUsingComment = new BowlCommentUsingComment(tempComment.get(i).getId(), tempComment.get(i).getUser().getNickname(), tempComment.get(i).getContent(), tempComment.get(i).getCreateDate(), tempComment.get(i).getUser().getId(), tempComment.get(i).getUid(), (int) communityId);
+                    for (int i =0; i < tempComment.getBowlComments().size(); i++){
+                        BowlCommentUsingComment bowlCommentUsingComment = new BowlCommentUsingComment(tempComment.getBowlComments().get(i).getId(), tempComment.getBowlComments().get(i).getUser().getNickname(), tempComment.getBowlComments().get(i).getContent(), tempComment.getBowlComments().get(i).getCreateDate(), tempComment.getBowlComments().get(i).getUser().getId(), tempComment.getBowlComments().get(i).getUid(), (int) communityId);
                         parameterBowlCommentList.add(bowlCommentUsingComment);
                     }
-
                     MComment = parameterBowlCommentList;
                     intent.putExtra("comment", (Serializable) parameterBowlCommentList);
 
@@ -425,9 +425,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             }
 
             @Override
-            public void onFailure(Call<List<BowlComment>> call, Throwable t) {
+            public void onFailure(Call<BowlCommentList> call, Throwable t) {
                 System.out.println("t.getMessage() = " + t.getMessage());
-
             }
         });
     }
