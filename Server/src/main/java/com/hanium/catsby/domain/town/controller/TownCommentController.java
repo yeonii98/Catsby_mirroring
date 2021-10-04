@@ -29,15 +29,15 @@ public class TownCommentController {
 
     //댓글 쓰기
     @PostMapping("townCommunity/{id}/comment/{uid}")
-    public String writeTownComment(@PathVariable int id, @PathVariable String uid, @RequestBody TownComment townComment){//현재 유저의 정보도 넣어야 함
+    public TownComment writeTownComment(@PathVariable int id, @PathVariable String uid, @RequestBody TownComment townComment){//현재 유저의 정보도 넣어야 함
         Users user = userService.findUsersByUid(uid);
 
-        townCommentService.writeTownComment(id, uid, townComment);
+        TownComment mTownComment = townCommentService.writeTownComment(id, uid, townComment);
 
         String content = townComment.getTownCommunity().getTitle();
         notificationService.saveNotification(user, content, NotificationType.COMMENT);
 
-        return "댓글 쓰기";
+        return mTownComment;
     }
 
     //댓글 삭제하기

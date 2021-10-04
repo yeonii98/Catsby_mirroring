@@ -42,7 +42,7 @@ public class TownCommentService {
     }
 
     @Transactional
-    public void writeTownComment(int id, String uid, TownComment requestTownComment){
+    public TownComment writeTownComment(int id, String uid, TownComment requestTownComment){
         TownCommunity townCommunity = townCommunityRepository.findById(id)
                 .orElseThrow(()->{
                     return new IllegalArgumentException("댓글 쓰기 실패 : 게시글 id를 찾을 수 없습니다.");
@@ -57,6 +57,14 @@ public class TownCommentService {
         MyComment myComment = new MyComment();
         myComment.setTownComment(requestTownComment);
         myCommentRepository.save(myComment);
+
+        TownComment mTownComment = new TownComment();
+        mTownComment.setId(requestTownComment.getId());
+        mTownComment.setContent(requestTownComment.getContent());
+        mTownComment.setDate(requestTownComment.getDate());
+        mTownComment.setUser(requestTownComment.getUser());
+
+        return mTownComment;
     }
 
     @Transactional

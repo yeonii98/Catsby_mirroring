@@ -29,9 +29,8 @@ public class TownComment extends BaseTimeEntity {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Users user;
 
-    @ManyToOne	(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "townCommunity_id")//town_community_id라는 컬럼이 만들어짐
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private TownCommunity townCommunity;
 
     private String content;

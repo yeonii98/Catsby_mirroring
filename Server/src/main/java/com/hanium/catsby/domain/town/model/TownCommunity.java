@@ -39,7 +39,7 @@ public class TownCommunity extends BaseTimeEntity {
     private String date;
 
     // OneToMany의 fetchType default값 -> LAZY
-    @OneToMany(mappedBy = "townCommunity")//연관관계의 주인이 아니다.
+    @OneToMany(mappedBy = "townCommunity",fetch = FetchType.EAGER)//연관관계의 주인이 아니다.
     @JsonIgnoreProperties({"townCommunity"}) //무한참조 방지
     private List<TownComment> townComment;
 

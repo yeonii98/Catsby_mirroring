@@ -34,7 +34,7 @@ public class TownCommunityService {
     }
 
     @Transactional
-    public void writeTownCommunity(TownCommunity townCommunity, String uid) {//글 쓰기
+    public TownCommunity writeTownCommunity(TownCommunity townCommunity, String uid) {//글 쓰기
         townCommunity.setUser(userRepository.findUserByUid(uid));
         townCommunity.setDate(currentTime());
         townCommunityRepository.save(townCommunity);
@@ -43,6 +43,8 @@ public class TownCommunityService {
         MyPost myPost = new MyPost();
         myPost.setTownCommunity(townCommunity);
         myPostRepository.save(myPost);
+
+        return townCommunity;
     }
 
     @Transactional(readOnly = true)
@@ -51,23 +53,14 @@ public class TownCommunityService {
         return townCommunityRepository.findByUser_AddressOrderById(address.trim());
     }
 
-//    @Transactional(readOnly = true)
-//    public TownCommunity retrieveTownCommunity(int id) {//글 조회
-//        return townCommunityRepository.findById(id)
-//                .orElseThrow(()->{
-//                    return new IllegalArgumentException("글 상세보기 실패 : 게시글 id를 찾을 수 없습니다.");
-//                });
-//    }
 
     @Transactional
     public void deleteTownCommunity(int id) {//글 삭제
-        //myPost
-//        myPostRepository.deleteByTownCommunity_Id(id);
         townCommunityRepository.deleteById(id);
     }
 
     @Transactional
-    public void updateTownCommunity(int id, TownCommunity requestTownCommunity) {//글 수정
+    public TownCommunity updateTownCommunity(int id, TownCommunity requestTownCommunity) {//글 수정
         TownCommunity townCommunity = townCommunityRepository.findById(id)
                 .orElseThrow(()->{
                     return new IllegalArgumentException("글 찾기 실패 : 게시글 id를 찾을 수 없습니다.");
@@ -77,5 +70,7 @@ public class TownCommunityService {
         townCommunity.setAnonymous(requestTownCommunity.isAnonymous());
 //        townCommunity.setImage(requestTownCommunity.getImage());
         //해당 함수로 종료시(Service가 종료될 때) 트랜잭션이 종료된다. 이때 더티체킹이 일어남 - 자동 업데이트됨. db쪽으로 flush
+
+        return townCommunity;
     }
 }
