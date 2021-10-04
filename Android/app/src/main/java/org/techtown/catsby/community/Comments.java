@@ -18,7 +18,7 @@ public class Comments {
         this.postId = postId;
     }
 
-    private Bitmap userImg;
+    private String userImg;
 
     public int getId() {
         return id;
@@ -44,11 +44,11 @@ public class Comments {
         this.content = content;
     }
 
-    public Bitmap getUserImg() {
+    public String getUserImg() {
         return userImg;
     }
 
-    public void setUserImg(Bitmap userImg) {
+    public void setUserImg(String userImg) {
         this.userImg = userImg;
     }
 

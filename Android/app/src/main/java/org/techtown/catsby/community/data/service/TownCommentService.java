@@ -18,7 +18,7 @@ public interface TownCommentService {
     Call<List<TownComment>> getTownComment(@Path("id") int id);
 
     @POST("townCommunity/{id}/comment/{uid}")
-    Call<Void> postTownComment(@Path("id") int id,@Path("uid") String uid, @Body TownComment townComment);
+    Call<TownComment> postTownComment(@Path("id") int id,@Path("uid") String uid, @Body TownComment townComment);
 
     @PUT("townComment/{id}")
     Call<Void> putTownComment(@Path("id") int id, @Body TownComment townComment);
