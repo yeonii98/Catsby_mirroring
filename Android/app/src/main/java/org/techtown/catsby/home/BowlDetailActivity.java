@@ -323,8 +323,7 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
     private void setImage() {
 
         bowlimageView = findViewById(R.id.bowlimageView);
-        //회전 방지
-        Glide.with(this).load(photoUri).circleCrop().into(bowlimageView);
+        //Glide.with(this).load(photoUri).circleCrop().into(bowlimageView);
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
