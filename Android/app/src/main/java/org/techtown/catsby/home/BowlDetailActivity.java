@@ -17,6 +17,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -46,6 +47,7 @@ import org.techtown.catsby.retrofit.ApiResponse;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.BowlFeedList;
 import org.techtown.catsby.retrofit.service.BowlService;
+import org.techtown.catsby.util.ImageUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -64,6 +66,8 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyCallback {
     private FragmentManager fragmentManager;
@@ -86,6 +90,8 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
     private BowlService bowlService;
 
     private Boolean isCamera = false;
+
+    String uid = FirebaseAuth.getInstance().getUid();
 
     Uri photoUri;
     File tempFile;
@@ -322,16 +328,26 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
      */
     private void setImage() {
 
-        bowlimageView = findViewById(R.id.bowlimageView);
-        //Glide.with(this).load(photoUri).circleCrop().into(bowlimageView);
-
         BitmapFactory.Options options = new BitmapFactory.Options();
+
+        //이미지 회전 방지
+        ExifInterface exifInterface = null;
+        try {
+            exifInterface = new ExifInterface(tempFile.getAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                ExifInterface.ORIENTATION_UNDEFINED);
+
         Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);
-        Log.d(TAG, "setImage : " + tempFile.getAbsolutePath());
+
+        originalBm = ImageUtils.rotateBitmap(originalBm,orientation);
+
         bowlimageView.setImageBitmap(originalBm);
 
-        File temp = getApplication().getCacheDir();
-        String fileName = name + ".jpg";
+        File temp = getApplicationContext().getCacheDir();
+        String fileName = uid + ".jpg";
         File image = new File(temp, fileName);
         image = bitmapConvertFile(image, originalBm);
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), image);
