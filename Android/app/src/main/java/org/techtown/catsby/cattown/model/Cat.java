@@ -1,13 +1,9 @@
 package org.techtown.catsby.cattown.model;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
-
 import org.techtown.catsby.retrofit.dto.User;
 
 public class Cat {
-    private Bitmap catpicture;
+    private String image;
     private String cat_id;
     private String name;
     private String catloc;
@@ -18,16 +14,15 @@ public class Cat {
     private User user;
     private String user_add;
 
-
-    public Cat(long user_id, String user_add, String name, Bitmap catpicture, String cat_id, String catloc, String catgen, int isdone) {
-        this.user_id = user_id;
-        this.user_add = user_add;
-        this.name = name;
-        this.catpicture = catpicture;
+    public Cat(long user_id, String user_add, String name, String image, String cat_id,  String catloc, String catgen, int isdone) {
+        this.image = image;
         this.cat_id = cat_id;
+        this.name = name;
         this.catloc = catloc;
         this.catgen = catgen;
         this.isdone = isdone;
+        this.user_id = user_id;
+        this.user_add = user_add;
     }
 
     public String getUser_add() {
@@ -61,16 +56,6 @@ public class Cat {
     public void setCat_id(String cat_id) {
 
         this.cat_id = cat_id;
-    }
-
-    public Bitmap getCatPicture() {
-
-        return catpicture;
-    }
-
-    public void setCatPicture(Bitmap catpicture) {
-
-        this.catpicture = catpicture;
     }
 
     public String getName() {
@@ -108,7 +93,13 @@ public class Cat {
         this.helppeople=helppeople;
     }
 
+    public String getImage() {
+        return image;
+    }
 
+    public void setImage(String image) {
+        this.image = image;
+    }
 }
 
 

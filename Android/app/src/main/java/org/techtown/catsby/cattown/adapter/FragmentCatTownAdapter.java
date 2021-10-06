@@ -19,11 +19,16 @@ import org.techtown.catsby.cattown.CatTownDetailActivity;
 import org.techtown.catsby.cattown.model.Cat;
 import org.techtown.catsby.retrofit.dto.CatProfile;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 public class FragmentCatTownAdapter extends RecyclerView.Adapter<FragmentCatTownAdapter.ViewHolder> {
     private ArrayList<Cat> catdata;
+    private Bitmap bm;
 
     public FragmentCatTownAdapter(ArrayList<Cat> catdata) {
         this.catdata = catdata;
@@ -74,7 +79,17 @@ public class FragmentCatTownAdapter extends RecyclerView.Adapter<FragmentCatTown
         //Bitmap s2 = StringToBitmap(simage);
         //System.out.println(s2);
         //이미지 보류
-        holder.townCatImage.setImageBitmap(cat.getCatPicture());
+        try {
+            URL url = new URL(cat.getImage());
+            InputStream inputStream = url.openConnection().getInputStream();
+            bm = BitmapFactory.decodeStream(inputStream);
+            holder.townCatImage.setImageBitmap(bm);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         holder.townCatName.setText(cat.getName());
         holder.townCatId.setText(cat.getCat_id());
         holder.townCatGen.setText(cat.getCatgen());

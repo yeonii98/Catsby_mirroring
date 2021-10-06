@@ -1,19 +1,17 @@
 package org.techtown.catsby.retrofit.service;
 
-import android.media.Image;
-
 import org.techtown.catsby.retrofit.dto.CatProfile;
+import org.techtown.catsby.retrofit.dto.CatInfo;
 
-import java.sql.Blob;
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public interface CatService {
 
@@ -26,19 +24,9 @@ public interface CatService {
     Call<List<CatProfile>> getCatProfileList(
     );
 
-    @FormUrlEncoded
-    @POST("cat/register")
-    Call<CatProfile> setPost(
-            @Field("uid") String uid,
-            @Field("name") String name,
-            @Field("health") String health,
-            @Field("address") String address,
-            @Field("gender") int gender,
-            @Field("image") String image,
-            @Field("content") String content,
-            @Field("spayed") int spayed
-            );
-
+    @Multipart
+    @POST("cat/register/{uid}")
+    Call<CatProfile> setPost(@Path("uid") String uid, @Part("catInfo") CatInfo catInfo, @Part MultipartBody.Part file);
 
 
     @GET("cat/{cat_id}")

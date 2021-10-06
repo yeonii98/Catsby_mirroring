@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -25,6 +26,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import retrofit2.Call;
@@ -55,6 +60,11 @@ public class CatTownDetailActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cattown_detail);
 
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("우리동네 고양이 상세보기");
@@ -66,7 +76,6 @@ public class CatTownDetailActivity extends AppCompatActivity  {
 
         Call<CatProfile> call = catService.getCatProfile(linkedid1);
         call.enqueue(new Callback<CatProfile>() {
-
 
             @Override
             public void onResponse(Call<CatProfile> call, Response<CatProfile> response) {
@@ -104,11 +113,19 @@ public class CatTownDetailActivity extends AppCompatActivity  {
                     feature.setText(result.getContent());
                     //고양이 사진
                     if(result.getImage() != null){
-                        bm = ImageUtils.makeBitMap(result.getImage());
-                        catimgview.setImageBitmap(bm);}
-                    else{
-                        bm = null;}
-
+                        try {
+                            URL url = new URL(result.getImage());
+                            InputStream inputStream = url.openConnection().getInputStream();
+                            bm = BitmapFactory.decodeStream(inputStream);
+                            catimgview.setImageBitmap(bm);
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        bm = null;
+                    }
                 } else{
                     System.out.println("실패");
                 }

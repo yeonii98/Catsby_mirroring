@@ -1,20 +1,15 @@
 package org.techtown.catsby.cattown.addCat;
 
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -23,15 +18,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentManager;
 
-import org.techtown.catsby.MainActivity;
 import org.techtown.catsby.R;
-import org.techtown.catsby.cattown.FragmentCatTown;
 import org.techtown.catsby.cattown.adapter.FragmentCatTownAdapter;
-import org.techtown.catsby.community.data.service.TownLikeService;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.CatProfile;
+import org.techtown.catsby.retrofit.dto.CatInfo;
 import org.techtown.catsby.retrofit.dto.User;
 import org.techtown.catsby.retrofit.service.CatService;
 import org.techtown.catsby.util.ImageUtils;
@@ -39,22 +31,17 @@ import org.techtown.catsby.util.ImageUtils;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Base64;
-import java.util.List;
+import java.io.OutputStream;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.pedro.library.AutoPermissions;
-import com.pedro.library.AutoPermissionsListener;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class AddCatActivity extends AppCompatActivity{
@@ -83,7 +70,6 @@ public class AddCatActivity extends AppCompatActivity{
 
     byte imageArray [];
     Bitmap imgBitmap;
-    Bitmap bitmap;
     String cimage = "";
 
     @Override
@@ -216,11 +202,18 @@ public class AddCatActivity extends AppCompatActivity{
                 String catcontent = edtcontent.getText().toString();
                 byte[] catimage = imageArray;
 
-                System.out.println("uidd"+uid);
+
+                File temp = getApplicationContext().getCacheDir();
+                String fileName = uid + ".jpg";
+                File image = new File(temp, fileName);
+                image = bitmapConvertFile(image, imgBitmap);
+
+                CatInfo catInfo = new CatInfo(catname, cathealth, catloc, catgender, catcontent, catspayed);
+                RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), image);
+                MultipartBody.Part body = MultipartBody.Part.createFormData("file", image.getName(), requestFile);
 
                 if (imageuri.getText().equals("사진이 선택되었습니다.")) {
-                    Call<CatProfile> call = catService.setPost(
-                            uid,catname,cathealth,catloc, catgender, cimage, catcontent, catspayed);
+                    Call<CatProfile> call = catService.setPost(uid, catInfo, body);
                     call.enqueue(new Callback<CatProfile>(){
 
                         @Override
@@ -254,6 +247,18 @@ public class AddCatActivity extends AppCompatActivity{
 
     }
 
+    private File bitmapConvertFile(File file, Bitmap bitmap) {
+
+        OutputStream out = null;
+        try {
+            file.createNewFile();
+            out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
