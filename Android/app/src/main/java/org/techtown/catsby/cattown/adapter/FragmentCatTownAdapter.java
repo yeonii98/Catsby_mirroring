@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.StrictMode;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,6 +67,11 @@ public class FragmentCatTownAdapter extends RecyclerView.Adapter<FragmentCatTown
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+        
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragmentcattown_list, parent, false);
         return new ViewHolder(view);
     }
