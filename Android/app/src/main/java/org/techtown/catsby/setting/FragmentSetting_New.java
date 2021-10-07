@@ -95,6 +95,7 @@ public class FragmentSetting_New extends Fragment {
 
         tedPermission();
 
+        //savedInstanceState = false;
         //inflater.inflate(R.layout.fragment_setting, container, false);
 
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
@@ -144,8 +145,9 @@ public class FragmentSetting_New extends Fragment {
             @Override
             public void onClick(View view) {
                 Fragment alert = new alert();
-                transaction.replace(R.id.fragment_setting, alert);
-                transaction.commit();
+                transaction.replace(R.id.fragment_setting, alert).commit();
+                transaction.addToBackStack(null);
+//                transaction.commit();
             }
         });
 
@@ -153,8 +155,9 @@ public class FragmentSetting_New extends Fragment {
             @Override
             public void onClick(View view) {
                 Fragment account = new account();
-                transaction.replace(R.id.fragment_setting, account);
-                transaction.commit();
+                transaction.replace(R.id.fragment_setting, account).commit();
+                transaction.addToBackStack(null);
+//                transaction.commit();
             }
         });
 
@@ -162,8 +165,9 @@ public class FragmentSetting_New extends Fragment {
             @Override
             public void onClick(View view) {
                 Fragment writingList = new writingList();
-                transaction.replace(R.id.fragment_setting, writingList);
-                transaction.commit();
+                transaction.replace(R.id.fragment_setting, writingList).commit();
+                transaction.addToBackStack(null);
+//                transaction.commit();
             }
         });
 

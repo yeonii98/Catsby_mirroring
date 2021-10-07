@@ -29,6 +29,7 @@ import org.techtown.catsby.MainActivity;
 import org.techtown.catsby.R;
 import org.techtown.catsby.cattown.FragmentCatTown;
 import org.techtown.catsby.cattown.adapter.FragmentCatTownAdapter;
+import org.techtown.catsby.cattown.model.Cat;
 import org.techtown.catsby.community.data.service.TownLikeService;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.CatProfile;
@@ -43,6 +44,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
@@ -55,6 +57,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+
+import static org.techtown.catsby.util.ImageUtils.binaryStringToByteArray;
 
 
 public class AddCatActivity extends AppCompatActivity{
@@ -78,6 +82,7 @@ public class AddCatActivity extends AppCompatActivity{
     private User user;
     public String uid = FirebaseAuth.getInstance().getUid();
     private CatService catService = RetrofitClient.catService();
+    ArrayList<Cat> catList;
 
     FragmentCatTownAdapter adapter;
 
@@ -227,9 +232,13 @@ public class AddCatActivity extends AppCompatActivity{
                         public void onResponse(Call<CatProfile> call, Response<CatProfile> response) {
                             if(response.isSuccessful()) {
                                 System.out.println("성공");
-
                                 CatProfile cat = response.body();
+                                Cat cat2 = new Cat(cat.getUserid(), cat.getUser_add(), cat.getCatName(), makeBitMap(cat.getImage()), Integer.toString(cat.getCatId()), cat.getAddress(), Integer.toString(cat.getGender()), 0);
+                                adapter.addItem(cat2);
+//                              CatProfile cat2 = new CatProfile(cat.getUserid(), cat.getUser_add(), cat.getCatName(), cat.getHealth(), cat.getAddress(), cat.getGender(), cat.getImage(), cat.getContent(), cat.getSpayed());
+//                              adapter.addItem(cat2);
                                 adapter.notifyDataSetChanged();
+
                             }
                             else {
                                 //System.out.println("실패");
@@ -241,6 +250,7 @@ public class AddCatActivity extends AppCompatActivity{
                             //System.out.println("통신 실패");
                         }
                     });
+
                     finish();
                 } else {
                     Toast.makeText(getApplicationContext(), "고양이의 사진을 등록해주세요", Toast.LENGTH_SHORT).show();
@@ -264,6 +274,13 @@ public class AddCatActivity extends AppCompatActivity{
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public Bitmap makeBitMap(String s){
+        int idx = s.indexOf("=");
+        byte[] b = binaryStringToByteArray(s.substring(idx+1));
+        Bitmap bm = BitmapFactory.decodeByteArray(b,0,b.length);
+        return bm;
     }
 
 }

@@ -60,7 +60,8 @@ public class FragmentCatTown extends Fragment {
     private CatService catService = RetrofitClient.catService();
     String uid = FirebaseAuth.getInstance().getUid();
     int addressExist = 1;
-    List<Cat> catlist;
+    public static Context CONTEXT;
+
 
 
 
@@ -70,6 +71,7 @@ public class FragmentCatTown extends Fragment {
 
         super.onCreate(savedInstanceState);
 
+        CONTEXT = this.getContext();
         View view = inflater.inflate(R.layout.fragment_cattown, container, false);
 
         setHasOptionsMenu(true);
@@ -85,7 +87,6 @@ public class FragmentCatTown extends Fragment {
         tvcatgen = (TextView)view.findViewById(R.id.towncatgen);
         tvcatloc = (TextView)view.findViewById(R.id.towncatloc);
 
-        catlist = new ArrayList<>();
 
         userService.getUser(uid).enqueue(new Callback<User>() {
             @Override
@@ -215,11 +216,12 @@ public class FragmentCatTown extends Fragment {
         }
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        adapter = new FragmentCatTownAdapter(catList);
-//        adapter.notifyDataSetChanged();
-//        recyclerView.setAdapter(adapter);
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter = new FragmentCatTownAdapter(catList);
+        adapter.notifyDataSetChanged();
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(), RecyclerView.VERTICAL, false));
+    }
 }
