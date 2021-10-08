@@ -27,7 +27,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.bumptech.glide.Glide;
 import com.example.catsbe.account;
 import com.example.catsbe.alert;
 import com.example.catsby.writingList;
@@ -37,20 +36,23 @@ import com.gun0912.tedpermission.TedPermission;
 
 import org.jetbrains.annotations.NotNull;
 import org.techtown.catsby.R;
-import org.techtown.catsby.home.BowlDetailActivity;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.NicknameResponse;
-import org.techtown.catsby.retrofit.dto.User;
-import org.techtown.catsby.retrofit.dto.UserAddressUpdate;
-import org.techtown.catsby.retrofit.dto.UserImageUpdate;
 import org.techtown.catsby.retrofit.service.UserService;
 import org.techtown.catsby.util.ImageUtils;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -83,6 +85,7 @@ public class FragmentSetting_New extends Fragment {
     private UserService userService;
 
     Uri photoUri;
+    Bitmap bitmap;
 
     String uid = FirebaseAuth.getInstance().getUid();
 
@@ -117,14 +120,23 @@ public class FragmentSetting_New extends Fragment {
         if (bundle != null) {
             String nickname = bundle.getString("nickname");
             String address = bundle.getString("address");
-            byte[] image = bundle.getByteArray("image");
+            String image = bundle.getString("image");
             nickName.setText(nickname);
             if (address == null)
                 local.setText("동네를 설정하세요");
             else
                 local.setText(address);
             if (image != null) {
-                imageButton.setImageBitmap(ImageUtils.makeBitMap(ImageUtils.byteArrayToBinaryString(image)));
+                try {
+                    URL url = new URL(image);
+                    InputStream inputStream = url.openConnection().getInputStream();
+                    bitmap = BitmapFactory.decodeStream(inputStream);
+                    imageButton.setImageBitmap(bitmap);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
             else
                 imageButton.setImageResource(R.drawable.catsby_logo);
@@ -139,35 +151,38 @@ public class FragmentSetting_New extends Fragment {
 //        }
 
         //카테고리 클릭 시 Activity to Fragment 화면전환
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+
 
         alertManage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 Fragment alert = new alert();
-                transaction.replace(R.id.fragment_setting, alert).commit();
+                transaction.replace(R.id.fragment_setting, alert);
                 transaction.addToBackStack(null);
-//                transaction.commit();
+                transaction.commit();
             }
         });
 
         accountManage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 Fragment account = new account();
-                transaction.replace(R.id.fragment_setting, account).commit();
+                transaction.replace(R.id.fragment_setting, account);
                 transaction.addToBackStack(null);
-//                transaction.commit();
+                transaction.commit();
             }
         });
 
         writingList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 Fragment writingList = new writingList();
-                transaction.replace(R.id.fragment_setting, writingList).commit();
+                transaction.replace(R.id.fragment_setting, writingList);
                 transaction.addToBackStack(null);
-//                transaction.commit();
+                transaction.commit();
             }
         });
 
@@ -331,10 +346,6 @@ public class FragmentSetting_New extends Fragment {
     //[이미지 설정] 3.tempFile을 bitmap으로 변환 후 ImageView에 설정한다.
     private void setImage() {
 
-        /* 이미지 회전 방지 적용이 안 됨..
-        ImageButton imageButton = (ImageButton) getView().findViewById(R.id.imageButton);
-        Glide.with(this).load(photoUri).into(imageButton); */
-
         BitmapFactory.Options options = new BitmapFactory.Options();
 
         //이미지 회전 방지
@@ -352,14 +363,15 @@ public class FragmentSetting_New extends Fragment {
         originalBm = ImageUtils.rotateBitmap(originalBm,orientation);
 
         imageButton.setImageBitmap(originalBm);
-        String image = "";
 
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        originalBm.compress(Bitmap.CompressFormat.JPEG, 20, stream);
-        byte[] byteArray = stream.toByteArray();
-        image = ImageUtils.byteArrayToBinaryString(byteArray);
+        File temp = getApplicationContext().getCacheDir();
+        String fileName = uid + ".jpg";
+        File image = new File(temp, fileName);
+        image = bitmapConvertFile(image, originalBm);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), image);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", image.getName(), requestFile);
 
-        updateImage(image);
+        updateImage(body);
 
         /**
          *  tempFile 사용 후 null 처리를 해줘야 합니다.
@@ -371,9 +383,8 @@ public class FragmentSetting_New extends Fragment {
     }
 
 
-    private void updateImage(String image) {
-        UserImageUpdate userImageUpdate = new UserImageUpdate(image);
-        userService.updateUserImage(uid,userImageUpdate).enqueue(new Callback<Void>() {
+    private void updateImage(MultipartBody.Part body) {
+        userService.updateUserImage(uid, body).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 Toast.makeText(getContext(), "프로필 사진이 변경 되었습니다.", Toast.LENGTH_SHORT).show();
@@ -411,5 +422,18 @@ public class FragmentSetting_New extends Fragment {
                 .setDeniedMessage(getResources().getString(R.string.permission_1))
                 .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
                 .check();
+    }
+
+    private File bitmapConvertFile(File file, Bitmap bitmap) {
+
+        OutputStream out = null;
+        try {
+            file.createNewFile();
+            out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
     }
 }

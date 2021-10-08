@@ -1,10 +1,8 @@
 package org.techtown.catsby.cattown;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,13 +15,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.jetbrains.annotations.NotNull;
 import org.techtown.catsby.R;
 import org.techtown.catsby.cattown.adapter.FragmentCatTownAdapter;
 import org.techtown.catsby.cattown.addCat.AddCatActivity;
@@ -40,8 +36,6 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FragmentCatTown extends Fragment {
     RecyclerView recyclerView;
@@ -60,8 +54,7 @@ public class FragmentCatTown extends Fragment {
     private CatService catService = RetrofitClient.catService();
     String uid = FirebaseAuth.getInstance().getUid();
     int addressExist = 1;
-    public static Context CONTEXT;
-
+    List<Cat> catlist;
 
 
 
@@ -71,7 +64,6 @@ public class FragmentCatTown extends Fragment {
 
         super.onCreate(savedInstanceState);
 
-        CONTEXT = this.getContext();
         View view = inflater.inflate(R.layout.fragment_cattown, container, false);
 
         setHasOptionsMenu(true);
@@ -80,13 +72,13 @@ public class FragmentCatTown extends Fragment {
         catList = new ArrayList<>();
 
         adapter = new FragmentCatTownAdapter(catList);
-        adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext(), RecyclerView.VERTICAL, false));
 
         tvcatgen = (TextView)view.findViewById(R.id.towncatgen);
         tvcatloc = (TextView)view.findViewById(R.id.towncatloc);
 
+        catlist = new ArrayList<>();
 
         userService.getUser(uid).enqueue(new Callback<User>() {
             @Override
@@ -138,7 +130,7 @@ public class FragmentCatTown extends Fragment {
                                         //매핑을 위한 고양이 아이디
                                         linkid = Integer.toString(result.get(i).getCatId());
 
-                                        Cat cat = new Cat(result.get(i).getUserid(), result.get(i).getUser_add(),result.get(i).getCatName(), bm, linkid,text2, text1,0);
+                                        Cat cat = new Cat(result.get(i).getUserid(), result.get(i).getUser_add(),result.get(i).getCatName(), result.get(i).getImage(), linkid,text2, text1,0);
 
                                         System.out.println(linkid);
                                         adapter.addItem(cat);
@@ -216,12 +208,10 @@ public class FragmentCatTown extends Fragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        adapter = new FragmentCatTownAdapter(catList);
-        adapter.notifyDataSetChanged();
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext(), RecyclerView.VERTICAL, false));
-    }
+//    @Override
+//    public void onResume()
+//    {
+//        super.onResume();
+//        adapter.notifyDataSetChanged();
+//    }
 }
