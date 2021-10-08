@@ -47,20 +47,15 @@ public class BowlCommentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maincomment);
         EditText textPost = findViewById(R.id.post_text);
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("댓글");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        //뒤로가기
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
         Intent intent = getIntent();
-        //mainCommentList = (List<BowlCommentUsingComment>) intent.getSerializableExtra("comment");
         mainCommentList = MComment;
-
         adapter = new BowlCommentAdapter(mainCommentList);
 
         int communityId = intent.getExtras().getInt("communityId");
@@ -70,7 +65,6 @@ public class BowlCommentActivity extends AppCompatActivity {
                 String contextMessage = textPost.getText().toString();
                 if (!contextMessage.equals("")) {
                     postComment(user.getUid(), communityId, contextMessage);
-
                     textPost.setText("");
                     Toast.makeText(getApplicationContext().getApplicationContext(),"댓글이 등록되었습니다.", Toast.LENGTH_SHORT).show();
                     RecyclerView BowlCommunityRecyclerView = findViewById(R.id.maincmt_recyclerview);
@@ -80,8 +74,6 @@ public class BowlCommentActivity extends AppCompatActivity {
                 }
             }
         });
-
-
         RecyclerView BowlCommunityRecyclerView = findViewById(R.id.maincmt_recyclerview);
         BowlCommunityRecyclerView.setLayoutManager(new LinearLayoutManager(this)) ;
         BowlCommunityRecyclerView.setAdapter(adapter);
@@ -93,13 +85,9 @@ public class BowlCommentActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<BowlCommentResponse> call, Response<BowlCommentResponse> response) {
                 BowlCommentResponse bowlCommentResponse = (BowlCommentResponse) response.body();
-
-                System.out.println("bowlCommentResponse = " + bowlCommentResponse.getNickname());
-
                 BowlCommentUsingComment bowlCommentUsingComment = new BowlCommentUsingComment(bowlCommentResponse.getId(), bowlCommentResponse.getNickname(), context, bowlCommentResponse.getDate(), bowlCommentResponse.getUserId(), user.getUid(), id);
                 adapter.addItem((BowlCommentUsingComment) bowlCommentUsingComment);
                 adapter.notifyDataSetChanged();
-
             }
 
             @Override

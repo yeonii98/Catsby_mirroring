@@ -17,19 +17,27 @@ public class Memo {
     private String nickname; // 닉네임
     private String date; // 날짜
     private int push;
-    private Bitmap img;
+    private String img;
     private int likeCnt = 0; //좋아요 개수
-    private Bitmap userImg;
+    private String userImg;
 
     public Memo(){
 
     }
 
-    public Bitmap getUserImg() {
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public String getUserImg() {
         return userImg;
     }
 
-    public void setUserImg(Bitmap userImg) {
+    public void setUserImg(String userImg) {
         this.userImg = userImg;
     }
 
@@ -45,7 +53,7 @@ public class Memo {
         this.id = id;
     }
 
-    public Memo(int id, String uid, String maintext, String subtext, int likeCnt, String nickname, String date, Bitmap img, int push, Bitmap userImg) {
+    public Memo(int id, String uid, String maintext, String subtext, int likeCnt, String nickname, String date, String img, int push, String userImg) {
         this.id = id;
         this.uid = uid;
         this.maintext = maintext;
@@ -58,7 +66,7 @@ public class Memo {
         this.userImg = userImg;
     }
 
-    public Memo(int id, String uid, String maintext, String subtext, String nickname, String date, Bitmap img, Bitmap userBm) {
+    public Memo(int id, String uid, String maintext, String subtext, String nickname, String date, String img, String userBm) {
         this.id = id;
         this.uid = uid;
         this.maintext = maintext;
@@ -69,7 +77,7 @@ public class Memo {
         this.userImg = userBm;
     }
 
-    public Memo(int id, String uid, String maintext, String subtext, String nickname, String date, Bitmap img, int likeCnt, int push, Bitmap userImg) {
+    public Memo(int id, String uid, String maintext, String subtext, String nickname, String date, String img, int likeCnt, int push, String userImg) {
         this.id = id;
         this.uid = uid;
         this.maintext = maintext;
@@ -82,7 +90,7 @@ public class Memo {
         this.userImg = userImg;
     }
 
-    public Memo(String uid, String maintext, String subtext, String nickname, String date,Bitmap bm) {
+    public Memo(String uid, String maintext, String subtext, String nickname, String date,String bm) {
         this.uid = uid;
         this.maintext = maintext;
         this.subtext = subtext;
@@ -153,12 +161,6 @@ public class Memo {
         this.likeCnt = likeCnt;
     }
 
-    public Bitmap getImg() {
-        return img;
-    }
 
-    public void setImg(Bitmap img) {
-        this.img = img;
-    }
 }
 

@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -33,6 +34,9 @@ import org.techtown.catsby.retrofit.dto.User;
 import org.techtown.catsby.retrofit.service.UserService;
 import org.techtown.catsby.util.ImageUtils;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,8 +53,9 @@ public class TownCommentListActivity extends AppCompatActivity {
     private cmtAdapter recyclerAdapter;
     private EditText cmtText;
     private Button cmtPostBtn;
-    private Bitmap userBm;
+    private Bitmap bm;
     private int id;
+    private int postId;
     private List<Integer> idList = new ArrayList<>();
 
     String uid = FirebaseAuth.getInstance().getUid();
@@ -88,7 +93,7 @@ public class TownCommentListActivity extends AppCompatActivity {
         String datestr = sdf.format(date);
 
         Intent intent = getIntent();
-        int postId = intent.getIntExtra("id", 0);
+        postId = intent.getIntExtra("id", 0);
 
         townCommentService.getTownComment(postId).enqueue(new Callback<List<TownComment>>() {
             @Override
@@ -118,22 +123,6 @@ public class TownCommentListActivity extends AppCompatActivity {
                     cmtText.setText("");
                     TownComment townComment = new TownComment(content);
                     postTownComment(postId, uid, townComment);
-                    userService.getUser(uid).enqueue(new Callback<User>() {
-                        @Override
-                        public void onResponse(Call<User> call, Response<User> response) {
-                            User result = response.body();
-                            id = getCurrentId(commentList.get(commentList.size()-1).getId());
-                            System.out.println(id);
-                            recyclerAdapter.addItem(id, postId, uid, content, result.getNickname(), datestr, result.getImage());
-                            recyclerAdapter.notifyDataSetChanged();
-                        }
-
-                        @Override
-                        public void onFailure(Call<User> call, Throwable t) {
-
-                        }
-                    });
-
                 } else {
                     Toast.makeText(getApplicationContext(), "댓글을 입력해주세요", Toast.LENGTH_SHORT).show();
                 }
@@ -153,16 +142,18 @@ public class TownCommentListActivity extends AppCompatActivity {
         return id;
     }
 
-    public void postTownComment(int id, String uid, TownComment townComment) {
-        townCommentService.postTownComment(id, uid, townComment).enqueue(new Callback<Void>() {
+    public void postTownComment(int postId, String uid, TownComment townComment) {
+        townCommentService.postTownComment(postId, uid, townComment).enqueue(new Callback<TownComment>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                System.out.println("댓글 쓰기 성공");
+            public void onResponse(Call<TownComment> call, Response<TownComment> response) {
+                TownComment result = response.body();
+                recyclerAdapter.addItem(result.getId(), postId, uid, result.getContent(), result.getUser().getNickname(), result.getDate(), result.getUser().getImage());
+                recyclerAdapter.notifyDataSetChanged();
                 Toast.makeText(getApplicationContext(), "댓글이 등록 되었습니다.", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
+            public void onFailure(Call<TownComment> call, Throwable t) {
                 System.out.println("통신 실패 : " + t.getMessage());
             }
         });
@@ -254,9 +245,17 @@ public class TownCommentListActivity extends AppCompatActivity {
             }
 
             if (comments.getUserImg() == null)
-                Glide.with(holder.itemView.getContext()).load(R.drawable.catsby_logo_black).into(holder.userImg);
-            else
-                Glide.with(holder.itemView.getContext()).load(comments.getUserImg()).into(holder.userImg);
+                holder.userImg.setImageResource(R.drawable.catsby_logo);
+            else{
+                try {
+                    URL url = new URL(comments.getUserImg());
+                    InputStream inputStream = url.openConnection().getInputStream();
+                    bm = BitmapFactory.decodeStream(inputStream);
+                    holder.userImg.setImageBitmap(bm);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
 
             holder.cmtUpdateBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -317,13 +316,7 @@ public class TownCommentListActivity extends AppCompatActivity {
             comments.setContent(content);
             comments.setNickName(nickName);
             comments.setDate(date);
-
-            if (userImg != null)
-                userBm = ImageUtils.makeBitMap(userImg);
-            else userBm = null;
-
-            comments.setUserImg(userBm);
-
+            comments.setUserImg(userImg);
             cmtdata.add(comments);
         }
 

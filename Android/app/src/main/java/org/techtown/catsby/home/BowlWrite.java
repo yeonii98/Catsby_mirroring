@@ -1,14 +1,7 @@
 package org.techtown.catsby.home;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
-
-import android.app.Activity;
+import android.Manifest;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -24,13 +17,17 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.soundcloud.android.crop.Crop;
-
-import android.Manifest;
 
 import org.techtown.catsby.R;
 import org.techtown.catsby.home.adapter.BowlCheckListAdapter;
@@ -391,7 +388,7 @@ public class BowlWrite extends AppCompatActivity{
 
         ImageView imageView = findViewById(R.id.imageView);
 
-        com.tistory.black_jin0427.myimagesample.util.ImageResizeUtils.resizeFile(tempFile, tempFile, 1280, isCamera);
+        ImageResizeUtils.resizeFile(tempFile, tempFile, 1280, isCamera);
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         Bitmap originalBm = BitmapFactory.decodeFile(tempFile.getAbsolutePath(), options);

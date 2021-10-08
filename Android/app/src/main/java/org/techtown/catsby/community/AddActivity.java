@@ -45,29 +45,31 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AddActivity extends AppCompatActivity {
 
-    private TownCommunityService townCommunityService;
-
+    private TownCommunityService townCommunityService = RetrofitClient.getTownCommunityService();
     private static final String TAG = "catsby";
     private Boolean isPermission = true;
     private static final int PICK_FROM_ALBUM = 1;
     private static final int PICK_FROM_CAMERA = 2;
     private File tempFile;
-    private TownCommunity townCommunity;
     private CheckBox checkBox;
-    private UserService userService = RetrofitClient.getUser();
-
-    byte[] byteArray;
+    private MultipartBody.Part body;
+    private HashMap<String, RequestBody> map = new HashMap<String, RequestBody>();
     EditText edtTitle, edtContent;
     ImageView townImg;
     String uid = FirebaseAuth.getInstance().getUid();
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,97 +98,89 @@ public class AddActivity extends AppCompatActivity {
         });
 
 
-        userService.getUser(uid).enqueue(new Callback<User>() {
-                public void onResponse(Call<User> call, Response<User> response) {
-                    User result = response.body();
-                    String nickName = result.getNickname();
-                    String userImg = result.getImage();
+        findViewById(R.id.btnDone).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String title = edtTitle.getText().toString();
+                String content = edtContent.getText().toString();
 
-                    findViewById(R.id.btnDone).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            String title = edtTitle.getText().toString();
-                            String content = edtContent.getText().toString();
+                if (title.length() > 0 && content.length() > 0) {
+                    RequestBody reqTitle = RequestBody.create(MediaType.parse("text/plain"), title);
+                    RequestBody reqContent = RequestBody.create(MediaType.parse("text/plain"), content);
+                    RequestBody anonymous = RequestBody.create(MediaType.parse("text/plain"), String.valueOf(checkBox.isChecked()));
+                    RequestBody filePath = RequestBody.create(MediaType.parse("text/plain"), townImg.toString());
 
-                            if (title.length() > 0 && content.length() > 0) {
-                                if (townImg.getDrawable() == null) {
-                                    townCommunity = new TownCommunity(title, content, checkBox.isChecked());
-                                } else {
-                                    Bitmap img = ((BitmapDrawable) townImg.getDrawable()).getBitmap();
+                    map.put("title", reqTitle);
+                    map.put("content", reqContent);
+                    map.put("anonymous", anonymous);
+                    map.put("path", filePath);
 
-                                    String image = "";
+                    if (townImg.getDrawable() != null) {
+                        Bitmap img = ((BitmapDrawable) townImg.getDrawable()).getBitmap();
 
-                                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                                    img.compress(Bitmap.CompressFormat.JPEG, 20, stream);
-                                    byteArray = stream.toByteArray();
-                                    image = ImageUtils.byteArrayToBinaryString(byteArray);
-                                    townCommunity = new TownCommunity(title, content, image, checkBox.isChecked());
-                                }
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        img.compress(Bitmap.CompressFormat.JPEG, 20, stream);
 
+                        RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpg"), stream.toByteArray());
+                        body = MultipartBody.Part.createFormData("file", "", requestBody);
+                    } else {
+                        RequestBody requestBody = RequestBody.create(MediaType.parse("text/plain"), "no image");
+                        body = MultipartBody.Part.createFormData("file", "empty", requestBody);
+                    }
 
-                                townCommunityService = RetrofitClient.getTownCommunityService();
-                                townCommunityService.postTown(townCommunity, uid).enqueue(new Callback<Void>() {
-                                    @Override
-                                    public void onResponse(Call<Void> call, Response<Void> response) {
-                                        if (response.isSuccessful()) {
-                                            //정상적으로 통신이 성공된 경우
-                                            System.out.println("성공");
-                                        } else {
-                                            System.out.println("실패");
-                                        }
-                                    }
+                    postTown(body, map, uid);
 
-                                    @Override
-                                    public void onFailure(Call<Void> call, Throwable t) {
-                                        System.out.println("통신 실패 : " + t.getMessage());
-                                    }
-                                });
-
-                                Date date = new Date();
-                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-                                String datestr = sdf.format(date);
-
-
-                                Intent intent = new Intent(AddActivity.this, FragmentCommunity.class);
-                                intent.putExtra("id", townCommunity.getId());
-                                intent.putExtra("title", title);
-                                intent.putExtra("content", content);
-                                intent.putExtra("date", datestr);
-
-                                int idx = user.getEmail().indexOf("@");
-                                intent.putExtra("uid", uid);
-                                intent.putExtra("byteArray", byteArray);
-                                intent.putExtra("userImg", userImg);
-
-
-                                if (!checkBox.isChecked())
-                                    intent.putExtra("nickName", nickName);
-                                else
-                                    intent.putExtra("nickName", "익명");
-
-
-                                setResult(2, intent);
-
-                                finish();
-                            }
-
-                            else{
-                                Toast.makeText(getApplicationContext(), "제목과 내용을 입력해주세요", Toast.LENGTH_SHORT).show();
-
-                            }
-
-                        }
-                    });
-                }
-
-                @Override
-                public void onFailure(Call<User> call, Throwable t) {
+                } else {
+                    Toast.makeText(getApplicationContext(), "제목과 내용을 입력해주세요", Toast.LENGTH_SHORT).show();
 
                 }
-            });
 
-        }
+            }
+        });
+    }
+
+    public void postTown(MultipartBody.Part body, HashMap<String, RequestBody> map, String uid){
+        townCommunityService.postTown(body, map, uid).enqueue(new Callback<TownCommunity>() {
+            @Override
+            public void onResponse(Call<TownCommunity> call, Response<TownCommunity> response) {
+                if (response.isSuccessful()) {
+                    TownCommunity result = response.body();
+                    Date date = new Date();
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+                    String datestr = sdf.format(date);
+
+                    Intent intent = new Intent(AddActivity.this, FragmentCommunity.class);
+                    intent.putExtra("id", result.getId());
+                    intent.putExtra("title", result.getTitle());
+                    intent.putExtra("content", result.getContent());
+                    intent.putExtra("date", datestr);
+                    intent.putExtra("uid", uid);
+                    intent.putExtra("mImg", result.getImage());
+                    intent.putExtra("userImg", result.getUser().getImage());
+
+
+                    if (!checkBox.isChecked())
+                        intent.putExtra("nickName", result.getUser().getNickname());
+                    else
+                        intent.putExtra("nickName", "익명");
+
+
+                    setResult(2, intent);
+
+                    finish();
+                } else {
+                    System.out.println("실패");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TownCommunity> call, Throwable t) {
+                System.out.println("통신 실패 : " + t.getMessage());
+            }
+        });
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

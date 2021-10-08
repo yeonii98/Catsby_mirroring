@@ -3,6 +3,9 @@ package org.techtown.catsby.home.adapter;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +18,10 @@ import org.techtown.catsby.home.BowlDetailActivity;
 import org.techtown.catsby.retrofit.dto.BowlInfo;
 import org.techtown.catsby.util.ImageUtils;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
@@ -54,35 +61,14 @@ public class BowlAdapter extends RecyclerView.Adapter<BowlAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if (android.os.Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_home_bowllist, parent, false);
         return new ViewHolder(view);
-    }
-
-    public byte binaryStringToByte(String s) {
-        byte ret = 0, total = 0;
-        for (int i = 0; i < 8; ++i) {
-            ret = (s.charAt(7 - i) == '1') ? (byte) (1 << i) : 0;
-            total = (byte) (ret | total);
-        }
-        return total;
-    }
-
-    public byte[] binaryStringToByteArray(String s) {
-        int count = s.length() / 8;
-        byte[] b = new byte[count];
-        for (int i = 1; i < count; ++i) {
-            String t = s.substring((i - 1) * 8, i * 8);
-            b[i - 1] = binaryStringToByte(t);
-        }
-        return b;
-    }
-
-    public Bitmap makeBitMap(String s) {
-        int idx = s.indexOf("=");
-        byte[] b = binaryStringToByteArray(s.substring(idx + 1));
-        Bitmap bm = BitmapFactory.decodeByteArray(b, 0, b.length);
-        return bm;
     }
 
     @Override
@@ -94,8 +80,16 @@ public class BowlAdapter extends RecyclerView.Adapter<BowlAdapter.ViewHolder> {
             holder.image.setImageResource(R.drawable.catsby_logo);
         }
         else{
-             bm = makeBitMap(item.getImage());
-             holder.image.setImageBitmap(bm);
+            try {
+                URL url = new URL(item.getImage());
+                InputStream inputStream = url.openConnection().getInputStream();
+                bm = BitmapFactory.decodeStream(inputStream);
+                holder.image.setImageBitmap(bm);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         if (bListener != null) {
@@ -116,7 +110,7 @@ public class BowlAdapter extends RecyclerView.Adapter<BowlAdapter.ViewHolder> {
                     intent.putExtra("id", item.getId());
                     intent.putExtra("name", item.getName());
                     intent.putExtra("address", item.getAddress());
-                    intent.putExtra("image", ImageUtils.binaryStringToByteArray(item.getImage()));
+                    intent.putExtra("image", item.getImage());
                     intent.putExtra("latitude", item.getLatitude());
                     intent.putExtra("longitude", item.getLongitude());
 

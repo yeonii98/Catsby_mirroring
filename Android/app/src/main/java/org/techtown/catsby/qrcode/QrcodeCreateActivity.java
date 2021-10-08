@@ -234,12 +234,14 @@ public class QrcodeCreateActivity extends AppCompatActivity {
         File temp = getApplication().getCacheDir();
         String fileName = bowlName + ".jpg";
         File image = new File(temp, fileName);
-        image.createNewFile();
-        OutputStream os = new FileOutputStream(image);
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+//        image.createNewFile();
+//        OutputStream os = new FileOutputStream(image);
+//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+
+        image = BitmapConvertFile(image, bitmap);
 
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), image);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("files", image.getName(), requestFile);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", image.getName(), requestFile);
         QRBowlService.saveBowl(map, body).enqueue(new Callback<BowlResponse>() {
             @Override
             public void onResponse(Call<BowlResponse> call, Response<BowlResponse> response) {
@@ -262,5 +264,18 @@ public class QrcodeCreateActivity extends AppCompatActivity {
     public static RequestBody toRequestBody (String value) {
         RequestBody body = RequestBody.create(MediaType.parse("text/plain"), value);
         return body ;
+    }
+
+    private File BitmapConvertFile(File file, Bitmap bitmap) {
+
+        OutputStream out = null;
+        try {
+            file.createNewFile();
+            out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file;
     }
 }
