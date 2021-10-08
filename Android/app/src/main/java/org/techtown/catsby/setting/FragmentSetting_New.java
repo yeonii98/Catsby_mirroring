@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,6 +29,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
 import com.example.catsbe.account;
 import com.example.catsbe.alert;
 import com.example.catsby.writingList;
@@ -36,11 +39,16 @@ import com.gun0912.tedpermission.TedPermission;
 
 import org.jetbrains.annotations.NotNull;
 import org.techtown.catsby.R;
+import org.techtown.catsby.home.BowlDetailActivity;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.NicknameResponse;
+import org.techtown.catsby.retrofit.dto.User;
+import org.techtown.catsby.retrofit.dto.UserAddressUpdate;
+import org.techtown.catsby.retrofit.dto.UserImageUpdate;
 import org.techtown.catsby.retrofit.service.UserService;
 import org.techtown.catsby.util.ImageUtils;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -98,7 +106,6 @@ public class FragmentSetting_New extends Fragment {
 
         tedPermission();
 
-        //savedInstanceState = false;
         //inflater.inflate(R.layout.fragment_setting, container, false);
 
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
@@ -151,15 +158,13 @@ public class FragmentSetting_New extends Fragment {
 //        }
 
         //카테고리 클릭 시 Activity to Fragment 화면전환
-
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
         alertManage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 Fragment alert = new alert();
                 transaction.replace(R.id.fragment_setting, alert);
-                transaction.addToBackStack(null);
                 transaction.commit();
             }
         });
@@ -167,10 +172,8 @@ public class FragmentSetting_New extends Fragment {
         accountManage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 Fragment account = new account();
                 transaction.replace(R.id.fragment_setting, account);
-                transaction.addToBackStack(null);
                 transaction.commit();
             }
         });
@@ -178,10 +181,8 @@ public class FragmentSetting_New extends Fragment {
         writingList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 Fragment writingList = new writingList();
                 transaction.replace(R.id.fragment_setting, writingList);
-                transaction.addToBackStack(null);
                 transaction.commit();
             }
         });

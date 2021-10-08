@@ -19,13 +19,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import org.techtown.catsby.R;
 import org.techtown.catsby.cattown.adapter.FragmentCatTownAdapter;
 import org.techtown.catsby.retrofit.RetrofitClient;
-import org.techtown.catsby.retrofit.dto.CatInfo;
 import org.techtown.catsby.retrofit.dto.CatProfile;
+import org.techtown.catsby.retrofit.dto.CatInfo;
 import org.techtown.catsby.retrofit.dto.User;
 import org.techtown.catsby.retrofit.service.CatService;
 import org.techtown.catsby.util.ImageUtils;
@@ -35,6 +33,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;

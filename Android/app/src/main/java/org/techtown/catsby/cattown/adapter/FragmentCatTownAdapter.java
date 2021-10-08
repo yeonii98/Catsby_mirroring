@@ -1,5 +1,6 @@
 package org.techtown.catsby.cattown.adapter;
 
+import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,12 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.techtown.catsby.R;
 import org.techtown.catsby.cattown.CatTownDetailActivity;
 import org.techtown.catsby.cattown.model.Cat;
+import org.techtown.catsby.retrofit.dto.CatProfile;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FragmentCatTownAdapter extends RecyclerView.Adapter<FragmentCatTownAdapter.ViewHolder> {
     private ArrayList<Cat> catdata;
