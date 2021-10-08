@@ -196,15 +196,11 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
                 break;
 
             case R.id.action_qrscan:
-
                 if(isPermission) {
                     Intent intent2 = new Intent(getActivity(), LoadingActivity.class);
                     startActivity(intent2);
                 }
                 else Toast.makeText(view.getContext(), getResources().getString(R.string.permission_2), Toast.LENGTH_LONG).show();
-
-
-
         }
         return super.onOptionsItemSelected(item);
     }
