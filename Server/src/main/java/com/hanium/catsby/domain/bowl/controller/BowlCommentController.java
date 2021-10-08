@@ -65,7 +65,7 @@ public class BowlCommentController {
     public BowlCommentResult bowlComment(@PathVariable("communityId") Long communityId) {
         List<BowlComment> findComment = bowlCommentService.findCommentByCommunityId(communityId);
         List<BowlCommentDto> collect = findComment.stream()
-                .map(bc -> new BowlCommentDto(bc.getContent(), bc.getCreatedDate(), bc.getUser(), bc.getBowlCommunity(), bc.getUid()))
+                .map(bc -> new BowlCommentDto(bc.getId(), bc.getContent(), bc.getCreatedDate(), bc.getUser(), bc.getBowlCommunity(), bc.getUid()))
                 .collect(Collectors.toList());
         return new BowlCommentResult(collect);
     }
@@ -79,6 +79,7 @@ public class BowlCommentController {
     @Data
     @AllArgsConstructor
     static class BowlCommentDto{
+        private Long id;
         private String content;
         private LocalDateTime createDate;
         @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
