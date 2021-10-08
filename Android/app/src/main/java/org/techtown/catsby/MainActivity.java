@@ -1,32 +1,31 @@
 package org.techtown.catsby;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-import org.techtown.catsby.qrcode.QrcodeCreateActivity;
-import org.techtown.catsby.community.FragmentCommunity;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.pedro.library.AutoPermissions;
+import com.pedro.library.AutoPermissionsListener;
+
 import org.techtown.catsby.cattown.FragmentCatTown;
+import org.techtown.catsby.community.FragmentCommunity;
 import org.techtown.catsby.home.BowlFragment;
 import org.techtown.catsby.notification.NotificationActivity;
+import org.techtown.catsby.qrcode.QrcodeCreateActivity;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.User;
 import org.techtown.catsby.retrofit.service.UserService;
 import org.techtown.catsby.setting.FragmentSetting_New;
-import org.techtown.catsby.util.ImageUtils;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.pedro.library.AutoPermissions;
-import com.pedro.library.AutoPermissionsListener;
 
 import retrofit2.Call;
 import retrofit2.Callback;

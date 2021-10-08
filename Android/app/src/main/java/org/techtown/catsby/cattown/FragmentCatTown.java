@@ -1,6 +1,8 @@
 package org.techtown.catsby.cattown;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -53,7 +55,7 @@ public class FragmentCatTown extends Fragment {
     String uid = FirebaseAuth.getInstance().getUid();
     int addressExist = 1;
     List<Cat> catlist;
-    String imageUrl;
+
 
 
     @Override
@@ -66,55 +68,54 @@ public class FragmentCatTown extends Fragment {
 
         setHasOptionsMenu(true);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyceler_view);
+        recyclerView = (RecyclerView)view.findViewById(R.id.recyceler_view);
         catList = new ArrayList<>();
 
         adapter = new FragmentCatTownAdapter(catList);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext(), RecyclerView.VERTICAL, false));
 
-        tvcatgen = (TextView) view.findViewById(R.id.towncatgen);
-        tvcatloc = (TextView) view.findViewById(R.id.towncatloc);
+        tvcatgen = (TextView)view.findViewById(R.id.towncatgen);
+        tvcatloc = (TextView)view.findViewById(R.id.towncatloc);
 
         catlist = new ArrayList<>();
 
         userService.getUser(uid).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                if (response.isSuccessful()) {
+                if(response.isSuccessful()) {
                     User result = response.body();
                     String userAddress = result.getAddress();
 
-                    if (userAddress != null) {
+                     if (userAddress != null) {
                         addressExist = 1;
                         Call<List<CatProfile>> call2 = catService.getCatProfileList();
                         call2.enqueue(new Callback<List<CatProfile>>() {
                             @Override
                             public void onResponse(Call<List<CatProfile>> call2, Response<List<CatProfile>> response) {
-                                if (response.isSuccessful()) {
+                                if(response.isSuccessful()){
                                     List<CatProfile> result = response.body();
 
-                                    for (int i = 0; i < result.size(); i++) {
+                                    for(int i=0; i<result.size(); i++) {
 
                                         String address_for = result.get(i).getUser_add();
                                         System.out.println(address_for);
-                                        if (!userAddress.equals(address_for)) continue;
+                                        if(!userAddress.equals(address_for)) continue;
 //                                        long a = result.get(i).getUserid();
 //                                        System.out.println("캣유저테스트"+a);
 
                                         //System.out.println("캣유저테스트"+a);
                                         //리스트에 표시될 이미지
-                                        if (result.get(i).getImage() != null) {
-                                            imageUrl = result.get(i).getImage();
-                                        } else {
-                                            imageUrl = null;
-                                        }
+                                        if(result.get(i).getImage() != null){
+                                            bm = makeBitMap(result.get(i).getImage());}
+                                        else{
+                                            bm = null;}
 
                                         //리스트에 표시될 성별
                                         String text1;
-                                        if (result.get(i).getGender() == 1) {
+                                        if(result.get(i).getGender()==1){
                                             text1 = "암컷";
-                                        } else if (result.get(i).getGender() == 2) {
+                                        } else if(result.get(i).getGender()==2) {
                                             text1 = "수컷";
                                         } else {
                                             text1 = "성별 모름";
@@ -129,14 +130,15 @@ public class FragmentCatTown extends Fragment {
                                         //매핑을 위한 고양이 아이디
                                         linkid = Integer.toString(result.get(i).getCatId());
 
-                                        Cat cat = new Cat(result.get(i).getUserid(), result.get(i).getUser_add(), result.get(i).getCatName(), imageUrl, linkid, text2, text1, 0);
+                                        Cat cat = new Cat(result.get(i).getUserid(), result.get(i).getUser_add(),result.get(i).getCatName(), result.get(i).getImage(), linkid,text2, text1,0);
 
                                         System.out.println(linkid);
                                         adapter.addItem(cat);
                                     }
                                     adapter.notifyDataSetChanged();
                                     //adapter.refresh(result);
-                                } else {
+                                }
+                                else {
                                     System.out.println("실패");
                                 }
                             }
@@ -156,9 +158,38 @@ public class FragmentCatTown extends Fragment {
             }
         });
 
+
         adapter.notifyDataSetChanged();
         return view;
 
+    }
+
+            private Bitmap bm=null;
+
+    public Bitmap makeBitMap(String s){
+        int idx = s.indexOf("=");
+        byte[] b = binaryStringToByteArray(s.substring(idx+1));
+        Bitmap bm = BitmapFactory.decodeByteArray(b,0,b.length);
+        return bm;
+    }
+
+    public byte[] binaryStringToByteArray(String s){
+        int count=s.length()/8;
+        byte[] b=new byte[count];
+        for(int i=1; i<count; ++i){
+            String t=s.substring((i-1)*8, i*8);
+            b[i-1]=binaryStringToByte(t);
+        }
+        return b;
+    }
+
+    public byte binaryStringToByte(String s){
+        byte ret=0, total=0;
+        for(int i=0; i<8; ++i){
+            ret = (s.charAt(7-i)=='1') ? (byte)(1 << i) : 0;
+            total = (byte) (ret|total);
+        }
+        return total;
     }
 
     @Override
@@ -173,7 +204,7 @@ public class FragmentCatTown extends Fragment {
                 Intent intent = new Intent(getActivity(), AddCatActivity.class);
                 startActivity(intent);
             default:
-                return super.onOptionsItemSelected(item);
+                return super.onOptionsItemSelected(item) ;
         }
     }
 

@@ -3,8 +3,6 @@ package org.techtown.catsby.retrofit.service;
 import org.techtown.catsby.retrofit.dto.NicknameResponse;
 import org.techtown.catsby.retrofit.dto.User;
 import org.techtown.catsby.retrofit.dto.UserAddressUpdate;
-import org.techtown.catsby.retrofit.dto.UserImageUpdate;
-
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;

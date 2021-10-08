@@ -3,7 +3,7 @@ package com.hanium.catsby.util;
 import com.google.firebase.messaging.AndroidConfig;
 import com.google.firebase.messaging.AndroidNotification;
 import com.google.firebase.messaging.MulticastMessage;
-import com.hanium.catsby.domain.notification.model.NotificationType;
+import com.hanium.catsby.notification.domain.NotificationType;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
