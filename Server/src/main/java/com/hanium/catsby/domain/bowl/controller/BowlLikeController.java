@@ -32,14 +32,6 @@ public class BowlLikeController {
         return new CreateBowlLikeResponse(id);
     }
 
-    @Data
-    static class CreateBowlLikeResponse{
-        private Long id;
-        public CreateBowlLikeResponse(Long id){
-            this.id = id;
-        }
-    }
-
     @GetMapping("/bowl/community/likes/{uid}")
     public BowlLikeResult bowlLKikeByUid(@PathVariable("uid") String uid) {
         Long userId = userService.findUserByUid(uid);
@@ -53,6 +45,14 @@ public class BowlLikeController {
     @DeleteMapping("/bowl/community/like/{communityId}/{id}")
     public void DeleteBowlLike(@PathVariable("communityId") Long communityId, @PathVariable("id") Long id){
         bowlLikeService.delete(communityId, id);
+    }
+
+    @Data
+    static class CreateBowlLikeResponse{
+        private Long id;
+        public CreateBowlLikeResponse(Long id){
+            this.id = id;
+        }
     }
 
     @Data

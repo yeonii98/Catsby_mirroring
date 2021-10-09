@@ -1,20 +1,15 @@
 package org.techtown.catsby.home;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -27,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.gun0912.tedpermission.PermissionListener;
@@ -44,6 +38,7 @@ import org.techtown.catsby.retrofit.dto.BowlCommunity;
 import org.techtown.catsby.retrofit.dto.BowlList;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
 import org.techtown.catsby.retrofit.service.BowlService;
+import org.techtown.catsby.setting.ImageResizeUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -62,10 +57,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static org.techtown.catsby.home.ImageResizeUtils.exifOrientationToDegrees;
-import static org.techtown.catsby.home.ImageResizeUtils.rotate;
-
-public class BowlWrite extends AppCompatActivity{
+public class BowlWriteActivity extends AppCompatActivity{
     ListView listview ;
 
     private static final String TAG = "blackjin";
@@ -97,7 +89,6 @@ public class BowlWrite extends AppCompatActivity{
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_writemain);
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("홈 화면 글쓰기");
@@ -109,11 +100,8 @@ public class BowlWrite extends AppCompatActivity{
 
         Toolbar mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         tedPermission();
-
         findViewById(R.id.btnGallery).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,7 +132,6 @@ public class BowlWrite extends AppCompatActivity{
                     imageView.setImageResource(0);
                     postContext.setText("");
                     image = null;
-
                 }else{
                     Toast.makeText(getApplicationContext(),"이미지를 첨부해 주세요.", Toast.LENGTH_SHORT).show();
                 }
@@ -154,7 +141,6 @@ public class BowlWrite extends AppCompatActivity{
 
 
     private void savePost(File file, int id, String uid, String context) {
-
         RequestBody content = RequestBody.create(MediaType.parse("text/plain"), context);
         RequestBody filePath = RequestBody.create(MediaType.parse("text/plain"), image.toString());
 
@@ -201,7 +187,6 @@ public class BowlWrite extends AppCompatActivity{
                     }
 
                     adapter = new BowlCheckListAdapter(bowlList, allContext);
-                    // 첫 번째 아이템 추가.
                     for (int i =0; i < bowlNameArray.size(); i++){
                         adapter.addItem(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_indicator_active), bowlNameArray.get(i), i) ;
                     }
@@ -229,24 +214,20 @@ public class BowlWrite extends AppCompatActivity{
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != RESULT_OK) {
             Toast.makeText(this, "취소 되었습니다.", Toast.LENGTH_SHORT).show();
-
             if(tempFile != null) {
                 if(tempFile.exists()) {
-
                     if(tempFile.delete()) {
                         Log.e(TAG, tempFile.getAbsolutePath() + " 삭제 성공");
                         tempFile = null;
                     } else {
                         Log.e(TAG, "tempFile 삭제 실패");
                     }
-
                 } else {
                     Log.e(TAG, "tempFile 존재하지 않음");
                 }
             } else {
                 Log.e(TAG, "tempFile is null");
             }
-
             return;
         }
 
@@ -261,13 +242,10 @@ public class BowlWrite extends AppCompatActivity{
                 break;
             }
             case PICK_FROM_CAMERA: {
-
                 // 앨범에 있지만 카메라 에서는 data.getData()가 없음
                 Uri photoUri = Uri.fromFile(tempFile);
                 Log.d(TAG, "takePhoto photoUri : " + photoUri);
-
                 cropImage(photoUri);
-
                 break;
             }
             case Crop.REQUEST_CROP: {
@@ -287,7 +265,6 @@ public class BowlWrite extends AppCompatActivity{
         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
         startActivityForResult(intent, PICK_FROM_ALBUM);
     }
-
 
     /**
      *  카메라에서 이미지 가져오기
@@ -320,13 +297,10 @@ public class BowlWrite extends AppCompatActivity{
                 startActivityForResult(intent, PICK_FROM_CAMERA);
 
             } else {
-
                 Uri photoUri = Uri.fromFile(tempFile);
                 Log.d(TAG, "takePhoto photoUri : " + photoUri);
-
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                 startActivityForResult(intent, PICK_FROM_CAMERA);
-
             }
         }
     }
@@ -371,7 +345,6 @@ public class BowlWrite extends AppCompatActivity{
         // 빈 파일 생성
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
         Log.d(TAG, "createImageFile : " + image.getAbsolutePath());
-
         return image;
     }
 

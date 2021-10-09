@@ -28,10 +28,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class BowlAdapter extends RecyclerView.Adapter<BowlAdapter.ViewHolder> {
-
-    private ArrayList<BowlInfo> itemData;
     int idx;
-    private Bitmap bm = null;
+    private Bitmap bm;
+    private ArrayList<BowlInfo> itemData;
 
     public BowlAdapter(ArrayList<BowlInfo> itemData){
         this.itemData = itemData;
@@ -65,7 +64,6 @@ public class BowlAdapter extends RecyclerView.Adapter<BowlAdapter.ViewHolder> {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_home_bowllist, parent, false);
         return new ViewHolder(view);
@@ -99,13 +97,11 @@ public class BowlAdapter extends RecyclerView.Adapter<BowlAdapter.ViewHolder> {
                 public void onClick(View v) {
                     TextView name = v.findViewById(R.id.bowl_name);
                     Intent intent = new Intent(v.getContext(), BowlDetailActivity.class);
-
                     for (int i =0; i< itemData.size(); i++){
                         if (itemData.get(i).getName() == name.getText()){
                             idx = i;
                         }
                     }
-
                     BowlInfo item = itemData.get(idx);
                     intent.putExtra("id", item.getId());
                     intent.putExtra("name", item.getName());
@@ -113,7 +109,6 @@ public class BowlAdapter extends RecyclerView.Adapter<BowlAdapter.ViewHolder> {
                     intent.putExtra("image", item.getImage());
                     intent.putExtra("latitude", item.getLatitude());
                     intent.putExtra("longitude", item.getLongitude());
-
                     v.getContext().startActivity(intent);
                 }
             });
