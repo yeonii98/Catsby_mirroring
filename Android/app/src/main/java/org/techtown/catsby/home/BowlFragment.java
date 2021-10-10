@@ -52,8 +52,6 @@ import static java.time.LocalDateTime.now;
 public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterClickListener {
     private Context mContext;
     private FragmentManager fragmentManager;
-
-
     private Boolean isPermission = true;
     BowlAdapter bowlAdapter;
     ArrayList<byte[]> bowlImageArray = new ArrayList<>();

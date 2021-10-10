@@ -32,9 +32,14 @@ import android.Manifest;
 
 import org.techtown.catsby.R;
 import org.techtown.catsby.home.adapter.BowlCheckListAdapter;
+import static org.techtown.catsby.home.adapter.FeedAdapter.itemData;
+
+import org.techtown.catsby.home.adapter.FeedAdapter;
 import org.techtown.catsby.home.model.Bowl;
+import org.techtown.catsby.home.model.Feed;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.BowlCommunity;
+import org.techtown.catsby.retrofit.dto.BowlCommunityResponse;
 import org.techtown.catsby.retrofit.dto.BowlList;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
 import org.techtown.catsby.retrofit.service.BowlService;
@@ -45,6 +50,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -73,6 +80,7 @@ public class BowlWriteActivity extends AppCompatActivity{
     static ArrayList<Bowl> bowlList = new ArrayList<>();
     String allContext;
     BowlCheckListAdapter adapter;
+    FeedAdapter feedAdapter;
     static int cPosition;
 
     String mCurrentPhotoPath;
@@ -93,6 +101,7 @@ public class BowlWriteActivity extends AppCompatActivity{
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("홈 화면 글쓰기");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        feedAdapter = new FeedAdapter(itemData);
 
         if (user != null) {
             loadBowls(user.getUid());
@@ -121,7 +130,7 @@ public class BowlWriteActivity extends AppCompatActivity{
             }
         });
 
-        Button postButton = findViewById(R.id.btn_signupfinish);
+        Button postButton = findViewById(R.id.btn_signup_finish);
         postButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -160,10 +169,17 @@ public class BowlWriteActivity extends AppCompatActivity{
 
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpg"), byteArrayOutputStream.toByteArray());
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName() ,requestBody);
+
         bowlCommunityService.saveCommunity(body, id, uid, map).enqueue(new Callback<List<BowlCommunity>>() {
             @Override
             public void onResponse(Call<List<BowlCommunity>> call, Response<List<BowlCommunity>> response) {
-                System.out.println(" success" );
+                LocalDateTime localDate = LocalDateTime.now();//For reference
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
+                String formattedString = localDate.format(formatter);
+                BowlCommunityResponse bowlCommunityResponse = (BowlCommunityResponse) response.body();
+                Feed feed = new Feed(bowlCommunityResponse.getId(), bowlCommunityResponse.getUserId(), bowlCommunityResponse.getImage(), bowlCommunityResponse.getNickName(), image.toString(), context, user.getUid(), formattedString, 0);
+                feedAdapter.addItem(feed);
+                feedAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -185,12 +201,10 @@ public class BowlWriteActivity extends AppCompatActivity{
                         Bowl bowl = new Bowl(result.getBowls().get(i).getId(), R.drawable.bowl, result.getBowls().get(i).getName(), result.getBowls().get(i).getInfo(), result.getBowls().get(i).getAddress(), result.getBowls().get(i).getUpdated_time());
                         bowlList.add(bowl);
                     }
-
                     adapter = new BowlCheckListAdapter(bowlList, allContext);
                     for (int i =0; i < bowlNameArray.size(); i++){
                         adapter.addItem(ContextCompat.getDrawable(getApplicationContext(), R.drawable.bg_indicator_active), bowlNameArray.get(i), i) ;
                     }
-
                     listview = findViewById(R.id.listview1);
                     listview.setAdapter(adapter);
                 }
@@ -233,12 +247,9 @@ public class BowlWriteActivity extends AppCompatActivity{
 
         switch (requestCode) {
             case PICK_FROM_ALBUM: {
-
                 Uri photoUri = data.getData();
                 Log.d(TAG, "PICK_FROM_ALBUM photoUri : " + photoUri);
-
                 cropImage(photoUri);
-
                 break;
             }
             case PICK_FROM_CAMERA: {
@@ -355,8 +366,6 @@ public class BowlWriteActivity extends AppCompatActivity{
      */
     private void setImage() {
         imageView = findViewById(R.id.imageView);
-
-
         ImageResizeUtils.resizeFile(tempFile, tempFile, 1280, isCamera);
 
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -372,7 +381,6 @@ public class BowlWriteActivity extends AppCompatActivity{
          *  기존에 데이터가 남아 있게 되면 원치 않은 삭제가 이뤄집니다.
          */
         tempFile = null;
-
     }
 
 

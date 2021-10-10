@@ -5,6 +5,7 @@ import com.hanium.catsby.domain.bowl.model.BowlCommunity;
 import com.hanium.catsby.domain.bowl.service.BowlCommunityService;
 import com.hanium.catsby.domain.common.sevice.S3Service;
 import com.hanium.catsby.domain.user.model.Users;
+import com.hanium.catsby.domain.user.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +25,12 @@ public class BowlCommunityController {
     private final static String BOWL_COMMUNITY_DIR_NAME = "image/bowl/community/";
     private final BowlCommunityService bowlCommunityService;
     private final S3Service s3Service;
+    private final UserService userService;
 
     @PostMapping("/bowl/community/write/{bowlId}/{uid}")
     public CreateBowlCommunityResponse savaBowlCommunity(@RequestParam(value = "file") MultipartFile file, @PathVariable("bowlId") long bowlId, @PathVariable("uid") String uid, @RequestParam HashMap<String, RequestBody> request ) throws IOException {
         String imgUrl = s3Service.upload(file, BOWL_COMMUNITY_DIR_NAME, uid);
-
+        Users user = userService.findUsersByUid(uid);
         BowlCommunity bowlCommunity = new BowlCommunity();
         bowlCommunity.setUid(uid);
         bowlCommunity.setImage(imgUrl);
@@ -36,7 +38,7 @@ public class BowlCommunityController {
         bowlCommunity.setContent(con);
 
         Long communityId = bowlCommunityService.savaCommunity(bowlCommunity, uid, bowlId);
-        return new CreateBowlCommunityResponse(communityId);
+        return new CreateBowlCommunityResponse(communityId, user.getId(), user.getNickname(), user.getImage());
     }
 
     @GetMapping("/bowl/communities/{bowlId}")
@@ -70,8 +72,15 @@ public class BowlCommunityController {
     @Data
     static class CreateBowlCommunityResponse{
         private Long id;
-        public CreateBowlCommunityResponse(Long id) {
+        private Long userId;
+        private String nickName;
+        private String image;
+
+        public CreateBowlCommunityResponse(Long id, Long userId, String nickName, String image) {
             this.id = id;
+            this.userId = userId;
+            this.nickName = nickName;
+            this.image = image;
         }
     }
 

@@ -49,7 +49,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
-    private ArrayList<Feed> itemData;
+    public static ArrayList<Feed> itemData;
     BowlCommunityService bowlCommunityService = RetrofitClient.getBowlCommunityService();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     UserService userService = RetrofitClient.getUser();
@@ -75,6 +75,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
 
     public FeedAdapter(ArrayList<Feed> itemData) {
         this.itemData = itemData;
+    }
+
+    public void addItem(Feed feed){
+        itemData.add(feed);
+        bool.add(true);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
