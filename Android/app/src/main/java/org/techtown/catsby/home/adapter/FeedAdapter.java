@@ -49,13 +49,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
-    private ArrayList<Feed> itemData;
+    public static ArrayList<Feed> itemData;
     BowlCommunityService bowlCommunityService = RetrofitClient.getBowlCommunityService();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     UserService userService = RetrofitClient.getUser();
     View view;
-    private Bitmap bm = null;
 
+    private Bitmap bm;
     Button postButton;
     EditText commentEditText;
     ImageView feedCommentButton;
@@ -64,8 +64,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     Button putFinishButton;
     TextView textView;
     Context context;
-    boolean[] bool;
     static boolean repeat = false;
+    ArrayList<Boolean> bool = new ArrayList<>();
+    boolean putCommunity = false;
 
     public static List<BowlCommentUsingComment> MComment;
     static HashMap<Integer, Integer> likeCommunity = new HashMap<>();
@@ -74,7 +75,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
 
     public FeedAdapter(ArrayList<Feed> itemData) {
         this.itemData = itemData;
-        bool = new boolean[itemData.size()];
+    }
+
+    public void addItem(Feed feed){
+        itemData.add(feed);
+        bool.add(true);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -114,7 +119,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             itemView.findViewById(R.id.putButton).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (bool[getAdapterPosition()]) {
+                    if (bool.get(getAdapterPosition())) {
                         int pos = getAdapterPosition();
                         if (pos != RecyclerView.NO_POSITION) {
                             ViewHolder.this.itemViewPutButton.setVisibility(View.INVISIBLE);
@@ -187,18 +192,18 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 }
             }
 
-            for (int i =0; i < itemData.size(); i ++) {
-                if (bool[i] == false){
-                    if(itemData.get(i).getUid().equals(user.getUid())){
-                        bool[i] = true;
-                    } else{
-                        bool[i] = false;
+            if (!putCommunity){
+                putCommunity = true;
+                for (int i =0; i < itemData.size(); i ++) {
+                    if (itemData.get(i).getUid().equals(user.getUid())) {
+                        bool.add(true);
+                    } else {
+                        bool.add(false);
                     }
                 }
             }
         }
     }
-
 
 
     @NonNull
@@ -208,7 +213,6 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
         }
-
        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_home_feedlist, parent, false);
         return new ViewHolder(view);
     }
@@ -306,7 +310,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             holder.likeFullButton.setVisibility(View.GONE);
         }
 
-        if (bool[position]) {
+        if (bool.get(position)) {
             holder.itemViewPutButton.setVisibility(View.VISIBLE);
             holder.itemViewDeleteButton.setVisibility(View.VISIBLE);
         } else{
@@ -349,7 +353,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 itemData.remove(itemData.get(position));
-                bool[position] = false;
+                bool.remove(position);
                 FeedAdapter adapter = new FeedAdapter(itemData);
                 adapter.notifyItemRemoved(position);
                 adapter.notifyItemRemoved(view.getVerticalScrollbarPosition());

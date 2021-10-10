@@ -19,7 +19,6 @@ public class BowlRepository {
         em.persist(bowl);
     }
 
-    // 모든 밥그릇 조회
     public List<Bowl> findAllBowl() {
         return em.createQuery("select b from Bowl b", Bowl.class).getResultList();
     }

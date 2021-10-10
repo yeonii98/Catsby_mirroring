@@ -72,11 +72,11 @@ import static com.facebook.FacebookSdk.getApplicationContext;
 public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyCallback {
     private FragmentManager fragmentManager;
     private MapFragment mapFragment;
-    private GoogleMap mgoogleMap;
+    private GoogleMap googleMap;
 
     private TextView bowlName, bowlLocation;
     private Button completedFeed;
-    private ImageView bowlimageView;
+    private ImageView bowlImageView;
 
     private static final String TAG = "blackjin";
 
@@ -117,7 +117,7 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
 
         bowlName = (TextView) findViewById(R.id.txt_bowl_name);
         bowlLocation = (TextView) findViewById(R.id.txt_bowl_location);
-        bowlimageView = findViewById(R.id.bowlimageView);
+        bowlImageView = findViewById(R.id.bowlimageView);
 
         Intent intent = getIntent();
         bowlId = intent.getLongExtra("id",0);
@@ -130,9 +130,9 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
                 URL url = new URL(bowlImage);
                 InputStream inputStream = url.openConnection().getInputStream();
                 bitmap = BitmapFactory.decodeStream(inputStream);
-                bowlimageView.setImageBitmap(bitmap);
-                bowlimageView.setBackground(new ShapeDrawable(new OvalShape()));
-                bowlimageView.setClipToOutline(true);
+                bowlImageView.setImageBitmap(bitmap);
+                bowlImageView.setBackground(new ShapeDrawable(new OvalShape()));
+                bowlImageView.setClipToOutline(true);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -240,12 +240,9 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
 
         switch (requestCode) {
             case PICK_FROM_ALBUM: {
-
                 Uri photoUri = data.getData();
                 Log.d(TAG, "PICK_FROM_ALBUM photoUri : " + photoUri);
-
                 cropImage(photoUri);
-
                 break;
             }
 
@@ -258,15 +255,15 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-        mgoogleMap = googleMap;
+        googleMap = googleMap;
 
         LatLng place = new LatLng(latitude, longitude);
         MarkerOptions marker = new MarkerOptions();
         marker.position(place); //좌표
         marker.title(name);
 
-        mgoogleMap.addMarker(marker);
-        mgoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, 16));
+        googleMap.addMarker(marker);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, 16));
     }
 
     private void goToAlbum() {
@@ -344,7 +341,7 @@ public class BowlDetailActivity extends AppCompatActivity implements OnMapReadyC
 
         originalBm = ImageUtils.rotateBitmap(originalBm,orientation);
 
-        bowlimageView.setImageBitmap(originalBm);
+        bowlImageView.setImageBitmap(originalBm);
 
         File temp = getApplicationContext().getCacheDir();
         String fileName = uid + ".jpg";

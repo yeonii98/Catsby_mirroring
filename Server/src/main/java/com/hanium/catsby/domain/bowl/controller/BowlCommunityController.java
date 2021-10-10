@@ -5,6 +5,7 @@ import com.hanium.catsby.domain.bowl.model.BowlCommunity;
 import com.hanium.catsby.domain.bowl.service.BowlCommunityService;
 import com.hanium.catsby.domain.common.sevice.S3Service;
 import com.hanium.catsby.domain.user.model.Users;
+import com.hanium.catsby.domain.user.service.UserService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -22,15 +23,14 @@ import java.util.stream.Collectors;
 public class BowlCommunityController {
 
     private final static String BOWL_COMMUNITY_DIR_NAME = "image/bowl/community/";
-
     private final BowlCommunityService bowlCommunityService;
     private final S3Service s3Service;
+    private final UserService userService;
 
     @PostMapping("/bowl/community/write/{bowlId}/{uid}")
     public CreateBowlCommunityResponse savaBowlCommunity(@RequestParam(value = "file") MultipartFile file, @PathVariable("bowlId") long bowlId, @PathVariable("uid") String uid, @RequestParam HashMap<String, RequestBody> request ) throws IOException {
-
         String imgUrl = s3Service.upload(file, BOWL_COMMUNITY_DIR_NAME, uid);
-
+        Users user = userService.findUsersByUid(uid);
         BowlCommunity bowlCommunity = new BowlCommunity();
         bowlCommunity.setUid(uid);
         bowlCommunity.setImage(imgUrl);
@@ -38,7 +38,29 @@ public class BowlCommunityController {
         bowlCommunity.setContent(con);
 
         Long communityId = bowlCommunityService.savaCommunity(bowlCommunity, uid, bowlId);
-        return new CreateBowlCommunityResponse(communityId);
+        return new CreateBowlCommunityResponse(communityId, user.getId(), user.getNickname(), user.getImage());
+    }
+
+    @GetMapping("/bowl/communities/{bowlId}")
+    public BowlCommunityResult bowlCommunitiesByBowl(@PathVariable("bowlId") Long bowlId) {
+        List<BowlCommunity> community = bowlCommunityService.findCommunityByBowl(bowlId);
+        List<BowlCommunityDto> collect = community.stream()
+                .map(bc -> new BowlCommunityDto(bc.getId(), bc.getUser(), bc.getImage(), bc.getContent(), bc.getUid(), bc.getCreatedDate(), (long) bc.getLikeCount()))
+                .collect(Collectors.toList());
+        return new BowlCommunityResult(collect);
+    }
+
+    @PutMapping("/bowl/community/{communityId}")
+    public UpdateBowlCommunityResponse updateBowlCommunity(@PathVariable("communityId") Long communityId, @RequestBody UpdateBowlCommunityRequest request){
+        bowlCommunityService.update(communityId, request.getContent());
+        BowlCommunity findBowlCommunity = bowlCommunityService.findCommunity(communityId);
+        return new UpdateBowlCommunityResponse(findBowlCommunity.getId(), findBowlCommunity.getContent());
+    }
+
+
+    @DeleteMapping("/bowl/community/{communityId}")
+    public void DeleteBowlCommunity(@PathVariable("communityId") Long id){
+        bowlCommunityService.delete(id);
     }
 
     @Data
@@ -50,18 +72,16 @@ public class BowlCommunityController {
     @Data
     static class CreateBowlCommunityResponse{
         private Long id;
-        public CreateBowlCommunityResponse(Long id) {
-            this.id = id;
-        }
-    }
+        private Long userId;
+        private String nickName;
+        private String image;
 
-    @GetMapping("/bowl/communities/{bowlId}")
-    public BowlCommunityResult bowlCommunitiesByBowl(@PathVariable("bowlId") Long bowlId) {
-        List<BowlCommunity> community = bowlCommunityService.findCommunityByBowl(bowlId);
-        List<BowlCommunityDto> collect = community.stream()
-                .map(bc -> new BowlCommunityDto(bc.getId(), bc.getUser(), bc.getImage(), bc.getContent(), bc.getUid(), bc.getCreatedDate(), (long) bc.getLikeCount()))
-                .collect(Collectors.toList());
-        return new BowlCommunityResult(collect);
+        public CreateBowlCommunityResponse(Long id, Long userId, String nickName, String image) {
+            this.id = id;
+            this.userId = userId;
+            this.nickName = nickName;
+            this.image = image;
+        }
     }
 
     @Data
@@ -81,19 +101,6 @@ public class BowlCommunityController {
         private String uid;
         private LocalDateTime createdDate;
         private Long likeCount;
-    }
-
-    @PutMapping("/bowl/community/{communityId}")
-    public UpdateBowlCommunityResponse updateBowlCommunity(@PathVariable("communityId") Long communityId, @RequestBody UpdateBowlCommunityRequest request){
-        bowlCommunityService.update(communityId, request.getContent());
-        BowlCommunity findBowlCommunity = bowlCommunityService.findCommunity(communityId);
-        return new UpdateBowlCommunityResponse(findBowlCommunity.getId(), findBowlCommunity.getContent());
-    }
-
-
-    @DeleteMapping("/bowl/community/{communityId}")
-    public void DeleteBowlCommunity(@PathVariable("communityId") Long id){
-        bowlCommunityService.delete(id);
     }
 
     @Data

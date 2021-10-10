@@ -36,7 +36,6 @@ public class BowlController {
         bowl.setName(name);
         bowl.setAddress(address);
         bowl.setQrImage(qrUrl);
-
         try {
             Long id = bowlService.enroll(bowl);
             return ResponseEntity.ok(new CreateBowlResponse(id));

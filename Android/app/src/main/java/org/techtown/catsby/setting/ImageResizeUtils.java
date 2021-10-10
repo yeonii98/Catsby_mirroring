@@ -1,4 +1,4 @@
-package org.techtown.catsby.home;
+package org.techtown.catsby.setting;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
