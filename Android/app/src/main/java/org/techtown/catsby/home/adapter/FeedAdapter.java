@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.techtown.catsby.R;
+import org.techtown.catsby.home.BowlFragment;
 import org.techtown.catsby.home.model.Feed;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.BowlCommentList;
@@ -73,11 +74,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
 
     public FeedAdapter(ArrayList<Feed> itemData) {
         this.itemData = itemData;
-    }
-
-    public void addItem(Feed feed){
-        itemData.add(feed);
-        bool.add(true);
+        bool.add(0, true);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -5,6 +5,17 @@ public class BowlCommunityResponse {
     private int userId;
     private String nickName;
     private String image;
+    private String userImg;
+
+    public String getUserImg() {
+        return userImg;
+    }
+
+    private String createDateTime;
+
+    public String getCreateDateTime() {
+        return createDateTime;
+    }
 
     public int getId() {
         return id;

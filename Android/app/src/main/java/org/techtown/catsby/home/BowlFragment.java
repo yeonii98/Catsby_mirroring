@@ -1,6 +1,8 @@
 package org.techtown.catsby.home;
 
 import android.Manifest;
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,6 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,11 +51,14 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static java.time.LocalDateTime.now;
+import static org.techtown.catsby.home.adapter.FeedAdapter.itemData;
 
 public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterClickListener {
     private Context mContext;
     private FragmentManager fragmentManager;
     private Boolean isPermission = true;
+    boolean change = false;
+    static LinearLayout reFresh;
     BowlAdapter bowlAdapter;
     ArrayList<byte[]> bowlImageArray = new ArrayList<>();
     BowlService bowlService = RetrofitClient.getBowlService();
@@ -82,7 +88,7 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
         }
 
         bowlAdapter.setOnClickListener(this);
-        LinearLayout reFresh = view.findViewById(R.id.refreshView);
+        reFresh = view.findViewById(R.id.refreshView);
         reFresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,6 +142,23 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
                 System.out.println("t.getMessage() = " + t.getMessage());
             }
         });
+    }
+
+    public void callchange(ArrayList<Feed> callList) {
+        try {
+            reFresh.performClick();
+        }
+        catch (Exception e){
+            if (!change){
+                change = true;
+                feedList = new ArrayList<>();
+                DateDescending dateAscending = new DateDescending();
+                Collections.sort(callList, dateAscending);
+                FeedAdapter feedAdapter;
+                feedAdapter = new FeedAdapter(callList);
+                feedAdapter.notifyDataSetChanged();
+            }
+        }
     }
 
     private void loadCommunity(int bowlId) {

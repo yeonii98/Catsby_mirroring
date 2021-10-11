@@ -4,6 +4,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -33,9 +35,13 @@ import android.Manifest;
 
 import org.techtown.catsby.R;
 import org.techtown.catsby.home.adapter.BowlCheckListAdapter;
+import static org.techtown.catsby.home.adapter.FeedAdapter.itemData;
+
+import org.techtown.catsby.home.adapter.FeedAdapter;
 import org.techtown.catsby.home.model.Bowl;
+import org.techtown.catsby.home.model.Feed;
 import org.techtown.catsby.retrofit.RetrofitClient;
-import org.techtown.catsby.retrofit.dto.BowlCommunity;
+import org.techtown.catsby.retrofit.dto.BowlCommunityResponse;
 import org.techtown.catsby.retrofit.dto.BowlList;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
 import org.techtown.catsby.retrofit.service.BowlService;
@@ -45,6 +51,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -81,12 +89,14 @@ public class BowlWriteActivity extends AppCompatActivity{
     File image;
     ImageView contextView;
     EditText postContext;
+    FeedAdapter feedAdapter;
     int[] bowlImg = {R.drawable.ic_baseline_favorite_red, R.drawable.ic_baseline_star_border_24, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground, R.drawable.ic_launcher_foreground};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_writemain);
+        feedAdapter = new FeedAdapter(itemData);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -137,8 +147,6 @@ public class BowlWriteActivity extends AppCompatActivity{
                     postContext.setText("");
                     image = null;
 
-                    Toast.makeText(getApplicationContext(),"게시글이 등록되었습니다.", Toast.LENGTH_SHORT).show();
-
                 }else{
                     Toast.makeText(getApplicationContext(),"이미지를 첨부해 주세요.", Toast.LENGTH_SHORT).show();
                 }
@@ -168,16 +176,24 @@ public class BowlWriteActivity extends AppCompatActivity{
 
         RequestBody requestBody = RequestBody.create(MediaType.parse("image/jpg"), byteArrayOutputStream.toByteArray());
         MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName() ,requestBody);
-        bowlCommunityService.saveCommunity(body, id, uid, map).enqueue(new Callback<List<BowlCommunity>>() {
+
+        bowlCommunityService.saveCommunity(body, id, uid, map).enqueue(new Callback<BowlCommunityResponse>() {
             @Override
-            public void onResponse(Call<List<BowlCommunity>> call, Response<List<BowlCommunity>> response) {
-                System.out.println(" success" );
+            public void onResponse(Call<BowlCommunityResponse> call, Response<BowlCommunityResponse> response) {
+                System.out.println("call = " + response.body());
+                BowlCommunityResponse bowlCommunityResponse = (BowlCommunityResponse) response.body();
+                assert bowlCommunityResponse != null;
+                Feed feed = new Feed(bowlCommunityResponse.getId(), bowlCommunityResponse.getUserId(), bowlCommunityResponse.getUserImg(), bowlCommunityResponse.getNickName(), bowlCommunityResponse.getImage(), context, user.getUid(), bowlCommunityResponse.getCreateDateTime(), 0);
+                BowlFragment bowlFragment = new BowlFragment();
+                itemData.add(feed);
+                bowlFragment.callchange(itemData);
+            }
+            @Override
+            public void onFailure(Call<BowlCommunityResponse> call, Throwable t) {
+
             }
 
-            @Override
-            public void onFailure(Call<List<BowlCommunity>> call, Throwable t) {
-                System.out.println("t.getMessage() = " + t.getMessage());
-            }
+
         });
     }
 
@@ -383,4 +399,6 @@ public class BowlWriteActivity extends AppCompatActivity{
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
+
