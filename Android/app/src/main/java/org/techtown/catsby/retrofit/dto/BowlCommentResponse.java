@@ -5,10 +5,10 @@ public class BowlCommentResponse {
     private int id;
     private String nickname;
     private String date;
-    private int userId;
+    private User user;
 
-    public int getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
     public int getId() {

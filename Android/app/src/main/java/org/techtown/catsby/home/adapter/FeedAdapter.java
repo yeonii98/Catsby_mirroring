@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.StrictMode;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import android.widget.TextView;
 import org.techtown.catsby.R;
 import org.techtown.catsby.home.model.Feed;
 import org.techtown.catsby.retrofit.RetrofitClient;
-import org.techtown.catsby.retrofit.dto.BowlComment;
 import org.techtown.catsby.retrofit.dto.BowlCommentList;
 import org.techtown.catsby.retrofit.dto.BowlCommentUsingComment;
 import org.techtown.catsby.retrofit.dto.BowlCommunityUpdatePost;
@@ -416,8 +414,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                     BowlCommentList tempComment = bowlComments;
                     List<BowlCommentUsingComment> parameterBowlCommentList= new ArrayList<>();
                     for (int i =0; i < tempComment.getBowlComments().size(); i++){
-                        BowlCommentUsingComment bowlCommentUsingComment = new BowlCommentUsingComment(tempComment.getBowlComments().get(i).getId(), tempComment.getBowlComments().get(i).getUser().getNickname(), tempComment.getBowlComments().get(i).getContent(), tempComment.getBowlComments().get(i).getCreateDate(), tempComment.getBowlComments().get(i).getUser().getId(), tempComment.getBowlComments().get(i).getUid(), (int) communityId);
-                        parameterBowlCommentList.add(bowlCommentUsingComment);
+                        System.out.println("\"!!!!!!!!!!!!!!!!\" = " + "!!!!!!!!!!!!!!!!");
+                        BowlCommentUsingComment bowlGetComment = new BowlCommentUsingComment(tempComment.getBowlComments().get(i).getId(), tempComment.getBowlComments().get(i).getContent(), tempComment.getBowlComments().get(i).getCreateDate(), (int) communityId, tempComment.getBowlComments().get(i).getUser());
+                        parameterBowlCommentList.add(bowlGetComment);
+                        System.out.println("bowlGetComment = " + tempComment.getBowlComments().get(i).getUser().getImage());
+                        System.out.println("bowlGetComment = " + tempComment.getBowlComments().get(i).getUser().getUid());
                     }
                     MComment = parameterBowlCommentList;
                     intent.putExtra("comment", (Serializable) parameterBowlCommentList);
