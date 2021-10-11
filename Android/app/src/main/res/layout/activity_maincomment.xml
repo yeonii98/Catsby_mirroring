@@ -12,39 +12,48 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/maincmt_recyclerview"
         android:layout_width="match_parent"
         android:layout_height="598dp"
         android:scrollbars="vertical" />
+    </ScrollView>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="69dp"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:id="@+id/bottom"
+        android:background="#fff"
+        android:padding="4dp">
 
         <EditText
             android:id="@+id/post_text"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="10dp"
-            android:layout_toLeftOf="@+id/commentlist_postbtn"
             android:background="@android:color/transparent"
-            android:hint="댓글을 입력하세요..." />
+            android:hint="댓글을 입력하세요..."
+            android:layout_toStartOf="@+id/post_save_button1"/>
 
         <Button
             android:id="@+id/post_save_button1"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginEnd="14dp"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="5dp"
             android:background="#FFACDBE8"
             android:text="게시"
             android:textColor="@color/black" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>
