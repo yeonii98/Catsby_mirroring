@@ -3,39 +3,22 @@ package org.techtown.catsby.retrofit.dto;
 import java.io.Serializable;
 
 public class BowlCommentUsingComment implements Serializable {
-
     private int id;
-    private int userId;
-    private String nickname;
     private String content;
     private String createDate;
-    private String uid;
     private int communityId;
+    private User user;
 
-    public BowlCommentUsingComment(int id, String nickname, String content, String createDate, int userId, String uid, int communityId) {
+    public BowlCommentUsingComment(int id, String content, String createDate, int communityId, User user) {
         this.id = id;
-        this.nickname = nickname;
         this.content = content;
         this.createDate = createDate;
-        this.userId = userId;
-        this.uid = uid;
         this.communityId = communityId;
-    }
-
-    public int getCommunityId() {
-        return communityId;
+        this.user = user;
     }
 
     public int getId() {
         return id;
-    }
-
-    public int getUserId() {
-        return userId;
-    }
-
-    public String getNickname() {
-        return nickname;
     }
 
     public String getContent() {
@@ -46,7 +29,11 @@ public class BowlCommentUsingComment implements Serializable {
         return createDate;
     }
 
-    public String getUid() {
-        return uid;
+    public int getCommunityId() {
+        return communityId;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

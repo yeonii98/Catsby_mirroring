@@ -1,15 +1,21 @@
 package org.techtown.catsby.home.adapter;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,12 +24,11 @@ import com.google.firebase.auth.FirebaseUser;
 import org.jetbrains.annotations.NotNull;
 import org.techtown.catsby.R;
 import org.techtown.catsby.retrofit.RetrofitClient;
-import org.techtown.catsby.retrofit.dto.BowlComment;
-import org.techtown.catsby.retrofit.dto.BowlCommentPost;
 import org.techtown.catsby.retrofit.dto.BowlCommentUpdate;
 import org.techtown.catsby.retrofit.dto.BowlCommentUsingComment;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,12 +38,11 @@ import retrofit2.Response;
 
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
-import static android.view.View.inflate;
-import static org.techtown.catsby.home.adapter.FeedAdapter.MComment;
 
 public class BowlCommentAdapter extends RecyclerView.Adapter<BowlCommentAdapter.ViewHolder> {
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private List<BowlCommentUsingComment> bowlCommentData;
+    private Bitmap bm;
     BowlCommunityService bowlCommunityService = RetrofitClient.getBowlCommunityService();
     Button commentDelete;
     Button commentUpdate;
@@ -53,14 +57,15 @@ public class BowlCommentAdapter extends RecyclerView.Adapter<BowlCommentAdapter.
     }
 
     public void addItem(BowlCommentUsingComment comment){
-        bowlCommentData.add((BowlCommentUsingComment) comment);
+        bowlCommentData.add(comment);
         bool.add(true);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         EditText editText;
-        TextView textView ;
+        TextView textView;
         TextView nickNameView;
+        ImageView commentImage;
         Button commentDelete1 = (Button)itemView.findViewById(R.id.mainCmtDeleteBtn);
         Button commentUpdate1= (Button)itemView.findViewById(R.id.mainCmtUpdateBtn);
         Button commentUpdateFinish1= (Button)itemView.findViewById(R.id.mainCmtUpdateFinishBtn);
@@ -70,11 +75,12 @@ public class BowlCommentAdapter extends RecyclerView.Adapter<BowlCommentAdapter.
             textView = view.findViewById(R.id.maincmtContent) ;
             nickNameView = view.findViewById(R.id.maincmtNickName);
             editText = view.findViewById(R.id.editCmtContent);
+            commentImage = view.findViewById(R.id.main_comment_img);
 
             if (!putComment){
                 putComment = true;
                 for (int i =0; i < bowlCommentData.size(); i ++) {
-                    if(bowlCommentData.get(i).getUid().equals(user.getUid())){
+                    if(bowlCommentData.get(i).getUser().getUid().equals(user.getUid())){
                         bool.add(true);
                     } else{
                         bool.add(false);
@@ -102,7 +108,19 @@ public class BowlCommentAdapter extends RecyclerView.Adapter<BowlCommentAdapter.
     public void onBindViewHolder(@NonNull @NotNull BowlCommentAdapter.ViewHolder holder, int position) {
         if (bowlCommentData.size() > 0 ){
             String text = bowlCommentData.get(position).getContent() ;
-            String nickName = bowlCommentData.get(position).getNickname();
+            String nickName = bowlCommentData.get(position).getUser().getNickname();
+
+            URL url = null;
+            try {
+                url = new URL(bowlCommentData.get(position).getUser().getImage());
+                InputStream inputStream = url.openConnection().getInputStream();
+                bm = BitmapFactory.decodeStream(inputStream);
+                holder.commentImage.setImageBitmap(bm);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             holder.textView.setText(text);
             holder.nickNameView.setText(nickName);
