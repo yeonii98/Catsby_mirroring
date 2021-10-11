@@ -74,7 +74,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
 
     public FeedAdapter(ArrayList<Feed> itemData) {
         this.itemData = itemData;
-         bool.add(0, true);
+        bool.add(0, true);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
