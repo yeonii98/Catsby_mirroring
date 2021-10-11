@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -249,6 +250,26 @@ public class BowlWriteActivity extends AppCompatActivity{
             case PICK_FROM_ALBUM: {
                 Uri photoUri = data.getData();
                 Log.d(TAG, "PICK_FROM_ALBUM photoUri : " + photoUri);
+
+                Cursor cursor = null;
+                try {
+
+                    String[] proj = {MediaStore.Images.Media.DATA};
+                    assert photoUri != null;
+                    cursor = getContentResolver().query(photoUri, proj, null, null, null);
+                    assert cursor != null;
+                    int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                    cursor.moveToFirst();
+
+                    image = new File(cursor.getString(column_index));
+                    tempFile = new File(cursor.getString(column_index));
+                    Log.d(TAG, "tempFile Uri : " + Uri.fromFile(tempFile));
+
+                } finally {
+                    if (cursor != null) {
+                        cursor.close();
+                    }
+                }
                 cropImage(photoUri);
                 break;
             }
