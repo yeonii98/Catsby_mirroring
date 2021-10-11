@@ -137,6 +137,8 @@ public class BowlWriteActivity extends AppCompatActivity{
                     postContext.setText("");
                     image = null;
 
+                    Toast.makeText(getApplicationContext(),"게시글이 등록되었습니다.", Toast.LENGTH_SHORT).show();
+
                 }else{
                     Toast.makeText(getApplicationContext(),"이미지를 첨부해 주세요.", Toast.LENGTH_SHORT).show();
                 }
