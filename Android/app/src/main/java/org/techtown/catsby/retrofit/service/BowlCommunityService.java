@@ -8,6 +8,7 @@ import org.techtown.catsby.retrofit.dto.BowlCommentUpdate;
 import org.techtown.catsby.retrofit.dto.BowlCommunity;
 import org.techtown.catsby.retrofit.dto.BowlCommunityList;
 import org.techtown.catsby.retrofit.dto.BowlCommunityPost;
+import org.techtown.catsby.retrofit.dto.BowlCommunityResponse;
 import org.techtown.catsby.retrofit.dto.BowlCommunityUpdatePost;
 import org.techtown.catsby.retrofit.dto.BowlLike;
 import org.techtown.catsby.retrofit.dto.BowlLikeList;
@@ -34,7 +35,7 @@ public interface BowlCommunityService {
 
     @Multipart
     @POST("bowl/community/write/{bowlId}/{uid}")
-    Call<List<BowlCommunity>> saveCommunity(@Part MultipartBody.Part file,  @Path("bowlId") int bowlId, @Path("uid") String uid, @PartMap HashMap<String, RequestBody> content);
+    Call<BowlCommunityResponse> saveCommunity(@Part MultipartBody.Part file, @Path("bowlId") int bowlId, @Path("uid") String uid, @PartMap HashMap<String, RequestBody> content);
 
     @GET("/bowl/communities/{bowlId}")
     Call<BowlCommunityList> getCommunitiesByBowl(@Path("bowlId") int bowlId);

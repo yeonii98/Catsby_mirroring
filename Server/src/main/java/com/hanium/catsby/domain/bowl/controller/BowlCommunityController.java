@@ -38,7 +38,7 @@ public class BowlCommunityController {
         bowlCommunity.setContent(con);
 
         Long communityId = bowlCommunityService.savaCommunity(bowlCommunity, uid, bowlId);
-        return new CreateBowlCommunityResponse(communityId, user.getId(), user.getNickname(), user.getImage());
+        return new CreateBowlCommunityResponse(communityId, user.getId(), user.getNickname(), user.getImage(), bowlCommunity.getImage(), bowlCommunity.getCreatedDate());
     }
 
     @GetMapping("/bowl/communities/{bowlId}")
@@ -74,13 +74,17 @@ public class BowlCommunityController {
         private Long id;
         private Long userId;
         private String nickName;
+        private String userImg;
         private String image;
+        private LocalDateTime createDateTime;
 
-        public CreateBowlCommunityResponse(Long id, Long userId, String nickName, String image) {
+        public CreateBowlCommunityResponse(Long id, Long userId, String nickName, String image, String userImg, LocalDateTime createDateTime) {
             this.id = id;
             this.userId = userId;
+            this.userImg = userImg;
             this.nickName = nickName;
             this.image = image;
+            this.createDateTime = createDateTime;
         }
     }
 
