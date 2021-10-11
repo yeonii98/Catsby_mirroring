@@ -19,10 +19,8 @@ import org.techtown.catsby.home.adapter.FeedAdapter;
 import org.techtown.catsby.home.model.Feed;
 import org.techtown.catsby.qrcode.LoadingActivity;
 import org.techtown.catsby.retrofit.RetrofitClient;
-import org.techtown.catsby.retrofit.dto.BowlCommunity;
 import org.techtown.catsby.retrofit.dto.BowlCommunityList;
 import org.techtown.catsby.retrofit.dto.BowlInfo;
-import org.techtown.catsby.retrofit.dto.BowlLike;
 import org.techtown.catsby.retrofit.dto.BowlList;
 import org.techtown.catsby.retrofit.service.BowlCommunityService;
 import org.techtown.catsby.retrofit.service.BowlService;
@@ -31,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -55,8 +52,6 @@ import static java.time.LocalDateTime.now;
 public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterClickListener {
     private Context mContext;
     private FragmentManager fragmentManager;
-
-
     private Boolean isPermission = true;
     BowlAdapter bowlAdapter;
     ArrayList<byte[]> bowlImageArray = new ArrayList<>();
@@ -191,7 +186,7 @@ public class BowlFragment extends Fragment implements BowlAdapter.BowlAdapterCli
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_write:
-                Intent intent = new Intent(getActivity(), BowlWrite.class);
+                Intent intent = new Intent(getActivity(), BowlWriteActivity.class);
                 startActivity(intent);
                 break;
 

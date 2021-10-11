@@ -64,11 +64,9 @@ public class BowlCommentAdapter extends RecyclerView.Adapter<BowlCommentAdapter.
         Button commentDelete1 = (Button)itemView.findViewById(R.id.mainCmtDeleteBtn);
         Button commentUpdate1= (Button)itemView.findViewById(R.id.mainCmtUpdateBtn);
         Button commentUpdateFinish1= (Button)itemView.findViewById(R.id.mainCmtUpdateFinishBtn);
-        EditText textPost = view.findViewById(R.id.post_text);
 
         ViewHolder(View itemView) {
             super(itemView) ;
-
             textView = view.findViewById(R.id.maincmtContent) ;
             nickNameView = view.findViewById(R.id.maincmtNickName);
             editText = view.findViewById(R.id.editCmtContent);
@@ -78,8 +76,7 @@ public class BowlCommentAdapter extends RecyclerView.Adapter<BowlCommentAdapter.
                 for (int i =0; i < bowlCommentData.size(); i ++) {
                     if(bowlCommentData.get(i).getUid().equals(user.getUid())){
                         bool.add(true);
-                    }
-                    else{
+                    } else{
                         bool.add(false);
                     }
                 }
@@ -93,12 +90,10 @@ public class BowlCommentAdapter extends RecyclerView.Adapter<BowlCommentAdapter.
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         Context context = parent.getContext() ;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) ;
-
         view = inflater.inflate(R.layout.main_comment_list_item1, parent, false);
         commentDelete = (Button)view.findViewById(R.id.mainCmtDeleteBtn);
         commentUpdate = (Button)view.findViewById(R.id.mainCmtUpdateBtn);
         commentUpdateFinish = (Button)view.findViewById(R.id.mainCmtUpdateFinishBtn);
-
         BowlCommentAdapter.ViewHolder vh = new BowlCommentAdapter.ViewHolder(view) ;
         return vh ;
     }
@@ -115,7 +110,6 @@ public class BowlCommentAdapter extends RecyclerView.Adapter<BowlCommentAdapter.
             commentDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    System.out.println("view = " + bowlCommentData.get(position).getId());
                     deleteComment(position, bowlCommentData.get(position).getId());
                 }
             });
@@ -129,8 +123,7 @@ public class BowlCommentAdapter extends RecyclerView.Adapter<BowlCommentAdapter.
             if (bool.get(position)) {
                 holder.commentDelete1.setVisibility(VISIBLE);
                 holder.commentUpdate1.setVisibility(VISIBLE);
-            }
-            else{
+            } else{
                 holder.commentDelete1.setVisibility(INVISIBLE);
                 holder.commentUpdate1.setVisibility(INVISIBLE);
             }
