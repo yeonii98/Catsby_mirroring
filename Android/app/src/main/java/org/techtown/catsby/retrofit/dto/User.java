@@ -2,9 +2,10 @@ package org.techtown.catsby.retrofit.dto;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class User {
+public class User extends ClassLoader implements Serializable {
 
     private int id;
     private String nickname;

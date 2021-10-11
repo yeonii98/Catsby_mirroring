@@ -38,7 +38,7 @@ public class BowlCommentController {
 
         String content = bowlComment.getBowlCommunity().getContent();
         notificationService.saveNotification(user, content, NotificationType.COMMENT);
-        return new CreateBowlCommentResponse(id, user.getNickname(), bowlComment.getCreatedDate(), user.getId());
+        return new CreateBowlCommentResponse(id, user.getNickname(), bowlComment.getCreatedDate(), user.getId(), user);
     }
 
     @GetMapping("/bowl/community/comments/{communityId}")
@@ -48,12 +48,6 @@ public class BowlCommentController {
                 .map(bc -> new BowlCommentDto(bc.getId(), bc.getContent(), bc.getCreatedDate(), bc.getUser(), bc.getBowlCommunity(), bc.getUid()))
                 .collect(Collectors.toList());
         return new BowlCommentResult(collect);
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class BowlCommentResult<T> {
-        private T data;
     }
 
     @PutMapping("/bowl/community/comment/{commentId}")
@@ -67,6 +61,12 @@ public class BowlCommentController {
     @DeleteMapping("/bowl/community/comment/{commentId}")
     public void DeleteBowlComment(@PathVariable("commentId") Long id){
         bowlCommentService.delete(id);
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class BowlCommentResult<T> {
+        private T data;
     }
 
     @Data
@@ -106,12 +106,14 @@ public class BowlCommentController {
         private String nickname;
         private LocalDateTime date;
         private Long userId;
+        private Users user;
 
-        public CreateBowlCommentResponse(Long id, String nickname, LocalDateTime date, Long userId){
+        public CreateBowlCommentResponse(Long id, String nickname, LocalDateTime date, Long userId, Users user){
             this.id = id;
             this.nickname = nickname;
             this.date = date;
             this.userId = userId;
+            this.user = user;
         }
     }
 

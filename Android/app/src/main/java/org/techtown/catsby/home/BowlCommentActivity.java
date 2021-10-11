@@ -85,7 +85,7 @@ public class BowlCommentActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<BowlCommentResponse> call, Response<BowlCommentResponse> response) {
                 BowlCommentResponse bowlCommentResponse = (BowlCommentResponse) response.body();
-                BowlCommentUsingComment bowlCommentUsingComment = new BowlCommentUsingComment(bowlCommentResponse.getId(), bowlCommentResponse.getNickname(), context, bowlCommentResponse.getDate(), bowlCommentResponse.getUserId(), user.getUid(), id);
+                BowlCommentUsingComment bowlCommentUsingComment = new BowlCommentUsingComment(bowlCommentResponse.getId(), context, bowlCommentResponse.getDate(), id, bowlCommentResponse.getUser());
                 adapter.addItem((BowlCommentUsingComment) bowlCommentUsingComment);
                 adapter.notifyDataSetChanged();
             }
