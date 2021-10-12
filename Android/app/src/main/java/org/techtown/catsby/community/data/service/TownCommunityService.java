@@ -20,8 +20,8 @@ import retrofit2.http.Path;
 
 public interface TownCommunityService {
 
-    @GET("townCommunity/{uid}")
-    Call<List<TownCommunity>> getTownList(@Path("uid") String uid);
+    @GET("townCommunity")
+    Call<List<TownCommunity>> getTownList();
 
     @Multipart
     @POST("townCommunity/write/{uid}")
