@@ -36,8 +36,8 @@ public class BowlCommentController {
         bowlComment.setUid(uid);
         Long id = bowlCommentService.savaComment(bowlComment, user.getId(), communityId);
 
-        String content = bowlComment.getBowlCommunity().getContent();
-        notificationService.saveNotification(user, content, NotificationType.COMMENT);
+        BowlCommunity bowlCommunity = bowlComment.getBowlCommunity();
+        notificationService.saveNotification(user, bowlCommunity.getUser(), bowlCommunity.getContent(), NotificationType.COMMENT);
         return new CreateBowlCommentResponse(id, user.getNickname(), bowlComment.getCreatedDate(), user.getId(), user);
     }
 

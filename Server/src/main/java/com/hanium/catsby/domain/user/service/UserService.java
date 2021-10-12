@@ -68,7 +68,5 @@ public class UserService {
         Users user = userRepository.findUserByUid(uid);
         user.setFcmToken(token);
     }
-
-
 }
 
