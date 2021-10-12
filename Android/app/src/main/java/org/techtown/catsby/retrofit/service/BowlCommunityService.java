@@ -65,6 +65,6 @@ public interface BowlCommunityService {
     Call<BowlLikeList> getLikes(@Path("uid") String userId);
 
     @DELETE("/bowl/community/like/{communityId}/{id}")
-    Call<Void> deleteLike(@Path("communityId") long communityId, @Path("likeId") long likeId);
+    Call<Void> deleteLike(@Path("communityId") long communityId, @Path("id") long id);
 
 }
