@@ -31,10 +31,6 @@ public class NotificationService {
     private static final String TITLE = " 밥그릇에 급여 완료";
     private static final String BODY = "에 급여되었습니다.";
 
-    private static final String MESSAGE1 = "님이";
-    private static final String MESSAGE2 = "밥그릇에 급여했습니다.";
-
-
     private final UserRepository userRepository;
     private final BowlRepository bowlRepository;
     private final NotificationRepository notificationRepository;
@@ -47,35 +43,37 @@ public class NotificationService {
         Users user = userRepository.findUserByUid(uid);
         String userToken = user.getFcmToken();
 
-        List<TokenDto> users = bowlRepository.findUsersByBowlId(bowlId);
+        List<TokenDto> userTokens = bowlRepository.findUsersByBowlId(bowlId);
         List<String> registrationTokens = new ArrayList<>();
 
-        for (TokenDto tokenDto : users) {
-            String token = tokenDto.getToken();
-            if (token.equals(userToken)) continue;
+        if (userTokens.size() > 1) {
+            for (TokenDto tokenDto : userTokens) {
+                String token = tokenDto.getToken();
+                if (token.equals(userToken)) continue;
 
-            registrationTokens.add(tokenDto.getToken());
+                registrationTokens.add(tokenDto.getToken());
 
-            Users sendUser = userRepository.findUser(tokenDto.getUserId());
-            saveNotification(sendUser, bowl.getName(), NotificationType.BOWL_USER);
+                Users toUser = userRepository.findUser(tokenDto.getUserId());
+                saveNotification(user, toUser, bowl.getName(), NotificationType.BOWL_USER);
+            }
+
+            String title = bowl.getName() + TITLE;
+            String body = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH시 mm분")) + BODY;
+
+            MulticastMessage message = NotificationUtil.sendMulticastMessage(title, body, registrationTokens);
+
+            BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
+            System.out.println(response.getSuccessCount() + " messages were sent successfully");
         }
-
-        String title = bowl.getName() + TITLE;
-        String body = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH시 mm분")) + BODY;
-
-        MulticastMessage message = NotificationUtil.sendMulticastMessage(title, body, registrationTokens);
-
-        BatchResponse response = FirebaseMessaging.getInstance().sendMulticast(message);
-        System.out.println(response.getSuccessCount() + " messages were sent successfully");
     }
 
     @Transactional
-    public void saveNotification(Users user, String content, NotificationType type) {
+    public void saveNotification(Users fromUser, Users toUser, String content, NotificationType type) {
 
-        String message = user.getNickname() + NotificationUtil.makeNotification(content, type);
+        String message = fromUser.getNickname() + NotificationUtil.makeNotification(content, type);
 
         Notification notification = new Notification();
-        notification.setUser(user);
+        notification.setUser(toUser);
         notification.setMessage(message);
         notificationRepository.save(notification);
     }

@@ -1,5 +1,6 @@
 package com.hanium.catsby.domain.town.controller;
 
+import com.hanium.catsby.domain.town.model.TownCommunity;
 import com.hanium.catsby.domain.town.model.TownLike;
 import com.hanium.catsby.domain.town.service.TownLikeService;
 import com.hanium.catsby.domain.notification.model.NotificationType;
@@ -26,8 +27,8 @@ public class TownLikeController {
         townLikeService.createTownLike(id, uid, townLike);
 
         Users user = userService.findUsersByUid(uid);
-        String content = townLike.getTownCommunity().getTitle();
-        notificationService.saveNotification(user, content, NotificationType.LIKE);
+        TownCommunity townCommunity = townLike.getTownCommunity();
+        notificationService.saveNotification(user, townCommunity.getUser(), townCommunity.getContent(), NotificationType.LIKE);
 
         return "좋아요 완료";
     }

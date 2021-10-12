@@ -1,5 +1,6 @@
 package com.hanium.catsby.domain.town.controller;
 
+import com.hanium.catsby.domain.town.model.TownCommunity;
 import com.hanium.catsby.domain.town.service.TownCommentService;
 import com.hanium.catsby.domain.town.model.TownComment;
 import com.hanium.catsby.domain.notification.model.NotificationType;
@@ -34,8 +35,8 @@ public class TownCommentController {
 
         TownComment mTownComment = townCommentService.writeTownComment(id, uid, townComment);
 
-        String content = townComment.getTownCommunity().getTitle();
-        notificationService.saveNotification(user, content, NotificationType.COMMENT);
+        TownCommunity townCommunity = townComment.getTownCommunity();
+        notificationService.saveNotification(user, townCommunity.getUser(), townComment.getContent(), NotificationType.COMMENT);
 
         return mTownComment;
     }

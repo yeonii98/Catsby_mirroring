@@ -24,8 +24,8 @@ public class NotificationController {
     @GetMapping("/send/{bowlId}/{uid}")
     public ResponseEntity<?> sendNotification(@PathVariable("bowlId") Long bowlId, @PathVariable("uid") String uid) {
         try {
-            notificationService.sendMessages(bowlId, uid);
             bowlService.saveBowlFeed(uid, bowlId);
+            notificationService.sendMessages(bowlId, uid);
             return ResponseEntity.ok(new BaseResponse("success"));
         } catch (FirebaseMessagingException e) {
             return ResponseEntity.notFound().build();
