@@ -4,8 +4,9 @@ public class BowlCommunityResponse {
     private int id;
     private int userId;
     private String nickName;
-    private String image;
     private String userImg;
+    private String image;
+
 
     public String getUserImg() {
         return userImg;

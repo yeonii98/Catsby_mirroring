@@ -78,7 +78,7 @@ public class BowlCommunityController {
         private String image;
         private LocalDateTime createDateTime;
 
-        public CreateBowlCommunityResponse(Long id, Long userId, String nickName, String image, String userImg, LocalDateTime createDateTime) {
+        public CreateBowlCommunityResponse(Long id, Long userId, String nickName, String userImg, String image, LocalDateTime createDateTime) {
             this.id = id;
             this.userId = userId;
             this.userImg = userImg;
