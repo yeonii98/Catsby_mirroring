@@ -48,9 +48,8 @@ public class TownCommunityService {
     }
 
     @Transactional(readOnly = true)
-    public List<TownCommunity> listTownCommunity(String uid){//글 목록
-        String address = userRepository.findUserByUid(uid).getAddress();
-        return townCommunityRepository.findByUser_AddressOrderById(address.trim());
+    public List<TownCommunity> listTownCommunity(){//글 목록
+        return townCommunityRepository.findAll();
     }
 
 

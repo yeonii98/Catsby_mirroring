@@ -58,6 +58,7 @@ public class FragmentCommunity extends Fragment {
     public RecyclerAdapter recyclerAdapter;
     private TownCommunityService townCommunityService = RetrofitClient.getTownCommunityService();
     private TownLikeService townLikeService = RetrofitClient.getTownLikeService();
+    private UserService userService = RetrofitClient.getUser();
     private String img = null;
     private String userImg = null;
     private Bitmap bm = null;
@@ -87,47 +88,66 @@ public class FragmentCommunity extends Fragment {
         recyclerView.setAdapter(recyclerAdapter);
 
         recyclerView.setLayoutManager(layoutManager);
-
-        townCommunityService.getTownList(uid).enqueue(new Callback<List<TownCommunity>>() {
+        userService.getUser(uid).enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<List<TownCommunity>> call, Response<List<TownCommunity>> response) {
-                if (response.isSuccessful()) {
-                    addressExist = 1;
-                    List<TownCommunity> result = response.body();
-
-                    for (int i = 0; i < result.size(); i++) {
-                        img = result.get(i).getImage();
-
-                        if (result.get(i).isAnonymous())
-                            nickName = "익명";
-                        else
-                            nickName = result.get(i).getUser().getNickname();
-
-                        userImg = result.get(i).getUser().getImage();
-
-                        push = push(result.get(i).getTownLike().size(), result.get(i).getTownLike());
-
-                        Memo memo = new Memo(result.get(i).getId(), result.get(i).getUser().getUid(),
-                                result.get(i).getTitle(), result.get(i).getContent(), result.get(i).getTownLike().size(),
-                                nickName, result.get(i).getDate(), img, push, userImg);
-                        recyclerAdapter.addItem(memo);
-                    }
-                    recyclerAdapter.notifyDataSetChanged();
-
-                } else {
+            public void onResponse(Call<User> call, Response<User> response) {
+                String userAddress = response.body().getAddress();
+                System.out.println("userAddress = " + userAddress);
+                if(userAddress == null){
                     Memo memo = new Memo("설정에서 동네를 등록해주세요", "동네를 등록 한 후 글쓰기가 가능합니다.");
                     addressExist = 0;
                     recyclerAdapter.addItem(memo);
                     btnAdd.setEnabled(false);
                     recyclerAdapter.notifyDataSetChanged();
                 }
+                else{
+                    townCommunityService.getTownList().enqueue(new Callback<List<TownCommunity>>() {
+                        @Override
+                        public void onResponse(Call<List<TownCommunity>> call, Response<List<TownCommunity>> response) {
+                            if (response.isSuccessful()) {
+                                addressExist = 1;
+                                List<TownCommunity> result = response.body();
+
+                                for (int i = 0; i < result.size(); i++) {
+                                    if(!result.get(i).getUser().getAddress().equals(userAddress)) continue;
+                                    img = result.get(i).getImage();
+
+                                    if (result.get(i).isAnonymous())
+                                        nickName = "익명";
+                                    else
+                                        nickName = result.get(i).getUser().getNickname();
+
+                                    userImg = result.get(i).getUser().getImage();
+
+                                    push = push(result.get(i).getTownLike().size(), result.get(i).getTownLike());
+
+                                    Memo memo = new Memo(result.get(i).getId(), result.get(i).getUser().getUid(),
+                                            result.get(i).getTitle(), result.get(i).getContent(), result.get(i).getTownLike().size(),
+                                            nickName, result.get(i).getDate(), img, push, userImg);
+                                    recyclerAdapter.addItem(memo);
+                                }
+                                recyclerAdapter.notifyDataSetChanged();
+
+                            } else {
+
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<TownCommunity>> call, Throwable t) {
+                            System.out.println("통신 실패!");
+                        }
+                    });
+
+                }
             }
 
             @Override
-            public void onFailure(Call<List<TownCommunity>> call, Throwable t) {
-                System.out.println("통신 실패!");
+            public void onFailure(Call<User> call, Throwable t) {
+
             }
         });
+
 
 
         //새로운 메모 작성
