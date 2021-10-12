@@ -187,6 +187,7 @@ public class BowlWriteActivity extends AppCompatActivity{
                 BowlFragment bowlFragment = new BowlFragment();
                 itemData.add(feed);
                 bowlFragment.callchange(itemData);
+                finish();
             }
             @Override
             public void onFailure(Call<BowlCommunityResponse> call, Throwable t) {
