@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -19,11 +20,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import org.techtown.catsby.R;
 import org.techtown.catsby.cattown.adapter.FragmentCatTownAdapter;
 import org.techtown.catsby.retrofit.RetrofitClient;
-import org.techtown.catsby.retrofit.dto.CatProfile;
 import org.techtown.catsby.retrofit.dto.CatInfo;
+import org.techtown.catsby.retrofit.dto.CatProfile;
 import org.techtown.catsby.retrofit.dto.User;
 import org.techtown.catsby.retrofit.service.CatService;
 import org.techtown.catsby.util.ImageUtils;
@@ -33,8 +36,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-
-import com.google.firebase.auth.FirebaseAuth;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -65,6 +66,13 @@ public class AddCatActivity extends AppCompatActivity{
     private User user;
     public String uid = FirebaseAuth.getInstance().getUid();
     private CatService catService = RetrofitClient.catService();
+
+    private Boolean isPermission = true;
+    private static final int PICK_FROM_ALBUM = 1;
+    private File tempFile;
+    private static final String TAG = "catsby";
+    private static final int PICK_FROM_CAMERA = 2;
+
 
     FragmentCatTownAdapter adapter;
 
@@ -112,9 +120,13 @@ public class AddCatActivity extends AppCompatActivity{
 
     //이미지 업로드
     public void imageUpload(View view) {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
+//        Intent intent = new Intent();
+//        intent.setType("image/*");
+//        intent.setAction(Intent.ACTION_GET_CONTENT);
+//        startActivityForResult(intent, 101);
+
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
         startActivityForResult(intent, 101);
     }
 
