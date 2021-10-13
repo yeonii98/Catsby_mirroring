@@ -24,9 +24,9 @@ public class TownCommunityController {
     private TownCommunity townCommunity;
 
     //글목록
-    @GetMapping("/townCommunity/{uid}")//커뮤니티 메인
-    public List<TownCommunity> town(@PathVariable String uid) {
-        return townCommunityService.listTownCommunity(uid);
+    @GetMapping("/townCommunity")//커뮤니티 메인
+    public List<TownCommunity> town() {
+        return townCommunityService.listTownCommunity();
     }
 
 

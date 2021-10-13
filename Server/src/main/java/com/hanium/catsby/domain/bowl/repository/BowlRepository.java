@@ -42,7 +42,7 @@ public class BowlRepository {
 
     public List<TokenDto> findUsersByBowlId(Long bowlId) {
         return em.createQuery(
-                        "select new com.hanium.catsby.notification.domain.dto.TokenDto(u.id, u.fcmToken)" +
+                        "select new com.hanium.catsby.domain.notification.dto.TokenDto(u.id, u.fcmToken)" +
                                 " from Bowl b" +
                                 " join b.bowlUsers bu" +
                                 " join bu.user u" +

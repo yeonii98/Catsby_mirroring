@@ -21,7 +21,6 @@ public class BowlCommunity extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-
     private Users user;
     private String image;
 
