@@ -8,8 +8,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,7 +27,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.bumptech.glide.Glide;
 import com.example.catsbe.account;
 import com.example.catsbe.alert;
 import com.example.catsby.writingList;
@@ -39,16 +36,12 @@ import com.gun0912.tedpermission.TedPermission;
 
 import org.jetbrains.annotations.NotNull;
 import org.techtown.catsby.R;
-import org.techtown.catsby.home.BowlDetailActivity;
 import org.techtown.catsby.retrofit.RetrofitClient;
 import org.techtown.catsby.retrofit.dto.NicknameResponse;
 import org.techtown.catsby.retrofit.dto.User;
-import org.techtown.catsby.retrofit.dto.UserAddressUpdate;
-import org.techtown.catsby.retrofit.dto.UserImageUpdate;
 import org.techtown.catsby.retrofit.service.UserService;
 import org.techtown.catsby.util.ImageUtils;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -90,6 +83,7 @@ public class FragmentSetting_New extends Fragment {
     private int OPEN_GALLERY=1;
     private String txtadd = null;
 
+    public String address;
     private UserService userService;
 
     Uri photoUri;
@@ -123,16 +117,17 @@ public class FragmentSetting_New extends Fragment {
         userService = RetrofitClient.getUser();
 
 
+        updateAddress();
         Bundle bundle = getArguments();
         if (bundle != null) {
             String nickname = bundle.getString("nickname");
-            String address = bundle.getString("address");
+//            String address = bundle.getString("address");
             String image = bundle.getString("image");
             nickName.setText(nickname);
-            if (address == null)
-                local.setText("동네를 설정하세요");
-            else
-                local.setText(address);
+//            if (address == null)
+//                local.setText("동네를 설정하세요");
+//            else
+//                local.setText(address);
             if (image != null) {
                 try {
                     URL url = new URL(image);
@@ -245,7 +240,28 @@ public class FragmentSetting_New extends Fragment {
         return view;
     }
 
-    private void updateNickname(String nickname) {
+    private void updateAddress(){
+        userService.getUser(uid).enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful()) {
+                    User result = response.body();
+                    String userAddress = result.getAddress();
+                    local.setText(userAddress);
+                } else{
+                    local.setText("동네를 설정해주세요");
+                }
+
+    }
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                System.out.println("통신 실패");
+            }
+        });
+    }
+
+
+            private void updateNickname(String nickname) {
         userService.updateNickname(FirebaseAuth.getInstance().getUid(), nickname).enqueue(new Callback<NicknameResponse>() {
             @Override
             public void onResponse(Call<NicknameResponse> call, Response<NicknameResponse> response) {
