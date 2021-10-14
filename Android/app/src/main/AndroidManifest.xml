@@ -58,7 +58,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDfszGSmo3tTGtk18MbCg9o_Vp3m2poD2A" />
+            android:value="AIzaSyCRJVQUNcW1NU0pkH30EhQFWQ0ZkO3An4I" />
 
         <!-- crop activity -->
         <activity
